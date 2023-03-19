@@ -244,24 +244,20 @@ class App extends React.Component {
               switchDarkMode={this.switchDarkMode}
               darkMode={darkMode}
             />
-            {window.public_config?.ENABLE_TOOLJET_DB == "true" && (
-              <PrivateRoute
-                exact
-                path="/database"
-                component={TooljetDatabase}
-                switchDarkMode={this.switchDarkMode}
-                darkMode={darkMode}
-              />
-            )}
-            {window.public_config?.ENABLE_MARKETPLACE_FEATURE === "true" && (
-              <AdminRoute
-                exact
-                path="/integrations"
-                component={MarketplacePage}
-                switchDarkMode={this.switchDarkMode}
-                darkMode={darkMode}
-              />
-            )}
+            <PrivateRoute
+              exact
+              path="/database"
+              component={TooljetDatabase}
+              switchDarkMode={this.switchDarkMode}
+              darkMode={darkMode}
+            />
+            <AdminRoute
+              exact
+              path="/integrations"
+              component={MarketplacePage}
+              switchDarkMode={this.switchDarkMode}
+              darkMode={darkMode}
+            />
           </div>
         </BrowserRouter>
         <Toast toastOptions={toastOptions} />

@@ -2497,4 +2497,4 @@ class EditorComponent extends React.Component {
   }
 }
 
-export const Editor = withTranslation()(EditorComponent);
+export const Editor = EditorComponent;
