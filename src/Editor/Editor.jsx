@@ -101,7 +101,7 @@ class EditorComponent extends React.Component {
     this.state = {
       app: {},
       allComponentTypes: componentTypes,
-      isLoading: true,
+      isLoading: false,
       users: null,
       appId,
       editingVersion: null,
