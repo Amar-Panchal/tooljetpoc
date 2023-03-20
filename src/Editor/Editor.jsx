@@ -22,7 +22,7 @@ import {
   debuggerActions,
   cloneComponents,
   removeSelectedComponent,
-} from "@/_helpers/appUtils";
+} from "../_helpers/appUtils";
 import { Confirm } from "./Viewer/Confirm";
 import ReactTooltip from "react-tooltip";
 import CommentNotifications from "./CommentNotifications";
@@ -41,8 +41,8 @@ import { SearchBox } from "@/_components/SearchBox";
 import { createWebsocketConnection } from "@/_helpers/websocketConnection";
 import Tooltip from "react-bootstrap/Tooltip";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
-import RealtimeCursors from "@/Editor/RealtimeCursors";
-import { initEditorWalkThrough } from "@/_helpers/createWalkThrough";
+import RealtimeCursors from "../Editor/RealtimeCursors";
+import { initEditorWalkThrough } from "../_helpers/createWalkThrough";
 import { EditorContextWrapper } from "./Context/EditorContextWrapper";
 import Selecto from "react-selecto";
 import { withTranslation } from "react-i18next";
@@ -62,11 +62,11 @@ class EditorComponent extends React.Component {
 
     const pageHandle = this.props.match.params.pageHandle;
 
-    const { socket } = createWebsocketConnection(appId);
+    // const { socket } = createWebsocketConnection(appId);
 
     this.renameQueryNameId = React.createRef();
 
-    this.socket = socket;
+    // this.socket = socket;
     let userVars = {};
 
     const defaultPageId = uuid();
@@ -162,7 +162,7 @@ class EditorComponent extends React.Component {
     this.autoSave();
     // this.fetchApps(0);
     this.fetchApp(this.props.match.params.pageHandle);
-    this.fetchOrgEnvironmentVariables();
+    // this.fetchOrgEnvironmentVariables();
     this.initComponentVersioning();
     this.initRealtimeSave();
     this.initEventListeners();
@@ -252,16 +252,16 @@ class EditorComponent extends React.Component {
   };
 
   initEventListeners() {
-    this.socket?.addEventListener("message", (event) => {
-      if (event.data === "versionReleased") this.fetchApp();
-      else if (event.data === "dataQueriesChanged") this.fetchDataQueries();
-      else if (event.data === "dataSourcesChanged") this.fetchDataSources();
-    });
+    // this.socket?.addEventListener("message", (event) => {
+    //   if (event.data === "versionReleased") this.fetchApp();
+    //   else if (event.data === "dataQueriesChanged") this.fetchDataQueries();
+    //   else if (event.data === "dataSourcesChanged") this.fetchDataSources();
+    // });
   }
 
   componentWillUnmount() {
     document.title = "Tooljet - Dashboard";
-    this.socket && this.socket?.close();
+    // this.socket && this.socket?.close();
     if (config.ENABLE_MULTIPLAYER_EDITING) this.props?.provider?.disconnect();
   }
 
@@ -460,8 +460,8 @@ class EditorComponent extends React.Component {
         }
       );
 
-      this.fetchDataSources();
-      this.fetchDataQueries();
+      // this.fetchDataSources();
+      // this.fetchDataQueries();
       initEditorWalkThrough();
     };
 
@@ -517,23 +517,23 @@ class EditorComponent extends React.Component {
   /**
    * https://developer.mozilla.org/en-US/docs/Web/API/WebSocket/readyState
    */
-  dataQueriesChanged = () => {
-    this.setState({ addingQuery: false }, () => {
-      if (
-        this.socket instanceof WebSocket &&
-        this.socket?.readyState === WebSocket.OPEN
-      ) {
-        this.socket?.send(
-          JSON.stringify({
-            event: "events",
-            data: { message: "dataQueriesChanged", appId: this.state.appId },
-          })
-        );
-      } else {
-        this.fetchDataQueries();
-      }
-    });
-  };
+  // dataQueriesChanged = () => {
+  //   this.setState({ addingQuery: false }, () => {
+  //     if (
+  //       this.socket instanceof WebSocket &&
+  //       this.socket?.readyState === WebSocket.OPEN
+  //     ) {
+  //       this.socket?.send(
+  //         JSON.stringify({
+  //           event: "events",
+  //           data: { message: "dataQueriesChanged", appId: this.state.appId },
+  //         })
+  //       );
+  //     } else {
+  //       this.fetchDataQueries();
+  //     }
+  //   });
+  // };
 
   switchSidebarTab = (tabIndex) => {
     this.setState({
@@ -980,24 +980,14 @@ class EditorComponent extends React.Component {
       toast.success("Query Deleted");
       return this.clearDraftQuery();
     }
-    dataqueryService
-      .del(queryToBeDeleted)
-      .then(() => {
-        toast.success("Query Deleted");
-        this.setState({
-          isDeletingDataQuery: false,
-          isUnsavedQueriesAvailable:
-            queryToBeDeleted === selectedQuery?.id
-              ? false
-              : isUnsavedQueriesAvailable,
-          queryToBeDeleted: null,
-        });
-        this.dataQueriesChanged();
-      })
-      .catch(({ error }) => {
-        this.setState({ isDeletingDataQuery: false });
-        toast.error(error);
-      });
+    this.setState({
+      isDeletingDataQuery: false,
+      // isUnsavedQueriesAvailable:
+      //   queryToBeDeleted === selectedQuery?.id
+      //     ? false
+      //     : isUnsavedQueriesAvailable,
+      queryToBeDeleted: null,
+    });
   };
 
   createDraftQuery = (queryDetails, source = null) => {
@@ -1301,14 +1291,14 @@ class EditorComponent extends React.Component {
   getCanvasWidth = () => {
     const canvasBoundingRect = document
       .getElementsByClassName("canvas-area")[0]
-      .getBoundingClientRect();
+      ?.getBoundingClientRect();
     return canvasBoundingRect?.width;
   };
 
   getCanvasHeight = () => {
     const canvasBoundingRect = document
       .getElementsByClassName("canvas-area")[0]
-      .getBoundingClientRect();
+      ?.getBoundingClientRect();
     return canvasBoundingRect?.height;
   };
 
@@ -2126,7 +2116,7 @@ class EditorComponent extends React.Component {
                         editingPageId={this.state.currentPageId}
                       />
                     )} */}
-                    {isLoading && (
+                    {/* {isLoading && (
                       <div className="apploader">
                         <div className="col col-* editor-center-wrapper">
                           <div className="editor-center">
@@ -2163,51 +2153,50 @@ class EditorComponent extends React.Component {
                           </div>
                         </div>
                       </div>
-                    )}
-                    {defaultComponentStateComputed && (
-                      <>
-                        <Container
-                          canvasWidth={this.getCanvasWidth()}
-                          canvasHeight={this.getCanvasHeight()}
-                          socket={this.socket}
-                          showComments={showComments}
-                          appVersionsId={this.state?.editingVersion?.id}
-                          appDefinition={appDefinition}
-                          appDefinitionChanged={this.appDefinitionChanged}
-                          snapToGrid={true}
-                          darkMode={this.props.darkMode}
-                          mode={"edit"}
-                          zoomLevel={zoomLevel}
-                          currentLayout={currentLayout}
-                          deviceWindowWidth={deviceWindowWidth}
-                          selectedComponents={selectedComponents}
-                          appLoading={isLoading}
-                          onEvent={this.handleEvent}
-                          onComponentOptionChanged={
-                            this.handleOnComponentOptionChanged
-                          }
-                          onComponentOptionsChanged={
-                            this.handleOnComponentOptionsChanged
-                          }
-                          currentState={this.state.currentState}
-                          setSelectedComponent={this.setSelectedComponent}
-                          handleUndo={this.handleUndo}
-                          handleRedo={this.handleRedo}
-                          removeComponent={this.removeComponent}
-                          onComponentClick={this.handleComponentClick}
-                          onComponentHover={this.handleComponentHover}
-                          hoveredComponent={hoveredComponent}
-                          sideBarDebugger={this.sideBarDebugger}
-                          dataQueries={dataQueries}
-                          currentPageId={this.state.currentPageId}
-                        />
-                        <CustomDragLayer
-                          snapToGrid={true}
-                          currentLayout={currentLayout}
-                          canvasWidth={this.getCanvasWidth()}
-                        />
-                      </>
-                    )}
+                    )} */}
+
+                    <>
+                      <Container
+                        canvasWidth={this.getCanvasWidth()}
+                        canvasHeight={this.getCanvasHeight()}
+                        // socket={this.socket}
+                        showComments={showComments}
+                        appVersionsId={this.state?.editingVersion?.id}
+                        appDefinition={appDefinition}
+                        appDefinitionChanged={this.appDefinitionChanged}
+                        snapToGrid={true}
+                        darkMode={this.props.darkMode}
+                        mode={"edit"}
+                        zoomLevel={zoomLevel}
+                        currentLayout={currentLayout}
+                        deviceWindowWidth={deviceWindowWidth}
+                        selectedComponents={selectedComponents}
+                        appLoading={isLoading}
+                        onEvent={this.handleEvent}
+                        onComponentOptionChanged={
+                          this.handleOnComponentOptionChanged
+                        }
+                        onComponentOptionsChanged={
+                          this.handleOnComponentOptionsChanged
+                        }
+                        currentState={this.state.currentState}
+                        setSelectedComponent={this.setSelectedComponent}
+                        handleUndo={this.handleUndo}
+                        handleRedo={this.handleRedo}
+                        removeComponent={this.removeComponent}
+                        onComponentClick={this.handleComponentClick}
+                        onComponentHover={this.handleComponentHover}
+                        hoveredComponent={hoveredComponent}
+                        sideBarDebugger={this.sideBarDebugger}
+                        dataQueries={dataQueries}
+                        currentPageId={this.state.currentPageId}
+                      />
+                      <CustomDragLayer
+                        snapToGrid={true}
+                        currentLayout={currentLayout}
+                        canvasWidth={this.getCanvasWidth()}
+                      />
+                    </>
                   </div>
                 </div>
                 <QueryPanel
@@ -2481,14 +2470,14 @@ class EditorComponent extends React.Component {
                   ></WidgetManager>
                 )}
               </div>
-              {config.COMMENT_FEATURE_ENABLE && showComments && (
+              {/* {config.COMMENT_FEATURE_ENABLE && showComments && (
                 <CommentNotifications
-                  socket={this.socket}
+                  // socket={this.socket}
                   appVersionsId={this.state?.editingVersion?.id}
                   toggleComments={this.toggleComments}
                   pageId={this.state.currentPageId}
                 />
-              )}
+              )} */}
             </div>
           </DndProvider>
         </EditorContextWrapper>

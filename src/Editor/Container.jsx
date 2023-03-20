@@ -390,12 +390,12 @@ export const Container = ({
     setCommentsPreviewList(_commentsPreviewList);
 
     // Update the threads on all connected clients using websocket
-    socket.send(
-      JSON.stringify({
-        event: "events",
-        data: { message: "threads", appId: router.query.id },
-      })
-    );
+    // socket.send(
+    //   JSON.stringify({
+    //     event: "events",
+    //     data: { message: "threads", appId: router.query.id },
+    //   })
+    // );
 
     // Update the list of threads on the current users page
   };
