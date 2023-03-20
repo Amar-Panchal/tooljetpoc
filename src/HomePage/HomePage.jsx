@@ -55,7 +55,7 @@ class HomePageComponent extends React.Component {
   }
 
   componentDidMount() {
-    this.fetchApps(1, this.state.currentFolder.id);
+    // this.fetchApps(1, this.state.currentFolder.id);
     this.fetchFolders();
   }
 
@@ -80,12 +80,12 @@ class HomePageComponent extends React.Component {
   };
 
   pageChanged = (page) => {
-    this.fetchApps(page, this.state.currentFolder.id);
+    // this.fetchApps(page, this.state.currentFolder.id);
   };
 
   folderChanged = (folder) => {
     this.setState({ currentFolder: folder });
-    this.fetchApps(1, folder.id);
+    // this.fetchApps(1, folder.id);
   };
 
   foldersChanged = () => {
@@ -95,6 +95,7 @@ class HomePageComponent extends React.Component {
   createApp = () => {
     let _self = this;
     _self.setState({ creatingApp: true });
+    _self.props.navigate(`/apps/${1}`);
   };
 
   deleteApp = (app) => {
@@ -166,22 +167,11 @@ class HomePageComponent extends React.Component {
   }
 
   canAnyGroupPerformActionOnApp(action, appGroupPermissions, app) {
-    if (!appGroupPermissions) {
-      return false;
-    }
-
-    const permissionsToCheck = appGroupPermissions.filter(
-      (permission) => permission.app_id == app.id
-    );
-    return this.canAnyGroupPerformAction(action, permissionsToCheck);
+    return true;
   }
 
   canAnyGroupPerformAction(action, permissions) {
-    if (!permissions) {
-      return false;
-    }
-
-    return permissions.some((p) => p[action]);
+    return true;
   }
 
   isUserOwnerOfApp(user, app) {
@@ -189,7 +179,7 @@ class HomePageComponent extends React.Component {
   }
 
   canCreateApp = () => {
-    return this.canUserPerform(this.state.currentUser, "create");
+    return true;
   };
 
   canUpdateApp = (app) => {
@@ -243,7 +233,7 @@ class HomePageComponent extends React.Component {
     if (this.state.appSearchKey === key) {
       return;
     }
-    this.fetchApps(1, this.state.currentFolder.id, key || "");
+    // this.fetchApps(1, this.state.currentFolder.id, key || "");
     this.fetchFolders(key || "");
   };
 
@@ -520,60 +510,59 @@ class HomePageComponent extends React.Component {
           )}
           <div className="row gx-0">
             <div className="home-page-sidebar col p-0 border-end">
-              {this.canCreateApp() && (
-                <div className="p-3 create-new-app-wrapper">
-                  <Dropdown as={ButtonGroup} className="w-100 d-inline-flex">
-                    <Button
-                      className={`create-new-app-button col-11 ${
-                        creatingApp ? "btn-loading" : ""
-                      }`}
-                      onClick={this.createApp}
-                      data-cy="create-new-app-button"
+              <div className="p-3 create-new-app-wrapper">
+                <Dropdown as={ButtonGroup} className="w-100 d-inline-flex">
+                  <Button
+                    className={`create-new-app-button col-11 ${
+                      creatingApp ? "btn-loading" : ""
+                    }`}
+                    onClick={this.createApp}
+                    data-cy="create-new-app-button"
+                  >
+                    {isImportingApp && (
+                      <span
+                        className="spinner-border spinner-border-sm mx-2"
+                        role="status"
+                      ></span>
+                    )}
+                    {this.props.t(
+                      "homePage.header.createNewApplication",
+                      "Create new app"
+                    )}
+                  </Button>
+                  <Dropdown.Toggle
+                    split
+                    className="d-inline"
+                    data-cy="import-dropdown-menu"
+                  />
+                  <Dropdown.Menu className="import-lg-position">
+                    <Dropdown.Item
+                      onClick={this.showTemplateLibraryModal}
+                      data-cy="choose-from-template-button"
                     >
-                      {isImportingApp && (
-                        <span
-                          className="spinner-border spinner-border-sm mx-2"
-                          role="status"
-                        ></span>
-                      )}
                       {this.props.t(
-                        "homePage.header.createNewApplication",
-                        "Create new app"
+                        "homePage.header.chooseFromTemplate",
+                        "Choose from template"
                       )}
-                    </Button>
-                    <Dropdown.Toggle
-                      split
-                      className="d-inline"
-                      data-cy="import-dropdown-menu"
-                    />
-                    <Dropdown.Menu className="import-lg-position">
-                      <Dropdown.Item
-                        onClick={this.showTemplateLibraryModal}
-                        data-cy="choose-from-template-button"
-                      >
-                        {this.props.t(
-                          "homePage.header.chooseFromTemplate",
-                          "Choose from template"
-                        )}
-                      </Dropdown.Item>
-                      <label
-                        className="homepage-dropdown-style"
-                        data-cy="import-option-label"
-                        onChange={this.handleImportApp}
-                      >
-                        {this.props.t("homePage.header.import", "Import")}
-                        <input
-                          type="file"
-                          accept=".json"
-                          ref={this.fileInput}
-                          style={{ display: "none" }}
-                          data-cy="import-option-input"
-                        />
-                      </label>
-                    </Dropdown.Menu>
-                  </Dropdown>
-                </div>
-              )}
+                    </Dropdown.Item>
+                    <label
+                      className="homepage-dropdown-style"
+                      data-cy="import-option-label"
+                      onChange={this.handleImportApp}
+                    >
+                      {this.props.t("homePage.header.import", "Import")}
+                      <input
+                        type="file"
+                        accept=".json"
+                        ref={this.fileInput}
+                        style={{ display: "none" }}
+                        data-cy="import-option-input"
+                      />
+                    </label>
+                  </Dropdown.Menu>
+                </Dropdown>
+              </div>
+
               <Folders
                 foldersLoading={this.state.foldersLoading}
                 folders={this.state.folders}
@@ -603,24 +592,19 @@ class HomePageComponent extends React.Component {
                     <hr />
                   </>
                 )}
-                {!isLoading &&
-                  meta?.total_count === 0 &&
-                  !currentFolder.id &&
-                  !appSearchKey && (
-                    <BlankPage
-                      createApp={this.createApp}
-                      isImportingApp={isImportingApp}
-                      fileInput={this.fileInput}
-                      handleImportApp={this.handleImportApp}
-                      creatingApp={creatingApp}
-                      darkMode={this.props.darkMode}
-                      showTemplateLibraryModal={
-                        this.state.showTemplateLibraryModal
-                      }
-                      viewTemplateLibraryModal={this.showTemplateLibraryModal}
-                      hideTemplateLibraryModal={this.hideTemplateLibraryModal}
-                    />
-                  )}
+
+                <BlankPage
+                  createApp={this.createApp}
+                  isImportingApp={isImportingApp}
+                  fileInput={this.fileInput}
+                  handleImportApp={this.handleImportApp}
+                  creatingApp={creatingApp}
+                  darkMode={this.props.darkMode}
+                  showTemplateLibraryModal={this.state.showTemplateLibraryModal}
+                  viewTemplateLibraryModal={this.showTemplateLibraryModal}
+                  hideTemplateLibraryModal={this.hideTemplateLibraryModal}
+                />
+
                 {!isLoading && meta.total_count === 0 && appSearchKey && (
                   <div>
                     <span

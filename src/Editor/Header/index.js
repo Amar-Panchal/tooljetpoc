@@ -1,15 +1,15 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import AppLogo from '@/_components/AppLogo';
-import { GlobalSettings } from './GlobalSettings';
-import EditAppName from './EditAppName';
-import HeaderActions from './HeaderActions';
-import RealtimeAvatars from '../RealtimeAvatars';
-import { AppVersionsManager } from '../AppVersionsManager/List';
-import { ManageAppUsers } from '../ManageAppUsers';
-import { ReleaseVersionButton } from '../ReleaseVersionButton';
-import cx from 'classnames';
-import config from 'config';
+import React from "react";
+import { Link } from "react-router-dom";
+import AppLogo from "@/_components/AppLogo";
+import { GlobalSettings } from "./GlobalSettings";
+import EditAppName from "./EditAppName";
+import HeaderActions from "./HeaderActions";
+import RealtimeAvatars from "../RealtimeAvatars";
+import { AppVersionsManager } from "../AppVersionsManager/List";
+import { ManageAppUsers } from "../ManageAppUsers";
+import { ReleaseVersionButton } from "../ReleaseVersionButton";
+import cx from "classnames";
+import config from "config";
 
 export default function EditorHeader({
   darkMode,
@@ -47,13 +47,13 @@ export default function EditorHeader({
         <div className="container-xl header-container">
           <div className="d-flex w-100">
             <h1 className="navbar-brand d-none-navbar-horizontal pe-0 mt-1">
-              <Link to={'/'} data-cy="editor-page-logo">
+              <Link to={"/"} data-cy="editor-page-logo">
                 <AppLogo isLoadingFromHeader={true} />
               </Link>
             </h1>
             <div
               style={{
-                maxHeight: '45px',
+                maxHeight: "45px",
               }}
               className="flex-grow-1 row px-3"
             >
@@ -68,7 +68,11 @@ export default function EditorHeader({
                       toggleAppMaintenance={toggleAppMaintenance}
                       is_maintenance_on={is_maintenance_on}
                     />
-                    <EditAppName appId={app.id} appName={app.name} onNameChanged={onNameChanged} />
+                    <EditAppName
+                      appId={app.id}
+                      appName={app.name}
+                      onNameChanged={onNameChanged}
+                    />
                   </div>
 
                   <div className="col d-flex">
@@ -82,14 +86,18 @@ export default function EditorHeader({
                     />
                     <div className="my-1 mx-3">
                       <span
-                        className={cx('autosave-indicator', {
-                          'autosave-indicator-saving': isSaving,
-                          'text-danger': saveError,
-                          'd-none': isVersionReleased(),
+                        className={cx("autosave-indicator", {
+                          "autosave-indicator-saving": isSaving,
+                          "text-danger": saveError,
+                          "d-none": isVersionReleased(),
                         })}
                         data-cy="autosave-indicator"
                       >
-                        {isSaving ? 'Saving...' : saveError ? 'Could not save changes' : 'Saved changes'}
+                        {isSaving
+                          ? "Saving..."
+                          : saveError
+                          ? "Could not save changes"
+                          : "Saved changes"}
                       </span>
                     </div>
                   </div>
@@ -103,16 +111,20 @@ export default function EditorHeader({
                       editingVersion={editingVersion}
                       releasedVersionId={app.current_version_id}
                       setAppDefinitionFromVersion={setAppDefinitionFromVersion}
-                      showCreateVersionModalPrompt={showCreateVersionModalPrompt}
-                      closeCreateVersionModalPrompt={closeCreateVersionModalPrompt}
+                      showCreateVersionModalPrompt={
+                        showCreateVersionModalPrompt
+                      }
+                      closeCreateVersionModalPrompt={
+                        closeCreateVersionModalPrompt
+                      }
                     />
                   )}
                 </div>
-                {config.ENABLE_MULTIPLAYER_EDITING && (
+                {/* {config.ENABLE_MULTIPLAYER_EDITING && (
                   <div className="mx-2 p-2">
                     <RealtimeAvatars />
                   </div>
-                )}
+                )} */}
               </div>
               <div className="col-1"></div>
             </div>
@@ -120,7 +132,12 @@ export default function EditorHeader({
               <div className="navbar-nav flex-row order-md-last release-buttons p-1">
                 <div className="nav-item me-1">
                   {app.id && (
-                    <ManageAppUsers app={app} slug={slug} darkMode={darkMode} handleSlugChange={handleSlugChange} />
+                    <ManageAppUsers
+                      app={app}
+                      slug={slug}
+                      darkMode={darkMode}
+                      handleSlugChange={handleSlugChange}
+                    />
                   )}
                 </div>
                 <div className="nav-item me-1">
@@ -139,7 +156,14 @@ export default function EditorHeader({
                       fill="none"
                       xmlns="http://www.w3.org/2000/svg"
                     >
-                      <rect x="0.363281" y="0.220703" width="32" height="32" rx="6" fill="#F0F4FF" />
+                      <rect
+                        x="0.363281"
+                        y="0.220703"
+                        width="32"
+                        height="32"
+                        rx="6"
+                        fill="#F0F4FF"
+                      />
                       <path
                         fillRule="evenodd"
                         clipRule="evenodd"

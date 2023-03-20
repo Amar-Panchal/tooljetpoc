@@ -160,7 +160,7 @@ class EditorComponent extends React.Component {
 
   componentDidMount() {
     this.autoSave();
-    this.fetchApps(0);
+    // this.fetchApps(0);
     this.fetchApp(this.props.match.params.pageHandle);
     this.fetchOrgEnvironmentVariables();
     this.initComponentVersioning();
@@ -210,25 +210,25 @@ class EditorComponent extends React.Component {
   };
 
   fetchOrgEnvironmentVariables = () => {
-    orgEnvironmentVariableService.getVariables().then((data) => {
-      const client_variables = {};
-      const server_variables = {};
-      data.variables.map((variable) => {
-        if (variable.variable_type === "server") {
-          server_variables[variable.variable_name] =
-            "HiddenEnvironmentVariable";
-        } else {
-          client_variables[variable.variable_name] = variable.value;
-        }
-      });
-      this.setState({
-        currentState: {
-          ...this.state.currentState,
-          server: server_variables,
-          client: client_variables,
-        },
-      });
-    });
+    // orgEnvironmentVariableService.getVariables().then((data) => {
+    //   const client_variables = {};
+    //   const server_variables = {};
+    //   data.variables.map((variable) => {
+    //     if (variable.variable_type === "server") {
+    //       server_variables[variable.variable_name] =
+    //         "HiddenEnvironmentVariable";
+    //     } else {
+    //       client_variables[variable.variable_name] = variable.value;
+    //     }
+    //   });
+    // this.setState({
+    //   currentState: {
+    //     ...this.state.currentState,
+    //     server: server_variables,
+    //     client: client_variables,
+    //   },
+    // });
+    // });
   };
 
   componentDidUpdate(prevProps, prevState) {
@@ -2120,12 +2120,12 @@ class EditorComponent extends React.Component {
                       backgroundColor: this.computeCanvasBackgroundColor(),
                     }}
                   >
-                    {config.ENABLE_MULTIPLAYER_EDITING && (
+                    {/* {config.ENABLE_MULTIPLAYER_EDITING && (
                       <RealtimeCursors
                         editingVersionId={this.state?.editingVersion?.id}
                         editingPageId={this.state.currentPageId}
                       />
-                    )}
+                    )} */}
                     {isLoading && (
                       <div className="apploader">
                         <div className="col col-* editor-center-wrapper">

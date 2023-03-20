@@ -20,15 +20,9 @@ export const BlankPage = function BlankPage({
   const [deploying, setDeploying] = useState(false);
   const history = useHistory();
 
-  const staticTemplates = [
-    { id: "s3-file-explorer", name: "S3 File Explorer" },
-    { id: "job-application-tracker", name: "Job Application Tracker" },
-    { id: "whatsapp-and-sms-crm", name: "WhatsApp and SMS CRM" },
-  ];
-
   function deployApp(id) {
     if (!deploying) {
-      const loadingToastId = toast.loading("Deploying app...");
+      history.push(`/apps/${id}`);
       setDeploying(true);
     }
   }
@@ -140,44 +134,7 @@ export const BlankPage = function BlankPage({
               <div className="hr-text" data-cy="action-option">
                 Or choose from templates
               </div>
-              <div className="row" data-cy="app-template-row">
-                {staticTemplates.map(({ id, name }) => {
-                  return (
-                    <div
-                      key={id}
-                      className="col-4"
-                      onClick={() => deployApp(id)}
-                    >
-                      <div
-                        className="card cursor-pointer"
-                        data-cy={`${name
-                          .toLowerCase()
-                          .replace(/\s+/g, "-")}-app-template-card`}
-                      >
-                        <div
-                          className="img-responsive img-responsive-21x9 card-img-top"
-                          style={{
-                            backgroundImage: `url(assets/images/templates/${id}.png)`,
-                          }}
-                          data-cy={`${name
-                            .toLowerCase()
-                            .replace(/\s+/g, "-")}-app-template-image`}
-                        />
-                        <div className="card-body">
-                          <h3
-                            className="card-title"
-                            data-cy={`${name
-                              .toLowerCase()
-                              .replace(/\s+/g, "-")}-app-template-title`}
-                          >
-                            {name}
-                          </h3>
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
+              <div className="row" data-cy="app-template-row"></div>
               <div className="m-auto text-center mt-4">
                 <span
                   className="btn btn-link text-decoration-none"
