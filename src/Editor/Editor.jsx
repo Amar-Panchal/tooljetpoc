@@ -1,15 +1,15 @@
-import React from "react";
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
-import { defaults, cloneDeep, isEqual, isEmpty, debounce, omit } from "lodash";
-import { Container } from "./Container";
-import { EditorKeyHooks } from "./EditorKeyHooks";
-import { CustomDragLayer } from "./CustomDragLayer";
-import { LeftSidebar } from "./LeftSidebar";
-import { componentTypes } from "./WidgetManager/components";
-import { Inspector } from "./Inspector/Inspector";
+import React from 'react';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
+import { defaults, cloneDeep, isEqual, isEmpty, debounce, omit } from 'lodash';
+import { Container } from './Container';
+import { EditorKeyHooks } from './EditorKeyHooks';
+import { CustomDragLayer } from './CustomDragLayer';
+import { LeftSidebar } from './LeftSidebar';
+import { componentTypes } from './WidgetManager/components';
+import { Inspector } from './Inspector/Inspector';
 // import { DataSourceTypes } from './DataSourceManager/SourceComponents';
-import { QueryManager, QueryPanel } from "./QueryManager";
+import { QueryManager, QueryPanel } from './QueryManager';
 import {
   onComponentOptionChanged,
   onComponentOptionsChanged,
@@ -22,34 +22,29 @@ import {
   debuggerActions,
   cloneComponents,
   removeSelectedComponent,
-} from "../_helpers/appUtils";
-import { Confirm } from "./Viewer/Confirm";
-import ReactTooltip from "react-tooltip";
-import CommentNotifications from "./CommentNotifications";
-import { WidgetManager } from "./WidgetManager";
-import Fuse from "fuse.js";
-import config from "config";
-import queryString from "query-string";
-import { toast } from "react-hot-toast";
-const {
-  produce,
-  enablePatches,
-  setAutoFreeze,
-  applyPatches,
-} = require("immer");
-import { SearchBox } from "@/_components/SearchBox";
-import { createWebsocketConnection } from "@/_helpers/websocketConnection";
-import Tooltip from "react-bootstrap/Tooltip";
-import OverlayTrigger from "react-bootstrap/OverlayTrigger";
-import RealtimeCursors from "../Editor/RealtimeCursors";
-import { initEditorWalkThrough } from "../_helpers/createWalkThrough";
-import { EditorContextWrapper } from "./Context/EditorContextWrapper";
-import Selecto from "react-selecto";
-import { withTranslation } from "react-i18next";
-import { v4 as uuid } from "uuid";
-import Skeleton from "react-loading-skeleton";
-import EmptyQueriesIllustration from "@assets/images/icons/no-queries-added.svg";
-import EditorHeader from "./Header";
+} from '../_helpers/appUtils';
+import { Confirm } from './Viewer/Confirm';
+import ReactTooltip from 'react-tooltip';
+import CommentNotifications from './CommentNotifications';
+import { WidgetManager } from './WidgetManager';
+import Fuse from 'fuse.js';
+import config from 'config';
+import queryString from 'query-string';
+import { toast } from 'react-hot-toast';
+const { produce, enablePatches, setAutoFreeze, applyPatches } = require('immer');
+import { SearchBox } from '@/_components/SearchBox';
+import { createWebsocketConnection } from '@/_helpers/websocketConnection';
+import Tooltip from 'react-bootstrap/Tooltip';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import RealtimeCursors from '../Editor/RealtimeCursors';
+import { initEditorWalkThrough } from '../_helpers/createWalkThrough';
+import { EditorContextWrapper } from './Context/EditorContextWrapper';
+import Selecto from 'react-selecto';
+import { withTranslation } from 'react-i18next';
+import { v4 as uuid } from 'uuid';
+import Skeleton from 'react-loading-skeleton';
+import EmptyQueriesIllustration from '@assets/images/icons/no-queries-added.svg';
+import EditorHeader from './Header';
 
 setAutoFreeze(false);
 enablePatches();
@@ -77,18 +72,18 @@ class EditorComponent extends React.Component {
       pages: {
         [defaultPageId]: {
           components: {},
-          handle: "home",
-          name: "Home",
+          handle: 'home',
+          name: 'Home',
         },
       },
       globalSettings: {
         hideHeader: false,
         appInMaintenance: false,
         canvasMaxWidth: 1292,
-        canvasMaxWidthType: "px",
+        canvasMaxWidthType: 'px',
         canvasMaxHeight: 2400,
-        canvasBackgroundColor: props.darkMode ? "#2f3c4c" : "#edeff5",
-        backgroundFxQuery: "",
+        canvasBackgroundColor: props.darkMode ? '#2f3c4c' : '#edeff5',
+        backgroundFxQuery: '',
       },
     };
 
@@ -96,8 +91,7 @@ class EditorComponent extends React.Component {
     this.canvasContainerRef = React.createRef();
     this.selectionRef = React.createRef();
     this.selectionDragRef = React.createRef();
-    this.queryManagerPreferences =
-      JSON.parse(localStorage.getItem("queryManagerPreferences")) ?? {};
+    this.queryManagerPreferences = JSON.parse(localStorage.getItem('queryManagerPreferences')) ?? {};
     this.state = {
       app: {},
       allComponentTypes: componentTypes,
@@ -110,17 +104,15 @@ class EditorComponent extends React.Component {
       showLeftSidebar: true,
       showComments: false,
       zoomLevel: 1.0,
-      currentLayout: "desktop",
+      currentLayout: 'desktop',
       deviceWindowWidth: 450,
       appDefinition: this.defaultDefinition,
       currentState: {
         queries: {},
         components: {},
         globals: {
-          theme: { name: props.darkMode ? "dark" : "light" },
-          urlparams: JSON.parse(
-            JSON.stringify(queryString.parse(props.location.search))
-          ),
+          theme: { name: props.darkMode ? 'dark' : 'light' },
+          urlparams: JSON.parse(JSON.stringify(queryString.parse(props.location.search))),
         },
         errors: {},
         variables: {},
@@ -132,7 +124,7 @@ class EditorComponent extends React.Component {
         },
       },
       apps: [],
-      dataQueriesDefaultText: "No queries added",
+      dataQueriesDefaultText: 'No queries added',
       isDeletingDataQuery: false,
       queryConfirmationList: [],
       showCreateVersionModalPrompt: false,
@@ -187,22 +179,10 @@ class EditorComponent extends React.Component {
     if (!config.ENABLE_MULTIPLAYER_EDITING) return null;
 
     this.props.ymap?.observe(() => {
-      if (
-        !isEqual(
-          this.state.editingVersion?.id,
-          this.props.ymap?.get("appDef").editingVersionId
-        )
-      )
-        return;
-      if (
-        isEqual(
-          this.state.appDefinition,
-          this.props.ymap?.get("appDef").newDefinition
-        )
-      )
-        return;
+      if (!isEqual(this.state.editingVersion?.id, this.props.ymap?.get('appDef').editingVersionId)) return;
+      if (isEqual(this.state.appDefinition, this.props.ymap?.get('appDef').newDefinition)) return;
 
-      this.realtimeSave(this.props.ymap?.get("appDef").newDefinition, {
+      this.realtimeSave(this.props.ymap?.get('appDef').newDefinition, {
         skipAutoSave: true,
         skipYmapUpdate: true,
       });
@@ -233,10 +213,7 @@ class EditorComponent extends React.Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (!isEqual(prevState.appDefinition, this.state.appDefinition)) {
-      computeComponentState(
-        this,
-        this.state.appDefinition.pages[this.state.currentPageId]?.components
-      );
+      computeComponentState(this, this.state.appDefinition.pages[this.state.currentPageId]?.components);
     }
   }
 
@@ -260,7 +237,7 @@ class EditorComponent extends React.Component {
   }
 
   componentWillUnmount() {
-    document.title = "Tooljet - Dashboard";
+    document.title = 'Tooljet - Dashboard';
     // this.socket && this.socket?.close();
     if (config.ENABLE_MULTIPLAYER_EDITING) this.props?.provider?.disconnect();
   }
@@ -415,12 +392,8 @@ class EditorComponent extends React.Component {
     const callBack = async (data) => {
       let dataDefinition = defaults(data.definition, this.defaultDefinition);
 
-      const pages = Object.entries(dataDefinition.pages).map(
-        ([pageId, page]) => ({ id: pageId, ...page })
-      );
-      const startingPageId = pages.filter(
-        (page) => page.handle === startingPageHandle
-      )[0]?.id;
+      const pages = Object.entries(dataDefinition.pages).map(([pageId, page]) => ({ id: pageId, ...page }));
+      const startingPageId = pages.filter((page) => page.handle === startingPageHandle)[0]?.id;
       const homePageId = startingPageId ?? dataDefinition.homePageId;
 
       this.setState(
@@ -442,18 +415,13 @@ class EditorComponent extends React.Component {
           },
         },
         async () => {
-          computeComponentState(
-            this,
-            this.state.appDefinition.pages[homePageId]?.components ?? {}
-          ).then(async () => {
+          computeComponentState(this, this.state.appDefinition.pages[homePageId]?.components ?? {}).then(async () => {
             this.runQueries(data.data_queries);
             this.setWindowTitle(data.name);
             this.setState({
-              showComments: !!queryString.parse(this.props.location.search)
-                .threadId,
+              showComments: !!queryString.parse(this.props.location.search).threadId,
             });
-            for (const event of dataDefinition.pages[homePageId]?.events ??
-              []) {
+            for (const event of dataDefinition.pages[homePageId]?.events ?? []) {
               await this.handleEvent(event.eventId, event);
             }
           });
@@ -476,14 +444,11 @@ class EditorComponent extends React.Component {
   };
 
   setAppDefinitionFromVersion = (version) => {
-    this.appDefinitionChanged(
-      defaults(version.definition, this.defaultDefinition),
-      {
-        skipAutoSave: true,
-        skipYmapUpdate: true,
-        versionChanged: true,
-      }
-    );
+    this.appDefinitionChanged(defaults(version.definition, this.defaultDefinition), {
+      skipAutoSave: true,
+      skipYmapUpdate: true,
+      versionChanged: true,
+    });
     this.setState({
       editingVersion: version,
       isSaving: false,
@@ -545,7 +510,7 @@ class EditorComponent extends React.Component {
     const searchText = event.currentTarget.value;
     let filteredComponents = this.state.allComponentTypes;
 
-    if (searchText !== "") {
+    if (searchText !== '') {
       filteredComponents = this.state.allComponentTypes.filter(
         (e) => e.name.toLowerCase() === searchText.toLowerCase()
       );
@@ -561,26 +526,20 @@ class EditorComponent extends React.Component {
     const currentPage = this.state.currentPageId;
     const currentVersion = this.currentVersion[currentPage] ?? -1;
 
-    this.currentVersionChanges[currentPage] =
-      this.currentVersionChanges[currentPage] ?? {};
+    this.currentVersionChanges[currentPage] = this.currentVersionChanges[currentPage] ?? {};
 
     this.currentVersionChanges[currentPage][currentVersion] = {
       redo: patches,
       undo: inversePatches,
     };
 
-    this.canUndo =
-      this.currentVersionChanges[currentPage].hasOwnProperty(currentVersion);
-    this.canRedo = this.currentVersionChanges[currentPage].hasOwnProperty(
-      currentVersion + 1
-    );
+    this.canUndo = this.currentVersionChanges[currentPage].hasOwnProperty(currentVersion);
+    this.canRedo = this.currentVersionChanges[currentPage].hasOwnProperty(currentVersion + 1);
 
     this.currentVersion[currentPage] = currentVersion + 1;
 
     delete this.currentVersionChanges[currentPage][currentVersion + 1];
-    delete this.currentVersionChanges[currentPage][
-      currentVersion - this.noOfVersionsSupported
-    ];
+    delete this.currentVersionChanges[currentPage][currentVersion - this.noOfVersionsSupported];
   };
 
   handleUndo = () => {
@@ -589,13 +548,10 @@ class EditorComponent extends React.Component {
 
       const appDefinition = applyPatches(
         this.state.appDefinition,
-        this.currentVersionChanges[this.state.currentPageId][currentVersion - 1]
-          .undo
+        this.currentVersionChanges[this.state.currentPageId][currentVersion - 1].undo
       );
 
-      this.canUndo = this.currentVersionChanges[
-        this.state.currentPageId
-      ].hasOwnProperty(currentVersion - 1);
+      this.canUndo = this.currentVersionChanges[this.state.currentPageId].hasOwnProperty(currentVersion - 1);
       this.canRedo = true;
       this.currentVersion[this.state.currentPageId] = currentVersion - 1;
 
@@ -606,7 +562,7 @@ class EditorComponent extends React.Component {
           isSaving: true,
         },
         () => {
-          this.props.ymap?.set("appDef", {
+          this.props.ymap?.set('appDef', {
             newDefinition: appDefinition,
             editingVersionId: this.state.editingVersion?.id,
           });
@@ -623,14 +579,11 @@ class EditorComponent extends React.Component {
 
       const appDefinition = applyPatches(
         this.state.appDefinition,
-        this.currentVersionChanges[this.state.currentPageId][currentVersion]
-          .redo
+        this.currentVersionChanges[this.state.currentPageId][currentVersion].redo
       );
 
       this.canUndo = true;
-      this.canRedo = this.currentVersionChanges[
-        this.state.currentPageId
-      ].hasOwnProperty(currentVersion + 1);
+      this.canRedo = this.currentVersionChanges[this.state.currentPageId].hasOwnProperty(currentVersion + 1);
       this.currentVersion[this.state.currentPageId] = currentVersion + 1;
 
       if (!appDefinition) return;
@@ -640,7 +593,7 @@ class EditorComponent extends React.Component {
           isSaving: true,
         },
         () => {
-          this.props.ymap?.set("appDef", {
+          this.props.ymap?.set('appDef', {
             newDefinition: appDefinition,
             editingVersionId: this.state.editingVersion?.id,
           });
@@ -655,7 +608,7 @@ class EditorComponent extends React.Component {
     let currentPageId = this.state.currentPageId;
     if (isEqual(this.state.appDefinition, newDefinition)) return;
     if (config.ENABLE_MULTIPLAYER_EDITING && !opts.skipYmapUpdate) {
-      this.props.ymap?.set("appDef", {
+      this.props.ymap?.set('appDef', {
         newDefinition,
         editingVersionId: this.state.editingVersion?.id,
       });
@@ -682,8 +635,7 @@ class EditorComponent extends React.Component {
     produce(
       this.state.appDefinition,
       (draft) => {
-        draft.pages[currentPageId].components =
-          newDefinition.pages[currentPageId]?.components ?? {};
+        draft.pages[currentPageId].components = newDefinition.pages[currentPageId]?.components ?? {};
       },
       this.handleAddPatch
     );
@@ -697,10 +649,7 @@ class EditorComponent extends React.Component {
         if (!opts.skipAutoSave) this.autoSave();
       }
     );
-    computeComponentState(
-      this,
-      newDefinition.pages[currentPageId]?.components ?? {}
-    );
+    computeComponentState(this, newDefinition.pages[currentPageId]?.components ?? {});
   };
 
   handleInspectorView = () => {
@@ -712,27 +661,19 @@ class EditorComponent extends React.Component {
   };
 
   removeComponents = () => {
-    if (
-      !this.isVersionReleased() &&
-      this.state?.selectedComponents?.length > 1
-    ) {
+    if (!this.isVersionReleased() && this.state?.selectedComponents?.length > 1) {
       let newDefinition = cloneDeep(this.state.appDefinition);
       const selectedComponents = this.state?.selectedComponents;
 
-      removeSelectedComponent(
-        this.state.currentPageId,
-        newDefinition,
-        selectedComponents
-      );
-      const platform =
-        navigator?.userAgentData?.platform || navigator?.platform || "unknown";
-      if (platform.toLowerCase().indexOf("mac") > -1) {
-        toast("Selected components deleted! (⌘ + Z to undo)", {
-          icon: "🗑️",
+      removeSelectedComponent(this.state.currentPageId, newDefinition, selectedComponents);
+      const platform = navigator?.userAgentData?.platform || navigator?.platform || 'unknown';
+      if (platform.toLowerCase().indexOf('mac') > -1) {
+        toast('Selected components deleted! (⌘ + Z to undo)', {
+          icon: '🗑️',
         });
       } else {
-        toast("Selected components deleted! (ctrl + Z to undo)", {
-          icon: "🗑️",
+        toast('Selected components deleted! (ctrl + Z to undo)', {
+          icon: '🗑️',
         });
       }
       this.appDefinitionChanged(newDefinition, {
@@ -752,24 +693,13 @@ class EditorComponent extends React.Component {
 
       let childComponents = [];
 
-      if (
-        newDefinition.pages[currentPageId].components?.[component.id].component
-          .component === "Tabs"
-      ) {
-        childComponents = Object.keys(
-          newDefinition.pages[currentPageId].components
-        ).filter((key) =>
-          newDefinition.pages[currentPageId].components[key].parent?.startsWith(
-            component.id
-          )
+      if (newDefinition.pages[currentPageId].components?.[component.id].component.component === 'Tabs') {
+        childComponents = Object.keys(newDefinition.pages[currentPageId].components).filter((key) =>
+          newDefinition.pages[currentPageId].components[key].parent?.startsWith(component.id)
         );
       } else {
-        childComponents = Object.keys(
-          newDefinition.pages[currentPageId].components
-        ).filter(
-          (key) =>
-            newDefinition.pages[currentPageId].components[key].parent ===
-            component.id
+        childComponents = Object.keys(newDefinition.pages[currentPageId].components).filter(
+          (key) => newDefinition.pages[currentPageId].components[key].parent === component.id
         );
       }
 
@@ -778,15 +708,14 @@ class EditorComponent extends React.Component {
       });
 
       delete newDefinition.pages[currentPageId].components[component.id];
-      const platform =
-        navigator?.userAgentData?.platform || navigator?.platform || "unknown";
-      if (platform.toLowerCase().indexOf("mac") > -1) {
-        toast("Component deleted! (⌘ + Z to undo)", {
-          icon: "🗑️",
+      const platform = navigator?.userAgentData?.platform || navigator?.platform || 'unknown';
+      if (platform.toLowerCase().indexOf('mac') > -1) {
+        toast('Component deleted! (⌘ + Z to undo)', {
+          icon: '🗑️',
         });
       } else {
-        toast("Component deleted! (ctrl + Z to undo)", {
-          icon: "🗑️",
+        toast('Component deleted! (ctrl + Z to undo)', {
+          icon: '🗑️',
         });
       }
       this.appDefinitionChanged(newDefinition, {
@@ -802,36 +731,25 @@ class EditorComponent extends React.Component {
     let _self = this;
     const currentPageId = this.state.currentPageId;
 
-    if (
-      this.state.appDefinition?.pages[currentPageId].components[
-        componentDefinition.id
-      ]
-    ) {
+    if (this.state.appDefinition?.pages[currentPageId].components[componentDefinition.id]) {
       const newDefinition = {
         appDefinition: produce(this.state.appDefinition, (draft) => {
-          draft.pages[currentPageId].components[
-            componentDefinition.id
-          ].component = componentDefinition.component;
+          draft.pages[currentPageId].components[componentDefinition.id].component = componentDefinition.component;
         }),
       };
 
       produce(
         this.state.appDefinition,
         (draft) => {
-          draft.pages[currentPageId].components[
-            componentDefinition.id
-          ].component = componentDefinition.component;
+          draft.pages[currentPageId].components[componentDefinition.id].component = componentDefinition.component;
         },
         this.handleAddPatch
       );
       setStateAsync(_self, newDefinition).then(() => {
-        computeComponentState(
-          _self,
-          _self.state.appDefinition.pages[currentPageId].components
-        );
+        computeComponentState(_self, _self.state.appDefinition.pages[currentPageId].components);
         this.setState({ isSaving: true, appDefinitionLocalVersion: uuid() });
         this.autoSave();
-        this.props.ymap?.set("appDef", {
+        this.props.ymap?.set('appDef', {
           newDefinition: newDefinition.appDefinition,
           editingVersionId: this.state.editingVersion?.id,
         });
@@ -848,53 +766,45 @@ class EditorComponent extends React.Component {
 
   moveComponents = (direction) => {
     let appDefinition = JSON.parse(JSON.stringify(this.state.appDefinition));
-    let newComponents =
-      appDefinition.pages[this.state.currentPageId].components;
+    let newComponents = appDefinition.pages[this.state.currentPageId].components;
 
     for (const selectedComponent of this.state.selectedComponents) {
       newComponents = produce(newComponents, (draft) => {
-        let top =
-          draft[selectedComponent.id].layouts[this.state.currentLayout].top;
-        let left =
-          draft[selectedComponent.id].layouts[this.state.currentLayout].left;
+        let top = draft[selectedComponent.id].layouts[this.state.currentLayout].top;
+        let left = draft[selectedComponent.id].layouts[this.state.currentLayout].left;
 
         const gridWidth = (1 * 100) / 43; // width of the canvas grid in percentage
 
         switch (direction) {
-          case "ArrowLeft":
+          case 'ArrowLeft':
             left = left - gridWidth;
             break;
-          case "ArrowRight":
+          case 'ArrowRight':
             left = left + gridWidth;
             break;
-          case "ArrowDown":
+          case 'ArrowDown':
             top = top + 10;
             break;
-          case "ArrowUp":
+          case 'ArrowUp':
             top = top - 10;
             break;
         }
 
         draft[selectedComponent.id].layouts[this.state.currentLayout].top = top;
-        draft[selectedComponent.id].layouts[this.state.currentLayout].left =
-          left;
+        draft[selectedComponent.id].layouts[this.state.currentLayout].left = left;
       });
     }
     appDefinition.pages[this.state.currentPageId].components = newComponents;
     this.appDefinitionChanged(appDefinition);
   };
 
-  cutComponents = () =>
-    cloneComponents(this, this.appDefinitionChanged, false, true);
+  cutComponents = () => cloneComponents(this, this.appDefinitionChanged, false, true);
 
-  copyComponents = () =>
-    cloneComponents(this, this.appDefinitionChanged, false);
+  copyComponents = () => cloneComponents(this, this.appDefinitionChanged, false);
 
-  cloneComponents = () =>
-    cloneComponents(this, this.appDefinitionChanged, true);
+  cloneComponents = () => cloneComponents(this, this.appDefinitionChanged, true);
 
-  decimalToHex = (alpha) =>
-    alpha === 0 ? "00" : Math.round(255 * alpha).toString(16);
+  decimalToHex = (alpha) => (alpha === 0 ? '00' : Math.round(255 * alpha).toString(16));
 
   globalSettingsChanged = (key, value) => {
     const appDefinition = { ...this.state.appDefinition };
@@ -909,7 +819,7 @@ class EditorComponent extends React.Component {
         appDefinition,
       },
       () => {
-        this.props.ymap?.set("appDef", {
+        this.props.ymap?.set('appDef', {
           newDefinition: appDefinition,
           editingVersionId: this.state.editingVersion?.id,
         });
@@ -928,12 +838,7 @@ class EditorComponent extends React.Component {
 
   renderDataSource = (dataSource) => {
     const sourceMeta = this.getSourceMetaData(dataSource);
-    const icon = getSvgIcon(
-      sourceMeta.kind.toLowerCase(),
-      25,
-      25,
-      dataSource?.plugin?.iconFile?.data
-    );
+    const icon = getSvgIcon(sourceMeta.kind.toLowerCase(), 25, 25, dataSource?.plugin?.iconFile?.data);
 
     return (
       <tr
@@ -969,15 +874,14 @@ class EditorComponent extends React.Component {
   };
 
   executeDataQueryDeletion = () => {
-    const { queryToBeDeleted, selectedQuery, isUnsavedQueriesAvailable } =
-      this.state;
+    const { queryToBeDeleted, selectedQuery, isUnsavedQueriesAvailable } = this.state;
 
     this.setState({
       showDataQueryDeletionConfirmation: false,
       isDeletingDataQuery: true,
     });
-    if (this.state.queryToBeDeleted === "draftQuery") {
-      toast.success("Query Deleted");
+    if (this.state.queryToBeDeleted === 'draftQuery') {
+      toast.success('Query Deleted');
       return this.clearDraftQuery();
     }
     this.setState({
@@ -1016,12 +920,10 @@ class EditorComponent extends React.Component {
       this.renameQueryNameId.current = null;
       return this.setState({ renameQueryName: false });
     }
-    const isNewQueryNameAlreadyExists = this.state.allDataQueries.some(
-      (query) => query.name === newName
-    );
+    const isNewQueryNameAlreadyExists = this.state.allDataQueries.some((query) => query.name === newName);
     if (newName && !isNewQueryNameAlreadyExists) {
-      if (id === "draftQuery") {
-        toast.success("Query Name Updated");
+      if (id === 'draftQuery') {
+        toast.success('Query Name Updated');
         this.renameQueryNameId.current = null;
         return this.setState({
           draftQuery: { ...this.state.draftQuery, name: newName },
@@ -1031,7 +933,7 @@ class EditorComponent extends React.Component {
       dataqueryService
         .update(id, newName)
         .then(() => {
-          toast.success("Query Name Updated");
+          toast.success('Query Name Updated');
           this.setState({
             renameQueryName: false,
           });
@@ -1045,7 +947,7 @@ class EditorComponent extends React.Component {
         });
     } else {
       if (isNewQueryNameAlreadyExists) {
-        toast.error("Query name already exists");
+        toast.error('Query name already exists');
       }
       this.setState({ renameQueryName: false });
       this.renameQueryNameId.current = null;
@@ -1064,37 +966,23 @@ class EditorComponent extends React.Component {
   };
 
   renderDraftQuery = (setSaveConfirmation, setCancelData) => {
-    return this.renderDataQuery(
-      this.state.draftQuery,
-      setSaveConfirmation,
-      setCancelData,
-      true
-    );
+    return this.renderDataQuery(this.state.draftQuery, setSaveConfirmation, setCancelData, true);
   };
 
-  renderDataQuery = (
-    dataQuery,
-    setSaveConfirmation,
-    setCancelData,
-    isDraftQuery = false
-  ) => {
+  renderDataQuery = (dataQuery, setSaveConfirmation, setCancelData, isDraftQuery = false) => {
     const sourceMeta = this.getSourceMetaData(dataQuery);
-    const iconFile =
-      dataQuery?.plugin?.iconFile?.data || dataQuery?.plugin?.icon_file?.data;
+    const iconFile = dataQuery?.plugin?.iconFile?.data || dataQuery?.plugin?.icon_file?.data;
     const icon = getSvgIcon(sourceMeta?.kind.toLowerCase(), 20, 20, iconFile);
 
     let isSeletedQuery = false;
     if (this.state.selectedQuery) {
       isSeletedQuery = dataQuery.id === this.state.selectedQuery.id;
     }
-    const isQueryBeingDeleted =
-      this.state.isDeletingDataQuery && isSeletedQuery;
+    const isQueryBeingDeleted = this.state.isDeletingDataQuery && isSeletedQuery;
 
     return (
       <div
-        className={
-          "row query-row" + (isSeletedQuery ? " query-row-selected" : "")
-        }
+        className={'row query-row' + (isSeletedQuery ? ' query-row-selected' : '')}
         key={dataQuery.id}
         onClick={() => {
           if (this.state.selectedQuery?.id === dataQuery?.id) return;
@@ -1112,12 +1000,11 @@ class EditorComponent extends React.Component {
       >
         <div className="col-auto query-icon d-flex">{icon}</div>
         <div className="col query-row-query-name">
-          {this.state?.renameQueryName &&
-          this.renameQueryNameId?.current === dataQuery.id ? (
+          {this.state?.renameQueryName && this.renameQueryNameId?.current === dataQuery.id ? (
             <input
               data-cy={`query-edit-input-field`}
               className={`query-name query-name-input-field border-indigo-09 bg-transparent  ${
-                this.props.darkMode && "text-white"
+                this.props.darkMode && 'text-white'
               }`}
               type="text"
               defaultValue={dataQuery.name}
@@ -1128,15 +1015,12 @@ class EditorComponent extends React.Component {
             />
           ) : (
             <OverlayTrigger
-              trigger={["hover", "focus"]}
+              trigger={['hover', 'focus']}
               placement="top"
               delay={{ show: 800, hide: 100 }}
               overlay={<Tooltip id="button-tooltip">{dataQuery.name}</Tooltip>}
             >
-              <div
-                className="query-name"
-                data-cy={`list-query-${dataQuery.name.toLowerCase()}`}
-              >
+              <div className="query-name" data-cy={`list-query-${dataQuery.name.toLowerCase()}`}>
                 {dataQuery.name}
               </div>
             </OverlayTrigger>
@@ -1144,9 +1028,7 @@ class EditorComponent extends React.Component {
         </div>
         <div className="col-auto query-rename-delete-btn">
           <div
-            className={`col-auto ${
-              this.state.renameQueryName && "display-none"
-            } rename-query`}
+            className={`col-auto ${this.state.renameQueryName && 'display-none'} rename-query`}
             onClick={() => this.createInputFieldToRenameQuery(dataQuery.id)}
           >
             <span className="d-flex">
@@ -1170,10 +1052,7 @@ class EditorComponent extends React.Component {
           <div className="col-auto">
             {isQueryBeingDeleted ? (
               <div className="px-2">
-                <div
-                  className="text-center spinner-border spinner-border-sm"
-                  role="status"
-                ></div>
+                <div className="text-center spinner-border spinner-border-sm" role="status"></div>
               </div>
             ) : (
               <span
@@ -1224,17 +1103,12 @@ class EditorComponent extends React.Component {
       this.switchSidebarTab(2);
     }
 
-    const isAlreadySelected = this.state.selectedComponents.find(
-      (component) => component.id === id
-    );
+    const isAlreadySelected = this.state.selectedComponents.find((component) => component.id === id);
 
     if (!isAlreadySelected) {
       this.setState((prevState) => {
         return {
-          selectedComponents: [
-            ...(multiSelect ? prevState.selectedComponents : []),
-            { id, component },
-          ],
+          selectedComponents: [...(multiSelect ? prevState.selectedComponents : []), { id, component }],
         };
       });
     }
@@ -1242,7 +1116,7 @@ class EditorComponent extends React.Component {
 
   filterQueries = (value) => {
     if (value) {
-      const fuse = new Fuse(this.state.allDataQueries, { keys: ["name"] });
+      const fuse = new Fuse(this.state.allDataQueries, { keys: ['name'] });
       const results = fuse.search(value);
       let filterDataQueries = [];
       results.every((result) => {
@@ -1256,7 +1130,7 @@ class EditorComponent extends React.Component {
       });
       this.setState({
         filterDataQueries,
-        dataQueriesDefaultText: "No Queries found.",
+        dataQueriesDefaultText: 'No Queries found.',
       });
     } else {
       this.fetchDataQueries();
@@ -1274,8 +1148,8 @@ class EditorComponent extends React.Component {
       () => {
         this.socket.send(
           JSON.stringify({
-            event: "events",
-            data: { message: "versionReleased", appId: this.state.appId },
+            event: 'events',
+            data: { message: 'versionReleased', appId: this.state.appId },
           })
         );
       }
@@ -1289,24 +1163,19 @@ class EditorComponent extends React.Component {
   };
 
   getCanvasWidth = () => {
-    const canvasBoundingRect = document
-      .getElementsByClassName("canvas-area")[0]
-      ?.getBoundingClientRect();
+    const canvasBoundingRect = document.getElementsByClassName('canvas-area')[0]?.getBoundingClientRect();
     return canvasBoundingRect?.width;
   };
 
   getCanvasHeight = () => {
-    const canvasBoundingRect = document
-      .getElementsByClassName("canvas-area")[0]
-      ?.getBoundingClientRect();
+    const canvasBoundingRect = document.getElementsByClassName('canvas-area')[0]?.getBoundingClientRect();
     return canvasBoundingRect?.height;
   };
 
   computeCanvasBackgroundColor = () => {
-    const { canvasBackgroundColor } =
-      this.state.appDefinition?.globalSettings ?? "#edeff5";
-    if (["#2f3c4c", "#edeff5"].includes(canvasBackgroundColor)) {
-      return this.props.darkMode ? "#2f3c4c" : "#edeff5";
+    const { canvasBackgroundColor } = this.state.appDefinition?.globalSettings ?? '#edeff5';
+    if (['#2f3c4c', '#edeff5'].includes(canvasBackgroundColor)) {
+      return this.props.darkMode ? '#2f3c4c' : '#edeff5';
     }
     return canvasBackgroundColor;
   };
@@ -1337,7 +1206,7 @@ class EditorComponent extends React.Component {
         })
         .catch(() => {
           this.setState({ saveError: true, isSaving: false }, () => {
-            toast.error("App could not save.");
+            toast.error('App could not save.');
           });
         });
     }
@@ -1381,7 +1250,7 @@ class EditorComponent extends React.Component {
         ...this.state.currentState,
         globals: {
           ...this.state.currentState.globals,
-          theme: { name: newMode ? "dark" : "light" },
+          theme: { name: newMode ? 'dark' : 'light' },
         },
       },
     });
@@ -1394,8 +1263,7 @@ class EditorComponent extends React.Component {
     });
   };
 
-  handleEvent = (eventName, options) =>
-    onEvent(this, eventName, options, "edit");
+  handleEvent = (eventName, options) => onEvent(this, eventName, options, 'edit');
 
   runQuery = (queryId, queryName) => runQuery(this, queryId, queryName);
 
@@ -1404,25 +1272,22 @@ class EditorComponent extends React.Component {
   };
 
   onAreaSelectionStart = (e) => {
-    const isMultiSelect =
-      e.inputEvent.shiftKey || this.state.selectedComponents.length > 0;
+    const isMultiSelect = e.inputEvent.shiftKey || this.state.selectedComponents.length > 0;
     this.setState((prevState) => {
       return {
         selectionInProgress: true,
-        selectedComponents: [
-          ...(isMultiSelect ? prevState.selectedComponents : []),
-        ],
+        selectedComponents: [...(isMultiSelect ? prevState.selectedComponents : [])],
       };
     });
   };
 
   onAreaSelection = (e) => {
     e.added.forEach((el) => {
-      el.classList.add("resizer-select");
+      el.classList.add('resizer-select');
     });
     if (this.state.selectionInProgress) {
       e.removed.forEach((el) => {
-        el.classList.remove("resizer-select");
+        el.classList.remove('resizer-select');
       });
     }
   };
@@ -1431,16 +1296,15 @@ class EditorComponent extends React.Component {
     const currentPageId = this.state.currentPageId;
     this.setState({ selectionInProgress: false });
     e.selected.forEach((el, index) => {
-      const id = el.getAttribute("widgetid");
-      const component =
-        this.state.appDefinition.pages[currentPageId].components[id].component;
+      const id = el.getAttribute('widgetid');
+      const component = this.state.appDefinition.pages[currentPageId].components[id].component;
       const isMultiSelect = e.inputEvent.shiftKey || (!e.isClick && index != 0);
       this.setSelectedComponent(id, component, isMultiSelect);
     });
   };
 
   onAreaSelectionDragStart = (e) => {
-    if (e.inputEvent.target.getAttribute("id") !== "real-canvas") {
+    if (e.inputEvent.target.getAttribute('id') !== 'real-canvas') {
       this.selectionDragRef.current = true;
     } else {
       this.selectionDragRef.current = false;
@@ -1450,25 +1314,21 @@ class EditorComponent extends React.Component {
   onAreaSelectionDrag = (e) => {
     if (this.selectionDragRef.current) {
       e.stop();
-      this.state.selectionInProgress &&
-        this.setState({ selectionInProgress: false });
+      this.state.selectionInProgress && this.setState({ selectionInProgress: false });
     }
   };
 
   onAreaSelectionDragEnd = () => {
     this.selectionDragRef.current = false;
-    this.state.selectionInProgress &&
-      this.setState({ selectionInProgress: false });
+    this.state.selectionInProgress && this.setState({ selectionInProgress: false });
   };
 
   addNewPage = ({ name, handle }) => {
     // check for unique page handles
-    const pageExists = Object.values(this.state.appDefinition.pages).some(
-      (page) => page.handle === handle
-    );
+    const pageExists = Object.values(this.state.appDefinition.pages).some((page) => page.handle === handle);
 
     if (pageExists) {
-      toast.error("Page with same handle already exists");
+      toast.error('Page with same handle already exists');
       return;
     }
 
@@ -1522,7 +1382,7 @@ class EditorComponent extends React.Component {
     const pageId = this.state.showPageDeletionConfirmation.pageId;
     const isHomePage = this.state.showPageDeletionConfirmation.isHomePage;
     if (Object.keys(this.state.appDefinition.pages).length === 1) {
-      toast.error("You cannot delete the only page in your app.");
+      toast.error('You cannot delete the only page in your app.');
       return;
     }
 
@@ -1580,11 +1440,7 @@ class EditorComponent extends React.Component {
     let newPageName = `${currentPage.name} (copy)`;
     let newPageHandle = `${currentPage.handle}-copy`;
     let i = 1;
-    while (
-      Object.values(this.state.appDefinition.pages).some(
-        (page) => page.handle === newPageHandle
-      )
-    ) {
+    while (Object.values(this.state.appDefinition.pages).some((page) => page.handle === newPageHandle)) {
       newPageName = `${currentPage.name} (copy ${i})`;
       newPageHandle = `${currentPage.handle}-copy-${i}`;
       i++;
@@ -1617,17 +1473,15 @@ class EditorComponent extends React.Component {
   };
 
   updatePageHandle = (pageId, newHandle) => {
-    const pageExists = Object.values(this.state.appDefinition.pages).some(
-      (page) => page.handle === newHandle
-    );
+    const pageExists = Object.values(this.state.appDefinition.pages).some((page) => page.handle === newHandle);
 
     if (pageExists) {
-      toast.error("Page with same handle already exists");
+      toast.error('Page with same handle already exists');
       return;
     }
 
     if (newHandle.trim().length === 0) {
-      toast.error("Page handle cannot be empty");
+      toast.error('Page handle cannot be empty');
       return;
     }
 
@@ -1647,7 +1501,7 @@ class EditorComponent extends React.Component {
         appDefinitionLocalVersion: uuid(),
       },
       () => {
-        toast.success("Page handle updated successfully");
+        toast.success('Page handle updated successfully');
         this.switchPage(pageId);
         this.autoSave();
       }
@@ -1694,7 +1548,7 @@ class EditorComponent extends React.Component {
 
   renamePage = (pageId, newName) => {
     if (newName.trim().length === 0) {
-      toast.error("Page name cannot be empty");
+      toast.error('Page name cannot be empty');
       return;
     }
 
@@ -1777,13 +1631,9 @@ class EditorComponent extends React.Component {
 
     if (!name || !handle) return;
 
-    const queryParamsString = queryParams
-      .map(([key, value]) => `${key}=${value}`)
-      .join("&");
+    const queryParamsString = queryParams.map(([key, value]) => `${key}=${value}`).join('&');
 
-    this.props.history.push(
-      `/apps/${this.state.appId}/${handle}?${queryParamsString}`
-    );
+    this.props.history.push(`/apps/${this.state.appId}/${handle}?${queryParamsString}`);
 
     const { globals: existingGlobals } = this.state.currentState;
 
@@ -1796,9 +1646,7 @@ class EditorComponent extends React.Component {
 
     const globals = {
       ...existingGlobals,
-      urlparams: JSON.parse(
-        JSON.stringify(queryString.parse(queryParamsString))
-      ),
+      urlparams: JSON.parse(JSON.stringify(queryString.parse(queryParamsString))),
     };
 
     this.setState(
@@ -1820,10 +1668,7 @@ class EditorComponent extends React.Component {
         currentPageId: pageId,
       },
       () => {
-        computeComponentState(
-          this,
-          this.state.appDefinition.pages[pageId]?.components ?? {}
-        ).then(async () => {
+        computeComponentState(this, this.state.appDefinition.pages[pageId]?.components ?? {}).then(async () => {
           for (const event of events ?? []) {
             await this.handleEvent(event.eventId, event);
           }
@@ -1925,32 +1770,23 @@ class EditorComponent extends React.Component {
 
     const appVersionPreviewLink = editingVersion
       ? `/applications/${app.id}/versions/${editingVersion.id}/${this.state.currentState.page.handle}`
-      : "";
+      : '';
 
     return (
       <div className="editor wrapper">
-        <ReactTooltip
-          type="dark"
-          effect="solid"
-          eventOff="click"
-          delayShow={250}
-        />
+        <ReactTooltip type="dark" effect="solid" eventOff="click" delayShow={250} />
         <Confirm
           show={queryConfirmationList.length > 0}
           message={`Do you want to run this query - ${queryConfirmationList[0]?.queryName}?`}
-          onConfirm={(queryConfirmationData) =>
-            onQueryConfirmOrCancel(this, queryConfirmationData, true)
-          }
-          onCancel={() =>
-            onQueryConfirmOrCancel(this, queryConfirmationList[0])
-          }
+          onConfirm={(queryConfirmationData) => onQueryConfirmOrCancel(this, queryConfirmationData, true)}
+          onCancel={() => onQueryConfirmOrCancel(this, queryConfirmationList[0])}
           queryConfirmationData={queryConfirmationList[0]}
           darkMode={this.props.darkMode}
           key={queryConfirmationList[0]?.queryName}
         />
         <Confirm
           show={showDataQueryDeletionConfirmation}
-          message={"Do you really want to delete this query?"}
+          message={'Do you really want to delete this query?'}
           confirmButtonLoading={isDeletingDataQuery}
           onConfirm={() => this.executeDataQueryDeletion()}
           onCancel={() => this.cancelDeleteDataQuery()}
@@ -1958,7 +1794,7 @@ class EditorComponent extends React.Component {
         />
         <Confirm
           show={this.state.showPageDeletionConfirmation?.isOpen ?? false}
-          title={"Delete Page"}
+          title={'Delete Page'}
           message={`Do you really want to delete this page?`}
           confirmButtonLoading={this.state.isDeletingPage}
           onConfirm={() => this.executeDeletepageRequest()}
@@ -2012,23 +1848,16 @@ class EditorComponent extends React.Component {
                 currentState={currentState}
                 debuggerActions={this.sideBarDebugger}
                 appDefinition={{
-                  components:
-                    appDefinition.pages[this.state.currentPageId]?.components ??
-                    {},
+                  components: appDefinition.pages[this.state.currentPageId]?.components ?? {},
                   queries: dataQueries,
-                  selectedComponent: selectedComponents
-                    ? selectedComponents[selectedComponents.length - 1]
-                    : {},
+                  selectedComponent: selectedComponents ? selectedComponents[selectedComponents.length - 1] : {},
                   pages: this.state.appDefinition.pages,
                   homePageId: this.state.appDefinition.homePageId,
-                  showViewerNavigation:
-                    this.state.appDefinition.showViewerNavigation,
+                  showViewerNavigation: this.state.appDefinition.showViewerNavigation,
                 }}
                 setSelectedComponent={this.setSelectedComponent}
                 removeComponent={this.removeComponent}
-                runQuery={(queryId, queryName) =>
-                  runQuery(this, queryId, queryName)
-                }
+                runQuery={(queryId, queryName) => runQuery(this, queryId, queryName)}
                 ref={this.dataSourceModalRef}
                 isSaving={this.state.isSaving}
                 isUnsavedQueriesAvailable={this.state.isUnsavedQueriesAvailable}
@@ -2051,11 +1880,11 @@ class EditorComponent extends React.Component {
               />
               {!showComments && (
                 <Selecto
-                  dragContainer={".canvas-container"}
-                  selectableTargets={[".react-draggable"]}
+                  dragContainer={'.canvas-container'}
+                  selectableTargets={['.react-draggable']}
                   hitRate={0}
                   selectByClick={true}
-                  toggleContinueSelect={["shift"]}
+                  toggleContinueSelect={['shift']}
                   ref={this.selectionRef}
                   scrollOptions={this.state.scrollOptions}
                   onSelectStart={this.onAreaSelectionStart}
@@ -2065,21 +1894,16 @@ class EditorComponent extends React.Component {
                   onDrag={this.onAreaSelectionDrag}
                   onDragEnd={this.onAreaSelectionDragEnd}
                   onScroll={(e) => {
-                    this.canvasContainerRef.current.scrollBy(
-                      e.direction[0] * 10,
-                      e.direction[1] * 10
-                    );
+                    this.canvasContainerRef.current.scrollBy(e.direction[0] * 10, e.direction[1] * 10);
                   }}
                 />
               )}
               <div className="main main-editor-canvas" id="main-editor-canvas">
                 <div
-                  className={`canvas-container align-items-center ${
-                    !showLeftSidebar && "hide-sidebar"
-                  }`}
+                  className={`canvas-container align-items-center ${!showLeftSidebar && 'hide-sidebar'}`}
                   style={{ transform: `scale(${zoomLevel})` }}
                   onMouseUp={(e) => {
-                    if (["real-canvas", "modal"].includes(e.target.className)) {
+                    if (['real-canvas', 'modal'].includes(e.target.className)) {
                       this.setState({
                         selectedComponents: [],
                         currentSidebarTab: 2,
@@ -2095,18 +1919,12 @@ class EditorComponent extends React.Component {
                   <div
                     className="canvas-area"
                     style={{
-                      width: currentLayout === "desktop" ? "100%" : "450px",
-                      minHeight:
-                        +this.state.appDefinition.globalSettings
-                          .canvasMaxHeight,
+                      width: currentLayout === 'desktop' ? '100%' : '450px',
+                      minHeight: +this.state.appDefinition.globalSettings.canvasMaxHeight,
                       maxWidth:
-                        +this.state.appDefinition.globalSettings
-                          .canvasMaxWidth +
-                        this.state.appDefinition.globalSettings
-                          .canvasMaxWidthType,
-                      maxHeight:
-                        +this.state.appDefinition.globalSettings
-                          .canvasMaxHeight,
+                        +this.state.appDefinition.globalSettings.canvasMaxWidth +
+                        this.state.appDefinition.globalSettings.canvasMaxWidthType,
+                      maxHeight: +this.state.appDefinition.globalSettings.canvasMaxHeight,
                       backgroundColor: this.computeCanvasBackgroundColor(),
                     }}
                   >
@@ -2166,19 +1984,15 @@ class EditorComponent extends React.Component {
                         appDefinitionChanged={this.appDefinitionChanged}
                         snapToGrid={true}
                         darkMode={this.props.darkMode}
-                        mode={"edit"}
+                        mode={'edit'}
                         zoomLevel={zoomLevel}
                         currentLayout={currentLayout}
                         deviceWindowWidth={deviceWindowWidth}
                         selectedComponents={selectedComponents}
                         appLoading={isLoading}
                         onEvent={this.handleEvent}
-                        onComponentOptionChanged={
-                          this.handleOnComponentOptionChanged
-                        }
-                        onComponentOptionsChanged={
-                          this.handleOnComponentOptionsChanged
-                        }
+                        onComponentOptionChanged={this.handleOnComponentOptionChanged}
+                        onComponentOptionsChanged={this.handleOnComponentOptionsChanged}
                         currentState={this.state.currentState}
                         setSelectedComponent={this.setSelectedComponent}
                         handleUndo={this.handleUndo}
@@ -2199,11 +2013,7 @@ class EditorComponent extends React.Component {
                     </>
                   </div>
                 </div>
-                <QueryPanel
-                  computeCurrentQueryPanelHeight={
-                    this.computeCurrentQueryPanelHeight
-                  }
-                >
+                <QueryPanel computeCurrentQueryPanelHeight={this.computeCurrentQueryPanelHeight}>
                   {({
                     toggleQueryEditor,
                     showSaveConfirmation,
@@ -2223,10 +2033,7 @@ class EditorComponent extends React.Component {
                           this.setState({
                             ...data,
                             isUnsavedQueriesAvailable: false,
-                            draftQuery:
-                              this.state.draftQuery !== null
-                                ? null
-                                : this.state.draftQuery,
+                            draftQuery: this.state.draftQuery !== null ? null : this.state.draftQuery,
                           });
                         }}
                         confirmButtonText="Continue editing"
@@ -2236,26 +2043,15 @@ class EditorComponent extends React.Component {
                       />
                       <div className="row main-row">
                         <div className="data-pane">
-                          <div
-                            className={`queries-container ${
-                              this.props.darkMode && "theme-dark"
-                            }`}
-                          >
+                          <div className={`queries-container ${this.props.darkMode && 'theme-dark'}`}>
                             <div className="queries-header row d-flex align-items-center justify-content-between">
                               <div className="col-auto">
-                                <div
-                                  className={`queries-search ${
-                                    this.props.darkMode && "theme-dark"
-                                  }`}
-                                >
+                                <div className={`queries-search ${this.props.darkMode && 'theme-dark'}`}>
                                   <SearchBox
                                     dataCy={`query-manager`}
                                     width="100%"
                                     onSubmit={this.filterQueries}
-                                    placeholder={this.props.t(
-                                      "globals.search",
-                                      "Search"
-                                    )}
+                                    placeholder={this.props.t('globals.search', 'Search')}
                                     customClass="query-manager-search-box-wrapper"
                                   />
                                 </div>
@@ -2263,13 +2059,10 @@ class EditorComponent extends React.Component {
                               <button
                                 data-cy={`button-add-new-queries`}
                                 className={`col-auto d-flex align-items-center py-1 rounded default-secondary-button  ${
-                                  this.props.darkMode && "theme-dark"
+                                  this.props.darkMode && 'theme-dark'
                                 }`}
                                 onClick={() => {
-                                  this.handleAddNewQuery(
-                                    setSaveConfirmation,
-                                    setCancelData
-                                  );
+                                  this.handleAddNewQuery(setSaveConfirmation, setCancelData);
                                 }}
                               >
                                 <span
@@ -2290,52 +2083,33 @@ class EditorComponent extends React.Component {
                                     />
                                   </svg>
                                 </span>
-                                <span className="query-manager-btn-name">
-                                  Add
-                                </span>
+                                <span className="query-manager-btn-name">Add</span>
                               </button>
                             </div>
 
                             {loadingDataQueries ? (
                               <div className="p-2">
-                                <Skeleton
-                                  height={"36px"}
-                                  className="skeleton mb-2"
-                                />
-                                <Skeleton
-                                  height={"36px"}
-                                  className="skeleton"
-                                />
+                                <Skeleton height={'36px'} className="skeleton mb-2" />
+                                <Skeleton height={'36px'} className="skeleton" />
                               </div>
                             ) : (
                               <div className="query-list">
                                 <div>
                                   {this.state.draftQuery !== null &&
-                                    this.renderDraftQuery(
-                                      setSaveConfirmation,
-                                      setCancelData
-                                    )}
+                                    this.renderDraftQuery(setSaveConfirmation, setCancelData)}
                                   {this.state.filterDataQueries.map((query) =>
-                                    this.renderDataQuery(
-                                      query,
-                                      setSaveConfirmation,
-                                      setCancelData
-                                    )
+                                    this.renderDataQuery(query, setSaveConfirmation, setCancelData)
                                   )}
                                 </div>
-                                {this.state.filterDataQueries.length === 0 &&
-                                  this.state.draftQuery === null && (
-                                    <div className=" d-flex  flex-column align-items-center justify-content-start">
-                                      <EmptyQueriesIllustration />
-                                      <span
-                                        data-cy="no-query-message"
-                                        className="mute-text pt-3"
-                                      >
-                                        {dataQueriesDefaultText}
-                                      </span>{" "}
-                                      <br />
-                                    </div>
-                                  )}
+                                {this.state.filterDataQueries.length === 0 && this.state.draftQuery === null && (
+                                  <div className=" d-flex  flex-column align-items-center justify-content-start">
+                                    <EmptyQueriesIllustration />
+                                    <span data-cy="no-query-message" className="mute-text pt-3">
+                                      {dataQueriesDefaultText}
+                                    </span>{' '}
+                                    <br />
+                                  </div>
+                                )}
                               </div>
                             )}
                           </div>
@@ -2345,56 +2119,36 @@ class EditorComponent extends React.Component {
                             <div>
                               <QueryManager
                                 addNewQueryAndDeselectSelectedQuery={() =>
-                                  this.handleAddNewQuery(
-                                    setSaveConfirmation,
-                                    setCancelData
-                                  )
+                                  this.handleAddNewQuery(setSaveConfirmation, setCancelData)
                                 }
                                 toggleQueryEditor={toggleQueryEditor}
                                 dataSources={dataSources}
                                 dataQueries={dataQueries}
-                                mode={editingQuery ? "edit" : "create"}
+                                mode={editingQuery ? 'edit' : 'create'}
                                 selectedQuery={selectedQuery}
-                                selectedDataSource={
-                                  this.state.selectedDataSource
-                                }
+                                selectedDataSource={this.state.selectedDataSource}
                                 dataQueriesChanged={this.dataQueriesChanged}
                                 appId={appId}
                                 editingVersionId={editingVersion?.id}
-                                addingQuery={
-                                  addingQuery || dataQueries?.length === 0
-                                }
+                                addingQuery={addingQuery || dataQueries?.length === 0}
                                 editingQuery={editingQuery}
                                 queryPanelHeight={queryPanelHeight}
                                 currentState={currentState}
                                 darkMode={this.props.darkMode}
                                 apps={apps}
-                                allComponents={
-                                  appDefinition.pages[this.state.currentPageId]
-                                    ?.components ?? {}
-                                }
+                                allComponents={appDefinition.pages[this.state.currentPageId]?.components ?? {}}
                                 isSourceSelected={this.state.isSourceSelected}
-                                isQueryPaneDragging={
-                                  this.state.isQueryPaneDragging
-                                }
+                                isQueryPaneDragging={this.state.isQueryPaneDragging}
                                 runQuery={this.runQuery}
-                                dataSourceModalHandler={
-                                  this.dataSourceModalHandler
-                                }
-                                setStateOfUnsavedQueries={
-                                  this.setStateOfUnsavedQueries
-                                }
+                                dataSourceModalHandler={this.dataSourceModalHandler}
+                                setStateOfUnsavedQueries={this.setStateOfUnsavedQueries}
                                 appDefinition={appDefinition}
                                 editorState={this}
-                                showQueryConfirmation={
-                                  queryConfirmationList.length > 0
-                                }
+                                showQueryConfirmation={queryConfirmationList.length > 0}
                                 loadingDataSources={loadingDataSources}
                                 createDraftQuery={this.createDraftQuery}
                                 clearDraftQuery={this.clearDraftQuery}
-                                isUnsavedQueriesAvailable={
-                                  this.state.isUnsavedQueriesAvailable
-                                }
+                                isUnsavedQueriesAvailable={this.state.isUnsavedQueriesAvailable}
                                 setSaveConfirmation={setSaveConfirmation}
                                 setCancelData={setCancelData}
                                 updateDraftQueryName={this.updateDraftQueryName}
@@ -2420,42 +2174,26 @@ class EditorComponent extends React.Component {
                 {currentSidebarTab === 1 && (
                   <div className="pages-container">
                     {selectedComponents.length === 1 &&
-                    !isEmpty(
-                      appDefinition.pages[this.state.currentPageId]?.components
-                    ) &&
-                    !isEmpty(
-                      appDefinition.pages[this.state.currentPageId]?.components[
-                        selectedComponents[0].id
-                      ]
-                    ) ? (
+                    !isEmpty(appDefinition.pages[this.state.currentPageId]?.components) &&
+                    !isEmpty(appDefinition.pages[this.state.currentPageId]?.components[selectedComponents[0].id]) ? (
                       <Inspector
                         moveComponents={this.moveComponents}
-                        componentDefinitionChanged={
-                          this.componentDefinitionChanged
-                        }
+                        componentDefinitionChanged={this.componentDefinitionChanged}
                         dataQueries={dataQueries}
                         removeComponent={this.removeComponent}
                         selectedComponentId={selectedComponents[0].id}
                         currentState={currentState}
-                        allComponents={
-                          appDefinition.pages[this.state.currentPageId]
-                            ?.components
-                        }
+                        allComponents={appDefinition.pages[this.state.currentPageId]?.components}
                         key={selectedComponents[0].id}
                         switchSidebarTab={this.switchSidebarTab}
                         apps={apps}
                         darkMode={this.props.darkMode}
-                        appDefinitionLocalVersion={
-                          this.state.appDefinitionLocalVersion
-                        }
+                        appDefinitionLocalVersion={this.state.appDefinitionLocalVersion}
                         pages={this.getPagesWithIds()}
                       ></Inspector>
                     ) : (
                       <center className="mt-5 p-2">
-                        {this.props.t(
-                          "editor.inspectComponent",
-                          "Please select a component to inspect"
-                        )}
+                        {this.props.t('editor.inspectComponent', 'Please select a component to inspect')}
                       </center>
                     )}
                   </div>

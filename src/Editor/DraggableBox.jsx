@@ -1,46 +1,46 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from "react";
-import cx from "classnames";
-import { useDrag } from "react-dnd";
-import { ItemTypes } from "./ItemTypes";
-import { getEmptyImage } from "react-dnd-html5-backend";
-import { Box } from "./Box";
-import { ConfigHandle } from "./ConfigHandle";
-import { Rnd } from "react-rnd";
-import { resolveWidgetFieldValue } from "@/_helpers/utils";
-import ErrorBoundary from "./ErrorBoundary";
+import React, { useEffect, useState } from 'react';
+import cx from 'classnames';
+import { useDrag } from 'react-dnd';
+import { ItemTypes } from './ItemTypes';
+import { getEmptyImage } from 'react-dnd-html5-backend';
+import { Box } from './Box';
+import { ConfigHandle } from './ConfigHandle';
+import { Rnd } from 'react-rnd';
+import { resolveWidgetFieldValue } from '@/_helpers/utils';
+import ErrorBoundary from './ErrorBoundary';
 
 const resizerClasses = {
-  topRight: "top-right",
-  bottomRight: "bottom-right",
-  bottomLeft: "bottom-left",
-  topLeft: "top-left",
+  topRight: 'top-right',
+  bottomRight: 'bottom-right',
+  bottomLeft: 'bottom-left',
+  topLeft: 'top-left',
 };
 
 const resizerStyles = {
   topRight: {
-    width: "8px",
-    height: "8px",
-    right: "-4px",
-    top: "-4px",
+    width: '8px',
+    height: '8px',
+    right: '-4px',
+    top: '-4px',
   },
   bottomRight: {
-    width: "8px",
-    height: "8px",
-    right: "-4px",
-    bottom: "-4px",
+    width: '8px',
+    height: '8px',
+    right: '-4px',
+    bottom: '-4px',
   },
   bottomLeft: {
-    width: "8px",
-    height: "8px",
-    left: "-4px",
-    bottom: "-4px",
+    width: '8px',
+    height: '8px',
+    left: '-4px',
+    bottom: '-4px',
   },
   topLeft: {
-    width: "8px",
-    height: "8px",
-    left: "-4px",
-    top: "-4px",
+    width: '8px',
+    height: '8px',
+    left: '-4px',
+    top: '-4px',
   },
 };
 
@@ -50,7 +50,7 @@ function computeWidth(currentLayoutOptions) {
 
 function getStyles(isDragging, isSelectedComponent) {
   return {
-    position: "absolute",
+    position: 'absolute',
     zIndex: isSelectedComponent ? 2 : 1,
     // IE fallback: hide the real node using CSS when dragging
     // because IE will ignore our custom "empty image" drag preview.
@@ -126,17 +126,7 @@ export const DraggableBox = function DraggableBox({
         isDragging: monitor.isDragging(),
       }),
     }),
-    [
-      id,
-      title,
-      component,
-      index,
-      zoomLevel,
-      parent,
-      layouts,
-      currentLayout,
-      canvasWidth,
-    ]
+    [id, title, component, index, zoomLevel, parent, layouts, currentLayout, canvasWidth]
   );
 
   useEffect(() => {
@@ -160,15 +150,15 @@ export const DraggableBox = function DraggableBox({
   }, [isDragging2]);
 
   const style = {
-    display: "inline-block",
-    alignItems: "center",
-    justifyContent: "center",
-    padding: "0px",
+    display: 'inline-block',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: '0px',
   };
 
   let _refProps = {};
 
-  if (mode === "edit" && canDrag) {
+  if (mode === 'edit' && canDrag) {
     _refProps = {
       ref: drag,
     };
@@ -185,33 +175,26 @@ export const DraggableBox = function DraggableBox({
     height: 500,
   };
 
-  const layoutData = inCanvas
-    ? layouts[currentLayout] || defaultData
-    : defaultData;
+  const layoutData = inCanvas ? layouts[currentLayout] || defaultData : defaultData;
 
   const gridWidth = canvasWidth / 43;
   const width = (canvasWidth * layoutData.width) / 43;
 
   const configWidgetHandlerForModalComponent =
     !isSelectedComponent &&
-    component.component === "Modal" &&
-    resolveWidgetFieldValue(
-      component.definition.properties.useDefaultButton,
-      currentState
-    )?.value === false;
+    component.component === 'Modal' &&
+    resolveWidgetFieldValue(component.definition.properties.useDefaultButton, currentState)?.value === false;
 
   return (
     <div
-      className={
-        inCanvas ? "" : "col-md-4 text-center align-items-center clearfix mb-2"
-      }
+      className={inCanvas ? '' : 'col-md-4 text-center align-items-center clearfix mb-2'}
       style={!inCanvas ? {} : { width: computeWidth() }}
     >
       {inCanvas ? (
         <div
           className={cx(`draggable-box widget-${id}`, {
             [className]: !!className,
-            "draggable-box-in-editor": mode === "edit",
+            'draggable-box-in-editor': mode === 'edit',
           })}
           onMouseEnter={(e) => {
             if (e.currentTarget.className.includes(`widget-${id}`)) {
@@ -236,9 +219,7 @@ export const DraggableBox = function DraggableBox({
             }}
             defaultSize={{}}
             className={`resizer ${
-              mouseOver || isResizing || isDragging2 || isSelectedComponent
-                ? "resizer-active"
-                : ""
+              mouseOver || isResizing || isDragging2 || isSelectedComponent ? 'resizer-active' : ''
             } `}
             onResize={() => setResizing(true)}
             onDrag={(e) => {
@@ -248,12 +229,10 @@ export const DraggableBox = function DraggableBox({
                 setDragging(true);
               }
             }}
-            resizeHandleClasses={
-              isSelectedComponent || mouseOver ? resizerClasses : {}
-            }
+            resizeHandleClasses={isSelectedComponent || mouseOver ? resizerClasses : {}}
             resizeHandleStyles={resizerStyles}
-            enableResizing={mode === "edit" && !readOnly}
-            disableDragging={mode !== "edit" || readOnly}
+            enableResizing={mode === 'edit' && !readOnly}
+            disableDragging={mode !== 'edit' || readOnly}
             onDragStop={(e, direction) => {
               setDragging(false);
               onDragStop(e, id, direction, currentLayout, layoutData);
@@ -264,34 +243,26 @@ export const DraggableBox = function DraggableBox({
               setResizing(false);
               onResizeStop(id, e, direction, ref, d, position);
             }}
-            bounds={parent !== undefined ? `#canvas-${parent}` : ".real-canvas"}
+            bounds={parent !== undefined ? `#canvas-${parent}` : '.real-canvas'}
             widgetId={id}
           >
-            <div
-              ref={preview}
-              role="DraggableBox"
-              style={isResizing ? { opacity: 0.5 } : { opacity: 1 }}
-            >
-              {mode === "edit" &&
+            <div ref={preview} role="DraggableBox" style={isResizing ? { opacity: 0.5 } : { opacity: 1 }}>
+              {mode === 'edit' &&
                 !readOnly &&
-                (configWidgetHandlerForModalComponent ||
-                  mouseOver ||
-                  isSelectedComponent) &&
+                (configWidgetHandlerForModalComponent || mouseOver || isSelectedComponent) &&
                 !isResizing && (
                   <ConfigHandle
                     id={id}
                     removeComponent={removeComponent}
                     component={component}
-                    position={layoutData.top < 15 ? "bottom" : "top"}
+                    position={layoutData.top < 15 ? 'bottom' : 'top'}
                     widgetTop={layoutData.top}
                     widgetHeight={layoutData.height}
                     isMultipleComponentsSelected={isMultipleComponentsSelected}
-                    configWidgetHandlerForModalComponent={
-                      configWidgetHandlerForModalComponent
-                    }
+                    configWidgetHandlerForModalComponent={configWidgetHandlerForModalComponent}
                   />
                 )}
-              <ErrorBoundary showFallback={mode === "edit"}>
+              <ErrorBoundary showFallback={mode === 'edit'}>
                 <Box
                   component={component}
                   id={id}
@@ -323,13 +294,8 @@ export const DraggableBox = function DraggableBox({
           </Rnd>
         </div>
       ) : (
-        <div
-          ref={drag}
-          role="DraggableBox"
-          className="draggable-box"
-          style={{ height: "100%" }}
-        >
-          <ErrorBoundary showFallback={mode === "edit"}>
+        <div ref={drag} role="DraggableBox" className="draggable-box" style={{ height: '100%' }}>
+          <ErrorBoundary showFallback={mode === 'edit'}>
             <Box
               component={component}
               id={id}

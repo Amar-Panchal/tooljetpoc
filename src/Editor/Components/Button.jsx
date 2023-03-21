@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import cx from 'classnames';
+import { Button as KendoButton } from '@progress/kendo-react-all';
 var tinycolor = require('tinycolor2');
 
 export const Button = function Button(props) {
@@ -29,14 +30,14 @@ export const Button = function Button(props) {
   }, [properties.loadingState]);
 
   const computedStyles = {
-    backgroundColor,
+    // backgroundColor,
     color: textColor,
     width: '100%',
-    borderRadius: `${borderRadius}px`,
+    // borderRadius: `${borderRadius}px`,
     height,
     display: visibility ? '' : 'none',
-    '--tblr-btn-color-darker': tinycolor(backgroundColor).darken(8).toString(),
-    '--loader-color': tinycolor(loaderColor ?? '#fff').toString(),
+    // '--tblr-btn-color-darker': tinycolor(backgroundColor).darken(8).toString(),
+    // '--loader-color': tinycolor(loaderColor ?? '#fff').toString(),
     borderColor: borderColor,
   };
 
@@ -95,12 +96,12 @@ export const Button = function Button(props) {
 
   return (
     <div className="widget-button">
-      <button
+      <KendoButton
         disabled={disable}
-        className={cx('jet-button btn btn-primary p-1 overflow-hidden', {
-          'btn-loading': loading,
-          'btn-custom': hasCustomBackground,
-        })}
+        // className={cx('jet-button btn btn-primary p-1 overflow-hidden', {
+        //   'btn-loading': loading,
+        //   'btn-custom': hasCustomBackground,
+        // })}
         style={computedStyles}
         onClick={handleClick}
         onMouseOver={() => {
@@ -110,7 +111,7 @@ export const Button = function Button(props) {
         type="default"
       >
         {label}
-      </button>
+      </KendoButton>
     </div>
   );
 };

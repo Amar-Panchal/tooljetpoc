@@ -1,25 +1,19 @@
 /* eslint-disable import/no-named-as-default */
-import React, {
-  useCallback,
-  useState,
-  useEffect,
-  useRef,
-  useMemo,
-} from "react";
-import cx from "classnames";
-import { useDrop, useDragLayer } from "react-dnd";
-import { ItemTypes } from "./ItemTypes";
-import { DraggableBox } from "./DraggableBox";
-import update from "immutability-helper";
-import { componentTypes } from "./WidgetManager/components";
-import { resolveReferences } from "@/_helpers/utils";
-import useRouter from "@/_hooks/use-router";
-import Comments from "./Comments";
-import config from "config";
-import Spinner from "@/_ui/Spinner";
-import { useHotkeys } from "react-hotkeys-hook";
-const produce = require("immer").default;
-import { addComponents, addNewWidgetToTheEditor } from "@/_helpers/appUtils";
+import React, { useCallback, useState, useEffect, useRef, useMemo } from 'react';
+import cx from 'classnames';
+import { useDrop, useDragLayer } from 'react-dnd';
+import { ItemTypes } from './ItemTypes';
+import { DraggableBox } from './DraggableBox';
+import update from 'immutability-helper';
+import { componentTypes } from './WidgetManager/components';
+import { resolveReferences } from '@/_helpers/utils';
+import useRouter from '@/_hooks/use-router';
+import Comments from './Comments';
+import config from 'config';
+import Spinner from '@/_ui/Spinner';
+import { useHotkeys } from 'react-hotkeys-hook';
+const produce = require('immer').default;
+import { addComponents, addNewWidgetToTheEditor } from '@/_helpers/appUtils';
 
 export const Container = ({
   canvasWidth,
@@ -53,10 +47,10 @@ export const Container = ({
   currentPageId,
 }) => {
   const styles = {
-    width: currentLayout === "mobile" ? deviceWindowWidth : "100%",
+    width: currentLayout === 'mobile' ? deviceWindowWidth : '100%',
     maxWidth: `${canvasWidth}px`,
     height: `${canvasHeight}px`,
-    position: "absolute",
+    position: 'absolute',
     backgroundSize: `${canvasWidth / 43}px 10px`,
   };
 
@@ -73,11 +67,14 @@ export const Container = ({
   const canvasRef = useRef(null);
   const focusedParentIdRef = useRef(undefined);
 
-  useHotkeys("⌘+z, control+z", () => handleUndo());
-  useHotkeys("⌘+shift+z, control+shift+z", () => handleRedo());
+  useHotkeys('⌘+z, control+z', () => handleUndo());
+  useHotkeys('⌘+shift+z, control+shift+z', () => handleRedo());
+  /** @format */
+
+  console.log('appp', boxes);
 
   useHotkeys(
-    "⌘+v, control+v",
+    '⌘+v, control+v',
     () => {
       if (isContainerFocused) {
         navigator.clipboard.readText().then((cliptext) => {
@@ -100,15 +97,12 @@ export const Container = ({
 
   useEffect(() => {
     const handleClick = (e) => {
-      if (
-        canvasRef.current.contains(e.target) ||
-        document.getElementById("modal-container")?.contains(e.target)
-      ) {
-        const elem = e.target.closest(".real-canvas").getAttribute("id");
-        if (elem === "real-canvas") {
+      if (canvasRef.current.contains(e.target) || document.getElementById('modal-container')?.contains(e.target)) {
+        const elem = e.target.closest('.real-canvas').getAttribute('id');
+        if (elem === 'real-canvas') {
           focusedParentIdRef.current = undefined;
         } else {
-          const parentId = elem.split("canvas-")[1];
+          const parentId = elem.split('canvas-')[1];
           focusedParentIdRef.current = parentId;
         }
         if (!isContainerFocused) {
@@ -118,8 +112,8 @@ export const Container = ({
         setContainerFocus(false);
       }
     };
-    document.addEventListener("click", handleClick);
-    return () => document.removeEventListener("click", handleClick);
+    document.addEventListener('click', handleClick);
+    return () => document.removeEventListener('click', handleClick);
   }, [isContainerFocused, canvasRef]);
 
   useEffect(() => {
@@ -192,24 +186,14 @@ export const Container = ({
           return;
         }
 
-        if (item.name === "comment") {
-          const canvasBoundingRect = document
-            .getElementsByClassName("real-canvas")[0]
-            .getBoundingClientRect();
+        if (item.name === 'comment') {
+          const canvasBoundingRect = document.getElementsByClassName('real-canvas')[0].getBoundingClientRect();
           const offsetFromTopOfWindow = canvasBoundingRect.top;
           const offsetFromLeftOfWindow = canvasBoundingRect.left;
           const currentOffset = monitor.getSourceClientOffset();
 
-          const xOffset = Math.round(
-            currentOffset.x +
-              currentOffset.x * (1 - zoomLevel) -
-              offsetFromLeftOfWindow
-          );
-          const y = Math.round(
-            currentOffset.y +
-              currentOffset.y * (1 - zoomLevel) -
-              offsetFromTopOfWindow
-          );
+          const xOffset = Math.round(currentOffset.x + currentOffset.x * (1 - zoomLevel) - offsetFromLeftOfWindow);
+          const y = Math.round(currentOffset.y + currentOffset.y * (1 - zoomLevel) - offsetFromTopOfWindow);
 
           const x = (xOffset * 100) / canvasWidth;
 
@@ -218,13 +202,9 @@ export const Container = ({
           return undefined;
         }
 
-        const canvasBoundingRect = document
-          .getElementsByClassName("real-canvas")[0]
-          .getBoundingClientRect();
-        const componentMeta = componentTypes.find(
-          (component) => component.component === item.component.component
-        );
-        console.log("adding new component");
+        const canvasBoundingRect = document.getElementsByClassName('real-canvas')[0].getBoundingClientRect();
+        const componentMeta = componentTypes.find((component) => component.component === item.component.component);
+        console.log('adding new component');
 
         const newComponent = addNewWidgetToTheEditor(
           componentMeta,
@@ -259,38 +239,29 @@ export const Container = ({
     // const id = componentId ? componentId : uuidv4();
 
     // Get the width of the canvas
-    const canvasBounds = document
-      .getElementsByClassName("real-canvas")[0]
-      .getBoundingClientRect();
+    const canvasBounds = document.getElementsByClassName('real-canvas')[0].getBoundingClientRect();
     const canvasWidth = canvasBounds?.width;
     const nodeBounds = direction.node.getBoundingClientRect();
 
     // Computing the left offset
     const leftOffset = nodeBounds.x - canvasBounds.x;
     const currentLeftOffset = boxes[componentId].layouts[currentLayout].left;
-    const leftDiff =
-      currentLeftOffset - convertXToPercentage(leftOffset, canvasWidth);
+    const leftDiff = currentLeftOffset - convertXToPercentage(leftOffset, canvasWidth);
 
     // Computing the top offset
     // const currentTopOffset = boxes[componentId].layouts[currentLayout].top;
-    const topDiff =
-      boxes[componentId].layouts[currentLayout].top -
-      (nodeBounds.y - canvasBounds.y);
+    const topDiff = boxes[componentId].layouts[currentLayout].top - (nodeBounds.y - canvasBounds.y);
 
     let newBoxes = { ...boxes };
 
     for (const selectedComponent of selectedComponents) {
       newBoxes = produce(newBoxes, (draft) => {
         if (draft[selectedComponent.id]) {
-          const topOffset =
-            draft[selectedComponent.id].layouts[currentLayout].top;
-          const leftOffset =
-            draft[selectedComponent.id].layouts[currentLayout].left;
+          const topOffset = draft[selectedComponent.id].layouts[currentLayout].top;
+          const leftOffset = draft[selectedComponent.id].layouts[currentLayout].left;
 
-          draft[selectedComponent.id].layouts[currentLayout].top =
-            topOffset - topDiff;
-          draft[selectedComponent.id].layouts[currentLayout].left =
-            leftOffset - leftDiff;
+          draft[selectedComponent.id].layouts[currentLayout].top = topOffset - topDiff;
+          draft[selectedComponent.id].layouts[currentLayout].left = leftOffset - leftDiff;
         }
       });
     }
@@ -311,12 +282,9 @@ export const Container = ({
       height: 500,
     };
 
-    let { left, top, width, height } =
-      boxes[id]["layouts"][currentLayout] || defaultData;
+    let { left, top, width, height } = boxes[id]['layouts'][currentLayout] || defaultData;
 
-    const boundingRect = document
-      .getElementsByClassName("canvas-area")[0]
-      .getBoundingClientRect();
+    const boundingRect = document.getElementsByClassName('canvas-area')[0].getBoundingClientRect();
     const canvasWidth = boundingRect?.width;
 
     width = Math.round(width + (deltaWidth * 43) / canvasWidth); // convert the width delta to percentage
@@ -330,9 +298,9 @@ export const Container = ({
       [id]: {
         ...boxes[id],
         layouts: {
-          ...boxes[id]["layouts"],
+          ...boxes[id]['layouts'],
           [currentLayout]: {
-            ...boxes[id]["layouts"][currentLayout],
+            ...boxes[id]['layouts'][currentLayout],
             width,
             height,
             top,
@@ -403,18 +371,12 @@ export const Container = ({
   const handleAddThreadOnComponent = async (_, __, e) => {
     e.stopPropogation && e.stopPropogation();
 
-    const canvasBoundingRect = document
-      .getElementsByClassName("real-canvas")[0]
-      .getBoundingClientRect();
+    const canvasBoundingRect = document.getElementsByClassName('real-canvas')[0].getBoundingClientRect();
     const offsetFromTopOfWindow = canvasBoundingRect.top;
     const offsetFromLeftOfWindow = canvasBoundingRect.left;
 
-    let x = Math.round(
-      e.screenX - 18 + e.screenX * (1 - zoomLevel) - offsetFromLeftOfWindow
-    );
-    const y = Math.round(
-      e.screenY + 18 + e.screenY * (1 - zoomLevel) - offsetFromTopOfWindow
-    );
+    let x = Math.round(e.screenX - 18 + e.screenX * (1 - zoomLevel) - offsetFromLeftOfWindow);
+    const y = Math.round(e.screenY + 18 + e.screenY * (1 - zoomLevel) - offsetFromTopOfWindow);
 
     x = (x * 100) / canvasWidth;
 
@@ -435,8 +397,8 @@ export const Container = ({
     // Update the threads on all connected clients using websocket
     socket.send(
       JSON.stringify({
-        event: "events",
-        data: { message: "threads", appId: router.query.id },
+        event: 'events',
+        data: { message: 'threads', appId: router.query.id },
       })
     );
 
@@ -466,15 +428,14 @@ export const Container = ({
 
   return (
     <div
-      {...(config.COMMENT_FEATURE_ENABLE &&
-        showComments && { onClick: handleAddThread })}
+      {...(config.COMMENT_FEATURE_ENABLE && showComments && { onClick: handleAddThread })}
       ref={(el) => {
         canvasRef.current = el;
         drop(el);
       }}
       style={styles}
-      className={cx("real-canvas", {
-        "show-grid": isDragging || isResizing,
+      className={cx('real-canvas', {
+        'show-grid': isDragging || isResizing,
       })}
       id="real-canvas"
       data-cy="real-canvas"
@@ -492,17 +453,15 @@ export const Container = ({
             <div
               key={index}
               style={{
-                transform: `translate(${
-                  (previewComment.x * canvasWidth) / 100
-                }px, ${previewComment.y}px)`,
-                position: "absolute",
+                transform: `translate(${(previewComment.x * canvasWidth) / 100}px, ${previewComment.y}px)`,
+                position: 'absolute',
                 zIndex: 2,
               }}
             >
               <label className="form-selectgroup-item comment-preview-bubble">
                 <span
                   className={cx(
-                    "comment comment-preview-bubble-border cursor-move avatar avatar-sm shadow-lg bg-white avatar-rounded"
+                    'comment comment-preview-bubble-border cursor-move avatar avatar-sm shadow-lg bg-white avatar-rounded'
                   )}
                 >
                   <Spinner />
@@ -515,22 +474,15 @@ export const Container = ({
       {Object.keys(boxes).map((key) => {
         const box = boxes[key];
         const canShowInCurrentLayout =
-          box.component.definition.others[
-            currentLayout === "mobile" ? "showOnMobile" : "showOnDesktop"
-          ].value;
+          box.component.definition.others[currentLayout === 'mobile' ? 'showOnMobile' : 'showOnDesktop'].value;
         const addDefaultChildren = box.withDefaultChildren;
-        if (
-          !box.parent &&
-          resolveReferences(canShowInCurrentLayout, currentState)
-        ) {
+        if (!box.parent && resolveReferences(canShowInCurrentLayout, currentState)) {
           return (
             <DraggableBox
-              className={showComments && "pointer-events-none"}
+              className={showComments && 'pointer-events-none'}
               canvasWidth={canvasWidth}
               onComponentClick={
-                config.COMMENT_FEATURE_ENABLE && showComments
-                  ? handleAddThreadOnComponent
-                  : onComponentClick
+                config.COMMENT_FEATURE_ENABLE && showComments ? handleAddThreadOnComponent : onComponentClick
               }
               onEvent={onEvent}
               onComponentOptionChanged={onComponentOptionChanged}
@@ -552,17 +504,13 @@ export const Container = ({
               currentLayout={currentLayout}
               deviceWindowWidth={deviceWindowWidth}
               isSelectedComponent={
-                mode === "edit"
-                  ? selectedComponents.find((component) => component.id === key)
-                  : false
+                mode === 'edit' ? selectedComponents.find((component) => component.id === key) : false
               }
               darkMode={darkMode}
               onComponentHover={onComponentHover}
               hoveredComponent={hoveredComponent}
               sideBarDebugger={sideBarDebugger}
-              isMultipleComponentsSelected={
-                selectedComponents?.length > 1 ? true : false
-              }
+              isMultipleComponentsSelected={selectedComponents?.length > 1 ? true : false}
               dataQueries={dataQueries}
               childComponents={childComponents[key]}
               containerProps={{
@@ -596,20 +544,13 @@ export const Container = ({
         }
       })}
       {Object.keys(boxes).length === 0 && !appLoading && !isDragging && (
-        <div
-          className="mx-auto w-50 p-5 bg-light no-components-box"
-          style={{ marginTop: "10%" }}
-        >
+        <div className="mx-auto w-50 p-5 bg-light no-components-box" style={{ marginTop: '10%' }}>
           <center className="text-muted">
-            You haven&apos;t added any components yet. Drag components from the
-            right sidebar and drop here. Check out our{" "}
-            <a
-              href="https://docs.tooljet.com/docs#the-very-quick-quickstart"
-              target="_blank"
-              rel="noreferrer"
-            >
+            You haven&apos;t added any components yet. Drag components from the right sidebar and drop here. Check out
+            our
+            <a href="https://docs.tooljet.com/docs#the-very-quick-quickstart" target="_blank" rel="noreferrer">
               guide
-            </a>{" "}
+            </a>
             on adding widgets.
           </center>
         </div>
