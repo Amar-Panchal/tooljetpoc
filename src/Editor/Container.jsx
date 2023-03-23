@@ -61,7 +61,6 @@ export const Container = ({
   const [isDragging, setIsDragging] = useState(false);
   const [isResizing, setIsResizing] = useState(false);
   const [commentsPreviewList, setCommentsPreviewList] = useState([]);
-  const [newThread, addNewThread] = useState({});
   const [isContainerFocused, setContainerFocus] = useState(false);
   const router = useRouter();
   const canvasRef = useRef(null);
@@ -70,8 +69,6 @@ export const Container = ({
   useHotkeys('⌘+z, control+z', () => handleUndo());
   useHotkeys('⌘+shift+z, control+shift+z', () => handleRedo());
   /** @format */
-
-  console.log('appp', boxes);
 
   useHotkeys(
     '⌘+v, control+v',
@@ -194,8 +191,6 @@ export const Container = ({
 
           const xOffset = Math.round(currentOffset.x + currentOffset.x * (1 - zoomLevel) - offsetFromLeftOfWindow);
           const y = Math.round(currentOffset.y + currentOffset.y * (1 - zoomLevel) - offsetFromTopOfWindow);
-
-          const x = (xOffset * 100) / canvasWidth;
 
           const element = document.getElementById(`thread-${item.threadId}`);
           element.style.transform = `translate(${xOffset}px, ${y}px)`;
@@ -426,6 +421,33 @@ export const Container = ({
     return componentWithChildren;
   }, [components]);
 
+  function saveTemplate() {
+    const endpoint = 'https://elabnextapi-dev.azurewebsites.net/api/ReportSetup/SaveReportTemplate';
+    const payload = {
+      reportTemplateName: 'tooljettttt',
+      reportValues: boxes,
+    };
+
+    const options = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    };
+    fetch(endpoint, options)
+      .then((response) => response.json())
+      .then((data) => console.log(data))
+      .catch((error) => console.error(error));
+  }
+
+  function retriveTemplate() {
+    fetch('https://elabnextapi-dev.azurewebsites.net/api/ReportSetup/GetReportTemplate')
+      .then((response) => response.json())
+      .then((data) => setBoxes(JSON.parse(data.resultData[data.resultData.length - 1].reportValues)))
+      .catch((error) => console.error(error));
+  }
+
   return (
     <div
       {...(config.COMMENT_FEATURE_ENABLE && showComments && { onClick: handleAddThread })}
@@ -440,11 +462,12 @@ export const Container = ({
       id="real-canvas"
       data-cy="real-canvas"
     >
+      <button onClick={saveTemplate}>save</button>
+      <button onClick={retriveTemplate}>retrive</button>
       {config.COMMENT_FEATURE_ENABLE && showComments && (
         <>
           <Comments
             socket={socket}
-            newThread={newThread}
             appVersionsId={appVersionsId}
             canvasWidth={canvasWidth}
             currentPageId={currentPageId}
@@ -513,6 +536,7 @@ export const Container = ({
               isMultipleComponentsSelected={selectedComponents?.length > 1 ? true : false}
               dataQueries={dataQueries}
               childComponents={childComponents[key]}
+              style={{ border: '1px solid red' }}
               containerProps={{
                 mode,
                 snapToGrid,
