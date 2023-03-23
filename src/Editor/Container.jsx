@@ -46,6 +46,7 @@ export const Container = ({
   dataQueries,
   currentPageId,
 }) => {
+  console.log("appDefinition",appDefinition);
   const styles = {
     width: currentLayout === 'mobile' ? deviceWindowWidth : '100%',
     maxWidth: `${canvasWidth}px`,

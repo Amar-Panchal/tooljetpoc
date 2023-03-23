@@ -1768,9 +1768,8 @@ class EditorComponent extends React.Component {
       queryConfirmationList,
     } = this.state;
 
-    const appVersionPreviewLink = editingVersion
-      ? `/applications/${app.id}/versions/${editingVersion.id}/${this.state.currentState.page.handle}`
-      : '';
+    const appVersionPreviewLink = `/applications/1/versions/1`;
+
 
     return (
       <div className="editor wrapper">
