@@ -18,6 +18,7 @@ export const ViewerNavigation = ({ isMobileDevice, pages, currentPageId, switchP
       style={{
         width: 200,
         // backgroundColor: canvasBackgroundColor,
+        border: '2px solid red',
       }}
     >
       <div className="page-handler-wrapper">
@@ -32,6 +33,7 @@ export const ViewerNavigation = ({ isMobileDevice, pages, currentPageId, switchP
                 <div className={`card mb-1  ${id === currentPageId ? 'active' : ''}`}>
                   <div className="card-body">
                     <span className="mx-3 text-wrap">{_.truncate(page.name, { length: 18 })}</span>
+                    <button>gnjkdnf</button>
                   </div>
                 </div>
               </div>

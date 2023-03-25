@@ -1,3 +1,5 @@
+/** @format */
+
 import React from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
@@ -1181,35 +1183,38 @@ class EditorComponent extends React.Component {
   };
 
   saveEditingVersion = () => {
-    if (this.isVersionReleased()) {
-      this.setState({ isSaving: false, showCreateVersionModalPrompt: true });
-    } else if (!isEmpty(this.state.editingVersion)) {
-      appVersionService
-        .save(this.state.appId, this.state.editingVersion.id, {
-          definition: this.state.appDefinition,
-        })
-        .then(() => {
-          this.setState(
-            {
-              saveError: false,
-              editingVersion: {
-                ...this.state.editingVersion,
-                ...{ definition: this.state.appDefinition },
-              },
-            },
-            () => {
-              this.setState({
-                isSaving: false,
-              });
-            }
-          );
-        })
-        .catch(() => {
-          this.setState({ saveError: true, isSaving: false }, () => {
-            toast.error('App could not save.');
-          });
-        });
-    }
+    console.log('autosave callled', this.state.appDefinition);
+    localStorage.setItem('appdef', JSON.stringify(this.state.appDefinition));
+
+    // if (this.isVersionReleased()) {
+    //   this.setState({ isSaving: false, showCreateVersionModalPrompt: true });
+    // } else if (!isEmpty(this.state.editingVersion)) {
+    //   appVersionService
+    //     .save(this.state.appId, this.state.editingVersion.id, {
+    //       definition: this.state.appDefinition,
+    //     })
+    //     .then(() => {
+    //       this.setState(
+    //         {
+    //           saveError: false,
+    //           editingVersion: {
+    //             ...this.state.editingVersion,
+    //             ...{ definition: this.state.appDefinition },
+    //           },
+    //         },
+    //         () => {
+    //           this.setState({
+    //             isSaving: false,
+    //           });
+    //         }
+    //       );
+    //     })
+    //     .catch(() => {
+    //       this.setState({ saveError: true, isSaving: false }, () => {
+    //         toast.error('App could not save.');
+    //       });
+    //     });
+    // }
   };
 
   handleOnComponentOptionChanged = (component, optionName, value) => {
@@ -1769,7 +1774,6 @@ class EditorComponent extends React.Component {
     } = this.state;
 
     const appVersionPreviewLink = `/applications/1/versions/1`;
-
 
     return (
       <div className="editor wrapper">

@@ -1,29 +1,29 @@
-import React, { Suspense } from "react";
+import React, { Suspense } from 'react';
 // eslint-disable-next-line no-unused-vars
-import config from "config";
-import { BrowserRouter, Route, Redirect } from "react-router-dom";
-import { history } from "@/_helpers";
-import { PrivateRoute, AdminRoute } from "@/_components";
-import { HomePage } from "@/HomePage";
-import { LoginPage } from "@/LoginPage";
-import { SignupPage } from "@/SignupPage";
-import { TooljetDatabase } from "@/TooljetDatabase";
-import { OrganizationInvitationPage } from "@/ConfirmationPage";
-import { Authorize } from "@/Oauth2";
-import { Authorize as Oauth } from "@/Oauth";
-import { Viewer } from "@/Editor";
-import { OrganizationSettings } from "@/OrganizationSettingsPage";
-import { SettingsPage } from "../SettingsPage/SettingsPage";
-import { ForgotPassword } from "@/ForgotPassword";
-import { ResetPassword } from "@/ResetPassword";
-import { MarketplacePage } from "@/MarketplacePage";
-import { lt } from "semver";
-import Toast from "@/_ui/Toast";
-import { VerificationSuccessInfoScreen } from "@/SuccessInfoScreen";
-import "@/_styles/theme.scss";
-import "emoji-mart/css/emoji-mart.css";
-import { AppLoader } from "@/AppLoader";
-import SetupScreenSelfHost from "../SuccessInfoScreen/SetupScreenSelfHost";
+import config from 'config';
+import { BrowserRouter, Route, Redirect } from 'react-router-dom';
+import { history } from '@/_helpers';
+import { PrivateRoute, AdminRoute } from '@/_components';
+import { HomePage } from '@/HomePage';
+import { LoginPage } from '@/LoginPage';
+import { SignupPage } from '@/SignupPage';
+import { TooljetDatabase } from '@/TooljetDatabase';
+import { OrganizationInvitationPage } from '@/ConfirmationPage';
+import { Authorize } from '@/Oauth2';
+import { Authorize as Oauth } from '@/Oauth';
+import { Viewer } from '@/Editor';
+import { OrganizationSettings } from '@/OrganizationSettingsPage';
+import { SettingsPage } from '../SettingsPage/SettingsPage';
+import { ForgotPassword } from '@/ForgotPassword';
+import { ResetPassword } from '@/ResetPassword';
+import { MarketplacePage } from '@/MarketplacePage';
+import { lt } from 'semver';
+import Toast from '@/_ui/Toast';
+import { VerificationSuccessInfoScreen } from '@/SuccessInfoScreen';
+import '@/_styles/theme.scss';
+import 'emoji-mart/css/emoji-mart.css';
+import { AppLoader } from '@/AppLoader';
+import SetupScreenSelfHost from '../SuccessInfoScreen/SetupScreenSelfHost';
 
 class App extends React.Component {
   constructor(props) {
@@ -32,19 +32,15 @@ class App extends React.Component {
     this.state = {
       currentUser: null,
       fetchedMetadata: false,
-      darkMode: localStorage.getItem("darkMode") === "true",
+      darkMode: localStorage.getItem('darkMode') === 'true',
     };
   }
 
   fetchMetadata = () => {
     if (this.state.currentUser) {
       tooljetService.fetchMetaData().then((data) => {
-        localStorage.setItem("currentVersion", data.installed_version);
-        if (
-          data.latest_version &&
-          lt(data.installed_version, data.latest_version) &&
-          data.version_ignored === false
-        ) {
+        localStorage.setItem('currentVersion', data.installed_version);
+        if (data.latest_version && lt(data.installed_version, data.latest_version) && data.version_ignored === false) {
           this.setState({ updateAvailable: true });
         }
       });
@@ -54,44 +50,38 @@ class App extends React.Component {
   componentDidMount() {}
 
   logout = () => {
-    history.push("/login");
+    history.push('/login');
   };
 
   switchDarkMode = (newMode) => {
     this.setState({ darkMode: newMode });
-    localStorage.setItem("darkMode", newMode);
+    localStorage.setItem('darkMode', newMode);
   };
 
   render() {
     const { updateAvailable, darkMode } = this.state;
     let toastOptions = {
       style: {
-        wordBreak: "break-all",
+        wordBreak: 'break-all',
       },
     };
 
     if (darkMode) {
       toastOptions = {
-        className: "toast-dark-mode",
+        className: 'toast-dark-mode',
         style: {
-          borderRadius: "10px",
-          background: "#333",
-          color: "#fff",
-          wordBreak: "break-all",
+          borderRadius: '10px',
+          background: '#333',
+          color: '#fff',
+          wordBreak: 'break-all',
         },
       };
     }
 
     return (
       <Suspense fallback={null}>
-        <BrowserRouter
-          history={history}
-          basename={window.public_config?.SUB_PATH || "/"}
-        >
-          <div
-            className={`main-wrapper ${darkMode ? "theme-dark" : ""}`}
-            data-cy="main-wrapper"
-          >
+        <BrowserRouter history={history} basename={window.public_config?.SUB_PATH || '/'}>
+          <div className={`main-wrapper ${darkMode ? 'theme-dark' : ''}`} data-cy="main-wrapper">
             {updateAvailable && (
               <div className="alert alert-info alert-dismissible" role="alert">
                 <h3 className="mb-1">Update available</h3>
@@ -121,19 +111,13 @@ class App extends React.Component {
             <PrivateRoute
               exact
               path="/"
-              component={HomePage}
+              component={AppLoader}
               switchDarkMode={this.switchDarkMode}
               darkMode={darkMode}
             />
             <Route path="/login/:organizationId" exact component={LoginPage} />
             <Route path="/login" exact component={LoginPage} />
-            <Route
-              path="/setup"
-              exact
-              component={(props) => (
-                <SetupScreenSelfHost {...props} darkMode={darkMode} />
-              )}
-            />
+            <Route path="/setup" exact component={(props) => <SetupScreenSelfHost {...props} darkMode={darkMode} />} />
             <Route path="/sso/:origin/:configId" exact component={Oauth} />
             <Route path="/sso/:origin" exact component={Oauth} />
             <Route path="/signup" component={SignupPage} />
@@ -143,7 +127,7 @@ class App extends React.Component {
               render={(props) => (
                 <Redirect
                   to={{
-                    pathname: "/reset-password",
+                    pathname: '/reset-password',
                     state: {
                       token: props.match.params.token,
                     },
@@ -157,7 +141,7 @@ class App extends React.Component {
               render={(props) => (
                 <Redirect
                   to={{
-                    pathname: "/confirm",
+                    pathname: '/confirm',
                     state: {
                       token: props.match.params.token,
                       search: props.location.search,
@@ -171,7 +155,7 @@ class App extends React.Component {
               render={(props) => (
                 <Redirect
                   to={{
-                    pathname: "/confirm",
+                    pathname: '/confirm',
                     state: {
                       token: props.match.params.token,
                       organizationToken: props.match.params.organizationToken,
@@ -187,7 +171,7 @@ class App extends React.Component {
               render={(props) => (
                 <Redirect
                   to={{
-                    pathname: "/confirm-invite",
+                    pathname: '/confirm-invite',
                     state: {
                       token: props.match.params.token,
                       search: props.location.search,
@@ -198,9 +182,7 @@ class App extends React.Component {
             />
             <Route
               path="/confirm-invite"
-              component={(props) => (
-                <OrganizationInvitationPage {...props} darkMode={darkMode} />
-              )}
+              component={(props) => <OrganizationInvitationPage {...props} darkMode={darkMode} />}
             />
             <PrivateRoute
               exact

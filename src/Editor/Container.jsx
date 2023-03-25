@@ -46,13 +46,13 @@ export const Container = ({
   dataQueries,
   currentPageId,
 }) => {
-  console.log("appDefinition",appDefinition);
   const styles = {
     width: currentLayout === 'mobile' ? deviceWindowWidth : '100%',
     maxWidth: `${canvasWidth}px`,
     height: `${canvasHeight}px`,
     position: 'absolute',
     backgroundSize: `${canvasWidth / 43}px 10px`,
+    border:'2px solid'
   };
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -71,8 +71,6 @@ export const Container = ({
   useHotkeys('⌘+z, control+z', () => handleUndo());
   useHotkeys('⌘+shift+z, control+shift+z', () => handleRedo());
   /** @format */
-
-  console.log('appp', boxes);
 
   useHotkeys(
     '⌘+v, control+v',

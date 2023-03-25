@@ -98,10 +98,10 @@ export const Button = function Button(props) {
     <div className="widget-button">
       <KendoButton
         disabled={disable}
-        // className={cx('jet-button btn btn-primary p-1 overflow-hidden', {
-        //   'btn-loading': loading,
-        //   'btn-custom': hasCustomBackground,
-        // })}
+        className={cx('jet-button btn btn-primary p-1 overflow-hidden', {
+          'btn-loading': loading,
+          'btn-custom': hasCustomBackground,
+        })}
         style={computedStyles}
         onClick={handleClick}
         onMouseOver={() => {
