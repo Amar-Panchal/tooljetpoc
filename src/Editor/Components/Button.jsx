@@ -30,14 +30,14 @@ export const Button = function Button(props) {
   }, [properties.loadingState]);
 
   const computedStyles = {
-    // backgroundColor,
+    backgroundColor,
     color: textColor,
     width: '100%',
-    // borderRadius: `${borderRadius}px`,
+    borderRadius: `${borderRadius}px`,
     height,
     display: visibility ? '' : 'none',
-    // '--tblr-btn-color-darker': tinycolor(backgroundColor).darken(8).toString(),
-    // '--loader-color': tinycolor(loaderColor ?? '#fff').toString(),
+    '--tblr-btn-color-darker': tinycolor(backgroundColor).darken(8).toString(),
+    '--loader-color': tinycolor(loaderColor ?? '#fff').toString(),
     borderColor: borderColor,
   };
 

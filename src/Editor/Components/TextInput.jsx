@@ -1,3 +1,6 @@
+/** @format */
+
+import { Input as KendoInput } from '@progress/kendo-react-all';
 import React, { useEffect, useRef, useState } from 'react';
 
 export const TextInput = function TextInput({
@@ -24,7 +27,10 @@ export const TextInput = function TextInput({
     borderRadius: `${styles.borderRadius}px`,
     color: darkMode && styles.textColor === '#000' ? '#fff' : styles.textColor,
     borderColor: styles.borderColor,
-    backgroundColor: darkMode && ['#fff'].includes(styles.backgroundColor) ? '#232e3c' : styles.backgroundColor,
+    backgroundColor:
+      darkMode && ['#fff'].includes(styles.backgroundColor)
+        ? '#232e3c'
+        : styles.backgroundColor,
   };
 
   useEffect(() => {
@@ -78,8 +84,11 @@ export const TextInput = function TextInput({
   );
 
   return (
-    <div data-disabled={disable} className={`text-input ${visibility || 'invisible'}`}>
-      <input
+    <div
+      data-disabled={disable}
+      className={`text-input ${visibility || 'invisible'}`}
+    >
+      {/* <input
         ref={textInputRef}
         onKeyUp={(e) => {
           if (e.key == 'Enter') {
@@ -110,9 +119,41 @@ export const TextInput = function TextInput({
         style={computedStyles}
         value={value}
         data-cy={dataCy}
+      /> */}
+      <KendoInput
+        ref={textInputRef}
+        onKeyUp={(e) => {
+          if (e.key == 'Enter') {
+            setValue(e.target.value);
+            setExposedVariable('value', e.target.value).then(() => {
+              fireEvent('onEnterPressed');
+            });
+          }
+        }}
+        onChange={(e) => {
+          setValue(e.target.value);
+          setExposedVariable('value', e.target.value);
+          fireEvent('onChange');
+        }}
+        onBlur={(e) => {
+          e.stopPropagation();
+          fireEvent('onBlur');
+        }}
+        onFocus={(e) => {
+          e.stopPropagation();
+          fireEvent('onFocus');
+        }}
+        type='text'
+        className={`form-control ${
+          !isValid ? 'is-invalid' : ''
+        } validation-without-icon ${darkMode && 'dark-theme-placeholder'}`}
+        placeholder={properties.placeholder}
+        style={computedStyles}
+        value={value}
+        data-cy={dataCy}
       />
       <div
-        className="invalid-feedback"
+        className='invalid-feedback'
         data-cy={`${String(component.name).toLowerCase()}-invalid-feedback`}
         style={{ color: styles.errTextColor }}
       >
