@@ -1,3 +1,5 @@
+/** @format */
+
 import React from 'react';
 import _ from 'lodash';
 // eslint-disable-next-line import/no-unresolved
@@ -7,7 +9,14 @@ import { Link } from 'react-router-dom';
 import { DarkModeToggle } from '@/_components/DarkModeToggle';
 import Header from './Header';
 
-export const ViewerNavigation = ({ isMobileDevice, pages, currentPageId, switchPage, darkMode }) => {
+export const ViewerNavigation = ({
+  isMobileDevice,
+  pages,
+  currentPageId,
+  switchPage,
+  darkMode,
+  generatePDF,
+}) => {
   if (isMobileDevice) {
     return null;
   }
@@ -18,22 +27,29 @@ export const ViewerNavigation = ({ isMobileDevice, pages, currentPageId, switchP
       style={{
         width: 200,
         // backgroundColor: canvasBackgroundColor,
-        border: '2px solid red',
       }}
     >
-      <div className="page-handler-wrapper">
+      <div className='page-handler-wrapper'>
         {pages.map(
           ([id, page]) =>
             !page.hidden && (
               <div
                 key={page.handle}
                 onClick={() => switchPage(id)}
-                className={`viewer-page-handler cursor-pointer ${darkMode && 'dark'}`}
+                className={`viewer-page-handler cursor-pointer ${
+                  darkMode && 'dark'
+                }`}
               >
-                <div className={`card mb-1  ${id === currentPageId ? 'active' : ''}`}>
-                  <div className="card-body">
-                    <span className="mx-3 text-wrap">{_.truncate(page.name, { length: 18 })}</span>
-                    <button>gnjkdnf</button>
+                <div
+                  className={`card mb-1  ${
+                    id === currentPageId ? 'active' : ''
+                  }`}
+                >
+                  <div className='card-body'>
+                    <span className='mx-3 text-wrap'>
+                      {_.truncate(page.name, { length: 18 })}
+                    </span>
+                    <button onClick={generatePDF}>gnjkdnf</button>
                   </div>
                 </div>
               </div>
@@ -44,7 +60,13 @@ export const ViewerNavigation = ({ isMobileDevice, pages, currentPageId, switchP
   );
 };
 
-const MobileNavigationMenu = ({ pages, switchPage, currentPageId, darkMode, changeDarkMode }) => {
+const MobileNavigationMenu = ({
+  pages,
+  switchPage,
+  currentPageId,
+  darkMode,
+  changeDarkMode,
+}) => {
   const [hamburgerMenuOpen, setHamburgerMenuOpen] = React.useState(false);
 
   const handlepageSwitch = (pageId) => {
@@ -105,25 +127,40 @@ const MobileNavigationMenu = ({ pages, switchPage, currentPageId, darkMode, chan
         right
       >
         <Header className={'mobile-header'}>
-          <div className="py-2 row w-100">
-            <div onClick={() => setHamburgerMenuOpen(false)} className="col-1 mx-1">
-              <svg width="20" height="21" viewBox="0 0 20 21" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect y="0.0507812" width="20" height="20" rx="4" fill="#F0F4FF"></rect>
+          <div className='py-2 row w-100'>
+            <div
+              onClick={() => setHamburgerMenuOpen(false)}
+              className='col-1 mx-1'
+            >
+              <svg
+                width='20'
+                height='21'
+                viewBox='0 0 20 21'
+                fill='none'
+                xmlns='http://www.w3.org/2000/svg'
+              >
+                <rect
+                  y='0.0507812'
+                  width='20'
+                  height='20'
+                  rx='4'
+                  fill='#F0F4FF'
+                ></rect>
                 <path
-                  fillRule="evenodd"
-                  clipRule="evenodd"
-                  d="M5.52851 5.57942C5.78886 5.31907 6.21097 5.31907 6.47132 5.57942L9.99992 9.10801L13.5285 5.57942C13.7889 5.31907 14.211 5.31907 14.4713 5.57942C14.7317 5.83977 14.7317 6.26188 14.4713 6.52223L10.9427 10.0508L14.4713 13.5794C14.7317 13.8398 14.7317 14.2619 14.4713 14.5222C14.211 14.7826 13.7889 14.7826 13.5285 14.5222L9.99992 10.9936L6.47132 14.5222C6.21097 14.7826 5.78886 14.7826 5.52851 14.5222C5.26816 14.2619 5.26816 13.8398 5.52851 13.5794L9.05711 10.0508L5.52851 6.52223C5.26816 6.26188 5.26816 5.83977 5.52851 5.57942Z"
-                  fill="#3E63DD"
+                  fillRule='evenodd'
+                  clipRule='evenodd'
+                  d='M5.52851 5.57942C5.78886 5.31907 6.21097 5.31907 6.47132 5.57942L9.99992 9.10801L13.5285 5.57942C13.7889 5.31907 14.211 5.31907 14.4713 5.57942C14.7317 5.83977 14.7317 6.26188 14.4713 6.52223L10.9427 10.0508L14.4713 13.5794C14.7317 13.8398 14.7317 14.2619 14.4713 14.5222C14.211 14.7826 13.7889 14.7826 13.5285 14.5222L9.99992 10.9936L6.47132 14.5222C6.21097 14.7826 5.78886 14.7826 5.52851 14.5222C5.26816 14.2619 5.26816 13.8398 5.52851 13.5794L9.05711 10.0508L5.52851 6.52223C5.26816 6.26188 5.26816 5.83977 5.52851 5.57942Z'
+                  fill='#3E63DD'
                 ></path>
               </svg>
             </div>
-            <div style={{ marginTop: '2px' }} className="col">
+            <div style={{ marginTop: '2px' }} className='col'>
               <span>Menu</span>
             </div>
           </div>
         </Header>
 
-        <div className="p-2 w-100">
+        <div className='p-2 w-100'>
           <div className={`pages-container ${darkMode && 'dark'}`}>
             {pages.map(
               ([id, page]) =>
@@ -131,11 +168,19 @@ const MobileNavigationMenu = ({ pages, switchPage, currentPageId, darkMode, chan
                   <div
                     key={page.handle}
                     onClick={() => handlepageSwitch(id)}
-                    className={`viewer-page-handler mb-2 cursor-pointer ${darkMode && 'dark'}`}
+                    className={`viewer-page-handler mb-2 cursor-pointer ${
+                      darkMode && 'dark'
+                    }`}
                   >
-                    <div className={`card mb-1  ${id === currentPageId ? 'active' : ''}`}>
-                      <div className="card-body">
-                        <span className="mx-3">{_.truncate(page.name, { length: 22 })}</span>
+                    <div
+                      className={`card mb-1  ${
+                        id === currentPageId ? 'active' : ''
+                      }`}
+                    >
+                      <div className='card-body'>
+                        <span className='mx-3'>
+                          {_.truncate(page.name, { length: 22 })}
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -143,7 +188,10 @@ const MobileNavigationMenu = ({ pages, switchPage, currentPageId, darkMode, chan
             )}
           </div>
         </div>
-        <ViewerNavigation.Footer darkMode={darkMode} switchDarkMode={changeDarkMode} />
+        <ViewerNavigation.Footer
+          darkMode={darkMode}
+          switchDarkMode={changeDarkMode}
+        />
       </Menu>
     </>
   );
@@ -171,15 +219,17 @@ const ViewerHeader = ({
     >
       {showHeader && (
         <>
-          <h1 className="navbar-brand d-none-navbar-horizontal pe-0">
-            <Link to="/" data-cy="viewer-page-logo">
+          <h1 className='navbar-brand d-none-navbar-horizontal pe-0'>
+            <Link to='/' data-cy='viewer-page-logo'>
               <LogoIcon />
             </Link>
           </h1>
           {appName && <span>{appName}</span>}
         </>
       )}
-      {currentLayout !== 'mobile' && <DarkModeToggle switchDarkMode={changeDarkMode} darkMode={darkMode} />}
+      {currentLayout !== 'mobile' && (
+        <DarkModeToggle switchDarkMode={changeDarkMode} darkMode={darkMode} />
+      )}
       {currentLayout === 'mobile' && (
         <ViewerNavigation.BurgerMenu
           pages={pages}
@@ -195,10 +245,14 @@ const ViewerHeader = ({
 
 const Footer = ({ darkMode, switchDarkMode }) => {
   return (
-    <div className="viewer-footer fixed-bottom">
-      <footer className="border-top">
+    <div className='viewer-footer fixed-bottom'>
+      <footer className='border-top'>
         <div className={`d-flex align-items-center p-2 mx-3 position-absolute`}>
-          <DarkModeToggle switchDarkMode={switchDarkMode} darkMode={darkMode} showText={true} />
+          <DarkModeToggle
+            switchDarkMode={switchDarkMode}
+            darkMode={darkMode}
+            showText={true}
+          />
         </div>
       </footer>
     </div>

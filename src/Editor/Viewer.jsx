@@ -1,9 +1,12 @@
+/** @format */
+
 import React from 'react';
 
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { Container } from './Container';
 import { Confirm } from './Viewer/Confirm';
+import Pdf from 'react-to-pdf';
 import { ViewerNavigation } from './Viewer/ViewerNavigation';
 import {
   onComponentOptionChanged,
@@ -17,7 +20,11 @@ import {
 import queryString from 'query-string';
 import ViewerLogoIcon from './Icons/viewer-logo.svg';
 // import { DataSourceTypes } from './DataSourceManager/SourceComponents';
-import { resolveReferences, safelyParseJSON, stripTrailingSlash } from '@/_helpers/utils';
+import {
+  resolveReferences,
+  safelyParseJSON,
+  stripTrailingSlash,
+} from '@/_helpers/utils';
 import { withTranslation } from 'react-i18next';
 import _ from 'lodash';
 import { Redirect } from 'react-router-dom';
@@ -2503,7 +2510,7 @@ const temp = {
   data_queries: [],
 };
 
-console.log("temp",temp);
+console.log('temp', temp);
 class ViewerComponent extends React.Component {
   constructor(props) {
     super(props);
@@ -2572,10 +2579,12 @@ class ViewerComponent extends React.Component {
     let mobileLayoutHasWidgets = false;
 
     if (this.state.currentLayout === 'mobile') {
-      const currentComponents = data.definition.pages[data.definition.homePageId].components;
+      const currentComponents =
+        data.definition.pages[data.definition.homePageId].components;
       mobileLayoutHasWidgets =
-        Object.keys(currentComponents).filter((componentId) => currentComponents[componentId]['layouts']['mobile'])
-          .length > 0;
+        Object.keys(currentComponents).filter(
+          (componentId) => currentComponents[componentId]['layouts']['mobile']
+        ).length > 0;
     }
 
     let queryState = {};
@@ -2593,11 +2602,18 @@ class ViewerComponent extends React.Component {
       }
     });
 
-    const variables = await this.fetchOrgEnvironmentVariables(data.slug, data.is_public);
-    const pages = Object.entries(data.definition.pages).map(([pageId, page]) => ({ id: pageId, ...page }));
+    const variables = await this.fetchOrgEnvironmentVariables(
+      data.slug,
+      data.is_public
+    );
+    const pages = Object.entries(data.definition.pages).map(
+      ([pageId, page]) => ({ id: pageId, ...page })
+    );
     const homePageId = data.definition.homePageId;
     const startingPageHandle = this.props.match?.params?.pageHandle;
-    const currentPageId = pages.filter((page) => page.handle === startingPageHandle)[0]?.id ?? homePageId;
+    const currentPageId =
+      pages.filter((page) => page.handle === startingPageHandle)[0]?.id ??
+      homePageId;
     const currentPage = pages.find((page) => page.id === currentPageId);
 
     this.setState(
@@ -2617,7 +2633,9 @@ class ViewerComponent extends React.Component {
           globals: {
             currentUser: userVars,
             theme: { name: this.props.darkMode ? 'dark' : 'light' },
-            urlparams: JSON.parse(JSON.stringify(queryString.parse(this.props.location.search))),
+            urlparams: JSON.parse(
+              JSON.stringify(queryString.parse(this.props.location.search))
+            ),
           },
           variables: {},
           page: {
@@ -2633,11 +2651,15 @@ class ViewerComponent extends React.Component {
         pages: {},
       },
       () => {
-        computeComponentState(this, data?.definition?.pages[currentPage.id]?.components).then(async () => {
+        computeComponentState(
+          this,
+          data?.definition?.pages[currentPage.id]?.components
+        ).then(async () => {
           this.setState({ initialComputationOfStateDone: true });
           console.log('Default component state computed and set');
           this.runQueries(data.data_queries);
-          const { events } = this.state.appDefinition?.pages[this.state.currentPageId];
+          const { events } =
+            this.state.appDefinition?.pages[this.state.currentPageId];
           for (const event of events ?? []) {
             await this.handleEvent(event.eventId, event);
           }
@@ -2687,8 +2709,12 @@ class ViewerComponent extends React.Component {
   };
 
   switchOrganization = (orgId, appId, versionId) => {
-    const path = `/applications/${appId}${versionId ? `/versions/${versionId}` : ''}`;
-    const sub_path = window?.public_config?.SUB_PATH ? stripTrailingSlash(window?.public_config?.SUB_PATH) : '';
+    const path = `/applications/${appId}${
+      versionId ? `/versions/${versionId}` : ''
+    }`;
+    const sub_path = window?.public_config?.SUB_PATH
+      ? stripTrailingSlash(window?.public_config?.SUB_PATH)
+      : '';
   };
 
   // handleError = (errorDetails, appId, versionId) => {
@@ -2730,16 +2756,22 @@ class ViewerComponent extends React.Component {
     const versionId = this.props.match.params.versionId;
 
     this.setState({ isLoading: false });
-    slug ? this.loadApplicationBySlug(slug) : this.loadApplicationByVersion(appId, versionId);
+    slug
+      ? this.loadApplicationBySlug(slug)
+      : this.loadApplicationByVersion(appId, versionId);
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.match.params.slug && this.props.match.params.slug !== prevProps.match.params.slug) {
+    if (
+      this.props.match.params.slug &&
+      this.props.match.params.slug !== prevProps.match.params.slug
+    ) {
       this.setState({ isLoading: true });
       this.loadApplicationBySlug(this.props.match.params.slug);
     }
 
-    if (this.state.initialComputationOfStateDone) this.handlePageSwitchingBasedOnURLparam();
+    if (this.state.initialComputationOfStateDone)
+      this.handlePageSwitchingBasedOnURLparam();
   }
 
   handlePageSwitchingBasedOnURLparam() {
@@ -2750,7 +2782,8 @@ class ViewerComponent extends React.Component {
     const currentPageId = this.state.currentPageId;
 
     if (pageIdCorrespondingToHandleOnURL != this.state.currentPageId) {
-      const targetPage = this.state.appDefinition.pages[pageIdCorrespondingToHandleOnURL];
+      const targetPage =
+        this.state.appDefinition.pages[pageIdCorrespondingToHandleOnURL];
       this.setState(
         {
           pages: {
@@ -2769,26 +2802,32 @@ class ViewerComponent extends React.Component {
             ...this.state.currentState,
             globals: {
               ...this.state.currentState.globals,
-              urlparams: JSON.parse(JSON.stringify(queryString.parse(this.props.location.search))),
+              urlparams: JSON.parse(
+                JSON.stringify(queryString.parse(this.props.location.search))
+              ),
             },
             page: {
               ...this.state.currentState.page,
               name: targetPage.name,
               handle: targetPage.handle,
-              variables: this.state.pages?.[pageIdCorrespondingToHandleOnURL]?.variables ?? {},
+              variables:
+                this.state.pages?.[pageIdCorrespondingToHandleOnURL]
+                  ?.variables ?? {},
               id: pageIdCorrespondingToHandleOnURL,
             },
           },
         },
         async () => {
-          computeComponentState(this, this.state.appDefinition?.pages[this.state.currentPageId].components).then(
-            async () => {
-              const { events } = this.state.appDefinition?.pages[this.state.currentPageId];
-              for (const event of events ?? []) {
-                await this.handleEvent(event.eventId, event);
-              }
+          computeComponentState(
+            this,
+            this.state.appDefinition?.pages[this.state.currentPageId].components
+          ).then(async () => {
+            const { events } =
+              this.state.appDefinition?.pages[this.state.currentPageId];
+            for (const event of events ?? []) {
+              await this.handleEvent(event.eventId, event);
             }
-          );
+          });
         }
       );
     }
@@ -2796,13 +2835,16 @@ class ViewerComponent extends React.Component {
 
   findPageIdFromHandle(handle) {
     return (
-      Object.entries(this.state.appDefinition.pages).filter(([_id, page]) => page.handle === handle)?.[0]?.[0] ??
-      this.state.appDefinition.homePageId
+      Object.entries(this.state.appDefinition.pages).filter(
+        ([_id, page]) => page.handle === handle
+      )?.[0]?.[0] ?? this.state.appDefinition.homePageId
     );
   }
 
   getCanvasWidth = () => {
-    const canvasBoundingRect = document.getElementsByClassName('canvas-area')[0].getBoundingClientRect();
+    const canvasBoundingRect = document
+      .getElementsByClassName('canvas-area')[0]
+      .getBoundingClientRect();
     return canvasBoundingRect?.width;
   };
 
@@ -2815,7 +2857,10 @@ class ViewerComponent extends React.Component {
       (this.state.appDefinition.globalSettings?.backgroundFxQuery ||
         this.state.appDefinition.globalSettings?.canvasBackgroundColor) ??
       '#edeff5';
-    const resolvedBackgroundColor = resolveReferences(bgColor, this.state.currentState);
+    const resolvedBackgroundColor = resolveReferences(
+      bgColor,
+      this.state.currentState
+    );
     if (['#2f3c4c', '#edeff5'].includes(resolvedBackgroundColor)) {
       return this.props.darkMode ? '#2f3c4c' : '#edeff5';
     }
@@ -2841,16 +2886,22 @@ class ViewerComponent extends React.Component {
 
     const { handle } = this.state.appDefinition.pages[id];
 
-    const queryParamsString = queryParams.map(([key, value]) => `${key}=${value}`).join('&');
+    const queryParamsString = queryParams
+      .map(([key, value]) => `${key}=${value}`)
+      .join('&');
 
-    if (this.state.slug) this.props.history.push(`/applications/${this.state.slug}/${handle}?${queryParamsString}`);
+    if (this.state.slug)
+      this.props.history.push(
+        `/applications/${this.state.slug}/${handle}?${queryParamsString}`
+      );
     else
       this.props.history.push(
         `/applications/${this.state.appId}/versions/${this.state.versionId}/${handle}?${queryParamsString}`
       );
   };
 
-  handleEvent = (eventName, options) => onEvent(this, eventName, options, 'view');
+  handleEvent = (eventName, options) =>
+    onEvent(this, eventName, options, 'view');
 
   computeCanvasMaxWidth = () => {
     const { appDefinition } = this.state;
@@ -2858,9 +2909,11 @@ class ViewerComponent extends React.Component {
 
     if (appDefinition.globalSettings?.canvasMaxWidthType === 'px')
       computedCanvasMaxWidth =
-        (+appDefinition.globalSettings?.canvasMaxWidth || 1292) - (appDefinition?.showViewerNavigation ? 200 : 0);
+        (+appDefinition.globalSettings?.canvasMaxWidth || 1292) -
+        (appDefinition?.showViewerNavigation ? 200 : 0);
     else if (appDefinition.globalSettings?.canvasMaxWidthType === '%')
-      computedCanvasMaxWidth = +appDefinition.globalSettings?.canvasMaxWidth + '%';
+      computedCanvasMaxWidth =
+        +appDefinition.globalSettings?.canvasMaxWidth + '%';
 
     return computedCanvasMaxWidth;
   };
@@ -2882,12 +2935,12 @@ class ViewerComponent extends React.Component {
 
     if (this.state.app?.isLoading) {
       return (
-        <div className="tooljet-logo-loader">
+        <div className='tooljet-logo-loader'>
           <div>
-            <div className="loader-logo">
+            <div className='loader-logo'>
               <ViewerLogoIcon />
             </div>
-            <div className="loader-spinner">
+            <div className='loader-spinner'>
               <Spinner />
             </div>
           </div>
@@ -2896,17 +2949,22 @@ class ViewerComponent extends React.Component {
     } else {
       if (this.state.app?.is_maintenance_on) {
         return (
-          <div className="maintenance_container">
-            <div className="card">
+          <div className='maintenance_container'>
+            <div className='card'>
               <div
-                className="card-body"
+                className='card-body'
                 style={{
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                 }}
               >
-                <h3>{this.props.t('viewer', 'Sorry!. This app is under maintenance')}</h3>
+                <h3>
+                  {this.props.t(
+                    'viewer',
+                    'Sorry!. This app is under maintenance'
+                  )}
+                </h3>
               </div>
             </div>
           </div>
@@ -2915,8 +2973,9 @@ class ViewerComponent extends React.Component {
         // if (errorDetails) {
         //   this.handleError(errorDetails, errorAppId, errorVersionId);
         // }
+        const ref = React.createRef();
         return (
-          <div className="viewer wrapper">
+          <div className='viewer wrapper'>
             {/* <Confirm
               // show={queryConfirmationList.length > 0}
               message={'Do you want to run this query?'}
@@ -2932,31 +2991,48 @@ class ViewerComponent extends React.Component {
                 changeDarkMode={this.changeDarkMode}
                 darkMode={this.props.darkMode}
                 pages={Object.entries(this.state.appDefinition?.pages) ?? []}
-                currentPageId={this.state?.currentPageId ?? this.state.appDefinition?.homePageId}
+                currentPageId={
+                  this.state?.currentPageId ??
+                  this.state.appDefinition?.homePageId
+                }
                 switchPage={this.switchPage}
                 currentLayout={this.state.currentLayout}
               />
-              <div className="sub-section">
-                <div className="main">
-                  <div className="canvas-container align-items-center">
-                    <div className="areas d-flex flex-rows justify-content-center">
+              <div className='sub-section'>
+                <Pdf targetRef={ref} filename='code-example.pdf'>
+                  {({ toPdf }) => <button onClick={toPdf}>Generate Pdf</button>}
+                </Pdf>
+                <div className='main'>
+                  <div className='canvas-container align-items-center'>
+                    <div className='areas d-flex flex-rows justify-content-center'>
                       {appDefinition?.showViewerNavigation && (
                         <ViewerNavigation
                           isMobileDevice={this.state.currentLayout === 'mobile'}
                           canvasBackgroundColor={this.computeCanvasBackgroundColor()}
-                          pages={Object.entries(this.state.appDefinition?.pages) ?? []}
-                          currentPageId={this.state?.currentPageId ?? this.state.appDefinition?.homePageId}
+                          pages={
+                            Object.entries(this.state.appDefinition?.pages) ??
+                            []
+                          }
+                          currentPageId={
+                            this.state?.currentPageId ??
+                            this.state.appDefinition?.homePageId
+                          }
                           switchPage={this.switchPage}
                           darkMode={this.props.darkMode}
                         />
                       )}
                       <div
-                        className="canvas-area"
+                        ref={ref}
+                        className='canvas-area'
                         style={{
-                          width: currentCanvasWidth,
-                          minHeight: +appDefinition.globalSettings?.canvasMaxHeight || 2400,
+                          width: '100%',
+                          minHeight:
+                            +appDefinition.globalSettings?.canvasMaxHeight ||
+                            2400,
                           maxWidth: canvasMaxWidth,
-                          maxHeight: +appDefinition.globalSettings?.canvasMaxHeight || 2400,
+                          maxHeight:
+                            +appDefinition.globalSettings?.canvasMaxHeight ||
+                            2400,
                           backgroundColor: this.computeCanvasBackgroundColor(),
                           margin: 0,
                           padding: 0,
@@ -2965,9 +3041,12 @@ class ViewerComponent extends React.Component {
                         {defaultComponentStateComputed && (
                           <>
                             {isLoading ? (
-                              <div className="mx-auto mt-5 w-50 p-5">
+                              <div className='mx-auto mt-5 w-50 p-5'>
                                 <center>
-                                  <div className="spinner-border text-azure" role="status"></div>
+                                  <div
+                                    className='spinner-border text-azure'
+                                    role='status'
+                                  ></div>
                                 </center>
                               </div>
                             ) : (
@@ -2977,8 +3056,10 @@ class ViewerComponent extends React.Component {
                                 snapToGrid={true}
                                 appLoading={isLoading}
                                 darkMode={this.props.darkMode}
-                                onEvent={(eventName, options) => onEvent(this, eventName, options, 'view')}
-                                mode="view"
+                                onEvent={(eventName, options) =>
+                                  onEvent(this, eventName, options, 'view')
+                                }
+                                mode='view'
                                 // deviceWindowWidth={deviceWindowWidth}
                                 currentLayout={currentLayout}
                                 currentState={this.state.currentState}
@@ -2989,11 +3070,27 @@ class ViewerComponent extends React.Component {
                                   });
                                   onComponentClick(this, id, component, 'view');
                                 }}
-                                onComponentOptionChanged={(component, optionName, value) => {
-                                  return onComponentOptionChanged(this, component, optionName, value);
+                                onComponentOptionChanged={(
+                                  component,
+                                  optionName,
+                                  value
+                                ) => {
+                                  return onComponentOptionChanged(
+                                    this,
+                                    component,
+                                    optionName,
+                                    value
+                                  );
                                 }}
-                                onComponentOptionsChanged={(component, options) =>
-                                  onComponentOptionsChanged(this, component, options)
+                                onComponentOptionsChanged={(
+                                  component,
+                                  options
+                                ) =>
+                                  onComponentOptionsChanged(
+                                    this,
+                                    component,
+                                    options
+                                  )
                                 }
                                 canvasWidth={this.getCanvasWidth()}
                                 // dataQueries={dataQueries}
