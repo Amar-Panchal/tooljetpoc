@@ -1,3 +1,5 @@
+/** @format */
+
 import React, { useEffect, useState, useRef, useContext } from 'react';
 import { useSpring, config, animated } from 'react-spring';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
@@ -14,7 +16,11 @@ import 'codemirror/theme/base16-light.css';
 import 'codemirror/theme/duotone-light.css';
 import 'codemirror/theme/monokai.css';
 import { onBeforeChange, handleChange } from './utils';
-import { resolveReferences, hasCircularDependency, handleCircularStructureToJSON } from '@/_helpers/utils';
+import {
+  resolveReferences,
+  hasCircularDependency,
+  handleCircularStructureToJSON,
+} from '@/_helpers/utils';
 import useHeight from '@/_hooks/use-height-transition';
 import usePortal from '@/_hooks/use-portal';
 import { Color } from './Elements/Color';
@@ -112,19 +118,32 @@ export function CodeHinter({
       if (isOpen) {
         return;
       }
-      if (wrapperRef.current && isFocused && !wrapperRef.current.contains(event.target) && prevCountRef.current) {
+      if (
+        wrapperRef.current &&
+        isFocused &&
+        !wrapperRef.current.contains(event.target) &&
+        prevCountRef.current
+      ) {
         isPreviewFocused.current = false;
         setFocused(false);
         prevCountRef.current = false;
       } else if (isFocused) {
         prevCountRef.current = true;
-      } else if (!isFocused && prevCountRef.current) prevCountRef.current = false;
+      } else if (!isFocused && prevCountRef.current)
+        prevCountRef.current = false;
     };
     document.addEventListener('mousedown', handleClickOutside);
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [wrapperRef, isFocused, isPreviewFocused, currentValue, prevCountRef, isOpen]);
+  }, [
+    wrapperRef,
+    isFocused,
+    isPreviewFocused,
+    currentValue,
+    prevCountRef,
+    isOpen,
+  ]);
 
   function valueChanged(editor, onChange, ignoreBraces) {
     if (editor.getValue()?.trim() !== currentValue) {
@@ -161,7 +180,10 @@ export function CodeHinter({
       if (component?.component?.component === 'Table' && fieldMeta?.name) {
         return {
           ...variablesExposedForPreview[component?.id],
-          cellValue: variablesExposedForPreview[component?.id]?.rowData?.[fieldMeta?.name],
+          cellValue:
+            variablesExposedForPreview[component?.id]?.rowData?.[
+              fieldMeta?.name
+            ],
           rowData: { ...variablesExposedForPreview[component?.id]?.rowData },
         };
       }
@@ -173,17 +195,31 @@ export function CodeHinter({
   const getPreview = () => {
     if (!enablePreview) return;
     const customResolvables = getCustomResolvables();
-    const [preview, error] = resolveReferences(currentValue, realState, null, customResolvables, true);
+    const [preview, error] = resolveReferences(
+      currentValue,
+      realState,
+      null,
+      customResolvables,
+      true
+    );
     const themeCls = darkMode ? 'bg-dark  py-1' : 'bg-light  py-1';
 
     if (error) {
       const err = String(error);
-      const errorMessage = err.includes('.run()') ? `${err} in ${componentName.split('::')[0]}'s field` : err;
+      const errorMessage = err.includes('.run()')
+        ? `${err} in ${componentName.split('::')[0]}'s field`
+        : err;
       return (
-        <animated.div className={isOpen ? themeCls : null} style={{ ...slideInStyles, overflow: 'hidden' }}>
-          <div ref={heightRef} className="dynamic-variable-preview bg-red-lt px-1 py-1">
+        <animated.div
+          className={isOpen ? themeCls : null}
+          style={{ ...slideInStyles, overflow: 'hidden' }}
+        >
+          <div
+            ref={heightRef}
+            className='dynamic-variable-preview bg-red-lt px-1 py-1'
+          >
             <div>
-              <div className="heading my-1">
+              <div className='heading my-1'>
                 <span>Error</span>
               </div>
               {errorMessage}
@@ -209,15 +245,25 @@ export function CodeHinter({
         onMouseEnter={() => focusPreview()}
         onMouseLeave={() => unFocusPreview()}
       >
-        <div ref={heightRef} className="dynamic-variable-preview bg-green-lt px-1 py-1">
+        <div
+          ref={heightRef}
+          className='dynamic-variable-preview bg-green-lt px-1 py-1'
+        >
           <div>
-            <div className="d-flex my-1">
-              <div className="flex-grow-1" style={{ fontWeight: 700, textTransform: 'capitalize' }}>
+            <div className='d-flex my-1'>
+              <div
+                className='flex-grow-1'
+                style={{ fontWeight: 700, textTransform: 'capitalize' }}
+              >
                 {previewType}
               </div>
               {isFocused && (
-                <div className="preview-icons">
-                  <CodeHinter.PopupIcon callback={() => copyToClipboard(content)} icon="copy" tip="Copy to clipboard" />
+                <div className='preview-icons'>
+                  <CodeHinter.PopupIcon
+                    callback={() => copyToClipboard(content)}
+                    icon='copy'
+                    tip='Copy to clipboard'
+                  />
                 </div>
               )}
             </div>
@@ -262,28 +308,48 @@ export function CodeHinter({
   const [, forceUpdate] = React.useReducer((x) => x + 1, 0);
 
   const defaultClassName =
-    className === 'query-hinter' || className === 'custom-component' || undefined ? '' : 'code-hinter';
+    className === 'query-hinter' ||
+    className === 'custom-component' ||
+    undefined
+      ? ''
+      : 'code-hinter';
 
   const ElementToRender = AllElements[TypeMapping[type]];
 
   const [forceCodeBox, setForceCodeBox] = useState(fxActive);
   const codeShow = (type ?? 'code') === 'code' || forceCodeBox;
-  cyLabel = paramLabel ? paramLabel.toLowerCase().trim().replace(/\s+/g, '-') : cyLabel;
+  cyLabel = paramLabel
+    ? paramLabel.toLowerCase().trim().replace(/\s+/g, '-')
+    : cyLabel;
 
   return (
     <div ref={wrapperRef}>
       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
         {paramLabel && (
-          <div className={`mb-2 field ${options.className}`} data-cy={`${cyLabel}-widget-parameter-label`}>
+          <div
+            className={`mb-2 field ${options.className}`}
+            data-cy={`${cyLabel}-widget-parameter-label`}
+          >
             <ToolTip
-              label={t(`widget.commonProperties.${camelCase(paramLabel)}`, paramLabel)}
+              label={t(
+                `widget.commonPropertiesss.${camelCase(paramLabel)}`,
+                paramLabel
+              )}
               meta={fieldMeta}
               labelClass={`form-label ${darkMode && 'color-whitish-darkmode'}`}
             />
           </div>
         )}
-        <div className={`col-auto ${(type ?? 'code') === 'code' ? 'd-none' : ''} `}>
-          <div style={{ width: width, display: codeShow ? 'flex' : 'none', marginTop: '-1px' }}>
+        <div
+          className={`col-auto ${(type ?? 'code') === 'code' ? 'd-none' : ''} `}
+        >
+          <div
+            style={{
+              width: width,
+              display: codeShow ? 'flex' : 'none',
+              marginTop: '-1px',
+            }}
+          >
             <FxButton
               active={true}
               onPress={() => {
@@ -296,13 +362,23 @@ export function CodeHinter({
         </div>
       </div>
       <div
-        className={`row${height === '150px' || height === '300px' ? ' tablr-gutter-x-0' : ''}`}
+        className={`row${
+          height === '150px' || height === '300px' ? ' tablr-gutter-x-0' : ''
+        }`}
         style={{ width: width, display: codeShow ? 'flex' : 'none' }}
       >
-        <div className={`col code-hinter-col`} style={{ marginBottom: '0.5rem' }}>
-          <div className="code-hinter-wrapper" style={{ width: '100%', backgroundColor: darkMode && '#272822' }}>
+        <div
+          className={`col code-hinter-col`}
+          style={{ marginBottom: '0.5rem' }}
+        >
+          <div
+            className='code-hinter-wrapper'
+            style={{ width: '100%', backgroundColor: darkMode && '#272822' }}
+          >
             <div
-              className={`${defaultClassName} ${className || 'codehinter-default-input'}`}
+              className={`${defaultClassName} ${
+                className || 'codehinter-default-input'
+              }`}
               key={componentName}
               style={{
                 height: height || 'auto',
@@ -316,8 +392,8 @@ export function CodeHinter({
               {usePortalEditor && (
                 <CodeHinter.PopupIcon
                   callback={handleToggle}
-                  icon="portal-open"
-                  tip="Pop out code editor into a new window"
+                  icon='portal-open'
+                  tip='Pop out code editor into a new window'
                 />
               )}
               <CodeHinter.Portal
@@ -346,8 +422,12 @@ export function CodeHinter({
                       setFocused(false);
                     }
                   }}
-                  onChange={(editor) => valueChanged(editor, onChange, ignoreBraces)}
-                  onBeforeChange={(editor, change) => onBeforeChange(editor, change, ignoreBraces)}
+                  onChange={(editor) =>
+                    valueChanged(editor, onChange, ignoreBraces)
+                  }
+                  onBeforeChange={(editor, change) =>
+                    onBeforeChange(editor, change, ignoreBraces)
+                  }
                   options={options}
                   viewportMargin={Infinity}
                 />
@@ -384,18 +464,21 @@ export function CodeHinter({
 
 const PopupIcon = ({ callback, icon, tip }) => {
   return (
-    <div className="d-flex justify-content-end" style={{ position: 'relative' }}>
+    <div
+      className='d-flex justify-content-end'
+      style={{ position: 'relative' }}
+    >
       <OverlayTrigger
         trigger={['hover', 'focus']}
-        placement="top"
+        placement='top'
         delay={{ show: 800, hide: 100 }}
-        overlay={<Tooltip id="button-tooltip">{tip}</Tooltip>}
+        overlay={<Tooltip id='button-tooltip'>{tip}</Tooltip>}
       >
         <img
-          className="svg-icon m-2 popup-btn"
+          className='svg-icon m-2 popup-btn'
           src={`assets/images/icons/${icon}.svg`}
-          width="12"
-          height="12"
+          width='12'
+          height='12'
           onClick={(e) => {
             e.stopPropagation();
             callback();

@@ -1,3 +1,5 @@
+/** @format */
+
 import React, { useState, useRef, useEffect } from 'react';
 import cx from 'classnames';
 import { componentTypes } from '../WidgetManager/components';
@@ -6,7 +8,11 @@ import { Chart } from './Components/Chart';
 import { Form } from './Components/Form';
 import { renderElement } from './Utils';
 import { toast } from 'react-hot-toast';
-import { validateQueryName, convertToKebabCase, resolveReferences } from '@/_helpers/utils';
+import {
+  validateQueryName,
+  convertToKebabCase,
+  resolveReferences,
+} from '@/_helpers/utils';
 import { ConfirmDialog } from '@/_components';
 import { useHotkeys } from 'react-hotkeys-hook';
 import { DefaultComponent } from './Components/DefaultComponent';
@@ -38,11 +44,14 @@ export const Inspector = ({
     layouts: allComponents[selectedComponentId].layouts,
     parent: allComponents[selectedComponentId].parent,
   };
-  const [showWidgetDeleteConfirmation, setWidgetDeleteConfirmation] = useState(false);
+  const [showWidgetDeleteConfirmation, setWidgetDeleteConfirmation] =
+    useState(false);
   // eslint-disable-next-line no-unused-vars
   const [tabHeight, setTabHeight] = React.useState(0);
   const componentNameRef = useRef(null);
-  const [newComponentName, setNewComponentName] = useState(component.component.name);
+  const [newComponentName, setNewComponentName] = useState(
+    component.component.name
+  );
   const [inputRef, setInputFocus] = useFocus();
   const [selectedTab, setSelectedTab] = useState('properties');
   const { t } = useTranslation();
@@ -50,7 +59,9 @@ export const Inspector = ({
   useHotkeys('backspace', () => setWidgetDeleteConfirmation(true));
   useHotkeys('escape', () => switchSidebarTab(2));
 
-  const componentMeta = componentTypes.find((comp) => component.component.component === comp.component);
+  const componentMeta = componentTypes.find(
+    (comp) => component.component.component === comp.component
+  );
 
   const isMounted = useMounted();
 
@@ -79,12 +90,19 @@ export const Inspector = ({
   function handleComponentNameChange(newName) {
     if (component.component.name === newName) return;
     if (newName.length === 0) {
-      toast.error(t('widget.common.widgetNameEmptyError', 'Widget name cannot be empty'));
+      toast.error(
+        t('widget.common.widgetNameEmptyError', 'Widget name cannot be empty')
+      );
       return setInputFocus();
     }
 
     if (!validateComponentName(newName)) {
-      toast.error(t('widget.common.componentNameExistsError', 'Component name already exists'));
+      toast.error(
+        t(
+          'widget.common.componentNameExistsError',
+          'Component name already exists'
+        )
+      );
       return setInputFocus();
     }
 
@@ -172,7 +190,9 @@ export const Inspector = ({
       componentDefinitionChanged(newComponent);
 
       //  Child components should also have a mobile layout
-      const childComponents = Object.keys(allComponents).filter((key) => allComponents[key].parent === component.id);
+      const childComponents = Object.keys(allComponents).filter(
+        (key) => allComponents[key].parent === component.id
+      );
 
       childComponents.forEach((componentId) => {
         let newChild = {
@@ -231,7 +251,10 @@ export const Inspector = ({
     let newDefinition = { ...component.component.definition };
     let eventDefinition = newDefinition.events[event.name] || { options: {} };
 
-    newDefinition.events[event.name] = { ...eventDefinition, options: { ...eventDefinition.options, [option]: value } };
+    newDefinition.events[event.name] = {
+      ...eventDefinition,
+      options: { ...eventDefinition.options, [option]: value },
+    };
 
     let newComponent = {
       ...component,
@@ -287,7 +310,7 @@ export const Inspector = ({
 
   const stylesTab = (
     <div style={{ marginBottom: '6rem' }}>
-      <div className="p-3">
+      <div className='p-3'>
         <Inspector.RenderStyleOptions
           componentMeta={componentMeta}
           component={component}
@@ -302,7 +325,7 @@ export const Inspector = ({
   );
 
   return (
-    <div className="inspector">
+    <div className='inspector'>
       <ConfirmDialog
         show={showWidgetDeleteConfirmation}
         message={'Widget will be deleted, do you want to continue?'}
@@ -314,43 +337,52 @@ export const Inspector = ({
         darkMode={darkMode}
       />
       <div>
-        <div className="row inspector-component-title-input-holder">
-          <div className="col-11 p-0">
-            <div className="input-icon">
+        <div className='row inspector-component-title-input-holder'>
+          <div className='col-11 p-0'>
+            <div className='input-icon'>
               <input
                 onChange={(e) => setNewComponentName(e.target.value)}
-                type="text"
+                type='text'
                 onBlur={() => handleComponentNameChange(newComponentName)}
-                className="w-100 form-control-plaintext form-control-plaintext-sm mt-1"
+                className='w-100 form-control-plaintext form-control-plaintext-sm mt-1'
                 value={newComponentName}
                 ref={inputRef}
-                data-cy="edit-widget-name"
+                data-cy='edit-widget-name'
               />
-              <span className="input-icon-addon">
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <span className='input-icon-addon'>
+                <svg
+                  width='14'
+                  height='14'
+                  viewBox='0 0 14 14'
+                  fill='none'
+                  xmlns='http://www.w3.org/2000/svg'
+                >
                   <path
-                    d="M13.1667 3.11667L10.8833 0.833337C10.5853 0.553417 10.1948 0.392803 9.78611 0.382047C9.3774 0.371291 8.97899 0.511145 8.66667 0.775004L1.16667 8.275C0.897308 8.54664 0.72959 8.90267 0.69167 9.28334L0.333336 12.7583C0.322111 12.8804 0.337948 13.0034 0.379721 13.1187C0.421493 13.2339 0.488172 13.3385 0.575003 13.425C0.65287 13.5022 0.745217 13.5633 0.846748 13.6048C0.948279 13.6463 1.057 13.6673 1.16667 13.6667H1.24167L4.71667 13.35C5.09733 13.3121 5.45337 13.1444 5.725 12.875L13.225 5.375C13.5161 5.06748 13.6734 4.65709 13.6625 4.23378C13.6516 3.81047 13.4733 3.40876 13.1667 3.11667ZM4.56667 11.6833L2.06667 11.9167L2.29167 9.41667L7 4.76667L9.25 7.01667L4.56667 11.6833ZM10.3333 5.9L8.1 3.66667L9.725 2L12 4.275L10.3333 5.9Z"
-                    fill="#8092AC"
+                    d='M13.1667 3.11667L10.8833 0.833337C10.5853 0.553417 10.1948 0.392803 9.78611 0.382047C9.3774 0.371291 8.97899 0.511145 8.66667 0.775004L1.16667 8.275C0.897308 8.54664 0.72959 8.90267 0.69167 9.28334L0.333336 12.7583C0.322111 12.8804 0.337948 13.0034 0.379721 13.1187C0.421493 13.2339 0.488172 13.3385 0.575003 13.425C0.65287 13.5022 0.745217 13.5633 0.846748 13.6048C0.948279 13.6463 1.057 13.6673 1.16667 13.6667H1.24167L4.71667 13.35C5.09733 13.3121 5.45337 13.1444 5.725 12.875L13.225 5.375C13.5161 5.06748 13.6734 4.65709 13.6625 4.23378C13.6516 3.81047 13.4733 3.40876 13.1667 3.11667ZM4.56667 11.6833L2.06667 11.9167L2.29167 9.41667L7 4.76667L9.25 7.01667L4.56667 11.6833ZM10.3333 5.9L8.1 3.66667L9.725 2L12 4.275L10.3333 5.9Z'
+                    fill='#8092AC'
                   />
                 </svg>
               </span>
             </div>
           </div>
-          <div className="col-1" onClick={() => switchSidebarTab(2)}>
-            <div className="inspector-close-icon-wrapper cursor-pointer" data-cy={`inspector-close-icon`}>
+          <div className='col-1' onClick={() => switchSidebarTab(2)}>
+            <div
+              className='inspector-close-icon-wrapper cursor-pointer'
+              data-cy={`inspector-close-icon`}
+            >
               <svg
-                width="20"
-                height="21"
-                viewBox="0 0 20 21"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                className="close-svg"
+                width='20'
+                height='21'
+                viewBox='0 0 20 21'
+                fill='none'
+                xmlns='http://www.w3.org/2000/svg'
+                className='close-svg'
               >
                 <path
-                  fillRule="evenodd"
-                  clipRule="evenodd"
-                  d="M9.99931 10.9751L15.0242 16.0014L16 15.027L10.9737 10.0007L16 4.97577L15.0256 4L9.99931 9.0263L4.97439 4L4 4.97577L9.02492 10.0007L4 15.0256L4.97439 16.0014L9.99931 10.9751Z"
-                  fill="#8092AC"
+                  fillRule='evenodd'
+                  clipRule='evenodd'
+                  d='M9.99931 10.9751L15.0242 16.0014L16 15.027L10.9737 10.0007L16 4.97577L15.0256 4L9.99931 9.0263L4.97439 4L4 4.97577L9.02492 10.0007L4 15.0256L4.97439 16.0014L9.99931 10.9751Z'
+                  fill='#8092AC'
                 />
               </svg>
             </div>
@@ -358,10 +390,10 @@ export const Inspector = ({
         </div>
         <div style={{ padding: '16px 8px', borderRadius: 6 }}>
           <div
-            className="d-flex p-1"
+            className='d-flex p-1'
             style={{ background: darkMode ? '#2F3C4C' : '#ECEEF0' }}
-            role="tablist"
-            aria-orientation="horizontal"
+            role='tablist'
+            aria-orientation='horizontal'
           >
             <button
               className={cx('btn w-50 inspector-nav-item', {
@@ -370,10 +402,10 @@ export const Inspector = ({
                 'color-white': darkMode,
                 'opacity-100': selectedTab === 'properties',
               })}
-              role="tab"
-              type="button"
-              aria-selected="true"
-              tabIndex="0"
+              role='tab'
+              type='button'
+              aria-selected='true'
+              tabIndex='0'
               onClick={() => setSelectedTab('properties')}
               data-cy={`sidebar-option-properties`}
             >
@@ -386,10 +418,10 @@ export const Inspector = ({
                 'color-white': darkMode,
                 'opacity-100': selectedTab === 'styles',
               })}
-              role="tab"
-              type="button"
-              aria-selected="false"
-              tabIndex="-1"
+              role='tab'
+              type='button'
+              aria-selected='false'
+              tabIndex='-1'
               onClick={() => setSelectedTab('styles')}
               data-cy={`sidebar-option-styles`}
             >
@@ -397,20 +429,26 @@ export const Inspector = ({
             </button>
           </div>
         </div>
-        <hr className="m-0" />
+        <hr className='m-0' />
         {selectedTab === 'properties' && propertiesTab}
         {selectedTab === 'styles' && stylesTab}
       </div>
 
-      <div className="widget-documentation-link p-2">
+      <div className='widget-documentation-link p-2'>
         <a
-          href={`https://docs.tooljet.io/docs/widgets/${convertToKebabCase(componentMeta?.name ?? '')}`}
-          target="_blank"
-          rel="noreferrer"
-          data-cy="widget-documentation-link"
+          href={`https://docs.tooljet.io/docs/widgets/${convertToKebabCase(
+            componentMeta?.name ?? ''
+          )}`}
+          target='_blank'
+          rel='noreferrer'
+          data-cy='widget-documentation-link'
         >
           <small>
-            {t('widget.common.documentation', '{{componentMeta}} documentation', { componentMeta: componentMeta.name })}
+            {t(
+              'widget.common.documentation',
+              '{{componentMeta}} documentation',
+              { componentMeta: componentMeta.name }
+            )}
           </small>
         </a>
       </div>
@@ -424,18 +462,35 @@ const widgetsWithStyleConditions = {
       {
         definition: 'properties', //expecting properties or styles
         property: 'useDefaultButton', //expecting a property name
-        conditionStyles: ['triggerButtonBackgroundColor', 'triggerButtonTextColor'], //expecting an array of style definitions names
+        conditionStyles: [
+          'triggerButtonBackgroundColor',
+          'triggerButtonTextColor',
+        ], //expecting an array of style definitions names
       },
     ],
   },
 };
 
-const RenderStyleOptions = ({ componentMeta, component, paramUpdated, dataQueries, currentState, allComponents }) => {
+const RenderStyleOptions = ({
+  componentMeta,
+  component,
+  paramUpdated,
+  dataQueries,
+  currentState,
+  allComponents,
+}) => {
   return Object.keys(componentMeta.styles).map((style) => {
-    const conditionWidget = widgetsWithStyleConditions[component.component.component] ?? null;
-    const condition = conditionWidget?.conditions.find((condition) => condition.property) ?? {};
+    const conditionWidget =
+      widgetsWithStyleConditions[component.component.component] ?? null;
+    const condition =
+      conditionWidget?.conditions.find((condition) => condition.property) ?? {};
 
-    if (conditionWidget && conditionWidget.conditions.find((condition) => condition.conditionStyles.includes(style))) {
+    if (
+      conditionWidget &&
+      conditionWidget.conditions.find((condition) =>
+        condition.conditionStyles.includes(style)
+      )
+    ) {
       const propertyConditon = condition?.property;
       const widgetPropertyDefinition = condition?.definition;
 
@@ -468,7 +523,10 @@ const RenderStyleOptions = ({ componentMeta, component, paramUpdated, dataQuerie
 const resolveConditionalStyle = (definition, condition, currentState) => {
   const conditionExistsInDefinition = definition[condition] ?? false;
   if (conditionExistsInDefinition) {
-    return resolveReferences(definition[condition]?.value ?? false, currentState);
+    return resolveReferences(
+      definition[condition]?.value ?? false,
+      currentState
+    );
   }
 };
 
@@ -483,8 +541,21 @@ const handleRenderingConditionalStyles = (
   renderingPropertyCondition,
   definition
 ) => {
-  return resolveConditionalStyle(definition, renderingPropertyCondition, currentState)
-    ? renderElement(component, componentMeta, paramUpdated, dataQueries, style, 'styles', currentState, allComponents)
+  return resolveConditionalStyle(
+    definition,
+    renderingPropertyCondition,
+    currentState
+  )
+    ? renderElement(
+        component,
+        componentMeta,
+        paramUpdated,
+        dataQueries,
+        style,
+        'styles',
+        currentState,
+        allComponents
+      )
     : null;
 };
 

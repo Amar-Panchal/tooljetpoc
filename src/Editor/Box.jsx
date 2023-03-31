@@ -1,3 +1,5 @@
+/** @format */
+
 import React, { useEffect, useState, useMemo, useContext, useRef } from 'react';
 import { Button } from './Components/Button';
 import { Image } from './Components/Image';
@@ -162,7 +164,9 @@ export const Box = function Box({
   }
 
   const componentMeta = useMemo(() => {
-    return componentTypes.find((comp) => component.component === comp.component);
+    return componentTypes.find(
+      (comp) => component.component === comp.component
+    );
   }, [component]);
 
   const ComponentToRender = AllComponents[component.component];
@@ -170,33 +174,56 @@ export const Box = function Box({
   const [renderStartTime, setRenderStartTime] = useState(new Date());
   const [resetComponent, setResetStatus] = useState(false);
 
-  const resolvedProperties = resolveProperties(component, currentState, null, customResolvables);
+  const resolvedProperties = resolveProperties(
+    component,
+    currentState,
+    null,
+    customResolvables
+  );
   const [validatedProperties, propertyErrors] =
     mode === 'edit' && component.validate
       ? validateProperties(resolvedProperties, componentMeta.properties)
       : [resolvedProperties, []];
 
-  const resolvedStyles = resolveStyles(component, currentState, null, customResolvables);
+  const resolvedStyles = resolveStyles(
+    component,
+    currentState,
+    null,
+    customResolvables
+  );
   const [validatedStyles, styleErrors] =
     mode === 'edit' && component.validate
       ? validateProperties(resolvedStyles, componentMeta.styles)
       : [resolvedStyles, []];
-  validatedStyles.visibility = validatedStyles.visibility !== false ? true : false;
+  validatedStyles.visibility =
+    validatedStyles.visibility !== false ? true : false;
 
-  const resolvedGeneralProperties = resolveGeneralProperties(component, currentState, null, customResolvables);
+  const resolvedGeneralProperties = resolveGeneralProperties(
+    component,
+    currentState,
+    null,
+    customResolvables
+  );
   const [validatedGeneralProperties, generalPropertiesErrors] =
     mode === 'edit' && component.validate
       ? validateProperties(resolvedGeneralProperties, componentMeta.general)
       : [resolvedGeneralProperties, []];
 
-  const resolvedGeneralStyles = resolveGeneralStyles(component, currentState, null, customResolvables);
-  resolvedStyles.visibility = resolvedStyles.visibility !== false ? true : false;
+  const resolvedGeneralStyles = resolveGeneralStyles(
+    component,
+    currentState,
+    null,
+    customResolvables
+  );
+  resolvedStyles.visibility =
+    resolvedStyles.visibility !== false ? true : false;
   const [validatedGeneralStyles, generalStylesErrors] =
     mode === 'edit' && component.validate
       ? validateProperties(resolvedGeneralStyles, componentMeta.generalStyles)
       : [resolvedGeneralStyles, []];
 
-  const { variablesExposedForPreview, exposeToCodeHinter } = useContext(EditorContext) || {};
+  const { variablesExposedForPreview, exposeToCodeHinter } =
+    useContext(EditorContext) || {};
 
   const componentActions = useRef(new Set());
 
@@ -205,7 +232,12 @@ export const Box = function Box({
 
     const componentName = getComponentName(currentState, id);
     const errorLog = Object.fromEntries(
-      [...propertyErrors, ...styleErrors, ...generalPropertiesErrors, ...generalStylesErrors].map((error) => [
+      [
+        ...propertyErrors,
+        ...styleErrors,
+        ...generalPropertiesErrors,
+        ...generalStylesErrors,
+      ].map((error) => [
         `${componentName} - ${error.property}`,
         {
           page: currentPage,
@@ -220,7 +252,9 @@ export const Box = function Box({
     );
     sideBarDebugger?.error(errorLog);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [JSON.stringify({ propertyErrors, styleErrors, generalPropertiesErrors })]);
+  }, [
+    JSON.stringify({ propertyErrors, styleErrors, generalPropertiesErrors }),
+  ]);
 
   useEffect(() => {
     setRenderCount(renderCount + 1);
@@ -276,13 +310,20 @@ export const Box = function Box({
     <OverlayTrigger
       placement={inCanvas ? 'auto' : 'top'}
       delay={{ show: 500, hide: 0 }}
-      trigger={inCanvas && !validatedGeneralProperties.tooltip?.toString().trim() ? null : ['hover', 'focus']}
+      trigger={
+        inCanvas && !validatedGeneralProperties.tooltip?.toString().trim()
+          ? null
+          : ['hover', 'focus']
+      }
       overlay={(props) =>
         renderTooltip({
           props,
           text: inCanvas
             ? `${validatedGeneralProperties.tooltip}`
-            : `${t(`widget.${component.name}.description`, component.description)}`,
+            : `${t(
+                `widget.${component.name}.description`,
+                component.description
+              )}`,
         })
       }
     >
@@ -315,26 +356,48 @@ export const Box = function Box({
               properties={validatedProperties}
               exposedVariables={exposedVariables}
               styles={validatedStyles}
-              setExposedVariable={(variable, value) => onComponentOptionChanged(component, variable, value, id)}
-              setExposedVariables={(variableSet) => onComponentOptionsChanged(component, Object.entries(variableSet))}
+              setExposedVariable={(variable, value) =>
+                onComponentOptionChanged(component, variable, value, id)
+              }
+              setExposedVariables={(variableSet) =>
+                onComponentOptionsChanged(
+                  component,
+                  Object.entries(variableSet)
+                )
+              }
               registerAction={(actionName, func, dependencies = []) => {
                 if (
-                  Object.keys(currentState?.components ?? {}).includes(component.name) &&
+                  Object.keys(currentState?.components ?? {}).includes(
+                    component.name
+                  ) &&
                   currentState?.components[component.name].id === id
                 ) {
                   if (!Object.keys(exposedVariables).includes(actionName)) {
                     func.dependencies = dependencies;
                     componentActions.current.add(actionName);
-                    return onComponentOptionChanged(component, actionName, func);
-                  } else if (exposedVariables[actionName]?.dependencies?.length === 0) {
+                    return onComponentOptionChanged(
+                      component,
+                      actionName,
+                      func
+                    );
+                  } else if (
+                    exposedVariables[actionName]?.dependencies?.length === 0
+                  ) {
                     return Promise.resolve();
                   } else if (
-                    JSON.stringify(dependencies) !== JSON.stringify(exposedVariables[actionName]?.dependencies) ||
+                    JSON.stringify(dependencies) !==
+                      JSON.stringify(
+                        exposedVariables[actionName]?.dependencies
+                      ) ||
                     !componentActions.current.has(actionName)
                   ) {
                     func.dependencies = dependencies;
                     componentActions.current.add(actionName);
-                    return onComponentOptionChanged(component, actionName, func);
+                    return onComponentOptionChanged(
+                      component,
+                      actionName,
+                      func
+                    );
                   }
                 }
               }}
@@ -351,17 +414,29 @@ export const Box = function Box({
               mode={mode}
               resetComponent={() => setResetStatus(true)}
               childComponents={childComponents}
-              dataCy={`draggable-widget-${String(component.name).toLowerCase()}`}
+              dataCy={`draggable-widget-${String(
+                component.name
+              ).toLowerCase()}`}
             ></ComponentToRender>
           ) : (
             <></>
           )
         ) : (
-          <div className="m-1" style={{ height: '76px', width: '76px', marginLeft: '18px' }}>
+          <div
+            className='m-1'
+            style={{
+              height: '76px',
+              width: '76px',
+              marginLeft: '18px',
+              border: '1px solid red',
+            }}
+          >
             <div
-              className="component-image-holder p-2 d-flex flex-column justify-content-center"
+              className='component-image-holder p-2 d-flex flex-column justify-content-center'
               style={{ height: '100%' }}
-              data-cy={`widget-list-box-${component.displayName.toLowerCase().replace(/\s+/g, '-')}`}
+              data-cy={`widget-list-box-${component.displayName
+                .toLowerCase()
+                .replace(/\s+/g, '-')}`}
             >
               <center>
                 <div
@@ -374,7 +449,9 @@ export const Box = function Box({
                   }}
                 ></div>
               </center>
-              <span className="component-title">{t(`${component.name}`, component.displayName)}</span>
+              <span className='component-title'>
+                {t(`${component.name}`, component.displayName)}
+              </span>
             </div>
           </div>
         )}

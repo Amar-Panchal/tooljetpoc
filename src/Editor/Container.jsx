@@ -81,7 +81,7 @@ export const Container = ({
   useHotkeys('⌘+z, control+z', () => handleUndo());
   useHotkeys('⌘+shift+z, control+shift+z', () => handleRedo());
   /** @format */
-
+  console.log('object', boxes);
   useHotkeys(
     '⌘+v, control+v',
     () => {
