@@ -2713,15 +2713,14 @@ class ViewerComponent extends React.Component {
         );
         this.setStateForApp(temp);
         this.setStateForContainer(temp);
+        console.log(
+          'object',
+          JSON.parse(response?.data?.resultData[0].reportValues)
+        );
       })
       .catch((error) => {
         console.log(error);
       });
-
-    temp.definition = JSON.parse(localStorage.getItem('appdef'));
-
-    this.setStateForApp(temp);
-    this.setStateForContainer(temp);
   };
 
   switchOrganization = (orgId, appId, versionId) => {
