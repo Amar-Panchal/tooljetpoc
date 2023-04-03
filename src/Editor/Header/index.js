@@ -54,7 +54,7 @@ export default function EditorHeader({
       
         reportTemplateId: 41,
         reportTemplateName: "demo report 1",
-        reportValues: reporttempval
+        reportValues: appDefinition
       }
     axios.put('https://elabnextapi-dev.azurewebsites.net/api/ReportSetup/UpdateReportTemplate',payload )
       .then(response => {

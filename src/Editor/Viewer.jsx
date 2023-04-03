@@ -2606,7 +2606,7 @@ class ViewerComponent extends React.Component {
       data.slug,
       data.is_public
     );
-    const pages = Object.entries(data.definition.pages).map(
+    const pages = Object?.entries(data?.definition?.pages).map(
       ([pageId, page]) => ({ id: pageId, ...page })
     );
     const homePageId = data.definition.homePageId;
