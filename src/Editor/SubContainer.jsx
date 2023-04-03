@@ -1,4 +1,9 @@
-/* eslint-disable import/no-named-as-default */
+/**
+ * eslint-disable import/no-named-as-default
+ *
+ * @format
+ */
+
 import React, { useCallback, useState, useEffect, useRef } from 'react';
 import { useDrop, useDragLayer } from 'react-dnd';
 import { ItemTypes } from './ItemTypes';
@@ -68,7 +73,9 @@ export const SubContainer = ({
   zoomLevel = zoomLevel || 1;
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const allComponents = appDefinition ? appDefinition.pages[currentPageId].components : {};
+  const allComponents = appDefinition
+    ? appDefinition.pages[currentPageId].components
+    : {};
   const isParentModal =
     (allComponents[parent]?.component?.component === 'Modal' ||
       allComponents[parent]?.component?.component === 'Form') ??
@@ -78,7 +85,10 @@ export const SubContainer = ({
 
   Object.keys(allComponents).forEach((key) => {
     if (allComponents[key].parent === parent) {
-      childWidgets[key] = { ...allComponents[key], component: { ...allComponents[key]['component'], parent } };
+      childWidgets[key] = {
+        ...allComponents[key],
+        component: { ...allComponents[key]['component'], parent },
+      };
     }
   });
 
@@ -106,18 +116,36 @@ export const SubContainer = ({
         const parentId =
           parentComponent.component !== 'Tabs'
             ? parentRef.current.id
-            : parentRef.current.id?.substring(0, parentRef.current.id.lastIndexOf('-'));
+            : parentRef.current.id?.substring(
+                0,
+                parentRef.current.id.lastIndexOf('-')
+              );
 
         const _allComponents = JSON.parse(JSON.stringify(allComponents));
 
         defaultChildren.forEach((child) => {
-          const { componentName, layout, incrementWidth, properties, accessorKey, tab, defaultValue, styles } = child;
+          const {
+            componentName,
+            layout,
+            incrementWidth,
+            properties,
+            accessorKey,
+            tab,
+            defaultValue,
+            styles,
+          } = child;
 
-          const componentMeta = componentTypes.find((component) => component.component === componentName);
+          const componentMeta = componentTypes.find(
+            (component) => component.component === componentName
+          );
           const componentData = JSON.parse(JSON.stringify(componentMeta));
 
-          const width = layout.width ? layout.width : (componentMeta.defaultSize.width * 100) / 43;
-          const height = layout.height ? layout.height : componentMeta.defaultSize.height;
+          const width = layout.width
+            ? layout.width
+            : (componentMeta.defaultSize.width * 100) / 43;
+          const height = layout.height
+            ? layout.height
+            : componentMeta.defaultSize.height;
           const newComponentDefinition = {
             ...componentData.definition.properties,
           };
@@ -132,7 +160,11 @@ export const SubContainer = ({
                 value: accessor,
               });
             });
-            _.set(componentData, 'definition.properties', newComponentDefinition);
+            _.set(
+              componentData,
+              'definition.properties',
+              newComponentDefinition
+            );
           }
 
           if (_.isArray(styles) && styles.length > 0) {
@@ -162,7 +194,10 @@ export const SubContainer = ({
 
           _.set(childrenBoxes, newComponent.id, {
             component: newComponent.component,
-            parent: parentComponent.component === 'Tabs' ? parentId + '-' + tab : parentId,
+            parent:
+              parentComponent.component === 'Tabs'
+                ? parentId + '-' + tab
+                : parentId,
             layouts: {
               [currentLayout]: {
                 ...layout,
@@ -260,9 +295,13 @@ export const SubContainer = ({
     () => ({
       accept: ItemTypes.BOX,
       drop(item, monitor) {
-        const componentMeta = componentTypes.find((component) => component.component === item.component.component);
+        const componentMeta = componentTypes.find(
+          (component) => component.component === item.component.component
+        );
 
-        const canvasBoundingRect = parentRef.current.getElementsByClassName('real-canvas')[0].getBoundingClientRect();
+        const canvasBoundingRect = parentRef.current
+          .getElementsByClassName('real-canvas')[0]
+          .getBoundingClientRect();
 
         const newComponent = addNewWidgetToTheEditor(
           componentMeta,
@@ -301,7 +340,8 @@ export const SubContainer = ({
     }
     let width = 0;
     if (parentRef.current) {
-      const realCanvas = parentRef.current.getElementsByClassName('real-canvas')[0];
+      const realCanvas =
+        parentRef.current.getElementsByClassName('real-canvas')[0];
       if (realCanvas) {
         const canvasBoundingRect = realCanvas.getBoundingClientRect();
         width = canvasBoundingRect.width;
@@ -315,14 +355,19 @@ export const SubContainer = ({
     const canvasWidth = getContainerCanvasWidth();
     const nodeBounds = direction.node.getBoundingClientRect();
 
-    const canvasBounds = parentRef.current.getElementsByClassName('real-canvas')[0].getBoundingClientRect();
+    const canvasBounds = parentRef.current
+      .getElementsByClassName('real-canvas')[0]
+      .getBoundingClientRect();
 
     // Computing the left offset
     const leftOffset = nodeBounds.x - canvasBounds.x;
     const currentLeftOffset = boxes[componentId].layouts[currentLayout].left;
-    const leftDiff = currentLeftOffset - convertXToPercentage(leftOffset, canvasWidth);
+    const leftDiff =
+      currentLeftOffset - convertXToPercentage(leftOffset, canvasWidth);
 
-    const topDiff = boxes[componentId].layouts[currentLayout].top - (nodeBounds.y - canvasBounds.y);
+    const topDiff =
+      boxes[componentId].layouts[currentLayout].top -
+      (nodeBounds.y - canvasBounds.y);
 
     let newBoxes = { ...boxes };
 
@@ -331,11 +376,15 @@ export const SubContainer = ({
     if (selectedComponents) {
       for (const selectedComponent of selectedComponents) {
         newBoxes = produce(newBoxes, (draft) => {
-          const topOffset = draft[selectedComponent.id].layouts[currentLayout].top;
-          const leftOffset = draft[selectedComponent.id].layouts[currentLayout].left;
+          const topOffset =
+            draft[selectedComponent.id].layouts[currentLayout].top;
+          const leftOffset =
+            draft[selectedComponent.id].layouts[currentLayout].left;
 
-          draft[selectedComponent.id].layouts[currentLayout].top = topOffset - topDiff;
-          draft[selectedComponent.id].layouts[currentLayout].left = leftOffset - leftDiff;
+          draft[selectedComponent.id].layouts[currentLayout].top =
+            topOffset - topDiff;
+          draft[selectedComponent.id].layouts[currentLayout].left =
+            leftOffset - leftDiff;
         });
 
         const componentBottom =
@@ -364,9 +413,12 @@ export const SubContainer = ({
       height: 500,
     };
 
-    let { left, top, width, height } = boxes[id]['layouts'][currentLayout] || defaultData;
+    let { left, top, width, height } =
+      boxes[id]['layouts'][currentLayout] || defaultData;
 
-    const canvasBoundingRect = parentRef.current.getElementsByClassName('real-canvas')[0].getBoundingClientRect();
+    const canvasBoundingRect = parentRef.current
+      .getElementsByClassName('real-canvas')[0]
+      .getBoundingClientRect();
     const subContainerWidth = canvasBoundingRect.width;
 
     top = y;
@@ -429,11 +481,20 @@ export const SubContainer = ({
     backgroundSize: `${getContainerCanvasWidth() / 43}px 10px`,
   };
 
-  function onComponentOptionChangedForSubcontainer(component, optionName, value, componentId = '') {
-    if (typeof value === 'function' && _.findKey(exposedVariables, optionName)) {
+  function onComponentOptionChangedForSubcontainer(
+    component,
+    optionName,
+    value,
+    componentId = ''
+  ) {
+    if (
+      typeof value === 'function' &&
+      _.findKey(exposedVariables, optionName)
+    ) {
       return Promise.resolve();
     }
-    onOptionChange && onOptionChange({ component, optionName, value, componentId });
+    onOptionChange &&
+      onOptionChange({ component, optionName, value, componentId });
     return onComponentOptionChanged(component, optionName, value);
   }
 
@@ -455,21 +516,31 @@ export const SubContainer = ({
       ref={drop}
       style={styles}
       id={`canvas-${parent}`}
-      className={`real-canvas ${(isDragging || isResizing) && !readOnly ? ' show-grid' : ''}`}
+      className={`real-canvas ${
+        (isDragging || isResizing) && !readOnly ? ' show-grid' : ''
+      }`}
     >
       {checkParentVisibility() &&
         Object.keys(childWidgets).map((key) => {
-          const addDefaultChildren = childWidgets[key]['withDefaultChildren'] || false;
+          const addDefaultChildren =
+            childWidgets[key]['withDefaultChildren'] || false;
 
           const box = childWidgets[key];
           const canShowInCurrentLayout =
-            box.component.definition.others[currentLayout === 'mobile' ? 'showOnMobile' : 'showOnDesktop'].value;
-          if (box.parent && resolveReferences(canShowInCurrentLayout, currentState)) {
+            box.component.definition.others[
+              currentLayout === 'mobile' ? 'showOnMobile' : 'showOnDesktop'
+            ].value;
+          if (
+            box.parent &&
+            resolveReferences(canShowInCurrentLayout, currentState)
+          ) {
             return (
               <DraggableBox
                 onComponentClick={onComponentClick}
                 onEvent={onEvent}
-                onComponentOptionChanged={onComponentOptionChangedForSubcontainer}
+                onComponentOptionChanged={
+                  onComponentOptionChangedForSubcontainer
+                }
                 onComponentOptionsChanged={onComponentOptionsChanged}
                 key={key}
                 dataQueries={dataQueries}
@@ -490,7 +561,11 @@ export const SubContainer = ({
                 selectedComponent={selectedComponent}
                 deviceWindowWidth={deviceWindowWidth}
                 isSelectedComponent={
-                  mode === 'edit' ? selectedComponents.find((component) => component.id === key) : false
+                  mode === 'edit'
+                    ? selectedComponents.find(
+                        (component) => component.id === key
+                      )
+                    : false
                 }
                 removeComponent={customRemoveComponent}
                 canvasWidth={_containerCanvasWidth}
@@ -501,7 +576,9 @@ export const SubContainer = ({
                 hoveredComponent={hoveredComponent}
                 parentId={parentComponent?.name}
                 sideBarDebugger={sideBarDebugger}
-                isMultipleComponentsSelected={selectedComponents?.length > 1 ? true : false}
+                isMultipleComponentsSelected={
+                  selectedComponents?.length > 1 ? true : false
+                }
                 exposedVariables={exposedVariables ?? {}}
                 childComponents={childComponents[key]}
                 containerProps={{
@@ -536,10 +613,17 @@ export const SubContainer = ({
         })}
 
       {Object.keys(boxes).length === 0 && !appLoading && !isDragging && (
-        <div className="mx-auto mt-5 w-50 p-5 bg-light no-components-box" data-cy="----Test----">
-          <center className="text-muted">
+        <div
+          className='mx-auto mt-5 w-50 p-5 bg-light no-components-box'
+          data-cy='----Test----'
+        >
+          <center className='text-muted'>
             Drag components from the right sidebar and drop here. Check out our{' '}
-            <a href="https://docs.tooljet.io/docs/tutorial/adding-widget" target="_blank" rel="noreferrer">
+            <a
+              href='https://docs.tooljet.io/docs/tutorial/adding-widget'
+              target='_blank'
+              rel='noreferrer'
+            >
               guide
             </a>{' '}
             on adding widgets.
@@ -547,10 +631,10 @@ export const SubContainer = ({
         </div>
       )}
       {appLoading && (
-        <div className="mx-auto mt-5 w-50 p-5">
+        <div className='mx-auto mt-5 w-50 p-5'>
           <center>
-            <div className="progress progress-sm w-50">
-              <div className="progress-bar progress-bar-indeterminate"></div>
+            <div className='progress progress-sm w-50'>
+              <div className='progress-bar progress-bar-indeterminate'></div>
             </div>
           </center>
         </div>

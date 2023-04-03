@@ -30,6 +30,7 @@ import _ from 'lodash';
 import { Redirect } from 'react-router-dom';
 import Spinner from '@/_ui/Spinner';
 import { toast } from 'react-hot-toast';
+import axios from 'axios';
 const temp = {
   id: '42af8904-10f3-43e9-a76d-984feb4a8cc4',
   name: '2',
@@ -2510,7 +2511,6 @@ const temp = {
   data_queries: [],
 };
 
-console.log('temp', temp);
 class ViewerComponent extends React.Component {
   constructor(props) {
     super(props);
@@ -2558,7 +2558,7 @@ class ViewerComponent extends React.Component {
 
   setStateForApp = (data) => {
     const copyDefinition = _.cloneDeep(data.definition);
-    const pagesObj = copyDefinition.pages || {};
+    const pagesObj = copyDefinition?.pages || {};
 
     const newDefinition = {
       ...copyDefinition,
@@ -2703,7 +2703,23 @@ class ViewerComponent extends React.Component {
 
   loadApplicationByVersion = (appId, versionId) => {
     // console.log("appdef",JSON.parse(localStorage.getItem('appdef')));
+    axios
+      .get(
+        'https://elabnextapi-dev.azurewebsites.net/api/ReportSetup/GetReportTemplate?ReportTemplateId=41'
+      )
+      .then((response) => {
+        temp.definition = JSON.parse(
+          response?.data?.resultData[0].reportValues
+        );
+        this.setStateForApp(temp);
+        this.setStateForContainer(temp);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
     temp.definition = JSON.parse(localStorage.getItem('appdef'));
+
     this.setStateForApp(temp);
     this.setStateForContainer(temp);
   };
@@ -2999,13 +3015,10 @@ class ViewerComponent extends React.Component {
                 currentLayout={this.state.currentLayout}
               />
               <div className='sub-section'>
-                <Pdf targetRef={ref} filename='code-example.pdf'>
-                  {({ toPdf }) => <button onClick={toPdf}>Generate Pdf</button>}
-                </Pdf>
                 <div className='main'>
                   <div className='canvas-container align-items-center'>
                     <div className='areas d-flex flex-rows justify-content-center'>
-                      {appDefinition?.showViewerNavigation && (
+                      {/* {appDefinition?.showViewerNavigation && (
                         <ViewerNavigation
                           isMobileDevice={this.state.currentLayout === 'mobile'}
                           canvasBackgroundColor={this.computeCanvasBackgroundColor()}
@@ -3020,7 +3033,15 @@ class ViewerComponent extends React.Component {
                           switchPage={this.switchPage}
                           darkMode={this.props.darkMode}
                         />
-                      )}
+                      )} */}
+
+                      <div>
+                        <Pdf targetRef={ref} filename='code-example.pdf'>
+                          {({ toPdf }) => (
+                            <button onClick={toPdf}>Generate Pdf</button>
+                          )}
+                        </Pdf>
+                      </div>
                       <div
                         ref={ref}
                         className='canvas-area'
@@ -3036,6 +3057,7 @@ class ViewerComponent extends React.Component {
                           backgroundColor: this.computeCanvasBackgroundColor(),
                           margin: 0,
                           padding: 0,
+                          border: '1px solid red',
                         }}
                       >
                         {defaultComponentStateComputed && (

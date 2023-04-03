@@ -10,6 +10,9 @@ import { ManageAppUsers } from '../ManageAppUsers';
 import { ReleaseVersionButton } from '../ReleaseVersionButton';
 import cx from 'classnames';
 import config from 'config';
+import { Toast } from 'react-bootstrap';
+import axios from 'axios';
+import { Button } from '@progress/kendo-react-all';
 
 export default function EditorHeader({
   darkMode,
@@ -38,8 +41,37 @@ export default function EditorHeader({
   handleSlugChange,
   onVersionRelease,
   saveEditingVersion,
+  reporttempval
+
 }) {
   const { is_maintenance_on } = app;
+
+
+  const updateReportTemplate=()=>{
+   
+    const payload ={
+      
+        reportTemplateId: 41,
+        reportTemplateName: "demo report 1",
+        reportValues: reporttempval
+      }
+    axios.put('https://elabnextapi-dev.azurewebsites.net/api/ReportSetup/UpdateReportTemplate',payload )
+      .then(response => {
+       console.log("response",response);
+        Toast('Save Successfully')
+      })
+      .catch(error => {
+       console.log("sss",error);
+        setLoading(false);
+      });
+  }
+  const getReportTemplate =()=>[
+    axios.get('https://elabnextapi-dev.azurewebsites.net/api/ReportSetup/GetReportTemplate?ReportTemplateId=41')
+    .then((response)=>{
+      console.log("response",JSON.parse(response.data.resultData[0].reportValues));
+    })
+    .catch((error)=>console.log("error",error))
+  ]
 
   return (
     <div className="header">
@@ -89,10 +121,14 @@ export default function EditorHeader({
                         })}
                         data-cy="autosave-indicator"
                       >
-                        {isSaving ? 'Saving...' : saveError ? 'Could not save changes' : 'Saved changes'}
+                        {isSaving ? 'Savinggg...' : saveError ? 'Could not save changes' : 'Saved changes'}
                       </span>
+         
+                    <Button onClick={getReportTemplate}>Get Report</Button>
+                 
                     </div>
                   </div>
+                 
                 </div>
               </div>
               <div className="col-auto d-flex">
@@ -130,6 +166,7 @@ export default function EditorHeader({
                     target="_blank"
                     rel="noreferrer"
                     data-cy="preview-link-button"
+                    onClick={updateReportTemplate}
                   >
                     <svg
                       className="icon cursor-pointer w-100 h-100"

@@ -149,7 +149,7 @@ export function resolveReferences(object, state, defaultValue, customObjects = {
         if (withError) return [new_array, error];
         return new_array;
       } else if (!_.isEmpty(object)) {
-        console.log(`[Resolver] Resolving as object ${typeof object}, state: ${state}`);
+        // console.log(`[Resolver] Resolving as object ${typeof object}, state: ${state}`);
         Object.keys(object).forEach((key) => {
           const resolved_object = resolveReferences(object[key], state);
           object[key] = resolved_object;

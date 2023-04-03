@@ -1,6 +1,6 @@
 /** @format */
 
-import React from 'react';
+import React, { useState } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { defaults, cloneDeep, isEqual, isEmpty, debounce, omit } from 'lodash';
@@ -152,7 +152,11 @@ class EditorComponent extends React.Component {
         : 95 ?? 70,
     };
 
-    this.autoSave = debounce(this.saveEditingVersion, 3000);
+    this.reptemp = {
+      values: { id: '23' },
+    };
+
+    this.autoSave = debounce(this.saveEditingVersion, 500);
     this.realtimeSave = debounce(this.appDefinitionChanged, 500);
   }
 
@@ -1294,6 +1298,7 @@ class EditorComponent extends React.Component {
     const canvasBoundingRect = document
       .getElementsByClassName('canvas-area')[0]
       ?.getBoundingClientRect();
+
     return canvasBoundingRect?.width;
   };
 
@@ -1314,8 +1319,10 @@ class EditorComponent extends React.Component {
   };
 
   saveEditingVersion = () => {
-    console.log('autosave callled', this.state.appDefinition);
-    localStorage.setItem('appdef', JSON.stringify(this.state.appDefinition));
+    // setReport(this.state.appDefinition);
+    this.reptemp = this.state.appDefinition;
+
+    // localStorage.setItem('appdef', JSON.stringify(this.state.appDefinition));
 
     // if (this.isVersionReleased()) {
     //   this.setState({ isSaving: false, showCreateVersionModalPrompt: true });
@@ -1996,6 +2003,7 @@ class EditorComponent extends React.Component {
             handleSlugChange={this.handleSlugChange}
             onVersionRelease={this.onVersionRelease}
             saveEditingVersion={this.saveEditingVersion}
+            reporttempval={this.state.appDefinition}
           />
           <DndProvider backend={HTML5Backend}>
             <div className='sub-section'>
@@ -2111,6 +2119,7 @@ class EditorComponent extends React.Component {
                         +this.state.appDefinition.globalSettings
                           .canvasMaxHeight,
                       backgroundColor: this.computeCanvasBackgroundColor(),
+                      border: '5 px solid red',
                     }}
                   >
                     {/* {config.ENABLE_MULTIPLAYER_EDITING && (
@@ -2158,7 +2167,7 @@ class EditorComponent extends React.Component {
                       </div>
                     )} */}
 
-                    <>
+                    <div style={{ border: '5 px solid red' }}>
                       <Container
                         canvasWidth={this.getCanvasWidth()}
                         canvasHeight={this.getCanvasHeight()}
@@ -2199,7 +2208,7 @@ class EditorComponent extends React.Component {
                         currentLayout={currentLayout}
                         canvasWidth={this.getCanvasWidth()}
                       />
-                    </>
+                    </div>
                   </div>
                 </div>
                 <QueryPanel
