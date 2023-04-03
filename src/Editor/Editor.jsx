@@ -52,6 +52,7 @@ import { v4 as uuid } from 'uuid';
 import Skeleton from 'react-loading-skeleton';
 import EmptyQueriesIllustration from '@assets/images/icons/no-queries-added.svg';
 import EditorHeader from './Header';
+import axios from 'axios';
 
 setAutoFreeze(false);
 enablePatches();
@@ -1901,6 +1902,26 @@ class EditorComponent extends React.Component {
       queryPanelHeight: height,
     });
   };
+
+  getReportTemplate = async () => {
+    await axios
+      .get(
+        'https://elabnextapi-dev.azurewebsites.net/api/ReportSetup/GetReportTemplate?ReportTemplateId=41'
+      )
+      .then((response) => {
+        // this.state.appDefinition = JSON.parse(
+        //   response.data.resultData[0].reportValues
+        // );
+        console.log(
+          'object',
+          JSON.parse(response.data.resultData[0].reportValues)
+        );
+        // this.fetchApp();
+      })
+
+      .catch((error) => console.log('error', error));
+  };
+
   render() {
     const {
       currentSidebarTab,
@@ -2003,7 +2024,7 @@ class EditorComponent extends React.Component {
             handleSlugChange={this.handleSlugChange}
             onVersionRelease={this.onVersionRelease}
             saveEditingVersion={this.saveEditingVersion}
-            reporttempval={this.state.appDefinition}
+            getReportTemplate={this.getReportTemplate}
           />
           <DndProvider backend={HTML5Backend}>
             <div className='sub-section'>

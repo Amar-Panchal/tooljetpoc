@@ -41,7 +41,8 @@ export default function EditorHeader({
   handleSlugChange,
   onVersionRelease,
   saveEditingVersion,
-  reporttempval
+  reporttempval,
+  getReportTemplate
 
 }) {
   const { is_maintenance_on } = app;
@@ -65,13 +66,7 @@ export default function EditorHeader({
         setLoading(false);
       });
   }
-  const getReportTemplate =()=>[
-    axios.get('https://elabnextapi-dev.azurewebsites.net/api/ReportSetup/GetReportTemplate?ReportTemplateId=41')
-    .then((response)=>{
-      console.log("response",JSON.parse(response.data.resultData[0].reportValues));
-    })
-    .catch((error)=>console.log("error",error))
-  ]
+ 
 
   return (
     <div className="header">
