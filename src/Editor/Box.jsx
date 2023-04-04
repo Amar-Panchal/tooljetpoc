@@ -428,7 +428,6 @@ export const Box = function Box({
               height: '76px',
               width: '76px',
               marginLeft: '18px',
-              border: '1px solid red',
             }}
           >
             <div

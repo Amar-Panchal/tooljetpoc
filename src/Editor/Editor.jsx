@@ -1906,7 +1906,7 @@ class EditorComponent extends React.Component {
   getReportTemplate = async () => {
     await axios
       .get(
-        'https://elabnextapi-dev.azurewebsites.net/api/ReportSetup/GetReportTemplate?ReportTemplateId=41'
+        'https://elabnextapi-dev.azurewebsites.net/api/ReportSetup/GetReportTemplate?ReportTemplateId=43'
       )
       .then((response) => {
         // this.state.appDefinition = JSON.parse(

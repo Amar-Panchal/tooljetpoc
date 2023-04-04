@@ -371,11 +371,11 @@ export const WidgetManager = function WidgetManager({
     const allWidgets = [];
 
     const commonItems = [
-      // 'Table',
-      // 'Chart',
-      // 'Button',
-      // 'Text',
-      // 'Datepicker',
+      'Table',
+      'Chart',
+      'Button',
+      'Text',
+      'Datepicker',
       'Image',
     ];
 

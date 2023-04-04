@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import AppLogo from '@/_components/AppLogo';
 import { GlobalSettings } from './GlobalSettings';
 import EditAppName from './EditAppName';
@@ -13,6 +13,7 @@ import config from 'config';
 import { Toast } from 'react-bootstrap';
 import axios from 'axios';
 import { Button } from '@progress/kendo-react-all';
+import useRouter from '../../_hooks/use-router';
 
 export default function EditorHeader({
   darkMode,
@@ -41,7 +42,6 @@ export default function EditorHeader({
   handleSlugChange,
   onVersionRelease,
   saveEditingVersion,
-  reporttempval,
   getReportTemplate
 
 }) {
@@ -52,14 +52,14 @@ export default function EditorHeader({
    
     const payload ={
       
-        reportTemplateId: 42,
-        reportTemplateName: "demo report 2",
+        reportTemplateId: 43,
+        reportTemplateName: "registration",
         reportValues: appDefinition
       }
     axios.put('https://elabnextapi-dev.azurewebsites.net/api/ReportSetup/UpdateReportTemplate',payload )
       .then(response => {
-       console.log("response",response);
         Toast('Save Successfully')
+        
       })
       .catch(error => {
        console.log("sss",error);

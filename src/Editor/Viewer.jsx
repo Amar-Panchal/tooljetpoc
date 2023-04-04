@@ -2705,7 +2705,7 @@ class ViewerComponent extends React.Component {
     // console.log("appdef",JSON.parse(localStorage.getItem('appdef')));
     axios
       .get(
-        'https://elabnextapi-dev.azurewebsites.net/api/ReportSetup/GetReportTemplate?ReportTemplateId=41'
+        'https://elabnextapi-dev.azurewebsites.net/api/ReportSetup/GetReportTemplate?ReportTemplateId=43'
       )
       .then((response) => {
         temp.definition = JSON.parse(
@@ -3056,7 +3056,6 @@ class ViewerComponent extends React.Component {
                           backgroundColor: this.computeCanvasBackgroundColor(),
                           margin: 0,
                           padding: 0,
-                          border: '1px solid red',
                         }}
                       >
                         {defaultComponentStateComputed && (

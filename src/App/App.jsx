@@ -1,3 +1,5 @@
+/** @format */
+
 import React, { Suspense } from 'react';
 // eslint-disable-next-line no-unused-vars
 import config from 'config';
@@ -24,6 +26,7 @@ import '@/_styles/theme.scss';
 import 'emoji-mart/css/emoji-mart.css';
 import { AppLoader } from '@/AppLoader';
 import SetupScreenSelfHost from '../SuccessInfoScreen/SetupScreenSelfHost';
+import { RegistrationPage } from '../Editor/RegistrationPage/RegistrationPage';
 
 class App extends React.Component {
   constructor(props) {
@@ -40,7 +43,11 @@ class App extends React.Component {
     if (this.state.currentUser) {
       tooljetService.fetchMetaData().then((data) => {
         localStorage.setItem('currentVersion', data.installed_version);
-        if (data.latest_version && lt(data.installed_version, data.latest_version) && data.version_ignored === false) {
+        if (
+          data.latest_version &&
+          lt(data.installed_version, data.latest_version) &&
+          data.version_ignored === false
+        ) {
           this.setState({ updateAvailable: true });
         }
       });
@@ -80,18 +87,24 @@ class App extends React.Component {
 
     return (
       <Suspense fallback={null}>
-        <BrowserRouter history={history} basename={window.public_config?.SUB_PATH || '/'}>
-          <div className={`main-wrapper ${darkMode ? 'theme-dark' : ''}`} data-cy="main-wrapper">
+        <BrowserRouter
+          history={history}
+          basename={window.public_config?.SUB_PATH || '/'}
+        >
+          <div
+            className={`main-wrapper ${darkMode ? 'theme-dark' : ''}`}
+            data-cy='main-wrapper'
+          >
             {updateAvailable && (
-              <div className="alert alert-info alert-dismissible" role="alert">
-                <h3 className="mb-1">Update available</h3>
+              <div className='alert alert-info alert-dismissible' role='alert'>
+                <h3 className='mb-1'>Update available</h3>
                 <p>A new version of ToolJet has been released.</p>
-                <div className="btn-list">
+                <div className='btn-list'>
                   <a
-                    href="https://docs.tooljet.io/docs/setup/updating"
-                    target="_blank"
-                    className="btn btn-info"
-                    rel="noreferrer"
+                    href='https://docs.tooljet.io/docs/setup/updating'
+                    target='_blank'
+                    className='btn btn-info'
+                    rel='noreferrer'
                   >
                     Read release notes & update
                   </a>
@@ -100,7 +113,7 @@ class App extends React.Component {
                       tooljetService.skipVersion();
                       this.setState({ updateAvailable: false });
                     }}
-                    className="btn"
+                    className='btn'
                   >
                     Skip this version
                   </a>
@@ -110,20 +123,27 @@ class App extends React.Component {
 
             <PrivateRoute
               exact
-              path="/"
+              path='/'
               component={AppLoader}
               switchDarkMode={this.switchDarkMode}
               darkMode={darkMode}
             />
-            <Route path="/login/:organizationId" exact component={LoginPage} />
-            <Route path="/login" exact component={LoginPage} />
-            <Route path="/setup" exact component={(props) => <SetupScreenSelfHost {...props} darkMode={darkMode} />} />
-            <Route path="/sso/:origin/:configId" exact component={Oauth} />
-            <Route path="/sso/:origin" exact component={Oauth} />
-            <Route path="/signup" component={SignupPage} />
-            <Route path="/forgot-password" component={ForgotPassword} />
+            <Route path='/login/:organizationId' exact component={LoginPage} />
+            <Route path='/login' exact component={LoginPage} />
             <Route
-              path="/reset-password/:token"
+              path='/setup'
+              exact
+              component={(props) => (
+                <SetupScreenSelfHost {...props} darkMode={darkMode} />
+              )}
+            />
+            <Route path='/sso/:origin/:configId' exact component={Oauth} />
+            <Route path='/sso/:origin' exact component={Oauth} />
+            <Route path='/signup' component={SignupPage} />
+            <Route path='/forgot-password' component={ForgotPassword} />
+            <Route path='/registration-page' component={RegistrationPage} />
+            <Route
+              path='/reset-password/:token'
               render={(props) => (
                 <Redirect
                   to={{
@@ -135,9 +155,9 @@ class App extends React.Component {
                 />
               )}
             />
-            <Route path="/reset-password" component={ResetPassword} />
+            <Route path='/reset-password' component={ResetPassword} />
             <Route
-              path="/invitations/:token"
+              path='/invitations/:token'
               render={(props) => (
                 <Redirect
                   to={{
@@ -151,7 +171,7 @@ class App extends React.Component {
               )}
             />
             <Route
-              path="/invitations/:token/workspaces/:organizationToken"
+              path='/invitations/:token/workspaces/:organizationToken'
               render={(props) => (
                 <Redirect
                   to={{
@@ -165,9 +185,9 @@ class App extends React.Component {
                 />
               )}
             />
-            <Route path="/confirm" component={VerificationSuccessInfoScreen} />
+            <Route path='/confirm' component={VerificationSuccessInfoScreen} />
             <Route
-              path="/organization-invitations/:token"
+              path='/organization-invitations/:token'
               render={(props) => (
                 <Redirect
                   to={{
@@ -181,61 +201,63 @@ class App extends React.Component {
               )}
             />
             <Route
-              path="/confirm-invite"
-              component={(props) => <OrganizationInvitationPage {...props} darkMode={darkMode} />}
+              path='/confirm-invite'
+              component={(props) => (
+                <OrganizationInvitationPage {...props} darkMode={darkMode} />
+              )}
             />
             <PrivateRoute
               exact
-              path="/apps/:id/:pageHandle?"
+              path='/apps/:id/:pageHandle?'
               component={AppLoader}
               switchDarkMode={this.switchDarkMode}
               darkMode={darkMode}
             />
             <PrivateRoute
               exact
-              path="/applications/:id/versions/:versionId/:pageHandle?"
+              path='/applications/:id/versions/:versionId/:pageHandle?'
               component={Viewer}
               switchDarkMode={this.switchDarkMode}
               darkMode={darkMode}
             />
             <PrivateRoute
               exact
-              path="/applications/:slug/:pageHandle?"
+              path='/applications/:slug/:pageHandle?'
               component={Viewer}
               switchDarkMode={this.switchDarkMode}
               darkMode={darkMode}
             />
             <PrivateRoute
               exact
-              path="/oauth2/authorize"
+              path='/oauth2/authorize'
               component={Authorize}
               switchDarkMode={this.switchDarkMode}
               darkMode={darkMode}
             />
             <PrivateRoute
               exact
-              path="/workspace-settings"
+              path='/workspace-settings'
               component={OrganizationSettings}
               switchDarkMode={this.switchDarkMode}
               darkMode={darkMode}
             />
             <PrivateRoute
               exact
-              path="/settings"
+              path='/settings'
               component={SettingsPage}
               switchDarkMode={this.switchDarkMode}
               darkMode={darkMode}
             />
             <PrivateRoute
               exact
-              path="/database"
+              path='/database'
               component={TooljetDatabase}
               switchDarkMode={this.switchDarkMode}
               darkMode={darkMode}
             />
             <AdminRoute
               exact
-              path="/integrations"
+              path='/integrations'
               component={MarketplacePage}
               switchDarkMode={this.switchDarkMode}
               darkMode={darkMode}
