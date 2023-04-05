@@ -2,9 +2,12 @@
 
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { TextInput } from '../Components/TextInput';
+import KendoInput from './Components/KendoInput';
+import KendoButton from './Components/KendoButton';
 
 function RegistrationPage() {
-  const [template, settemplate] = useState();
+  const [componentsToRender, setComponentsToRender] = useState([]);
 
   const getReportTemplate = async () => {
     await axios
@@ -13,40 +16,47 @@ function RegistrationPage() {
       )
       .then((response) => {
         let data = JSON.parse(response?.data?.resultData[0]?.reportValues);
-        // data = data?.pages['c3cf6dba-88d1-4527-9107-389632a95bc3']?.components;
-        settemplate(data);
+        console.log('object', data);
+        Object.keys(data?.pages).map((key) => {
+          data = data?.pages[key].components;
+        });
+        createJsonFromTemplate(data);
       })
 
       .catch((error) => console.log('error', error));
   };
-  console.log('object', template);
+
+  function createJsonFromTemplate(data) {
+    const temp = [];
+
+    Object.keys(data).map((key) => {
+      data[key].component.layouts = data[key].layouts;
+      temp.push(data[key].component);
+    });
+
+    setComponentsToRender(temp);
+  }
+
+  function renderComponent(component) {
+    let tem = component.component;
+
+    switch (tem) {
+      case 'TextInput':
+        return <KendoInput props={component} />;
+      case 'Text':
+        return <h1>label</h1>;
+    }
+  }
+
   useEffect(() => {
     getReportTemplate();
   }, []);
 
-  // useEffect(() => {
-  //   Object.keys(template.pages)?.map((key) => {
-  //     setRenderTemplate(template.pages[key].components);
-  //   });
-  // }, [template]);
-
-  // useEffect(() => {
-  //   if (renderTemplate) {
-  //     Object.keys(renderTemplate)?.map((key) => {
-  //       console.log(renderTemplate[key]);
-  //     });
-  //   }
-  // }, [renderTemplate]);
-
-  // console.log('template', renderTemplate);
-
   return (
     <div>
-      <h1>hello</h1>
-      {template?.data &&
-        Object.keys(template?.data)?.map((key) => {
-          console.log(template?.data[key]);
-        })}
+      {componentsToRender.map((component) => {
+        return renderComponent(component);
+      })}
     </div>
   );
 }
