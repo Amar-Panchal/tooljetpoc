@@ -5,9 +5,14 @@ import axios from 'axios';
 import { TextInput } from '../Components/TextInput';
 import KendoInput from './Components/KendoInput';
 import KendoButton from './Components/KendoButton';
+import { Form, Field, FormElement } from '@progress/kendo-react-form';
+import { Error } from '@progress/kendo-react-labels';
+import { Input } from '@progress/kendo-react-inputs';
+import { DateInput } from '@progress/kendo-react-all';
 
 function RegistrationPage() {
   const [componentsToRender, setComponentsToRender] = useState([]);
+  const [RegistrationPageFormData, setRegistrationPageFormData] = useState({});
 
   const getReportTemplate = async () => {
     await axios
@@ -16,7 +21,7 @@ function RegistrationPage() {
       )
       .then((response) => {
         let data = JSON.parse(response?.data?.resultData[0]?.reportValues);
-        console.log('object', data);
+
         Object.keys(data?.pages).map((key) => {
           data = data?.pages[key].components;
         });
@@ -38,22 +43,41 @@ function RegistrationPage() {
   }
 
   function renderComponent(component) {
-    let tem = component.component;
-
-    switch (tem) {
+    let componentType = component.component;
+    console.log('resttt', RegistrationPageFormData[component.name]);
+    switch (componentType) {
       case 'TextInput':
-        return <KendoInput props={component} />;
-      case 'Text':
-        return <h1>label</h1>;
+        return (
+          <KendoInput
+            props={component}
+            value={RegistrationPageFormData[component.name]}
+            onChange={(e) =>
+              setRegistrationPageFormData({
+                ...RegistrationPageFormData,
+                [component.name]: e.target.value,
+              })
+            }
+          />
+        );
+      case 'Button':
+        return (
+          <KendoButton
+            onclick={() => {
+              setRegistrationPageFormData({});
+            }}
+            props={component}
+          />
+        );
     }
   }
-
   useEffect(() => {
     getReportTemplate();
   }, []);
-
   return (
-    <div>
+    <div style={{ padding: '100px' }}>
+      <div>
+        <h1>Registration Form </h1>
+      </div>
       {componentsToRender.map((component) => {
         return renderComponent(component);
       })}

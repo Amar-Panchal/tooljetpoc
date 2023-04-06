@@ -3,8 +3,13 @@
 import { Button } from '@progress/kendo-react-all';
 import React from 'react';
 
-function KendoButton() {
-  return <Button themeColor={'primary'}>Primary</Button>;
+function KendoButton({ onclick, props }) {
+  console.log('kendobutton', props);
+  return (
+    <Button themeColor={'primary'} onClick={onclick}>
+      Primary
+    </Button>
+  );
 }
 
 export default KendoButton;
