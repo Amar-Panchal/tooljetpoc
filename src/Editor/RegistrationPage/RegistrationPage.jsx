@@ -44,7 +44,7 @@ function RegistrationPage() {
 
   function renderComponent(component) {
     let componentType = component.component;
-    console.log('resttt', RegistrationPageFormData[component.name]);
+
     switch (componentType) {
       case 'TextInput':
         return (
@@ -63,7 +63,9 @@ function RegistrationPage() {
         return (
           <KendoButton
             onclick={() => {
-              setRegistrationPageFormData({});
+              console.log(RegistrationPageFormData);
+              alert(JSON.stringify(RegistrationPageFormData));
+              window.location.reload();
             }}
             props={component}
           />
@@ -73,6 +75,7 @@ function RegistrationPage() {
   useEffect(() => {
     getReportTemplate();
   }, []);
+
   return (
     <div style={{ padding: '100px' }}>
       <div>
@@ -81,6 +84,8 @@ function RegistrationPage() {
       {componentsToRender.map((component) => {
         return renderComponent(component);
       })}
+
+      <button onClick={() => setRegistrationPageFormData({})}>clear</button>
     </div>
   );
 }

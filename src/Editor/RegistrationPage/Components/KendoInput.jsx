@@ -7,9 +7,9 @@ const KendoInput = ({ props, value, onChange }) => {
   const { backgroundColor, borderColor, borderRadius, textColor } =
     props.definition.styles;
   const { generalStyles, properties } = props.definition;
-
+  console.log('valueeee in inputt chin', value);
   return (
-    <div>
+    <div style={{ margin: '10px' }}>
       <p>
         {props.name
           .replace(/([A-Z])/g, ' $1')
