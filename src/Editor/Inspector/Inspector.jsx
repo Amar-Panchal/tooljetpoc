@@ -8,6 +8,7 @@ import { Chart } from './Components/Chart';
 import { Form } from './Components/Form';
 import { renderElement } from './Utils';
 import { toast } from 'react-hot-toast';
+import Select from 'react-select';
 import {
   validateQueryName,
   convertToKebabCase,
@@ -25,6 +26,7 @@ import Accordion from '@/_ui/Accordion';
 import { useTranslation } from 'react-i18next';
 import _ from 'lodash';
 import { useMounted } from '@/_hooks/use-mount';
+import axios from 'axios';
 
 export const Inspector = ({
   selectedComponentId,
@@ -44,6 +46,7 @@ export const Inspector = ({
     layouts: allComponents[selectedComponentId].layouts,
     parent: allComponents[selectedComponentId].parent,
   };
+
   const [showWidgetDeleteConfirmation, setWidgetDeleteConfirmation] =
     useState(false);
   // eslint-disable-next-line no-unused-vars
@@ -54,27 +57,37 @@ export const Inspector = ({
   );
   const [inputRef, setInputFocus] = useFocus();
   const [selectedTab, setSelectedTab] = useState('properties');
+  const [InputFieldDropdown, setInputFieldDropdown] = useState([]);
   const { t } = useTranslation();
-
   useHotkeys('backspace', () => setWidgetDeleteConfirmation(true));
   useHotkeys('escape', () => switchSidebarTab(2));
+
+  const [droppedComponent, setDroppedComponent] = useState();
 
   const componentMeta = componentTypes.find(
     (comp) => component.component.component === comp.component
   );
 
   const isMounted = useMounted();
-
+  useEffect(() => {
+    setDroppedComponent(component.component.component);
+  }, [allComponents]);
   useEffect(() => {
     componentNameRef.current = newComponentName;
   }, [newComponentName]);
 
   useEffect(() => {
+    getFieldMasterDropdownList();
     return () => {
       handleComponentNameChange(componentNameRef.current);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    console.log('droppedComponent', droppedComponent);
+    console.log('inputtt', InputFieldDropdown);
+  }, [droppedComponent]);
 
   const validateComponentName = (name) => {
     const isValid = !Object.values(allComponents)
@@ -323,7 +336,36 @@ export const Inspector = ({
       {buildGeneralStyle()}
     </div>
   );
+  const getFieldMasterDropdownList = async () => {
+    await axios
+      .get(
+        'https://elabnextapi-dev.azurewebsites.net/api/ReportSetup/GetFieldMaster'
+      )
+      .then((response) => {
+        console.log('response?.data?.resultData?.fieldMaster?', component);
 
+        const temp = [];
+
+        response?.data?.resultData?.fieldMaster?.map((element) => {
+          if (
+            component.component.component.replace(/\s+/g, '').toLowerCase() ===
+            element.componentType.replace(/\s+/g, '').toLowerCase()
+          )
+            temp.push({
+              value: element.fieldName,
+              label: element.fieldName,
+              componentType: element.componentType,
+            });
+        });
+
+        setInputFieldDropdown(temp);
+      })
+      .catch((error) => console.log('err', error));
+  };
+
+  const handleTypeSelect = (e) => {
+    setNewComponentName(e.value);
+  };
   return (
     <div className='inspector'>
       <ConfirmDialog
@@ -340,7 +382,7 @@ export const Inspector = ({
         <div className='row inspector-component-title-input-holder'>
           <div className='col-11 p-0'>
             <div className='input-icon'>
-              <input
+              {/* <input
                 onChange={(e) => setNewComponentName(e.target.value)}
                 type='text'
                 onBlur={() => handleComponentNameChange(newComponentName)}
@@ -348,6 +390,14 @@ export const Inspector = ({
                 value={newComponentName}
                 ref={inputRef}
                 data-cy='edit-widget-name'
+              /> */}
+              <Select
+                options={InputFieldDropdown}
+                onChange={handleTypeSelect}
+                value={InputFieldDropdown.filter(function (option) {
+                  return option.value === newComponentName;
+                })}
+                label='Single select'
               />
               <span className='input-icon-addon'>
                 <svg
