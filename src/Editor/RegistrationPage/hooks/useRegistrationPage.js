@@ -14,9 +14,8 @@ function useRegistrationPage() {
       )
       .then((response) => {
         let data = JSON.parse(response?.data?.resultData[0]?.reportValues);
-
         Object.keys(data?.pages).map((key) => {
-          data = data?.pages[key].components;
+          data = data?.pages[key]?.components;
         });
         createJsonFromTemplate(data);
       })
@@ -27,7 +26,7 @@ function useRegistrationPage() {
   function createJsonFromTemplate(data) {
     const temp = [];
 
-    Object.keys(data).map((key) => {
+    Object.keys(data)?.map((key) => {
       data[key].component.layouts = data[key].layouts;
       temp.push(data[key].component);
     });

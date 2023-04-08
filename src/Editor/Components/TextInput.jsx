@@ -1,7 +1,7 @@
 /** @format */
 
-import { Input as KendoInput } from '@progress/kendo-react-all';
-import React, { useEffect, useRef, useState } from 'react';
+import { Input as KendoInput } from "@progress/kendo-react-all";
+import React, { useEffect, useRef, useState } from "react";
 
 export const TextInput = function TextInput({
   height,
@@ -21,15 +21,15 @@ export const TextInput = function TextInput({
   const [value, setValue] = useState(properties.value);
   const [visibility, setVisibility] = useState(styles.visibility);
   const { isValid, validationError } = validate(value);
-
+  console.log("heiheiheiehie", height);
   const computedStyles = {
     height,
     borderRadius: `${styles.borderRadius}px`,
-    color: darkMode && styles.textColor === '#000' ? '#fff' : styles.textColor,
+    color: darkMode && styles.textColor === "#000" ? "#fff" : styles.textColor,
     borderColor: styles.borderColor,
     backgroundColor:
-      darkMode && ['#fff'].includes(styles.backgroundColor)
-        ? '#232e3c'
+      darkMode && ["#fff"].includes(styles.backgroundColor)
+        ? "#232e3c"
         : styles.backgroundColor,
   };
 
@@ -44,41 +44,41 @@ export const TextInput = function TextInput({
   }, [styles.visibility]);
 
   useEffect(() => {
-    setExposedVariable('isValid', isValid);
+    setExposedVariable("isValid", isValid);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isValid]);
 
   useEffect(() => {
     setValue(properties.value);
-    setExposedVariable('value', properties.value);
+    setExposedVariable("value", properties.value);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [properties.value]);
 
-  registerAction('setFocus', async function () {
+  registerAction("setFocus", async function () {
     textInputRef.current.focus();
   });
-  registerAction('setBlur', async function () {
+  registerAction("setBlur", async function () {
     textInputRef.current.blur();
   });
-  registerAction('disable', async function (value) {
+  registerAction("disable", async function (value) {
     setDisable(value);
   });
-  registerAction('visibility', async function (value) {
+  registerAction("visibility", async function (value) {
     setVisibility(value);
   });
   registerAction(
-    'setText',
+    "setText",
     async function (text) {
       setValue(text);
-      setExposedVariable('value', text).then(fireEvent('onChange'));
+      setExposedVariable("value", text).then(fireEvent("onChange"));
     },
     [setValue]
   );
   registerAction(
-    'clear',
+    "clear",
     async function () {
-      setValue('');
-      setExposedVariable('value', '').then(fireEvent('onChange'));
+      setValue("");
+      setExposedVariable("value", "").then(fireEvent("onChange"));
     },
     [setValue]
   );
@@ -86,7 +86,7 @@ export const TextInput = function TextInput({
   return (
     <div
       data-disabled={disable}
-      className={`text-input ${visibility || 'invisible'}`}
+      className={`text-input ${visibility || "invisible"}`}
     >
       {/* <input
         ref={textInputRef}
@@ -123,37 +123,37 @@ export const TextInput = function TextInput({
       <KendoInput
         ref={textInputRef}
         onKeyUp={(e) => {
-          if (e.key == 'Enter') {
+          if (e.key == "Enter") {
             setValue(e.target.value);
-            setExposedVariable('value', e.target.value).then(() => {
-              fireEvent('onEnterPressed');
+            setExposedVariable("value", e.target.value).then(() => {
+              fireEvent("onEnterPressed");
             });
           }
         }}
         onChange={(e) => {
           setValue(e.target.value);
-          setExposedVariable('value', e.target.value);
-          fireEvent('onChange');
+          setExposedVariable("value", e.target.value);
+          fireEvent("onChange");
         }}
         onBlur={(e) => {
           e.stopPropagation();
-          fireEvent('onBlur');
+          fireEvent("onBlur");
         }}
         onFocus={(e) => {
           e.stopPropagation();
-          fireEvent('onFocus');
+          fireEvent("onFocus");
         }}
-        type='text'
+        type="text"
         className={`form-control ${
-          !isValid ? 'is-invalid' : ''
-        } validation-without-icon ${darkMode && 'dark-theme-placeholder'}`}
+          !isValid ? "is-invalid" : ""
+        } validation-without-icon ${darkMode && "dark-theme-placeholder"}`}
         placeholder={properties.placeholder}
         style={computedStyles}
         value={value}
         data-cy={dataCy}
       />
       <div
-        className='invalid-feedback'
+        className="invalid-feedback"
         data-cy={`${String(component.name).toLowerCase()}-invalid-feedback`}
         style={{ color: styles.errTextColor }}
       >

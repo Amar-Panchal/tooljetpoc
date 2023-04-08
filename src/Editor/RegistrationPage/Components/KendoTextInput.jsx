@@ -2,35 +2,57 @@
 
 import * as React from "react";
 import { Input } from "@progress/kendo-react-inputs";
+import { Tooltip } from "@progress/kendo-react-tooltip";
+import { Hint } from "@progress/kendo-react-all";
 
-const KendoTextInput = ({ component, value, onChange }) => {
-  const { backgroundColor, borderColor, borderRadius, textColor } =
-    component.definition.styles;
-  const { generalStyles, properties } = component.definition;
-  console.log("valueeee in inputt chin", value);
+const KendoTextInput = ({ component }) => {
+  const { definition, name } = component;
+  const [lengthCounter, setLengthCounter] = React.useState(
+    definition.properties.value.value
+  );
+
+  const properties = {
+    id: name,
+    defaultValue: definition.properties.value.value,
+    placeholder: definition.properties.placeholder.value,
+    regex: definition.validation.regex.value,
+    minLength: definition.validation.minLength.value,
+    maxLength: definition.validation.maxLength.value,
+    // tooltip: definition.general.tooltip.value,
+  };
+
+  const styles = {
+    color: definition.styles.textColor.value,
+    backgroundColor: definition.styles.backgroundColor.value,
+    border: `1px solid  ${component.definition.styles.borderColor.value}`,
+    errorTextColor: definition.styles.errTextColor.value,
+    borderRadius: parseInt(
+      definition.styles.borderRadius.value.replace(/[^\d]/g, "")
+    ),
+    boxShadow: definition.generalStyles.boxShadow.value,
+    // width:  definition.styles.                    .value,
+    // height:  definition.styles.                    .value,
+    // position:  definition.styles.                    .value,
+  };
+
   return (
-    <div style={{ margin: "10px" }}>
-      <p>
-        {component.name
-          .replace(/([A-Z])/g, " $1")
-          .charAt(0)
-          .toUpperCase() + component.name.replace(/([A-Z])/g, " $1").slice(1)}
-      </p>
+    <div>
       <Input
-        id={component.name}
-        style={{
-          backgroundColor: backgroundColor.value,
-          borderColor: borderColor.value,
-          borderRadius: parseInt(borderRadius.value.slice(2, -2)),
-          color: textColor.value,
-          boxShadow: generalStyles.boxShadow.value,
-          width: `${(component.layouts.desktop.width * 1292) / 43}px`,
-          height: `${component.layouts.desktop.height}px`,
-        }}
-        placeholder={properties.placeholder.value}
-        value={value}
-        onChange={onChange}
+        style={styles}
+        id={properties.id}
+        defaultValue={properties.defaultValue}
+        placeholder={properties.placeholder}
+        minLength={properties.minLength}
+        maxLength={properties.maxLength}
+        onChange={(e) => setLengthCounter(e.value)}
       />
+      <Hint direction={"end"}>
+        {lengthCounter.length < definition.validation.minLength.value &&
+          `Min ${lengthCounter.length} / ${definition.validation.minLength.value} 	`}
+        &nbsp; &nbsp; &nbsp; &nbsp;
+        {lengthCounter.length < definition.validation.maxLength.value &&
+          ` Max ${lengthCounter.length} / ${definition.validation.maxLength.value}`}
+      </Hint>
     </div>
   );
 };

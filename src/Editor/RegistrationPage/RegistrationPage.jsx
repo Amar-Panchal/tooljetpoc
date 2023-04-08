@@ -31,15 +31,15 @@ function RegistrationPage() {
       case "TextInput":
         return <KendoTextInput component={component} />;
       case "NumberInput":
-        return <KendoNumberInput />;
+        return <KendoNumberInput component={component} />;
       case "Datepicker":
         return <KendoDatePicker />;
       case "DropDown":
         return <KendoDropDown />;
       case "Text":
-        return <KendoText />;
+        return <KendoText component={component} />;
       case "Button":
-        return <KendoButton />;
+        return <KendoButton component={component} />;
       case "RadioButton":
         return <KendoRadioButton />;
       case "Checkbox":
