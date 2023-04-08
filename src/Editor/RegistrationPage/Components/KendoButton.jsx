@@ -1,14 +1,10 @@
 /** @format */
 
-import { Button } from '@progress/kendo-react-all';
-import React from 'react';
+import { Button } from "@progress/kendo-react-all";
+import React from "react";
 
-function KendoButton({ onclick, props }) {
-  return (
-    <Button themeColor={'primary'} onClick={onclick}>
-      {props.name}
-    </Button>
-  );
+function KendoButton() {
+  return <Button>Button</Button>;
 }
 
 export default KendoButton;
