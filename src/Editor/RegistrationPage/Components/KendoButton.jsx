@@ -20,7 +20,9 @@ function KendoButton({ component }) {
   };
 
   return (
-    <Button style={styles}>{component.definition.properties.text.value}</Button>
+    <Button id={component.name} style={styles}>
+      {component.definition.properties.text.value}
+    </Button>
   );
 }
 

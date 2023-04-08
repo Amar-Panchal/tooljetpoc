@@ -43,6 +43,7 @@ function KendoText({ component }) {
   return (
     <div style={computedStyles}>
       <div
+        id={component.name}
         style={{
           width: "100%",
           fontSize: parseInt(styles.textSize.value.replace(/[^\d]/g, "")),
