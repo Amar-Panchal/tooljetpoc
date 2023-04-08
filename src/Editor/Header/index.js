@@ -119,7 +119,7 @@ export default function EditorHeader({
                         {isSaving ? 'Savinggg...' : saveError ? 'Could not save changes' : 'Saved changes'}
                       </span>
          
-                    {/* <Button onClick={getReportTemplate}>Get Report</Button> */}
+              <Button onClick={getReportTemplate}>Get Report</Button> 
                  
                     </div>
                   </div>
