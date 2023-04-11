@@ -3,7 +3,7 @@
 import { DropDownList } from "@progress/kendo-react-all";
 import React, { useEffect, useState } from "react";
 
-function KendoDropDown({ component, onChange }) {
+function KendoDropDown({ component, onChange, value }) {
   // console.log(
   //   "object",
   //   JSON.parse(
@@ -46,6 +46,7 @@ function KendoDropDown({ component, onChange }) {
         style={{
           width: "300px",
         }}
+        value={value}
       />
     </div>
   );

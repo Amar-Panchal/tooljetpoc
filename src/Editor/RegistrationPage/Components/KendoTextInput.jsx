@@ -5,8 +5,7 @@ import { Input } from "@progress/kendo-react-inputs";
 import { Tooltip } from "@progress/kendo-react-tooltip";
 import { Hint } from "@progress/kendo-react-all";
 
-const KendoTextInput = ({ component, onChange }) => {
-  console.log("componet input ", component);
+const KendoTextInput = ({ component, onChange, value }) => {
   const { definition, name } = component;
   const [lengthCounter, setLengthCounter] = React.useState(
     definition.properties.value.value
@@ -49,6 +48,7 @@ const KendoTextInput = ({ component, onChange }) => {
           setLengthCounter(e.value);
           onChange(e);
         }}
+        value={value}
       />
       <Hint direction={"end"}>
         {lengthCounter.length < definition.validation.minLength.value &&

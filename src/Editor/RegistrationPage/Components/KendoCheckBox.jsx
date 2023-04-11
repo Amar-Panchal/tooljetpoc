@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { Checkbox } from "@progress/kendo-react-inputs";
 
-function KendoCheckBox({ component, onChange }) {
+function KendoCheckBox({ component, onChange, value }) {
   const styles = component.definition.styles;
   const computedStyles = {
     color: styles.textColor.value,
@@ -17,6 +17,7 @@ function KendoCheckBox({ component, onChange }) {
         label={component.definition.properties.label.value}
         onChange={onChange}
         id={component.name}
+        value={value?.isCheck}
       />
     </div>
   );

@@ -16,6 +16,7 @@ import KendoDropDown from "./Components/KendoDropDown";
 import KendoText from "./Components/KendoText";
 import KendoRadioButton from "./Components/KendoRadioButton";
 import KendoCheckBox from "./Components/KendoCheckBox";
+import { toast } from "react-hot-toast";
 
 function RegistrationPage() {
   const {
@@ -23,6 +24,25 @@ function RegistrationPage() {
     RegistrationPageFormData,
     setRegistrationPageFormData,
   } = useRegistrationPage();
+
+  function saveRegistrationPageFormData() {
+    // alert(JSON.stringify(RegistrationPageFormData));
+
+    localStorage.setItem(
+      "savedRegistrationPageFormData",
+      JSON.stringify(RegistrationPageFormData)
+    );
+
+    toast.success("Saved Successfully");
+  }
+
+  function retriveRegistrationPageFormData() {
+    const temp = localStorage.getItem("savedRegistrationPageFormData");
+
+    setRegistrationPageFormData(JSON.parse(temp));
+    toast.success("Retrieved Successfully");
+  }
+  console.log("object", RegistrationPageFormData);
 
   function renderComponent(component) {
     let componentType = component.component;
@@ -51,6 +71,7 @@ function RegistrationPage() {
                 [component.name]: e.target.value,
               })
             }
+            value={RegistrationPageFormData[component.name]}
           />
         );
       case "Datepicker":
@@ -63,6 +84,7 @@ function RegistrationPage() {
                 [component.name]: e.target.value,
               })
             }
+            value={RegistrationPageFormData[component.name]}
           />
         );
       case "DropDown":
@@ -75,6 +97,7 @@ function RegistrationPage() {
                 [component.name]: e.target.value,
               })
             }
+            value={RegistrationPageFormData[component.name]}
           />
         );
       case "Text":
@@ -83,7 +106,7 @@ function RegistrationPage() {
         return (
           <KendoButton
             component={component}
-            onClick={() => alert(JSON.stringify(RegistrationPageFormData))}
+            onClick={saveRegistrationPageFormData}
           />
         );
       case "RadioButton":
@@ -108,7 +131,10 @@ function RegistrationPage() {
                 setRegistrationPageFormData({
                   ...RegistrationPageFormData,
 
-                  [component.name]: e.target.name,
+                  [component.name]: {
+                    isCheck: e.target.value,
+                    name: e.target.name,
+                  },
                 });
               } else {
                 setRegistrationPageFormData({
@@ -118,23 +144,31 @@ function RegistrationPage() {
                 });
               }
             }}
+            value={RegistrationPageFormData[component.name]}
           />
         );
     }
   }
-  console.log("regist", RegistrationPageFormData);
+
   return (
-    <div
-      style={{
-        padding: "100px",
-        display: "flex",
-        flexDirection: "column",
-        gap: "20px",
-      }}
-    >
-      {componentsToRender?.map((component) => {
-        return renderComponent(component);
-      })}
+    <div>
+      <div>
+        <button onClick={retriveRegistrationPageFormData}>
+          get registration
+        </button>
+      </div>
+      <div
+        style={{
+          padding: "100px",
+          display: "flex",
+          flexDirection: "column",
+          gap: "20px",
+        }}
+      >
+        {componentsToRender?.map((component) => {
+          return renderComponent(component);
+        })}
+      </div>
     </div>
   );
 }
