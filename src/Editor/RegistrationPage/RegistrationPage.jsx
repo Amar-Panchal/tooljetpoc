@@ -8,7 +8,7 @@ import KendoButton from "./Components/KendoButton";
 import { Form, Field, FormElement } from "@progress/kendo-react-form";
 import { Error } from "@progress/kendo-react-labels";
 import { Input } from "@progress/kendo-react-inputs";
-import { DateInput } from "@progress/kendo-react-all";
+import { Button, DateInput } from "@progress/kendo-react-all";
 import useRegistrationPage from "./hooks/useRegistrationPage";
 import KendoNumberInput from "./Components/KendoNumberInput";
 import KendoDatePicker from "./Components/KendoDatePicker";
@@ -17,31 +17,92 @@ import KendoText from "./Components/KendoText";
 import KendoRadioButton from "./Components/KendoRadioButton";
 import KendoCheckBox from "./Components/KendoCheckBox";
 import { toast } from "react-hot-toast";
-
+import "./registration-page.css";
 function RegistrationPage() {
   const {
     componentsToRender,
     RegistrationPageFormData,
     setRegistrationPageFormData,
   } = useRegistrationPage();
+  const [testList, setTestList] = useState([]);
+  const [selectedTests, setSelectedTests] = useState([]);
+  const handleItemClick = (item) => {
+    const itemIndex = selectedTests.indexOf(item);
 
-  function saveRegistrationPageFormData() {
+    if (itemIndex === -1) {
+      setSelectedTests([...selectedTests, item]);
+    } else {
+      const updatedItems = [...selectedTests];
+      updatedItems.splice(itemIndex, 1);
+      setSelectedTests(updatedItems);
+    }
+  };
+  function getTestList() {
+    axios
+      .get("https://elabnextapi-dev.azurewebsites.net/api/TestMaster/GetTest")
+      .then((response) => {
+        setTestList(response.data.resultData.testList);
+      });
+  }
+
+  useEffect(() => {
+    getTestList();
+  }, []);
+  function updateRegistrationPageFormData() {
     // alert(JSON.stringify(RegistrationPageFormData));
 
-    localStorage.setItem(
-      "savedRegistrationPageFormData",
-      JSON.stringify(RegistrationPageFormData)
-    );
+    // localStorage.setItem(
+    //   "savedRegistrationPageFormData",
+    //   JSON.stringify(RegistrationPageFormData)
+    // );
 
-    toast.success("Saved Successfully");
+    const payload = {
+      patientId: 8,
+      patientDescription: RegistrationPageFormData,
+    };
+
+    axios
+      .post(
+        "https://elabnextapi-dev.azurewebsites.net/api/PatientRegistration/UpdatePatientRegistration",
+        payload
+      )
+      .then(() => toast.success("Updated Successfully"))
+      .catch((err) => console.log("err", err));
   }
 
   function retriveRegistrationPageFormData() {
-    const temp = localStorage.getItem("savedRegistrationPageFormData");
+    axios
+      .get(
+        "https://elabnextapi-dev.azurewebsites.net/api/PatientRegistration/GetPatientRegistration?PatientId=8"
+      )
+      .then((response) => {
+        console.log(
+          "ress",
 
-    setRegistrationPageFormData(JSON.parse(temp));
-    toast.success("Retrieved Successfully");
+          JSON.parse(response.data.resultData.patientList[0].patientDescription)
+        );
+        setRegistrationPageFormData(
+          JSON.parse(response.data.resultData.patientList[0].patientDescription)
+        );
+        // setTestList(response.data.resultData.testList);
+        const temp = response.data.resultData.patientList[0].patientDescription;
+
+        const tt = JSON.parse(temp);
+
+        setSelectedTests(tt.test);
+
+        toast.success("Retrieved Successfully");
+      })
+      .catch((err) => console.log("errr getr e", err));
   }
+
+  useEffect(() => {
+    setRegistrationPageFormData({
+      ...RegistrationPageFormData,
+      test: selectedTests,
+    });
+  }, [selectedTests]);
+
   console.log("object", RegistrationPageFormData);
 
   function renderComponent(component) {
@@ -106,7 +167,7 @@ function RegistrationPage() {
         return (
           <KendoButton
             component={component}
-            onClick={saveRegistrationPageFormData}
+            onClick={updateRegistrationPageFormData}
           />
         );
       case "RadioButton":
@@ -153,13 +214,12 @@ function RegistrationPage() {
   return (
     <div>
       <div>
-        <button onClick={retriveRegistrationPageFormData}>
-          get registration
-        </button>
+        <Button onClick={retriveRegistrationPageFormData}>
+          get patient details{" "}
+        </Button>
       </div>
       <div
         style={{
-          padding: "100px",
           display: "flex",
           flexDirection: "column",
           gap: "20px",
@@ -168,6 +228,62 @@ function RegistrationPage() {
         {componentsToRender?.map((component) => {
           return renderComponent(component);
         })}
+      </div>
+      <div
+        style={{
+          padding: "10px",
+          height: "200px",
+          overflowY: "scroll",
+          marginTop: "10px",
+          display: "flex",
+        }}
+      >
+        <div
+          style={{
+            overflowY: "scroll",
+            width: "50%",
+            cursor: "pointer",
+          }}
+        >
+          <h3>Test List</h3>
+          {testList.length > 0 && (
+            <div>
+              {testList.map((test) => {
+                return (
+                  <div
+                    className="selected-test"
+                    onClick={() => handleItemClick(test.testName)}
+                  >
+                    {test.testName}
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </div>
+        <div
+          style={{
+            overflowY: "scroll",
+            width: "50%",
+            cursor: "pointer",
+          }}
+        >
+          <h3>Selected Test List</h3>
+          {selectedTests.length > 0 && (
+            <div>
+              {selectedTests.map((test) => {
+                return (
+                  <div
+                    className="selected-test"
+                    onClick={() => handleItemClick(test)}
+                  >
+                    {test}
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

@@ -12,7 +12,9 @@ function KendoButton({ component, onClick }) {
     borderRadius: parseInt(borderRadius.value.replace(/[^\d]/g, "")),
     color: textColor.value,
     boxShadow: component.definition.generalStyles.boxShadow.value,
-
+    position: "absolute",
+    bottom: "8px",
+    left: "509px",
     // width:  definition.styles.                    .value,
     // height:  definition.styles.                    .value,
     // position:  definition.styles.                    .value,

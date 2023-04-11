@@ -10,7 +10,7 @@ const KendoTextInput = ({ component, onChange, value }) => {
   const [lengthCounter, setLengthCounter] = React.useState(
     definition.properties.value.value
   );
-
+  console.log("definition input", definition);
   const properties = {
     id: name,
     defaultValue: definition.properties.value.value,
@@ -50,6 +50,7 @@ const KendoTextInput = ({ component, onChange, value }) => {
         }}
         value={value}
       />
+
       <Hint direction={"end"}>
         {lengthCounter.length < definition.validation.minLength.value &&
           `Min ${lengthCounter.length} / ${definition.validation.minLength.value} 	`}

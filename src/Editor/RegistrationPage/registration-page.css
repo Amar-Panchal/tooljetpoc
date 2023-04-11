@@ -1,0 +1,7 @@
+.selected-test {
+
+}
+
+.selected-test:hover {
+background-color: aqua;
+}

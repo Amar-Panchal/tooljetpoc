@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { useState } from "react";
+import React from "react";
 import { NumericTextBox } from "@progress/kendo-react-inputs";
 function KendoNumberInput({ component, onChange, value }) {
   const { definition, name } = component;
