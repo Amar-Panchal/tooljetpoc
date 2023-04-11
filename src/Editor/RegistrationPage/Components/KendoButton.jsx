@@ -3,7 +3,7 @@
 import { Button } from "@progress/kendo-react-all";
 import React from "react";
 
-function KendoButton({ component }) {
+function KendoButton({ component, onClick }) {
   const { backgroundColor, borderColor, borderRadius, textColor } =
     component.definition.styles;
   const styles = {
@@ -20,7 +20,7 @@ function KendoButton({ component }) {
   };
 
   return (
-    <Button id={component.name} style={styles}>
+    <Button id={component.name} style={styles} onClick={onClick}>
       {component.definition.properties.text.value}
     </Button>
   );

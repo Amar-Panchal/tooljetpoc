@@ -26,29 +26,112 @@ function RegistrationPage() {
 
   function renderComponent(component) {
     let componentType = component.component;
-
+    if (componentType === "text") console.log("componet type", componentType);
     switch (componentType) {
       case "TextInput":
-        return <KendoTextInput component={component} />;
+        return (
+          <KendoTextInput
+            component={component}
+            value={RegistrationPageFormData[component.name]}
+            onChange={(e) =>
+              setRegistrationPageFormData({
+                ...RegistrationPageFormData,
+                [component.name]: e.target.value,
+              })
+            }
+          />
+        );
       case "NumberInput":
-        return <KendoNumberInput component={component} />;
+        return (
+          <KendoNumberInput
+            component={component}
+            onChange={(e) =>
+              setRegistrationPageFormData({
+                ...RegistrationPageFormData,
+                [component.name]: e.target.value,
+              })
+            }
+          />
+        );
       case "Datepicker":
-        return <KendoDatePicker />;
+        return (
+          <KendoDatePicker
+            component={component}
+            onChange={(e) =>
+              setRegistrationPageFormData({
+                ...RegistrationPageFormData,
+                [component.name]: e.target.value,
+              })
+            }
+          />
+        );
       case "DropDown":
-        return <KendoDropDown />;
+        return (
+          <KendoDropDown
+            component={component}
+            onChange={(e) =>
+              setRegistrationPageFormData({
+                ...RegistrationPageFormData,
+                [component.name]: e.target.value,
+              })
+            }
+          />
+        );
       case "Text":
         return <KendoText component={component} />;
       case "Button":
-        return <KendoButton component={component} />;
+        return (
+          <KendoButton
+            component={component}
+            onClick={() => alert(JSON.stringify(RegistrationPageFormData))}
+          />
+        );
       case "RadioButton":
-        return <KendoRadioButton />;
+        return (
+          <KendoRadioButton
+            component={component}
+            onChange={(e) => {
+              setRegistrationPageFormData({
+                ...RegistrationPageFormData,
+                [component.name]: e.value,
+              });
+            }}
+            value={RegistrationPageFormData[component.name]}
+          />
+        );
       case "Checkbox":
-        return <KendoCheckBox />;
+        return (
+          <KendoCheckBox
+            component={component}
+            onChange={(e) => {
+              if (e.value) {
+                setRegistrationPageFormData({
+                  ...RegistrationPageFormData,
+
+                  [component.name]: e.target.name,
+                });
+              } else {
+                setRegistrationPageFormData({
+                  ...RegistrationPageFormData,
+
+                  [component.name]: "",
+                });
+              }
+            }}
+          />
+        );
     }
   }
-
+  console.log("regist", RegistrationPageFormData);
   return (
-    <div style={{ padding: "100px" }}>
+    <div
+      style={{
+        padding: "100px",
+        display: "flex",
+        flexDirection: "column",
+        gap: "20px",
+      }}
+    >
       {componentsToRender?.map((component) => {
         return renderComponent(component);
       })}

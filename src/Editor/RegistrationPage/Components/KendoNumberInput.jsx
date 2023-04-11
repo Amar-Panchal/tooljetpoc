@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { NumericTextBox } from "@progress/kendo-react-inputs";
-function KendoNumberInput({ component }) {
+function KendoNumberInput({ component, onChange }) {
   const { definition, name } = component;
   const properties = {
     id: name,
@@ -34,6 +34,7 @@ function KendoNumberInput({ component }) {
       placeholder={properties.placeholder}
       minValue={properties.minValue}
       maxValue={properties.maxValue}
+      onChange={onChange}
     />
   );
 }
