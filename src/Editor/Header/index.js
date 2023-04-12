@@ -49,6 +49,8 @@ export default function EditorHeader({
 
 
   const updateReportTemplate=()=>{
+
+
    
     const payload ={
       
@@ -63,7 +65,7 @@ export default function EditorHeader({
       })
       .catch(error => {
        console.log("sss",error);
-        setLoading(false);
+       
       });
   }
  
@@ -154,6 +156,7 @@ export default function EditorHeader({
                     <ManageAppUsers app={app} slug={slug} darkMode={darkMode} handleSlugChange={handleSlugChange} />
                   )}
                 </div>
+                <button onClick={updateReportTemplate}>save</button>
                 <div className="nav-item me-1">
                   <Link
                     title="Preview"
@@ -161,7 +164,7 @@ export default function EditorHeader({
                     target="_blank"
                     rel="noreferrer"
                     data-cy="preview-link-button"
-                    onClick={updateReportTemplate}
+                    
                   >
                     <svg
                       className="icon cursor-pointer w-100 h-100"
