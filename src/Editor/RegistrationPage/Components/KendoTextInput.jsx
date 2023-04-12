@@ -10,7 +10,7 @@ const KendoTextInput = ({ component, onChange, value }) => {
   const [lengthCounter, setLengthCounter] = React.useState(
     definition.properties.value.value
   );
-  console.log("definition input", definition);
+  console.log("definition input", definition, name);
   const properties = {
     id: name,
     defaultValue: definition.properties.value.value,
@@ -30,13 +30,15 @@ const KendoTextInput = ({ component, onChange, value }) => {
       definition.styles.borderRadius.value.replace(/[^\d]/g, "")
     ),
     boxShadow: definition.generalStyles.boxShadow.value,
+    width: "300px",
     // width:  definition.styles.                    .value,
     // height:  definition.styles.                    .value,
     // position:  definition.styles.                    .value,
   };
 
   return (
-    <div>
+    <div style={{ display: "flex", alignItems: "baseline", gap: "10px" }}>
+      <p>{name}</p>
       <Input
         style={styles}
         id={properties.id}

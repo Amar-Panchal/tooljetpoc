@@ -7,12 +7,15 @@ function KendoCheckBox({ component, onChange, value }) {
   const styles = component.definition.styles;
   const computedStyles = {
     color: styles.textColor.value,
+    width: "300px",
   };
 
   return (
     <div style={computedStyles}>
       <Checkbox
-        style={{ backgroundColor: styles.checkboxColor.value }}
+        style={{
+          backgroundColor: styles.checkboxColor.value,
+        }}
         name={component.definition.properties.label.value}
         label={component.definition.properties.label.value}
         onChange={onChange}

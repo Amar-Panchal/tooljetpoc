@@ -48,7 +48,7 @@ function RegistrationPage() {
   useEffect(() => {
     getTestList();
   }, []);
-  function updateRegistrationPageFormData() {
+  function saveRegistrationPageFormData() {
     // alert(JSON.stringify(RegistrationPageFormData));
 
     // localStorage.setItem(
@@ -57,16 +57,15 @@ function RegistrationPage() {
     // );
 
     const payload = {
-      patientId: 8,
       patientDescription: RegistrationPageFormData,
     };
 
     axios
       .post(
-        "https://elabnextapi-dev.azurewebsites.net/api/PatientRegistration/UpdatePatientRegistration",
+        "https://elabnextapi-dev.azurewebsites.net/api/PatientRegistration/SavePatientRegistration",
         payload
       )
-      .then(() => toast.success("Updated Successfully"))
+      .then(() => toast.success("Created Successfully"))
       .catch((err) => console.log("err", err));
   }
 
@@ -167,7 +166,7 @@ function RegistrationPage() {
         return (
           <KendoButton
             component={component}
-            onClick={updateRegistrationPageFormData}
+            onClick={saveRegistrationPageFormData}
           />
         );
       case "RadioButton":
@@ -226,7 +225,9 @@ function RegistrationPage() {
         }}
       >
         {componentsToRender?.map((component) => {
-          return renderComponent(component);
+          return component.component === "Button"
+            ? ""
+            : renderComponent(component);
         })}
       </div>
       <div
@@ -284,6 +285,20 @@ function RegistrationPage() {
             </div>
           )}
         </div>
+      </div>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          gap: "20px",
+        }}
+      >
+        {componentsToRender?.map((component) => {
+          console.log("comooo", component.component === "Button");
+          return component.component === "Button"
+            ? renderComponent(component)
+            : "";
+        })}
       </div>
     </div>
   );

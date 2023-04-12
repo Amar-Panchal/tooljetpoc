@@ -3,8 +3,8 @@
 import {
   FieldWrapper,
   NumericTextBox as KendoNumericTextBox,
-} from '@progress/kendo-react-all';
-import React, { useEffect } from 'react';
+} from "@progress/kendo-react-all";
+import React, { useEffect } from "react";
 
 export const NumberInput = function NumberInput({
   height,
@@ -18,8 +18,8 @@ export const NumberInput = function NumberInput({
   const { visibility, borderRadius, borderColor, backgroundColor } = styles;
 
   const textColor =
-    darkMode && ['#232e3c', '#000000ff'].includes(styles.textColor)
-      ? '#fff'
+    darkMode && ["#232e3c", "#000000ff"].includes(styles.textColor)
+      ? "#fff"
       : styles.textColor;
 
   const [value, setValue] = React.useState(parseInt(properties.value));
@@ -44,7 +44,7 @@ export const NumberInput = function NumberInput({
     } else {
       setValue(parseInt(e.target.value));
     }
-    fireEvent('onChange');
+    fireEvent("onChange");
   };
 
   useEffect(() => {
@@ -53,20 +53,20 @@ export const NumberInput = function NumberInput({
 
   useEffect(() => {
     if (!isNaN(value)) {
-      setExposedVariable('value', value);
+      setExposedVariable("value", value);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value]);
 
   const computedStyles = {
     height,
-    display: visibility ? '' : 'none',
+    display: visibility ? "" : "none",
     borderRadius: `${borderRadius}px`,
     borderColor,
     color: textColor,
     backgroundColor:
-      darkMode && ['#ffffff', '#ffffffff'].includes(backgroundColor)
-        ? '#000000'
+      darkMode && ["#ffffff", "#ffffffff"].includes(backgroundColor)
+        ? "#000000"
         : backgroundColor,
   };
 
@@ -75,8 +75,8 @@ export const NumberInput = function NumberInput({
       <KendoNumericTextBox
         disabled={styles.disabledState}
         onChange={handleChange}
-        type='number'
-        className='form-control'
+        type="number"
+        // className='form-control'
         placeholder={properties.placeholder}
         style={computedStyles}
         value={value}

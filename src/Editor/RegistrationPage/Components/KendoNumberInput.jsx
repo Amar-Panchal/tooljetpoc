@@ -21,22 +21,26 @@ function KendoNumberInput({ component, onChange, value }) {
       definition.styles.borderRadius.value.replace(/[^\d]/g, "")
     ),
     boxShadow: definition.generalStyles.boxShadow.value,
+    width: "300px",
     // width:  definition.styles.                    .value,
     // height:  definition.styles.                    .value,
     // position:  definition.styles.                    .value,
   };
 
   return (
-    <NumericTextBox
-      style={styles}
-      defaultValue={properties.defaultValue}
-      id={properties.id}
-      placeholder={properties.placeholder}
-      minValue={properties.minValue}
-      maxValue={properties.maxValue}
-      onChange={onChange}
-      value={value}
-    />
+    <div style={{ display: "flex", alignItems: "baseline", gap: "10px" }}>
+      <p>{name}</p>
+      <NumericTextBox
+        style={styles}
+        defaultValue={properties.defaultValue}
+        id={properties.id}
+        placeholder={properties.placeholder}
+        minValue={properties.minValue}
+        maxValue={properties.maxValue}
+        onChange={onChange}
+        value={value}
+      />
+    </div>
   );
 }
 

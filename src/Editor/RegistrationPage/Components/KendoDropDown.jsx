@@ -33,7 +33,13 @@ function KendoDropDown({ component, onChange, value }) {
   };
 
   return (
-    <div>
+    <div
+      style={{
+        display: "flex",
+        gap: "10px",
+        alignItems: "baseline",
+      }}
+    >
       <label>{component.definition.properties.label.value}</label>
       <DropDownList
         defaultValue={JSON.parse(

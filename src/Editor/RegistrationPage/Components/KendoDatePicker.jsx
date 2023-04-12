@@ -9,12 +9,16 @@ function KendoDatePicker({ component, onChange, value }) {
   const isoDate = `${parts[2]}-${parts[1]}-${parts[0]}T00:00:00.000Z`;
 
   return (
-    <DatePicker
-      defaultValue={new Date(isoDate)}
-      format="dd/MM/yyyy"
-      onChange={onChange}
-      value={value ? new Date(value) : null}
-    />
+    <div style={{ display: "flex", alignItems: "baseline", gap: "10px" }}>
+      <p>{component.name}</p>
+      <DatePicker
+        defaultValue={new Date(isoDate)}
+        format="dd/MM/yyyy"
+        onChange={onChange}
+        value={value ? new Date(value) : null}
+        width={"300px"}
+      />
+    </div>
   );
 }
 
