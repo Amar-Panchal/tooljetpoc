@@ -10,7 +10,7 @@ const KendoTextInput = ({ component, onChange, value }) => {
   const [lengthCounter, setLengthCounter] = React.useState(
     definition.properties.value.value
   );
-  console.log("definition input", definition, name);
+
   const properties = {
     id: name,
     defaultValue: definition.properties.value.value,
@@ -36,9 +36,24 @@ const KendoTextInput = ({ component, onChange, value }) => {
     // position:  definition.styles.                    .value,
   };
 
+  function camelCaseToTitleCase(str) {
+    // Split the string by upper case characters
+    const words = str.split(/(?=[A-Z])/);
+
+    // Capitalize the first letter of each word and join them together
+    const titleCaseStr = words
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
+
+    return titleCaseStr;
+  }
+
+  const titleCaseStr = camelCaseToTitleCase(name);
+  console.log(titleCaseStr); // Outputs: "This Is Camel Case
+
   return (
     <div style={{ display: "flex", alignItems: "baseline", gap: "10px" }}>
-      <p>{name}</p>
+      <p>{titleCaseStr}</p>
       <Input
         style={styles}
         id={properties.id}

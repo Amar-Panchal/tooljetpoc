@@ -40,6 +40,7 @@ function PatientDetails() {
     getPatientDetailsList();
   }, []);
 
+  console.log("Patient data", PatientDetailsList);
   return (
     <div className="patient-details-layout">
       <h1>Patient Details:</h1>
@@ -58,23 +59,27 @@ function PatientDetails() {
             setDataState(e.dataState);
           }}
         >
-          <GridColumn field="Email" title="Email" />
+          <GridColumn field="patientName" title="Patient Name" />
+
+          {/* <GridColumn field="Email" title="Email" /> */}
           <GridColumn field="Age" title="Age" />
           <GridColumn
-            field="DOB"
-            title="DOB"
+            field="dateOfBirth"
+            title="dateOfBirth"
             cell={(props) => {
               return (
                 <div>
-                  {new Date(props.dataItem.DOB).toLocaleDateString("en-GB")}
+                  {new Date(props.dataItem.dateOfBirth).toLocaleDateString(
+                    "en-GB"
+                  )}
                 </div>
               );
             }}
           />
-          <GridColumn field="radiobutton1" title="radiobutton1" />
-          <GridColumn field="checkbox1.name" title="checkbox1" />
-          <GridColumn field="checkbox2.name" title="checkbox2" />
-          <GridColumn field="MembershipType.label" title="MembershipType" />
+          <GridColumn field="gender" title="gender" />
+          {/* <GridColumn field="checkbox1.name" title="checkbox1" />
+          <GridColumn field="checkbox2.name" title="checkbox2" /> */}
+          {/* <GridColumn field="MembershipType.label" title="MembershipType" /> */}
           <GridColumn
             field="test"
             title="test"

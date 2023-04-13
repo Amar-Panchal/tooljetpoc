@@ -84,11 +84,6 @@ export const Inspector = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  useEffect(() => {
-    console.log("droppedComponent", droppedComponent);
-    console.log("inputtt", InputFieldDropdown);
-  }, [droppedComponent]);
-
   const validateComponentName = (name) => {
     const isValid = !Object.values(allComponents)
       .map((component) => component.component.name)
@@ -142,8 +137,6 @@ export const Inspector = ({
   };
 
   function paramUpdated(param, attr, value, paramType) {
-    console.log({ param, attr, value, paramType });
-
     let newDefinition = _.cloneDeep(component.component.definition);
     let allParams = newDefinition[paramType] || {};
     const paramObject = allParams[param.name];
@@ -259,8 +252,6 @@ export const Inspector = ({
   }
 
   function eventOptionUpdated(event, option, value) {
-    console.log("eventOptionUpdated", event, option, value);
-
     let newDefinition = { ...component.component.definition };
     let eventDefinition = newDefinition.events[event.name] || { options: {} };
 
@@ -344,15 +335,17 @@ export const Inspector = ({
       .then((response) => {
         const temp = [];
         response?.data?.resultData?.fieldMaster?.map((element) => {
-          if (
-            component.component.component.replace(/\s+/g, "").toLowerCase() ===
-            element.componentType.replace(/\s+/g, "").toLowerCase()
-          )
+          if (component.component.component === element.componentType)
             temp.push({
-              value: element.fieldName,
-              label: element.fieldName,
+              value: element.value,
+              label: element.label,
               componentType: element.componentType,
             });
+          console.log(
+            "InputFieldDropdown",
+            component.component.component,
+            element.componentType
+          );
         });
 
         setInputFieldDropdown(temp);

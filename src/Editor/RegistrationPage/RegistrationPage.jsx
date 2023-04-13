@@ -212,24 +212,31 @@ function RegistrationPage() {
 
   return (
     <div>
-      <div>
-        <Button onClick={retriveRegistrationPageFormData}>
-          get patient details{" "}
-        </Button>
+      <div style={{ padding: "50px" }}>
+        {componentsToRender?.map((component) => {
+          return component.component === "Text"
+            ? renderComponent(component)
+            : "";
+        })}
       </div>
       <div
         style={{
           display: "flex",
-          flexDirection: "column",
+          // flexDirection: "column",
           gap: "20px",
+          width: "100%",
+          flexWrap: "wrap",
+          padding: "20px",
         }}
       >
         {componentsToRender?.map((component) => {
-          return component.component === "Button"
+          return component.component === "Button" ||
+            component.component === "Text"
             ? ""
             : renderComponent(component);
         })}
       </div>
+
       <div
         style={{
           padding: "10px",
@@ -289,12 +296,13 @@ function RegistrationPage() {
       <div
         style={{
           display: "flex",
-          flexDirection: "column",
           gap: "20px",
+          alignItems: "center",
+          justifyContent: "center",
+          marginTop: "50px",
         }}
       >
         {componentsToRender?.map((component) => {
-          console.log("comooo", component.component === "Button");
           return component.component === "Button"
             ? renderComponent(component)
             : "";

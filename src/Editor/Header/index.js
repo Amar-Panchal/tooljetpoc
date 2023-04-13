@@ -1,19 +1,21 @@
-import React from 'react';
-import { Link, useHistory } from 'react-router-dom';
-import AppLogo from '@/_components/AppLogo';
-import { GlobalSettings } from './GlobalSettings';
-import EditAppName from './EditAppName';
-import HeaderActions from './HeaderActions';
-import RealtimeAvatars from '../RealtimeAvatars';
-import { AppVersionsManager } from '../AppVersionsManager/List';
-import { ManageAppUsers } from '../ManageAppUsers';
-import { ReleaseVersionButton } from '../ReleaseVersionButton';
-import cx from 'classnames';
-import config from 'config';
-import { Toast } from 'react-bootstrap';
-import axios from 'axios';
-import { Button } from '@progress/kendo-react-all';
-import useRouter from '../../_hooks/use-router';
+/** @format */
+
+import React from "react";
+import { Link, useHistory } from "react-router-dom";
+import AppLogo from "@/_components/AppLogo";
+import { GlobalSettings } from "./GlobalSettings";
+import EditAppName from "./EditAppName";
+import HeaderActions from "./HeaderActions";
+import RealtimeAvatars from "../RealtimeAvatars";
+import { AppVersionsManager } from "../AppVersionsManager/List";
+import { ManageAppUsers } from "../ManageAppUsers";
+import { ReleaseVersionButton } from "../ReleaseVersionButton";
+import cx from "classnames";
+import config from "config";
+import { Toast } from "react-bootstrap";
+import axios from "axios";
+import { Button } from "@progress/kendo-react-all";
+import useRouter from "../../_hooks/use-router";
 
 export default function EditorHeader({
   darkMode,
@@ -42,33 +44,27 @@ export default function EditorHeader({
   handleSlugChange,
   onVersionRelease,
   saveEditingVersion,
-  getReportTemplate
-
+  getReportTemplate,
 }) {
   const { is_maintenance_on } = app;
-
-
-  const updateReportTemplate=()=>{
-
-
-   
-    const payload ={
-      
-        reportTemplateId: 43,
-        reportTemplateName: "registration",
-        reportValues: appDefinition
-      }
-    axios.put('https://elabnextapi-dev.azurewebsites.net/api/ReportSetup/UpdateReportTemplate',payload )
-      .then(response => {
-        Toast('Save Successfully')
-        
+  const payload = {
+    reportTemplateId: 43,
+    reportTemplateName: "registration",
+    reportValues: appDefinition,
+  };
+  const updateReportTemplate = () => {
+    axios
+      .put(
+        "https://elabnextapi-dev.azurewebsites.net/api/ReportSetup/UpdateReportTemplate",
+        payload
+      )
+      .then((response) => {
+        Toast("Save Successfully");
       })
-      .catch(error => {
-       console.log("sss",error);
-       
+      .catch((error) => {
+        console.log("sss", error);
       });
-  }
- 
+  };
 
   return (
     <div className="header">
@@ -76,13 +72,13 @@ export default function EditorHeader({
         <div className="container-xl header-container">
           <div className="d-flex w-100">
             <h1 className="navbar-brand d-none-navbar-horizontal pe-0 mt-1">
-              <Link to={'/'} data-cy="editor-page-logo">
+              <Link to={"/"} data-cy="editor-page-logo">
                 <AppLogo isLoadingFromHeader={true} />
               </Link>
             </h1>
             <div
               style={{
-                maxHeight: '45px',
+                maxHeight: "45px",
               }}
               className="flex-grow-1 row px-3"
             >
@@ -97,7 +93,11 @@ export default function EditorHeader({
                       toggleAppMaintenance={toggleAppMaintenance}
                       is_maintenance_on={is_maintenance_on}
                     />
-                    <EditAppName appId={app.id} appName={app.name} onNameChanged={onNameChanged} />
+                    <EditAppName
+                      appId={app.id}
+                      appName={app.name}
+                      onNameChanged={onNameChanged}
+                    />
                   </div>
 
                   <div className="col d-flex">
@@ -111,21 +111,23 @@ export default function EditorHeader({
                     />
                     <div className="my-1 mx-3">
                       <span
-                        className={cx('autosave-indicator', {
-                          'autosave-indicator-saving': isSaving,
-                          'text-danger': saveError,
-                          'd-none': isVersionReleased(),
+                        className={cx("autosave-indicator", {
+                          "autosave-indicator-saving": isSaving,
+                          "text-danger": saveError,
+                          "d-none": isVersionReleased(),
                         })}
                         data-cy="autosave-indicator"
                       >
-                        {isSaving ? 'Savinggg...' : saveError ? 'Could not save changes' : 'Saved changes'}
+                        {isSaving
+                          ? "Savinggg..."
+                          : saveError
+                          ? "Could not save changes"
+                          : "Saved changes"}
                       </span>
-         
-              <Button onClick={getReportTemplate}>Get Report</Button> 
-                 
+
+                      <Button onClick={getReportTemplate}>Get Report</Button>
                     </div>
                   </div>
-                 
                 </div>
               </div>
               <div className="col-auto d-flex">
@@ -136,8 +138,12 @@ export default function EditorHeader({
                       editingVersion={editingVersion}
                       releasedVersionId={app.current_version_id}
                       setAppDefinitionFromVersion={setAppDefinitionFromVersion}
-                      showCreateVersionModalPrompt={showCreateVersionModalPrompt}
-                      closeCreateVersionModalPrompt={closeCreateVersionModalPrompt}
+                      showCreateVersionModalPrompt={
+                        showCreateVersionModalPrompt
+                      }
+                      closeCreateVersionModalPrompt={
+                        closeCreateVersionModalPrompt
+                      }
                     />
                   )}
                 </div>
@@ -153,10 +159,19 @@ export default function EditorHeader({
               <div className="navbar-nav flex-row order-md-last release-buttons p-1">
                 <div className="nav-item me-1">
                   {app.id && (
-                    <ManageAppUsers app={app} slug={slug} darkMode={darkMode} handleSlugChange={handleSlugChange} />
+                    <ManageAppUsers
+                      app={app}
+                      slug={slug}
+                      darkMode={darkMode}
+                      handleSlugChange={handleSlugChange}
+                    />
                   )}
                 </div>
-                <button onClick={updateReportTemplate}>save</button>
+                <button onClick={updateReportTemplate}>Save Data</button>
+                <p>
+                  {payload.reportTemplateId === 43 ? "reg" : "rep"}
+                  {JSON.stringify(payload.reportTemplateId)}
+                </p>
                 <div className="nav-item me-1">
                   <Link
                     title="Preview"
@@ -164,7 +179,6 @@ export default function EditorHeader({
                     target="_blank"
                     rel="noreferrer"
                     data-cy="preview-link-button"
-                    
                   >
                     <svg
                       className="icon cursor-pointer w-100 h-100"
@@ -174,7 +188,14 @@ export default function EditorHeader({
                       fill="none"
                       xmlns="http://www.w3.org/2000/svg"
                     >
-                      <rect x="0.363281" y="0.220703" width="32" height="32" rx="6" fill="#F0F4FF" />
+                      <rect
+                        x="0.363281"
+                        y="0.220703"
+                        width="32"
+                        height="32"
+                        rx="6"
+                        fill="#F0F4FF"
+                      />
                       <path
                         fillRule="evenodd"
                         clipRule="evenodd"

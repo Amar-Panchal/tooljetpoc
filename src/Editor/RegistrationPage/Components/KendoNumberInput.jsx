@@ -27,9 +27,24 @@ function KendoNumberInput({ component, onChange, value }) {
     // position:  definition.styles.                    .value,
   };
 
+  function camelCaseToTitleCase(str) {
+    // Split the string by upper case characters
+    const words = str.split(/(?=[A-Z])/);
+
+    // Capitalize the first letter of each word and join them together
+    const titleCaseStr = words
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
+
+    return titleCaseStr;
+  }
+
+  const titleCaseStr = camelCaseToTitleCase(name);
+  console.log(titleCaseStr); // Outputs: "This Is Camel Case
+
   return (
     <div style={{ display: "flex", alignItems: "baseline", gap: "10px" }}>
-      <p>{name}</p>
+      <p>{titleCaseStr}</p>
       <NumericTextBox
         style={styles}
         defaultValue={properties.defaultValue}
