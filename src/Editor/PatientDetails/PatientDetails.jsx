@@ -13,12 +13,13 @@ const initialDataState = {
       dir: "asc",
     },
   ],
-  take: 50,
+  take: 5,
   skip: 0,
 };
 function PatientDetails() {
   const [PatientDetailsList, setPatientDetailsList] = useState([]);
   const [dataState, setDataState] = useState(initialDataState);
+  const [keysForGrid, setKeysForGrid] = useState([]);
   function getPatientDetailsList() {
     axios
       .get(
@@ -40,7 +41,99 @@ function PatientDetails() {
     getPatientDetailsList();
   }, []);
 
-  console.log("Patient data", PatientDetailsList);
+  useEffect(() => {
+    const temp2 = [];
+    PatientDetailsList.map((patient) => {
+      const temp = Object.keys(patient);
+      temp.map((key) => {
+        if (!temp2.includes(key)) {
+          temp2.push(key);
+        }
+      });
+
+      setKeysForGrid(temp2);
+    });
+  }, [PatientDetailsList]);
+
+  const createGridColumn = (key) => {
+    switch (key) {
+      case "dateOfBirth":
+        return (
+          <GridColumn
+            field={key}
+            title={
+              key
+                .replace(/([A-Z])/g, " $1")
+                .charAt(0)
+                .toUpperCase() + key.replace(/([A-Z])/g, " $1").slice(1)
+            }
+            cell={(props) => {
+              return (
+                <td>
+                  {new Date(props.dataItem.dateOfBirth).toLocaleDateString(
+                    "en-GB"
+                  )}
+                </td>
+              );
+            }}
+          />
+        );
+      case "membershipType":
+        return (
+          <GridColumn
+            field={key}
+            width={200}
+            title={
+              key
+                .replace(/([A-Z])/g, " $1")
+                .charAt(0)
+                .toUpperCase() + key.replace(/([A-Z])/g, " $1").slice(1)
+            }
+            cell={(props) => {
+              return <td>{props.dataItem.membershipType?.label}</td>;
+            }}
+          />
+        );
+
+      case "sendSms":
+        return (
+          <GridColumn
+            field={key}
+            title={
+              key
+                .replace(/([A-Z])/g, " $1")
+                .charAt(0)
+                .toUpperCase() + key.replace(/([A-Z])/g, " $1").slice(1)
+            }
+            cell={(props) => {
+              return (
+                <td>
+                  <input
+                    disabled={true}
+                    type="checkbox"
+                    checked={props.dataItem.sendSms?.isCheck}
+                  />
+                </td>
+              );
+            }}
+          />
+        );
+
+      default:
+        return (
+          <GridColumn
+            field={key}
+            title={
+              key
+                .replace(/([A-Z])/g, " $1")
+                .charAt(0)
+                .toUpperCase() + key.replace(/([A-Z])/g, " $1").slice(1)
+            }
+          />
+        );
+    }
+  };
+
   return (
     <div className="patient-details-layout">
       <h1>Patient Details:</h1>
@@ -49,6 +142,7 @@ function PatientDetails() {
           resizable={true}
           pageable={true}
           sortable={true}
+          reorderable={true}
           filterable={true}
           style={{
             height: "500px",
@@ -59,41 +153,11 @@ function PatientDetails() {
             setDataState(e.dataState);
           }}
         >
-          <GridColumn field="patientName" title="Patient Name" />
+          <GridColumn field="" title="Error Issue" disabled />
 
-          {/* <GridColumn field="Email" title="Email" /> */}
-          <GridColumn field="Age" title="Age" />
-          <GridColumn
-            field="dateOfBirth"
-            title="dateOfBirth"
-            cell={(props) => {
-              return (
-                <div>
-                  {new Date(props.dataItem.dateOfBirth).toLocaleDateString(
-                    "en-GB"
-                  )}
-                </div>
-              );
-            }}
-          />
-          <GridColumn field="gender" title="gender" />
-          {/* <GridColumn field="checkbox1.name" title="checkbox1" />
-          <GridColumn field="checkbox2.name" title="checkbox2" /> */}
-          {/* <GridColumn field="MembershipType.label" title="MembershipType" /> */}
-          <GridColumn
-            field="test"
-            title="test"
-            filterable={false}
-            cell={(props) => {
-              return (
-                <ul>
-                  {props.dataItem.test.map((test) => (
-                    <li>{test}</li>
-                  ))}
-                </ul>
-              );
-            }}
-          />
+          {keysForGrid?.map((key) => {
+            return createGridColumn(key);
+          })}
         </Grid>
       </div>
     </div>

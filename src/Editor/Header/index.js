@@ -47,6 +47,7 @@ export default function EditorHeader({
   getReportTemplate,
 }) {
   const { is_maintenance_on } = app;
+
   const payload = {
     reportTemplateId: 43,
     reportTemplateName: "registration",
