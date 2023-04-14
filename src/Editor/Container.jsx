@@ -52,6 +52,7 @@ export const Container = ({
   sideBarDebugger,
   dataQueries,
   currentPageId,
+  reportTemplateDataMap,
 }) => {
   const styles = {
     width: currentLayout === "mobile" ? deviceWindowWidth : "100%",
@@ -591,6 +592,7 @@ export const Container = ({
                 currentPageId,
                 childComponents,
               }}
+              reportTemplateDataMap={reportTemplateDataMap}
             />
           );
         }

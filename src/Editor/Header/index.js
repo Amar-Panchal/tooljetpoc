@@ -49,8 +49,8 @@ export default function EditorHeader({
   const { is_maintenance_on } = app;
 
   const payload = {
-    reportTemplateId: 43,
-    reportTemplateName: "registration",
+    reportTemplateId: 41,
+    reportTemplateName: "report",
     reportValues: appDefinition,
   };
   const updateReportTemplate = () => {

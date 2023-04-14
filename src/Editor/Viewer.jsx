@@ -31,6 +31,7 @@ import { Redirect } from "react-router-dom";
 import Spinner from "@/_ui/Spinner";
 import { toast } from "react-hot-toast";
 import axios from "axios";
+import { useLocation } from "react-router-dom";
 const temp = {
   id: "42af8904-10f3-43e9-a76d-984feb4a8cc4",
   name: "2",
@@ -2514,7 +2515,7 @@ const temp = {
 class ViewerComponent extends React.Component {
   constructor(props) {
     super(props);
-
+    console.log("propsss", props);
     const deviceWindowWidth = window.screen.width - 5;
     const isMobileDevice = deviceWindowWidth < 600;
 
@@ -2703,9 +2704,10 @@ class ViewerComponent extends React.Component {
 
   loadApplicationByVersion = (appId, versionId) => {
     // console.log("appdef",JSON.parse(localStorage.getItem('appdef')));
+
     axios
       .get(
-        "https://elabnextapi-dev.azurewebsites.net/api/ReportSetup/GetReportTemplate?ReportTemplateId=43"
+        "https://elabnextapi-dev.azurewebsites.net/api/ReportSetup/GetReportTemplate?ReportTemplateId=41"
       )
       .then((response) => {
         temp.definition = JSON.parse(
@@ -2713,10 +2715,6 @@ class ViewerComponent extends React.Component {
         );
         this.setStateForApp(temp);
         this.setStateForContainer(temp);
-        console.log(
-          "object",
-          JSON.parse(response?.data?.resultData[0].reportValues)
-        );
       })
       .catch((error) => {
         console.log(error);
@@ -3115,6 +3113,9 @@ class ViewerComponent extends React.Component {
                                 canvasWidth={this.getCanvasWidth()}
                                 // dataQueries={dataQueries}
                                 currentPageId={this.state.currentPageId}
+                                reportTemplateDataMap={
+                                  this.props.location.state
+                                }
                               />
                             )}
                           </>

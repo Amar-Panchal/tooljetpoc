@@ -1,72 +1,72 @@
 /** @format */
 
-import React, { useEffect, useState, useMemo, useContext, useRef } from 'react';
-import { Button } from './Components/Button';
-import { Image } from './Components/Image';
-import { Text } from './Components/Text';
-import { Table } from './Components/Table/Table';
-import { TextInput } from './Components/TextInput';
-import { NumberInput } from './Components/NumberInput';
-import { TextArea } from './Components/TextArea';
-import { Container } from './Components/Container';
-import { Tabs } from './Components/Tabs';
-import { RichTextEditor } from './Components/RichTextEditor';
-import { DropDown } from './Components/DropDown';
-import { Checkbox } from './Components/Checkbox';
-import { Datepicker } from './Components/Datepicker';
-import { DaterangePicker } from './Components/DaterangePicker';
-import { Multiselect } from './Components/Multiselect';
-import { Modal } from './Components/Modal';
-import { Chart } from './Components/Chart';
-import { Map } from './Components/Map/Map';
-import { QrScanner } from './Components/QrScanner/QrScanner';
-import { ToggleSwitch } from './Components/Toggle';
-import { RadioButton } from './Components/RadioButton';
-import { StarRating } from './Components/StarRating';
-import { Divider } from './Components/Divider';
-import { FilePicker } from './Components/FilePicker';
-import { PasswordInput } from './Components/PasswordInput';
-import { Calendar } from './Components/Calendar';
-import { Listview } from './Components/Listview';
-import { IFrame } from './Components/IFrame';
-import { CodeEditor } from './Components/CodeEditor';
-import { Timer } from './Components/Timer';
-import { Statistics } from './Components/Statistics';
-import { Pagination } from './Components/Pagination';
-import { Tags } from './Components/Tags';
-import { Spinner } from './Components/Spinner';
-import { CircularProgressBar } from './Components/CirularProgressbar';
-import { renderTooltip, getComponentName } from '@/_helpers/appUtils';
-import { RangeSlider } from './Components/RangeSlider';
-import { Timeline } from './Components/Timeline';
-import { SvgImage } from './Components/SvgImage';
-import { Html } from './Components/Html';
-import { ButtonGroup } from './Components/ButtonGroup';
-import { CustomComponent } from './Components/CustomComponent/CustomComponent';
-import { VerticalDivider } from './Components/verticalDivider';
-import { PDF } from './Components/PDF';
-import { ColorPicker } from './Components/ColorPicker';
-import { KanbanBoard } from './Components/KanbanBoard/KanbanBoard';
-import { Steps } from './Components/Steps';
-import { TreeSelect } from './Components/TreeSelect';
-import { Icon } from './Components/Icon';
-import { Link } from './Components/Link';
-import { Form } from './Components/Form';
-import { BoundedBox } from './Components/BoundedBox/BoundedBox';
-import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
-import '@/_styles/custom.scss';
-import { validateProperties } from './component-properties-validation';
-import { validateWidget } from '@/_helpers/utils';
-import { componentTypes } from './WidgetManager/components';
+import React, { useEffect, useState, useMemo, useContext, useRef } from "react";
+import { Button } from "./Components/Button";
+import { Image } from "./Components/Image";
+import { Text } from "./Components/Text";
+import { Table } from "./Components/Table/Table";
+import { TextInput } from "./Components/TextInput";
+import { NumberInput } from "./Components/NumberInput";
+import { TextArea } from "./Components/TextArea";
+import { Container } from "./Components/Container";
+import { Tabs } from "./Components/Tabs";
+import { RichTextEditor } from "./Components/RichTextEditor";
+import { DropDown } from "./Components/DropDown";
+import { Checkbox } from "./Components/Checkbox";
+import { Datepicker } from "./Components/Datepicker";
+import { DaterangePicker } from "./Components/DaterangePicker";
+import { Multiselect } from "./Components/Multiselect";
+import { Modal } from "./Components/Modal";
+import { Chart } from "./Components/Chart";
+import { Map } from "./Components/Map/Map";
+import { QrScanner } from "./Components/QrScanner/QrScanner";
+import { ToggleSwitch } from "./Components/Toggle";
+import { RadioButton } from "./Components/RadioButton";
+import { StarRating } from "./Components/StarRating";
+import { Divider } from "./Components/Divider";
+import { FilePicker } from "./Components/FilePicker";
+import { PasswordInput } from "./Components/PasswordInput";
+import { Calendar } from "./Components/Calendar";
+import { Listview } from "./Components/Listview";
+import { IFrame } from "./Components/IFrame";
+import { CodeEditor } from "./Components/CodeEditor";
+import { Timer } from "./Components/Timer";
+import { Statistics } from "./Components/Statistics";
+import { Pagination } from "./Components/Pagination";
+import { Tags } from "./Components/Tags";
+import { Spinner } from "./Components/Spinner";
+import { CircularProgressBar } from "./Components/CirularProgressbar";
+import { renderTooltip, getComponentName } from "@/_helpers/appUtils";
+import { RangeSlider } from "./Components/RangeSlider";
+import { Timeline } from "./Components/Timeline";
+import { SvgImage } from "./Components/SvgImage";
+import { Html } from "./Components/Html";
+import { ButtonGroup } from "./Components/ButtonGroup";
+import { CustomComponent } from "./Components/CustomComponent/CustomComponent";
+import { VerticalDivider } from "./Components/verticalDivider";
+import { PDF } from "./Components/PDF";
+import { ColorPicker } from "./Components/ColorPicker";
+import { KanbanBoard } from "./Components/KanbanBoard/KanbanBoard";
+import { Steps } from "./Components/Steps";
+import { TreeSelect } from "./Components/TreeSelect";
+import { Icon } from "./Components/Icon";
+import { Link } from "./Components/Link";
+import { Form } from "./Components/Form";
+import { BoundedBox } from "./Components/BoundedBox/BoundedBox";
+import OverlayTrigger from "react-bootstrap/OverlayTrigger";
+import "@/_styles/custom.scss";
+import { validateProperties } from "./component-properties-validation";
+import { validateWidget } from "@/_helpers/utils";
+import { componentTypes } from "./WidgetManager/components";
 import {
   resolveProperties,
   resolveStyles,
   resolveGeneralProperties,
   resolveGeneralStyles,
-} from './component-properties-resolution';
-import _ from 'lodash';
-import { EditorContext } from '@/Editor/Context/EditorContextWrapper';
-import { useTranslation } from 'react-i18next';
+} from "./component-properties-resolution";
+import _ from "lodash";
+import { EditorContext } from "@/Editor/Context/EditorContextWrapper";
+import { useTranslation } from "react-i18next";
 
 const AllComponents = {
   Button,
@@ -148,13 +148,14 @@ export const Box = function Box({
   dataQueries,
   readOnly,
   childComponents,
+  reportTemplateDataMap,
 }) {
   const { t } = useTranslation();
-  const backgroundColor = yellow ? 'yellow' : '';
+  const backgroundColor = yellow ? "yellow" : "";
 
   let styles = {
-    height: '100%',
-    padding: '1px',
+    height: "100%",
+    padding: "1px",
   };
 
   if (inCanvas) {
@@ -168,7 +169,7 @@ export const Box = function Box({
       (comp) => component.component === comp.component
     );
   }, [component]);
-
+  console.log("cccc", component.component);
   const ComponentToRender = AllComponents[component.component];
   const [renderCount, setRenderCount] = useState(0);
   const [renderStartTime, setRenderStartTime] = useState(new Date());
@@ -181,7 +182,7 @@ export const Box = function Box({
     customResolvables
   );
   const [validatedProperties, propertyErrors] =
-    mode === 'edit' && component.validate
+    mode === "edit" && component.validate
       ? validateProperties(resolvedProperties, componentMeta.properties)
       : [resolvedProperties, []];
 
@@ -192,7 +193,7 @@ export const Box = function Box({
     customResolvables
   );
   const [validatedStyles, styleErrors] =
-    mode === 'edit' && component.validate
+    mode === "edit" && component.validate
       ? validateProperties(resolvedStyles, componentMeta.styles)
       : [resolvedStyles, []];
   validatedStyles.visibility =
@@ -205,7 +206,7 @@ export const Box = function Box({
     customResolvables
   );
   const [validatedGeneralProperties, generalPropertiesErrors] =
-    mode === 'edit' && component.validate
+    mode === "edit" && component.validate
       ? validateProperties(resolvedGeneralProperties, componentMeta.general)
       : [resolvedGeneralProperties, []];
 
@@ -218,7 +219,7 @@ export const Box = function Box({
   resolvedStyles.visibility =
     resolvedStyles.visibility !== false ? true : false;
   const [validatedGeneralStyles, generalStylesErrors] =
-    mode === 'edit' && component.validate
+    mode === "edit" && component.validate
       ? validateProperties(resolvedGeneralStyles, componentMeta.generalStyles)
       : [resolvedGeneralStyles, []];
 
@@ -241,9 +242,9 @@ export const Box = function Box({
         `${componentName} - ${error.property}`,
         {
           page: currentPage,
-          type: 'component',
-          kind: 'component',
-          strace: 'page_level',
+          type: "component",
+          kind: "component",
+          strace: "page_level",
           data: { message: `${error.message}`, status: true },
           resolvedProperties: resolvedProperties,
           effectiveProperties: validatedProperties,
@@ -272,7 +273,7 @@ export const Box = function Box({
   }, [JSON.stringify({ resolvedProperties, resolvedStyles })]);
 
   useEffect(() => {
-    if (customResolvables && !readOnly && mode === 'edit') {
+    if (customResolvables && !readOnly && mode === "edit") {
       const newCustomResolvable = {};
       newCustomResolvable[id] = { ...customResolvables };
       exposeToCodeHinter((prevState) => ({
@@ -290,7 +291,7 @@ export const Box = function Box({
   let exposedVariables = currentState?.components[component.name] ?? {};
 
   const fireEvent = (eventName, options) => {
-    if (mode === 'edit' && eventName === 'onClick') {
+    if (mode === "edit" && eventName === "onClick") {
       onComponentClick(id, component);
     }
     onEvent(eventName, {
@@ -308,12 +309,12 @@ export const Box = function Box({
 
   return (
     <OverlayTrigger
-      placement={inCanvas ? 'auto' : 'top'}
+      placement={inCanvas ? "auto" : "top"}
       delay={{ show: 500, hide: 0 }}
       trigger={
         inCanvas && !validatedGeneralProperties.tooltip?.toString().trim()
           ? null
-          : ['hover', 'focus']
+          : ["hover", "focus"]
       }
       overlay={(props) =>
         renderTooltip({
@@ -333,7 +334,7 @@ export const Box = function Box({
           backgroundColor,
           boxShadow: validatedGeneralStyles?.boxShadow,
         }}
-        role={preview ? 'BoxPreview' : 'Box'}
+        role={preview ? "BoxPreview" : "Box"}
       >
         {inCanvas ? (
           !resetComponent ? (
@@ -417,38 +418,39 @@ export const Box = function Box({
               dataCy={`draggable-widget-${String(
                 component.name
               ).toLowerCase()}`}
+              reportTemplateDataMap={reportTemplateDataMap}
             ></ComponentToRender>
           ) : (
             <></>
           )
         ) : (
           <div
-            className='m-1'
+            className="m-1"
             style={{
-              height: '76px',
-              width: '76px',
-              marginLeft: '18px',
+              height: "76px",
+              width: "76px",
+              marginLeft: "18px",
             }}
           >
             <div
-              className='component-image-holder p-2 d-flex flex-column justify-content-center'
-              style={{ height: '100%' }}
+              className="component-image-holder p-2 d-flex flex-column justify-content-center"
+              style={{ height: "100%" }}
               data-cy={`widget-list-box-${component.displayName
                 .toLowerCase()
-                .replace(/\s+/g, '-')}`}
+                .replace(/\s+/g, "-")}`}
             >
               <center>
                 <div
                   style={{
-                    width: '20px',
-                    height: '20px',
-                    backgroundSize: 'contain',
+                    width: "20px",
+                    height: "20px",
+                    backgroundSize: "contain",
                     backgroundImage: `url(assets/images/icons/widgets/${component.name.toLowerCase()}.svg)`,
-                    backgroundRepeat: 'no-repeat',
+                    backgroundRepeat: "no-repeat",
                   }}
                 ></div>
               </center>
-              <span className='component-title'>
+              <span className="component-title">
                 {t(`${component.name}`, component.displayName)}
               </span>
             </div>

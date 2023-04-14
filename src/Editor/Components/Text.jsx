@@ -11,6 +11,7 @@ export const Text = function Text({
   registerAction,
   setExposedVariable,
   dataCy,
+  reportTemplateDataMap,
 }) {
   let {
     textSize,
@@ -88,7 +89,22 @@ export const Text = function Text({
     textIndent: `${textIndent}px` ?? "0px",
     letterSpacing: `${letterSpacing}px` ?? "0px",
     wordSpacing: `${wordSpacing}px` ?? "0px",
+    minWidth: "200px",
   };
+
+  function sanitizeString(str) {
+    // Remove whitespace
+    str = str.replace(/\s+/g, "");
+
+    // Convert all characters to lowercase
+    str = str.toLowerCase();
+
+    // Remove special characters
+    str = str.replace(/[^\w\s]/gi, "");
+
+    return str;
+  }
+  console.log("text22", sanitizeString(text));
 
   return (
     <div
@@ -103,6 +119,12 @@ export const Text = function Text({
           dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(text) }}
         />
       )}
+
+      <div>
+        {sanitizeString(text) === "patientname"
+          ? reportTemplateDataMap?.patientName
+          : reportTemplateDataMap?.age}
+      </div>
       {loadingState === true && (
         <div style={{ width: "100%" }}>
           <center>

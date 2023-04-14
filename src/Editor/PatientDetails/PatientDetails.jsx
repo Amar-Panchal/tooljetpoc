@@ -6,6 +6,8 @@ import { Grid, GridColumn } from "@progress/kendo-react-all";
 import { process } from "@progress/kendo-data-query";
 import axios from "axios";
 
+import { useHistory } from "react-router-dom";
+
 const initialDataState = {
   sort: [
     {
@@ -20,6 +22,7 @@ function PatientDetails() {
   const [PatientDetailsList, setPatientDetailsList] = useState([]);
   const [dataState, setDataState] = useState(initialDataState);
   const [keysForGrid, setKeysForGrid] = useState([]);
+  const history = useHistory();
   function getPatientDetailsList() {
     axios
       .get(
@@ -109,7 +112,7 @@ function PatientDetails() {
               return (
                 <td>
                   <input
-                    disabled={true}
+                    disabled={false}
                     type="checkbox"
                     checked={props.dataItem.sendSms?.isCheck}
                   />
@@ -153,11 +156,30 @@ function PatientDetails() {
             setDataState(e.dataState);
           }}
         >
-          <GridColumn field="" title="Error Issue" disabled />
-
           {keysForGrid?.map((key) => {
             return createGridColumn(key);
           })}
+          <GridColumn
+            field="dd"
+            title="Actions"
+            cell={(props) => {
+              return (
+                <td>
+                  <button
+                    onClick={() =>
+                      history.push({
+                        pathname: "/applications/1/versions/1",
+                        state: props.dataItem,
+                        target: "blank",
+                      })
+                    }
+                  >
+                    print
+                  </button>
+                </td>
+              );
+            }}
+          />
         </Grid>
       </div>
     </div>

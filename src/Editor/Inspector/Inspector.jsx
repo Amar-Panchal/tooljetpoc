@@ -333,19 +333,16 @@ export const Inspector = ({
         "https://elabnextapi-dev.azurewebsites.net/api/ReportSetup/GetFieldMaster"
       )
       .then((response) => {
-        const temp = [];
+        let temp = [];
         response?.data?.resultData?.fieldMaster?.map((element) => {
-          if (component.component.component === element.componentType)
+          if (component.component.component === "Text") {
+            temp = response?.data?.resultData?.fieldMaster;
+          } else if (component.component.component === element.componentType)
             temp.push({
               value: element.value,
               label: element.label,
               componentType: element.componentType,
             });
-          console.log(
-            "InputFieldDropdown",
-            component.component.component,
-            element.componentType
-          );
         });
 
         setInputFieldDropdown(temp);
@@ -356,6 +353,8 @@ export const Inspector = ({
   const handleTypeSelect = (e) => {
     setNewComponentName(e.value);
   };
+
+  console.log("InputFieldDropdown", InputFieldDropdown);
   return (
     <div className="inspector">
       <ConfirmDialog
