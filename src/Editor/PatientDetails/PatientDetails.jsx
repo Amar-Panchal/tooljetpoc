@@ -168,7 +168,7 @@ function PatientDetails() {
                   <button
                     onClick={() =>
                       history.push({
-                        pathname: "/applications/1/versions/1",
+                        pathname: "/",
                         state: props.dataItem,
                         target: "blank",
                       })

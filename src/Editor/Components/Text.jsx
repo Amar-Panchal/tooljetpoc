@@ -104,7 +104,6 @@ export const Text = function Text({
 
     return str;
   }
-  console.log("text22", sanitizeString(text));
 
   return (
     <div
@@ -116,15 +115,31 @@ export const Text = function Text({
       {!loadingState && (
         <div
           style={{ width: "100%", fontSize: textSize }}
-          dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(text) }}
+          dangerouslySetInnerHTML={{
+            __html: DOMPurify.sanitize(
+              `
+           
+           ${text}  ${
+                reportTemplateDataMap
+                  ? sanitizeString(text) === "patientname"
+                    ? ": " + reportTemplateDataMap?.patientName
+                    : sanitizeString(text) === "age"
+                    ? ": " + reportTemplateDataMap?.age
+                    : ""
+                  : ""
+              }
+              
+              `
+            ),
+          }}
         />
       )}
 
-      <div>
+      {/* <div>
         {sanitizeString(text) === "patientname"
           ? reportTemplateDataMap?.patientName
           : reportTemplateDataMap?.age}
-      </div>
+      </div> */}
       {loadingState === true && (
         <div style={{ width: "100%" }}>
           <center>

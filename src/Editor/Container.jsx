@@ -21,6 +21,7 @@ import Spinner from "@/_ui/Spinner";
 import { useHotkeys } from "react-hotkeys-hook";
 const produce = require("immer").default;
 import { addComponents, addNewWidgetToTheEditor } from "@/_helpers/appUtils";
+import { useHistory } from "react-router-dom";
 
 export const Container = ({
   canvasWidth,
@@ -52,7 +53,6 @@ export const Container = ({
   sideBarDebugger,
   dataQueries,
   currentPageId,
-  reportTemplateDataMap,
 }) => {
   const styles = {
     width: currentLayout === "mobile" ? deviceWindowWidth : "100%",
@@ -71,9 +71,11 @@ export const Container = ({
   const [commentsPreviewList, setCommentsPreviewList] = useState([]);
   const [newThread, addNewThread] = useState({});
   const [isContainerFocused, setContainerFocus] = useState(false);
+  const [reportTemplateDataMap, setreportTemplateDataMap] = useState();
   const router = useRouter();
   const canvasRef = useRef(null);
   const focusedParentIdRef = useRef(undefined);
+  const history = useHistory();
 
   useHotkeys("⌘+z, control+z", () => handleUndo());
   useHotkeys("⌘+shift+z, control+shift+z", () => handleRedo());
@@ -98,7 +100,9 @@ export const Container = ({
     },
     [isContainerFocused, appDefinition, focusedParentIdRef]
   );
-
+  useEffect(() => {
+    setreportTemplateDataMap(history.location.state);
+  }, [history.location.state]);
   useEffect(() => {
     const handleClick = (e) => {
       if (
@@ -525,75 +529,79 @@ export const Container = ({
           resolveReferences(canShowInCurrentLayout, currentState)
         ) {
           return (
-            <DraggableBox
-              className={showComments && "pointer-events-none"}
-              canvasWidth={canvasWidth}
-              onComponentClick={
-                config.COMMENT_FEATURE_ENABLE && showComments
-                  ? handleAddThreadOnComponent
-                  : onComponentClick
-              }
-              onEvent={onEvent}
-              onComponentOptionChanged={onComponentOptionChanged}
-              onComponentOptionsChanged={onComponentOptionsChanged}
-              key={key}
-              currentState={currentState}
-              onResizeStop={onResizeStop}
-              onDragStop={onDragStop}
-              paramUpdated={paramUpdated}
-              id={key}
-              {...boxes[key]}
-              mode={mode}
-              resizingStatusChanged={(status) => setIsResizing(status)}
-              draggingStatusChanged={(status) => setIsDragging(status)}
-              inCanvas={true}
-              zoomLevel={zoomLevel}
-              setSelectedComponent={setSelectedComponent}
-              removeComponent={removeComponent}
-              currentLayout={currentLayout}
-              deviceWindowWidth={deviceWindowWidth}
-              isSelectedComponent={
-                mode === "edit"
-                  ? selectedComponents.find((component) => component.id === key)
-                  : false
-              }
-              darkMode={darkMode}
-              onComponentHover={onComponentHover}
-              hoveredComponent={hoveredComponent}
-              sideBarDebugger={sideBarDebugger}
-              isMultipleComponentsSelected={
-                selectedComponents?.length > 1 ? true : false
-              }
-              dataQueries={dataQueries}
-              childComponents={childComponents[key]}
-              containerProps={{
-                mode,
-                snapToGrid,
-                onComponentClick,
-                onEvent,
-                appDefinition,
-                appDefinitionChanged,
-                currentState,
-                onComponentOptionChanged,
-                onComponentOptionsChanged,
-                appLoading,
-                zoomLevel,
-                setSelectedComponent,
-                removeComponent,
-                currentLayout,
-                deviceWindowWidth,
-                selectedComponents,
-                darkMode,
-                onComponentHover,
-                hoveredComponent,
-                sideBarDebugger,
-                dataQueries,
-                addDefaultChildren,
-                currentPageId,
-                childComponents,
-              }}
-              reportTemplateDataMap={reportTemplateDataMap}
-            />
+            <div>
+              <DraggableBox
+                className={showComments && "pointer-events-none"}
+                canvasWidth={canvasWidth}
+                onComponentClick={
+                  config.COMMENT_FEATURE_ENABLE && showComments
+                    ? handleAddThreadOnComponent
+                    : onComponentClick
+                }
+                onEvent={onEvent}
+                onComponentOptionChanged={onComponentOptionChanged}
+                onComponentOptionsChanged={onComponentOptionsChanged}
+                key={key}
+                currentState={currentState}
+                onResizeStop={onResizeStop}
+                onDragStop={onDragStop}
+                paramUpdated={paramUpdated}
+                id={key}
+                {...boxes[key]}
+                mode={mode}
+                resizingStatusChanged={(status) => setIsResizing(status)}
+                draggingStatusChanged={(status) => setIsDragging(status)}
+                inCanvas={true}
+                zoomLevel={zoomLevel}
+                setSelectedComponent={setSelectedComponent}
+                removeComponent={removeComponent}
+                currentLayout={currentLayout}
+                deviceWindowWidth={deviceWindowWidth}
+                isSelectedComponent={
+                  mode === "edit"
+                    ? selectedComponents.find(
+                        (component) => component.id === key
+                      )
+                    : false
+                }
+                darkMode={darkMode}
+                onComponentHover={onComponentHover}
+                hoveredComponent={hoveredComponent}
+                sideBarDebugger={sideBarDebugger}
+                isMultipleComponentsSelected={
+                  selectedComponents?.length > 1 ? true : false
+                }
+                dataQueries={dataQueries}
+                childComponents={childComponents[key]}
+                containerProps={{
+                  mode,
+                  snapToGrid,
+                  onComponentClick,
+                  onEvent,
+                  appDefinition,
+                  appDefinitionChanged,
+                  currentState,
+                  onComponentOptionChanged,
+                  onComponentOptionsChanged,
+                  appLoading,
+                  zoomLevel,
+                  setSelectedComponent,
+                  removeComponent,
+                  currentLayout,
+                  deviceWindowWidth,
+                  selectedComponents,
+                  darkMode,
+                  onComponentHover,
+                  hoveredComponent,
+                  sideBarDebugger,
+                  dataQueries,
+                  addDefaultChildren,
+                  currentPageId,
+                  childComponents,
+                }}
+                reportTemplateDataMap={reportTemplateDataMap}
+              />
+            </div>
           );
         }
       })}

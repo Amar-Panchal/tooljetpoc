@@ -169,7 +169,7 @@ export const Box = function Box({
       (comp) => component.component === comp.component
     );
   }, [component]);
-  console.log("cccc", component.component);
+
   const ComponentToRender = AllComponents[component.component];
   const [renderCount, setRenderCount] = useState(0);
   const [renderStartTime, setRenderStartTime] = useState(new Date());
