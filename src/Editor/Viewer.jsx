@@ -2515,7 +2515,6 @@ const temp = {
 class ViewerComponent extends React.Component {
   constructor(props) {
     super(props);
-    console.log("props in viewer", props);
     const deviceWindowWidth = window.screen.width - 5;
     const isMobileDevice = deviceWindowWidth < 600;
 

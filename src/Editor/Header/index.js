@@ -12,7 +12,7 @@ import { ManageAppUsers } from "../ManageAppUsers";
 import { ReleaseVersionButton } from "../ReleaseVersionButton";
 import cx from "classnames";
 import config from "config";
-import { Toast } from "react-bootstrap";
+import { toast } from "react-hot-toast";
 import axios from "axios";
 import { Button } from "@progress/kendo-react-all";
 import useRouter from "../../_hooks/use-router";
@@ -61,7 +61,7 @@ export default function EditorHeader({
         payload
       )
       .then((response) => {
-        Toast("Save Successfully");
+        toast.success("Saved Successfully");
       })
       .catch((error) => {
         console.log("sss", error);
@@ -158,7 +158,7 @@ export default function EditorHeader({
               <div className="col-1"></div>
             </div>
             <div className="d-flex">
-              <div className="navbar-nav flex-row order-md-last release-buttons p-1">
+              <div className="navbar-nav flex-row order-md-last release-buttons p-1 ">
                 <div className="nav-item me-1">
                   {app.id && (
                     <ManageAppUsers
