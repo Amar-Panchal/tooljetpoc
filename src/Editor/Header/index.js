@@ -45,9 +45,10 @@ export default function EditorHeader({
   onVersionRelease,
   saveEditingVersion,
   getReportTemplate,
+  reportTemplateDataMap,
 }) {
   const { is_maintenance_on } = app;
-
+  // console.log("appVersionPreviewLink", reportTemplateDataMap);
   const payload = {
     reportTemplateId: 41,
     reportTemplateName: "report",
@@ -176,10 +177,12 @@ export default function EditorHeader({
                 <div className="nav-item me-1">
                   <Link
                     title="Preview"
-                    to={appVersionPreviewLink}
-                    target="_blank"
                     rel="noreferrer"
                     data-cy="preview-link-button"
+                    to={{
+                      pathname: appVersionPreviewLink,
+                      state: reportTemplateDataMap,
+                    }}
                   >
                     <svg
                       className="icon cursor-pointer w-100 h-100"

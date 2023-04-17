@@ -106,7 +106,6 @@ export const DraggableBox = function DraggableBox({
   childComponents = null,
   reportTemplateDataMap,
 }) {
-  console.log("iddddd", allComponents);
   const [isResizing, setResizing] = useState(false);
   const [isDragging2, setDragging] = useState(false);
   const [canDrag, setCanDrag] = useState(true);

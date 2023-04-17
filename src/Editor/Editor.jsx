@@ -60,7 +60,7 @@ enablePatches();
 class EditorComponent extends React.Component {
   constructor(props) {
     super(props);
-
+    console.log("props in editor", props);
     const appId = this.props.match.params.id;
 
     const pageHandle = this.props.match.params.pageHandle;
@@ -2031,6 +2031,7 @@ class EditorComponent extends React.Component {
             onVersionRelease={this.onVersionRelease}
             saveEditingVersion={this.saveEditingVersion}
             getReportTemplate={this.getReportTemplate}
+            reportTemplateDataMap={this.props.location.state}
           />
           <DndProvider backend={HTML5Backend}>
             <div className="sub-section">
@@ -2229,6 +2230,7 @@ class EditorComponent extends React.Component {
                         sideBarDebugger={this.sideBarDebugger}
                         dataQueries={dataQueries}
                         currentPageId={this.state.currentPageId}
+                        reportTemplateDataMap={this.props.location.state}
                       />
                       <CustomDragLayer
                         snapToGrid={true}

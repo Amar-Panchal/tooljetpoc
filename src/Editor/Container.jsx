@@ -53,6 +53,7 @@ export const Container = ({
   sideBarDebugger,
   dataQueries,
   currentPageId,
+  reportTemplateDataMap,
 }) => {
   const styles = {
     width: currentLayout === "mobile" ? deviceWindowWidth : "100%",
@@ -71,7 +72,6 @@ export const Container = ({
   const [commentsPreviewList, setCommentsPreviewList] = useState([]);
   const [newThread, addNewThread] = useState({});
   const [isContainerFocused, setContainerFocus] = useState(false);
-  const [reportTemplateDataMap, setreportTemplateDataMap] = useState();
   const router = useRouter();
   const canvasRef = useRef(null);
   const focusedParentIdRef = useRef(undefined);
@@ -100,9 +100,7 @@ export const Container = ({
     },
     [isContainerFocused, appDefinition, focusedParentIdRef]
   );
-  useEffect(() => {
-    setreportTemplateDataMap(history.location.state);
-  }, [history.location.state]);
+
   useEffect(() => {
     const handleClick = (e) => {
       if (
