@@ -1,3 +1,5 @@
+/** @format */
+
 import React from "react";
 import { render } from "react-dom";
 import * as Sentry from "@sentry/react";
@@ -7,11 +9,25 @@ import { App } from "./App";
 // eslint-disable-next-line import/no-unresolved
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
-// import LanguageDetector from 'i18next-browser-languagedetector';
+import LanguageDetector from "i18next-browser-languagedetector";
 import Backend from "i18next-http-backend";
 
 const AppWithProfiler = Sentry.withProfiler(App);
 
+const language = "en";
+const path = "/";
+i18n
+  .use(Backend)
+  .use(LanguageDetector)
+  .use(initReactI18next)
+  .init({
+    load: "languageOnly",
+    fallbackLng: "en",
+    lng: language,
+    backend: {
+      loadPath: `${path}assets/translations/{{lng}}.json`,
+    },
+  });
 // appService.getConfig().then((config) => {
 //   window.public_config = config;
 //   const language = config.LANGUAGE || "en";
