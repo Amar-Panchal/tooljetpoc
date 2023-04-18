@@ -30,7 +30,7 @@ function KendoDatePicker({ component, onChange, value }) {
         defaultValue={new Date(isoDate)}
         format="dd/MM/yyyy"
         onChange={onChange}
-        value={value ? new Date(value) : null}
+        // value={value ? new Date(value) : null}
         width={"300px"}
       />
     </div>

@@ -18,6 +18,7 @@ import KendoRadioButton from "./Components/KendoRadioButton";
 import KendoCheckBox from "./Components/KendoCheckBox";
 import { toast } from "react-hot-toast";
 import "./registration-page.css";
+import moment from "moment";
 function RegistrationPage() {
   const {
     componentsToRender,
@@ -141,7 +142,10 @@ function RegistrationPage() {
             onChange={(e) =>
               setRegistrationPageFormData({
                 ...RegistrationPageFormData,
-                [component.name]: e.target.value,
+                [component.name]: moment(
+                  e.target.value,
+                  "ddd MMM DD YYYY HH:mm:ss z"
+                ).format("DD/MM/YYYY"),
               })
             }
             value={RegistrationPageFormData[component.name]}

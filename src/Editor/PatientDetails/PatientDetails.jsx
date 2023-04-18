@@ -15,7 +15,7 @@ const initialDataState = {
       dir: "asc",
     },
   ],
-  take: 5,
+  take: 50,
   skip: 0,
 };
 function PatientDetails() {
@@ -39,7 +39,7 @@ function PatientDetails() {
         console.log("error -> getPatientDetailsList", error);
       });
   }
-
+  console.log("pati", PatientDetailsList);
   useEffect(() => {
     getPatientDetailsList();
   }, []);
@@ -71,13 +71,7 @@ function PatientDetails() {
                 .toUpperCase() + key.replace(/([A-Z])/g, " $1").slice(1)
             }
             cell={(props) => {
-              return (
-                <td>
-                  {new Date(props.dataItem.dateOfBirth).toLocaleDateString(
-                    "en-GB"
-                  )}
-                </td>
-              );
+              return <td>{props.dataItem.dateOfBirth}</td>;
             }}
           />
         );

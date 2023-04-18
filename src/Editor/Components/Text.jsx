@@ -12,6 +12,7 @@ export const Text = function Text({
   setExposedVariable,
   dataCy,
   reportTemplateDataMap,
+  component,
 }) {
   let {
     textSize,
@@ -104,7 +105,17 @@ export const Text = function Text({
 
     return str;
   }
+  // console.log("reportTemplateDataMap", sanitizeString(text));
 
+  function createDynamicValue() {
+    console.log("compo in text", component.name);
+    console.log(" reportTemplateDataMap", reportTemplateDataMap);
+    return "aaaa";
+  }
+
+  useEffect(() => {
+    createDynamicValue();
+  }, []);
   return (
     <div
       data-disabled={disabledState}
@@ -119,27 +130,19 @@ export const Text = function Text({
             __html: DOMPurify.sanitize(
               `
            
-           ${text}  ${
-                reportTemplateDataMap
-                  ? sanitizeString(text) === "patientname"
-                    ? ": " + reportTemplateDataMap?.patientName
-                    : sanitizeString(text) === "age"
-                    ? ": " + reportTemplateDataMap?.age
-                    : ""
+          
+          ${text} : ${
+                reportTemplateDataMap[component.name]
+                  ? reportTemplateDataMap[component.name]
                   : ""
               }
-              
+          
               `
             ),
           }}
         />
       )}
 
-      {/* <div>
-        {sanitizeString(text) === "patientname"
-          ? reportTemplateDataMap?.patientName
-          : reportTemplateDataMap?.age}
-      </div> */}
       {loadingState === true && (
         <div style={{ width: "100%" }}>
           <center>
