@@ -1,12 +1,22 @@
-import React, { useEffect, useState } from 'react';
-import cx from 'classnames';
-import { Button as KendoButton } from '@progress/kendo-react-all';
-var tinycolor = require('tinycolor2');
+/** @format */
+
+import React, { useEffect, useState } from "react";
+import cx from "classnames";
+import { Button as KendoButton } from "@progress/kendo-react-all";
+var tinycolor = require("tinycolor2");
 
 export const Button = function Button(props) {
-  const { height, properties, styles, fireEvent, registerAction, id, dataCy } = props;
-  const { backgroundColor, textColor, borderRadius, loaderColor, disabledState, borderColor } = styles;
-
+  const { height, properties, styles, fireEvent, registerAction, id, dataCy } =
+    props;
+  const {
+    backgroundColor,
+    textColor,
+    borderRadius,
+    loaderColor,
+    disabledState,
+    borderColor,
+  } = styles;
+  const { setPatientRegistrationFormData, PatientRegistrationFormData } = props;
   const [label, setLabel] = useState(properties.text);
   const [disable, setDisable] = useState(disabledState);
   const [visibility, setVisibility] = useState(styles.visibility);
@@ -32,27 +42,27 @@ export const Button = function Button(props) {
   const computedStyles = {
     backgroundColor,
     color: textColor,
-    width: '100%',
+    width: "100%",
     borderRadius: `${borderRadius}px`,
     height,
-    display: visibility ? '' : 'none',
-    '--tblr-btn-color-darker': tinycolor(backgroundColor).darken(8).toString(),
-    '--loader-color': tinycolor(loaderColor ?? '#fff').toString(),
+    display: visibility ? "" : "none",
+    "--tblr-btn-color-darker": tinycolor(backgroundColor).darken(8).toString(),
+    "--loader-color": tinycolor(loaderColor ?? "#fff").toString(),
     borderColor: borderColor,
   };
 
   registerAction(
-    'click',
+    "click",
     async function () {
       if (!disable) {
-        fireEvent('onClick');
+        fireEvent("onClick");
       }
     },
     [disable]
   );
 
   registerAction(
-    'setText',
+    "setText",
     async function (text) {
       setLabel(text);
     },
@@ -60,7 +70,7 @@ export const Button = function Button(props) {
   );
 
   registerAction(
-    'disable',
+    "disable",
     async function (value) {
       setDisable(value);
     },
@@ -68,7 +78,7 @@ export const Button = function Button(props) {
   );
 
   registerAction(
-    'visibility',
+    "visibility",
     async function (value) {
       setVisibility(value);
     },
@@ -76,36 +86,41 @@ export const Button = function Button(props) {
   );
 
   registerAction(
-    'loading',
+    "loading",
     async function (value) {
       setLoading(value);
     },
     [setLoading]
   );
 
-  const hasCustomBackground = backgroundColor.charAt() === '#';
+  const hasCustomBackground = backgroundColor.charAt() === "#";
   if (hasCustomBackground) {
-    computedStyles['--tblr-btn-color-darker'] = tinycolor(backgroundColor).darken(8).toString();
+    computedStyles["--tblr-btn-color-darker"] = tinycolor(backgroundColor)
+      .darken(8)
+      .toString();
   }
 
   const handleClick = (event) => {
-    const event1 = new CustomEvent('submitForm', { detail: { buttonComponentId: id } });
+    props.onSubmitPatientRegistrationFormData();
+    const event1 = new CustomEvent("submitForm", {
+      detail: { buttonComponentId: id },
+    });
     document.dispatchEvent(event1);
-    fireEvent('onClick');
+    fireEvent("onClick");
   };
 
   return (
     <div className="widget-button">
       <KendoButton
         disabled={disable}
-        className={cx('jet-button btn btn-primary p-1 overflow-hidden', {
-          'btn-loading': loading,
-          'btn-custom': hasCustomBackground,
+        className={cx("jet-button btn btn-primary p-1 overflow-hidden", {
+          "btn-loading": loading,
+          "btn-custom": hasCustomBackground,
         })}
         style={computedStyles}
         onClick={handleClick}
         onMouseOver={() => {
-          fireEvent('onHover');
+          fireEvent("onHover");
         }}
         data-cy={dataCy}
         type="default"

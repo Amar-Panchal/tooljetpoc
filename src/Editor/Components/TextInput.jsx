@@ -14,6 +14,8 @@ export const TextInput = function TextInput({
   component,
   darkMode,
   dataCy,
+  setPatientRegistrationFormData,
+  PatientRegistrationFormData,
 }) {
   const textInputRef = useRef();
 
@@ -131,6 +133,10 @@ export const TextInput = function TextInput({
           }
         }}
         onChange={(e) => {
+          setPatientRegistrationFormData({
+            ...PatientRegistrationFormData,
+            [component.name]: e.target.value,
+          });
           setValue(e.target.value);
           setExposedVariable("value", e.target.value);
           fireEvent("onChange");

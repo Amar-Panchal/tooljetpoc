@@ -1,4 +1,6 @@
-import React, { useEffect } from 'react';
+/** @format */
+
+import React, { useEffect } from "react";
 
 export const Checkbox = function Checkbox({
   height,
@@ -9,35 +11,53 @@ export const Checkbox = function Checkbox({
   registerAction,
   darkMode,
   dataCy,
+  PatientRegistrationFormData,
+  setPatientRegistrationFormData,
+  component,
 }) {
   const defaultValueFromProperties = properties.defaultValue ?? false;
-  const [defaultValue, setDefaultvalue] = React.useState(defaultValueFromProperties);
+  const [defaultValue, setDefaultvalue] = React.useState(
+    defaultValueFromProperties
+  );
   const [checked, setChecked] = React.useState(defaultValueFromProperties);
   const { label } = properties;
   const { visibility, disabledState, checkboxColor } = styles;
-  const textColor = darkMode && styles.textColor === '#000' ? '#fff' : styles.textColor;
+  const textColor =
+    darkMode && styles.textColor === "#000" ? "#fff" : styles.textColor;
 
   function toggleValue(e) {
     const isChecked = e.target.checked;
+
     setChecked(isChecked);
-    setExposedVariable('value', isChecked);
+    setExposedVariable("value", isChecked);
     if (isChecked) {
-      fireEvent('onCheck');
+      setPatientRegistrationFormData({
+        ...PatientRegistrationFormData,
+        [component.name]: label,
+      });
+
+      fireEvent("onCheck");
     } else {
-      fireEvent('onUnCheck');
+      setPatientRegistrationFormData({
+        ...PatientRegistrationFormData,
+        [component.name]: "",
+      });
+      fireEvent("onUnCheck");
     }
   }
   useEffect(() => {
-    setExposedVariable('value', defaultValueFromProperties);
+    setExposedVariable("value", defaultValueFromProperties);
     setDefaultvalue(defaultValueFromProperties);
     setChecked(defaultValueFromProperties);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [defaultValueFromProperties]);
 
   registerAction(
-    'setChecked',
+    "setChecked",
     async function (status) {
-      setExposedVariable('value', status).then(() => (status ? fireEvent('onCheck') : fireEvent('onUnCheck')));
+      setExposedVariable("value", status).then(() =>
+        status ? fireEvent("onCheck") : fireEvent("onUnCheck")
+      );
       setChecked(status);
     },
     [setChecked]
@@ -47,7 +67,7 @@ export const Checkbox = function Checkbox({
     <div
       data-disabled={disabledState}
       className="row py-1"
-      style={{ height, display: visibility ? '' : 'none' }}
+      style={{ height, display: visibility ? "" : "none" }}
       data-cy={dataCy}
     >
       <div className="col px-1 py-0 mt-0">
@@ -60,7 +80,10 @@ export const Checkbox = function Checkbox({
             }}
             defaultChecked={defaultValue}
             checked={checked}
-            style={{ backgroundColor: checked ? `${checkboxColor}` : 'white', marginTop: '1px' }}
+            style={{
+              backgroundColor: checked ? `${checkboxColor}` : "white",
+              marginTop: "1px",
+            }}
           />
           <span className="form-check-label" style={{ color: textColor }}>
             {label}

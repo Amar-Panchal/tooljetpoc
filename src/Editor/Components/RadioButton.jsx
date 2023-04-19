@@ -13,6 +13,9 @@ export const RadioButton = function RadioButton({
   registerAction,
   darkMode,
   dataCy,
+  component,
+  setPatientRegistrationFormData,
+  PatientRegistrationFormData,
 }) {
   const { label, value, values, display_values } = properties;
   const { visibility, disabledState, activeColor } = styles;
@@ -34,6 +37,11 @@ export const RadioButton = function RadioButton({
   }
 
   function onSelect(selection) {
+    console.log("eeeeff", selection);
+    setPatientRegistrationFormData({
+      ...PatientRegistrationFormData,
+      [component.name]: selection,
+    });
     setValue(selection);
     setExposedVariable("value", selection).then(() =>
       fireEvent("onSelectionChange")

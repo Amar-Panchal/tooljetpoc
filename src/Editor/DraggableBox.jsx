@@ -105,6 +105,9 @@ export const DraggableBox = function DraggableBox({
   dataQueries,
   childComponents = null,
   reportTemplateDataMap,
+  PatientRegistrationFormData,
+  setPatientRegistrationFormData,
+  onSubmitPatientRegistrationFormData,
 }) {
   const [isResizing, setResizing] = useState(false);
   const [isDragging2, setDragging] = useState(false);
@@ -324,6 +327,13 @@ export const DraggableBox = function DraggableBox({
                   dataQueries={dataQueries}
                   childComponents={childComponents}
                   reportTemplateDataMap={reportTemplateDataMap}
+                  PatientRegistrationFormData={PatientRegistrationFormData}
+                  setPatientRegistrationFormData={
+                    setPatientRegistrationFormData
+                  }
+                  onSubmitPatientRegistrationFormData={
+                    onSubmitPatientRegistrationFormData
+                  }
                 />
               </ErrorBoundary>
             </div>
@@ -353,6 +363,12 @@ export const DraggableBox = function DraggableBox({
               sideBarDebugger={sideBarDebugger}
               customResolvables={customResolvables}
               containerProps={containerProps}
+              PatientRegistrationFormData={PatientRegistrationFormData}
+              setPatientRegistrationFormData={setPatientRegistrationFormData}
+              onSubmitPatientRegistrationFormData={
+                onSubmitPatientRegistrationFormData
+              }
+              reportTemplateDataMap={reportTemplateDataMap}
             />
           </ErrorBoundary>
         </div>

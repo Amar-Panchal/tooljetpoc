@@ -1,6 +1,8 @@
-import _ from 'lodash';
-import React, { useState, useEffect } from 'react';
-import Select from 'react-select';
+/** @format */
+
+import _ from "lodash";
+import React, { useState, useEffect } from "react";
+import Select from "react-select";
 export const DropDown = function DropDown({
   height,
   validate,
@@ -15,9 +17,17 @@ export const DropDown = function DropDown({
   exposedVariables,
   registerAction,
   dataCy,
+  setPatientRegistrationFormData,
+  PatientRegistrationFormData,
 }) {
   let { label, value, display_values, values } = properties;
-  const { selectedTextColor, borderRadius, visibility, disabledState, justifyContent } = styles;
+  const {
+    selectedTextColor,
+    borderRadius,
+    visibility,
+    disabledState,
+    justifyContent,
+  } = styles;
   const [currentValue, setCurrentValue] = useState(() => value);
   const { value: exposedValue } = exposedVariables;
 
@@ -40,15 +50,15 @@ export const DropDown = function DropDown({
   function selectOption(value) {
     if (values.includes(value)) {
       setCurrentValue(value);
-      setExposedVariable('value', value).then(fireEvent('onSelect'));
+      setExposedVariable("value", value).then(fireEvent("onSelect"));
     } else {
       setCurrentValue(undefined);
-      setExposedVariable('value', undefined).then(fireEvent('onSelect'));
+      setExposedVariable("value", undefined).then(fireEvent("onSelect"));
     }
   }
 
   registerAction(
-    'selectOption',
+    "selectOption",
     async function (value) {
       selectOption(value);
     },
@@ -59,7 +69,7 @@ export const DropDown = function DropDown({
   const { isValid, validationError } = validationData;
 
   useEffect(() => {
-    setExposedVariable('isValid', isValid);
+    setExposedVariable("isValid", isValid);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isValid]);
 
@@ -68,13 +78,14 @@ export const DropDown = function DropDown({
     if (values?.includes(value)) {
       newValue = value;
     }
-    setExposedVariable('value', newValue);
+    setExposedVariable("value", newValue);
     setCurrentValue(newValue);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value]);
 
   useEffect(() => {
-    if (exposedValue !== currentValue) setExposedVariable('value', currentValue);
+    if (exposedValue !== currentValue)
+      setExposedVariable("value", currentValue);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentValue]);
 
@@ -84,26 +95,26 @@ export const DropDown = function DropDown({
     else if (values?.includes(value)) newValue = value;
 
     setCurrentValue(newValue);
-    setExposedVariable('value', newValue);
+    setExposedVariable("value", newValue);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [JSON.stringify(values)]);
 
   useEffect(() => {
-    setExposedVariable('label', label);
+    setExposedVariable("label", label);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [label]);
 
   const onSearchTextChange = (searchText, actionProps) => {
-    if (actionProps.action === 'input-change') {
-      setExposedVariable('searchText', searchText);
-      fireEvent('onSearchTextChanged');
+    if (actionProps.action === "input-change") {
+      setExposedVariable("searchText", searchText);
+      fireEvent("onSearchTextChanged");
     }
   };
 
   const customStyles = {
     control: (provided, state) => ({
       ...provided,
-      background: darkMode ? 'rgb(31,40,55)' : 'white',
+      background: darkMode ? "rgb(31,40,55)" : "white",
       minHeight: height,
       height: height,
       boxShadow: state.isFocused ? null : null,
@@ -113,21 +124,27 @@ export const DropDown = function DropDown({
     valueContainer: (provided, _state) => ({
       ...provided,
       height: height,
-      padding: '0 6px',
+      padding: "0 6px",
       justifyContent,
     }),
 
     singleValue: (provided, _state) => ({
       ...provided,
-      color: disabledState ? 'grey' : selectedTextColor ? selectedTextColor : darkMode ? 'white' : 'black',
+      color: disabledState
+        ? "grey"
+        : selectedTextColor
+        ? selectedTextColor
+        : darkMode
+        ? "white"
+        : "black",
     }),
 
     input: (provided, _state) => ({
       ...provided,
-      color: darkMode ? 'white' : 'black',
+      color: darkMode ? "white" : "black",
     }),
     indicatorSeparator: (_state) => ({
-      display: 'none',
+      display: "none",
     }),
     indicatorsContainer: (provided, _state) => ({
       ...provided,
@@ -136,36 +153,39 @@ export const DropDown = function DropDown({
     option: (provided, state) => {
       const styles = darkMode
         ? {
-            color: 'white',
-            backgroundColor: state.value === currentValue ? '#3650AF' : 'rgb(31,40,55)',
-            ':hover': {
-              backgroundColor: state.value === currentValue ? '#1F2E64' : '#323C4B',
+            color: "white",
+            backgroundColor:
+              state.value === currentValue ? "#3650AF" : "rgb(31,40,55)",
+            ":hover": {
+              backgroundColor:
+                state.value === currentValue ? "#1F2E64" : "#323C4B",
             },
-            maxWidth: 'auto',
-            minWidth: 'max-content',
+            maxWidth: "auto",
+            minWidth: "max-content",
           }
         : {
-            backgroundColor: state.value === currentValue ? '#7A95FB' : 'white',
-            color: state.value === currentValue ? 'white' : 'black',
-            ':hover': {
-              backgroundColor: state.value === currentValue ? '#3650AF' : '#d8dce9',
+            backgroundColor: state.value === currentValue ? "#7A95FB" : "white",
+            color: state.value === currentValue ? "white" : "black",
+            ":hover": {
+              backgroundColor:
+                state.value === currentValue ? "#3650AF" : "#d8dce9",
             },
-            maxWidth: 'auto',
-            minWidth: 'max-content',
+            maxWidth: "auto",
+            minWidth: "max-content",
           };
       return {
         ...provided,
         justifyContent,
-        height: 'auto',
-        display: 'flex',
-        flexDirection: 'rows',
-        alignItems: 'center',
+        height: "auto",
+        display: "flex",
+        flexDirection: "rows",
+        alignItems: "center",
         ...styles,
       };
     },
     menu: (provided, _state) => ({
       ...provided,
-      backgroundColor: darkMode ? 'rgb(31,40,55)' : 'white',
+      backgroundColor: darkMode ? "rgb(31,40,55)" : "white",
     }),
   };
 
@@ -173,14 +193,17 @@ export const DropDown = function DropDown({
     <>
       <div
         className="dropdown-widget row g-0"
-        style={{ height, display: visibility ? '' : 'none' }}
+        style={{ height, display: visibility ? "" : "none" }}
         onMouseDown={(event) => {
           onComponentClick(id, component, event);
         }}
         data-cy={dataCy}
       >
         <div className="col-auto my-auto">
-          <label style={{ marginRight: label !== '' ? '1rem' : '0.001rem' }} className="form-label py-0 my-0">
+          <label
+            style={{ marginRight: label !== "" ? "1rem" : "0.001rem" }}
+            className="form-label py-0 my-0"
+          >
             {label}
           </label>
         </div>
@@ -188,12 +211,20 @@ export const DropDown = function DropDown({
           <Select
             isDisabled={disabledState}
             value={
-              selectOptions.filter((option) => option.value === currentValue)[0] ?? { label: '', value: undefined }
+              selectOptions.filter(
+                (option) => option.value === currentValue
+              )[0] ?? { label: "", value: undefined }
             }
             onChange={(selectedOption, actionProps) => {
-              if (actionProps.action === 'select-option') {
+              if (actionProps.action === "select-option") {
+                setPatientRegistrationFormData({
+                  ...PatientRegistrationFormData,
+                  [component.name]: selectedOption,
+                });
                 setCurrentValue(selectedOption.value);
-                setExposedVariable('value', selectedOption.value).then(() => fireEvent('onSelect'));
+                setExposedVariable("value", selectedOption.value).then(() =>
+                  fireEvent("onSelect")
+                );
               }
             }}
             options={selectOptions}
@@ -205,7 +236,13 @@ export const DropDown = function DropDown({
           />
         </div>
       </div>
-      <div className={`invalid-feedback ${isValid ? '' : visibility ? 'd-flex' : 'none'}`}>{validationError}</div>
+      <div
+        className={`invalid-feedback ${
+          isValid ? "" : visibility ? "d-flex" : "none"
+        }`}
+      >
+        {validationError}
+      </div>
     </>
   );
 };

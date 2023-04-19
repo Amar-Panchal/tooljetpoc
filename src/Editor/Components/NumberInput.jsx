@@ -14,6 +14,9 @@ export const NumberInput = function NumberInput({
   darkMode,
   fireEvent,
   dataCy,
+  setPatientRegistrationFormData,
+  PatientRegistrationFormData,
+  component,
 }) {
   const { visibility, borderRadius, borderColor, backgroundColor } = styles;
 
@@ -25,6 +28,10 @@ export const NumberInput = function NumberInput({
   const [value, setValue] = React.useState(parseInt(properties.value));
 
   const handleChange = (e) => {
+    setPatientRegistrationFormData({
+      ...PatientRegistrationFormData,
+      [component.name]: e.value,
+    });
     if (
       !isNaN(parseInt(properties.minValue)) &&
       !isNaN(parseInt(properties.maxValue)) &&

@@ -60,7 +60,7 @@ enablePatches();
 class EditorComponent extends React.Component {
   constructor(props) {
     super(props);
-    console.log("props in editor", props);
+
     const appId = this.props.match.params.id;
 
     const pageHandle = this.props.match.params.pageHandle;

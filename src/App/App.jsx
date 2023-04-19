@@ -142,7 +142,12 @@ class App extends React.Component {
             <Route path="/sso/:origin" exact component={Oauth} />
             <Route path="/signup" component={SignupPage} />
             <Route path="/forgot-password" component={ForgotPassword} />
-            <Route path="/registration-page" component={RegistrationPage} />
+            <Route
+              path="/registration-page"
+              component={Viewer}
+              switchDarkMode={this.switchDarkMode}
+              darkMode={darkMode}
+            />
             <Route path="/patient-details" component={PatientDetails} />
             <Route
               path="/reset-password/:token"

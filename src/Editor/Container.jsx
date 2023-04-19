@@ -77,6 +77,15 @@ export const Container = ({
   const focusedParentIdRef = useRef(undefined);
   const history = useHistory();
 
+  const [PatientRegistrationFormData, setPatientRegistrationFormData] =
+    useState({});
+  function onSubmitPatientRegistrationFormData() {
+    console.log(
+      "onSubmitPatientRegistrationFormData",
+      PatientRegistrationFormData
+    );
+  }
+
   useHotkeys("⌘+z, control+z", () => handleUndo());
   useHotkeys("⌘+shift+z, control+shift+z", () => handleRedo());
   useHotkeys(
@@ -598,6 +607,11 @@ export const Container = ({
                   childComponents,
                 }}
                 reportTemplateDataMap={reportTemplateDataMap}
+                PatientRegistrationFormData={PatientRegistrationFormData}
+                setPatientRegistrationFormData={setPatientRegistrationFormData}
+                onSubmitPatientRegistrationFormData={
+                  onSubmitPatientRegistrationFormData
+                }
               />
             </div>
           );

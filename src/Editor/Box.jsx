@@ -149,6 +149,9 @@ export const Box = function Box({
   readOnly,
   childComponents,
   reportTemplateDataMap,
+  PatientRegistrationFormData,
+  setPatientRegistrationFormData,
+  onSubmitPatientRegistrationFormData,
 }) {
   const { t } = useTranslation();
   const backgroundColor = yellow ? "yellow" : "";
@@ -419,6 +422,11 @@ export const Box = function Box({
                 component.name
               ).toLowerCase()}`}
               reportTemplateDataMap={reportTemplateDataMap}
+              setPatientRegistrationFormData={setPatientRegistrationFormData}
+              PatientRegistrationFormData={PatientRegistrationFormData}
+              onSubmitPatientRegistrationFormData={
+                onSubmitPatientRegistrationFormData
+              }
             ></ComponentToRender>
           ) : (
             <></>
