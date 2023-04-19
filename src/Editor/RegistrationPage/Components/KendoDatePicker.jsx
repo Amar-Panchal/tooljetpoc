@@ -21,11 +21,10 @@ function KendoDatePicker({ component, onChange, value }) {
   }
 
   const titleCaseStr = camelCaseToTitleCase(component.name);
-  console.log(titleCaseStr); // Outputs: "This Is Camel Case
 
   return (
-    <div style={{ display: "flex", alignItems: "baseline", gap: "10px" }}>
-      <p>{titleCaseStr}</p>
+    <div style={{ display: "flex", alignItems: "center", gap: "5px" }}>
+      <div>{titleCaseStr}</div>
       <DatePicker
         defaultValue={new Date(isoDate)}
         format="dd/MM/yyyy"

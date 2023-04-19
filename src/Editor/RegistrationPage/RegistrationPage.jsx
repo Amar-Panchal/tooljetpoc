@@ -2,13 +2,8 @@
 
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { TextInput } from "../Components/TextInput";
 import KendoTextInput from "./Components/KendoTextInput";
 import KendoButton from "./Components/KendoButton";
-import { Form, Field, FormElement } from "@progress/kendo-react-form";
-import { Error } from "@progress/kendo-react-labels";
-import { Input } from "@progress/kendo-react-inputs";
-import { Button, DateInput } from "@progress/kendo-react-all";
 import useRegistrationPage from "./hooks/useRegistrationPage";
 import KendoNumberInput from "./Components/KendoNumberInput";
 import KendoDatePicker from "./Components/KendoDatePicker";
@@ -19,10 +14,8 @@ import KendoCheckBox from "./Components/KendoCheckBox";
 import { toast } from "react-hot-toast";
 import "./registration-page.css";
 import moment from "moment";
-import {
-  TileLayout,
-  TileLayoutRepositionEvent,
-} from "@progress/kendo-react-layout";
+import { TileLayout } from "@progress/kendo-react-layout";
+import { RadioButton } from "@progress/kendo-react-inputs";
 
 function RegistrationPage() {
   const {
@@ -30,11 +23,13 @@ function RegistrationPage() {
     RegistrationPageFormData,
     setRegistrationPageFormData,
   } = useRegistrationPage();
+
   const [testList, setTestList] = useState([]);
   const [selectedTests, setSelectedTests] = useState([]);
+  const [data, setData] = useState([]);
+
   const handleItemClick = (item) => {
     const itemIndex = selectedTests.indexOf(item);
-
     if (itemIndex === -1) {
       setSelectedTests([...selectedTests, item]);
     } else {
@@ -43,25 +38,21 @@ function RegistrationPage() {
       setSelectedTests(updatedItems);
     }
   };
+
   function getTestList() {
     axios
       .get("https://elabnextapi-dev.azurewebsites.net/api/TestMaster/GetTest")
       .then((response) => {
         setTestList(response.data.resultData.testList);
-      });
+      })
+      .catch((error) => console.log("error->getTestList", error));
   }
 
   useEffect(() => {
     getTestList();
   }, []);
+
   function saveRegistrationPageFormData() {
-    // alert(JSON.stringify(RegistrationPageFormData));
-
-    // localStorage.setItem(
-    //   "savedRegistrationPageFormData",
-    //   JSON.stringify(RegistrationPageFormData)
-    // );
-
     const payload = {
       patientDescription: RegistrationPageFormData,
     };
@@ -72,7 +63,7 @@ function RegistrationPage() {
         payload
       )
       .then(() => toast.success("Created Successfully"))
-      .catch((err) => console.log("err", err));
+      .catch((err) => console.log("err saveRegistrationPageFormData", err));
   }
 
   function retriveRegistrationPageFormData() {
@@ -105,7 +96,6 @@ function RegistrationPage() {
 
   function renderComponent(component) {
     let componentType = component.component;
-
     switch (componentType) {
       case "TextInput":
         return (
@@ -211,33 +201,7 @@ function RegistrationPage() {
         );
     }
   }
-  const styles = {
-    fontSize: 24,
-    textAlign: "center",
-    margin: "auto",
-    userSelect: "none",
-  };
-
-  const [data, setData] = useState([]);
-
-  console.log("ccc", data);
-
-  // useEffect(() => {
-  //   const temp = [];
-  //   componentsToRender?.map((component) => {
-  //     if (component.component !== "Text" && component.component !== "Button") {
-  //       temp.push({
-  //         col: 1,
-  //         colSpan: 1,
-  //         rowSpan: 1,
-
-  //         item: renderComponent(component),
-  //       });
-  //     }
-  //   });
-
-  //   setData(temp);
-  // }, [componentsToRender]);
+  console.log("RegistrationPageFormData", RegistrationPageFormData);
   useEffect(() => {
     setData(
       componentsToRender
@@ -249,13 +213,10 @@ function RegistrationPage() {
           col: (index % 4) + 1,
           colSpan: 1,
           rowSpan: 1,
-          item: (
-            <div style={{ border: "1px solid red" }}>
-              {renderComponent(component)}
-            </div>
-          ),
+          item: renderComponent(component),
           resizable: false,
           reorderable: false,
+          style: { border: "none" },
         }))
     );
   }, [componentsToRender]);
@@ -270,7 +231,15 @@ function RegistrationPage() {
         })}
       </div>
       <div>
-        <TileLayout columns={4} items={data} positions={data} rowHeight={50} />
+        <TileLayout
+          style={{
+            background: "none",
+          }}
+          columns={4}
+          items={data}
+          positions={data}
+          rowHeight={50}
+        />
       </div>
 
       <div

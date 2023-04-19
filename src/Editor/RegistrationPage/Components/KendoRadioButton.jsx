@@ -11,11 +11,18 @@ function KendoRadioButton({ component, onChange, value }) {
   );
 
   return (
-    <div style={{ display: "flex" }}>
-      <span className="form-check-label col-auto py-0" style={{ color: "red" }}>
-        {component.definition.properties.label.value}
-      </span>
+    <div
+      style={{
+        display: "flex",
+        gap: "10px",
+        height: "100%",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
+      <div>{component.definition.properties.label.value}</div>
       {radioButtons.map((val) => {
+        console.log("value radioButtons radio", value === val);
         return (
           <div
             style={{

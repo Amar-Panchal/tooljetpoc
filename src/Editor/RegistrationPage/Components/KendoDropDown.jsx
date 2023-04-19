@@ -37,10 +37,11 @@ function KendoDropDown({ component, onChange, value }) {
       style={{
         display: "flex",
         gap: "10px",
-        alignItems: "baseline",
+        alignItems: "center",
+        width: "100%",
       }}
     >
-      <label>{component.definition.properties.label.value}</label>
+      <div>{component.definition.properties.label.value}</div>
       <DropDownList
         defaultValue={JSON.parse(
           component.definition.properties.value.value.replace(/{{|}}/g, "")
@@ -49,9 +50,6 @@ function KendoDropDown({ component, onChange, value }) {
         textField="label"
         dataItemKey="id"
         onChange={handleChange}
-        style={{
-          width: "300px",
-        }}
         value={value}
       />
     </div>

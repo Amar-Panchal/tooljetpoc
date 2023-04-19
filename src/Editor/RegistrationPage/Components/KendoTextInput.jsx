@@ -30,8 +30,6 @@ const KendoTextInput = ({ component, onChange, value }) => {
       definition.styles.borderRadius.value.replace(/[^\d]/g, "")
     ),
     boxShadow: definition.generalStyles.boxShadow.value,
-    width: "300px",
-    height: "100%",
   };
 
   function camelCaseToTitleCase(str) {
@@ -53,32 +51,49 @@ const KendoTextInput = ({ component, onChange, value }) => {
     <div
       style={{
         display: "flex",
-        alignItems: "baseline",
-        gap: "10px",
+        gap: "5px",
+        flexDirection: "column",
+        width: "100%",
       }}
     >
-      <p>{titleCaseStr}</p>
-      <Input
-        style={styles}
-        id={properties.id}
-        defaultValue={properties.defaultValue}
-        placeholder={properties.placeholder}
-        minLength={properties.minLength}
-        maxLength={properties.maxLength}
-        onChange={(e) => {
-          setLengthCounter(e.value);
-          onChange(e);
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: "5px",
+          flexDirection: "row",
         }}
-        value={value}
-      />
-
-      <Hint direction={"end"}>
-        {lengthCounter.length < definition.validation.minLength.value &&
+      >
+        <div>{titleCaseStr}</div>
+        <Input
+          style={styles}
+          id={properties.id}
+          defaultValue={properties.defaultValue}
+          placeholder={properties.placeholder}
+          minLength={properties.minLength}
+          maxLength={properties.maxLength}
+          onChange={(e) => {
+            setLengthCounter(e.value);
+            onChange(e);
+          }}
+          value={value}
+        />
+      </div>
+      <div
+        style={{
+          fontSize: "8px",
+          fontStyle: "italic",
+          display: "flex",
+          flexDirection: "row-reverse",
+          marginRight: "10px",
+        }}
+      >
+        {definition.validation.minLength.value &&
           `Min ${lengthCounter.length} / ${definition.validation.minLength.value} 	`}
         &nbsp; &nbsp; &nbsp; &nbsp;
-        {lengthCounter.length < definition.validation.maxLength.value &&
+        {definition.validation.maxLength.value &&
           ` Max ${lengthCounter.length} / ${definition.validation.maxLength.value}`}
-      </Hint>
+      </div>
     </div>
   );
 };

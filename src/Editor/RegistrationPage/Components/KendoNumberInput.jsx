@@ -16,17 +16,11 @@ function KendoNumberInput({ component, onChange, value }) {
   const styles = {
     color: definition.styles.textColor.value,
     backgroundColor: definition.styles.backgroundColor.value,
-    // border: `1px solid  ${component.definition.styles.borderColor.value}`,
+    border: `1px solid  ${component.definition.styles.borderColor.value}`,
     borderRadius: parseInt(
       definition.styles.borderRadius.value.replace(/[^\d]/g, "")
     ),
     boxShadow: definition.generalStyles.boxShadow.value,
-    width: "100%",
-    height: "100%",
-
-    // width:  definition.styles.                    .value,
-    // height:  definition.styles.                    .value,
-    // position:  definition.styles.                    .value,
   };
 
   function camelCaseToTitleCase(str) {
@@ -48,12 +42,12 @@ function KendoNumberInput({ component, onChange, value }) {
     <div
       style={{
         display: "flex",
-        alignItems: "baseline",
-        gap: "10px",
-        width: "100%",
+        gap: "5px",
+        alignItems: "center",
+        padding: "5px ",
       }}
     >
-      <p> {titleCaseStr}</p>
+      <div> {titleCaseStr}</div>
 
       <NumericTextBox
         style={styles}

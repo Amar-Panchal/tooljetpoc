@@ -7,7 +7,11 @@ function KendoCheckBox({ component, onChange, value }) {
   const styles = component.definition.styles;
   const computedStyles = {
     color: styles.textColor.value,
-    width: "300px",
+    gap: "10px",
+    height: "100%",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
   };
 
   return (
