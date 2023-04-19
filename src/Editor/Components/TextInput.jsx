@@ -21,7 +21,7 @@ export const TextInput = function TextInput({
   const [value, setValue] = useState(properties.value);
   const [visibility, setVisibility] = useState(styles.visibility);
   const { isValid, validationError } = validate(value);
-  console.log("heiheiheiehie", height);
+
   const computedStyles = {
     height,
     borderRadius: `${styles.borderRadius}px`,

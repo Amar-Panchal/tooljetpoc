@@ -2514,6 +2514,7 @@ const temp = {
 
 class ViewerComponent extends React.Component {
   constructor(props) {
+    console.log("props viewer", props);
     super(props);
     const deviceWindowWidth = window.screen.width - 5;
     const isMobileDevice = deviceWindowWidth < 600;
@@ -2706,7 +2707,7 @@ class ViewerComponent extends React.Component {
 
     axios
       .get(
-        "https://elabnextapi-dev.azurewebsites.net/api/ReportSetup/GetReportTemplate?ReportTemplateId=41"
+        "https://elabnextapi-dev.azurewebsites.net/api/ReportSetup/GetReportTemplate?ReportTemplateId=43"
       )
       .then((response) => {
         temp.definition = JSON.parse(

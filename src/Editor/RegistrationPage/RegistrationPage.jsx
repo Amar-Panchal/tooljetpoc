@@ -216,7 +216,7 @@ function RegistrationPage() {
           item: renderComponent(component),
           resizable: false,
           reorderable: false,
-          style: { border: "none" },
+          // style: { border: "none" },
         }))
     );
   }, [componentsToRender]);

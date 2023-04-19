@@ -107,17 +107,6 @@ export const Text = function Text({
   }
   // console.log("reportTemplateDataMap", sanitizeString(text));
 
-  function createDynamicValue() {
-    console.log("compo in text", component.name);
-    console.log(" reportTemplateDataMap", reportTemplateDataMap);
-    return "aaaa";
-  }
-
-  useEffect(() => {
-    createDynamicValue();
-  }, []);
-
-  console.log("object", reportTemplateDataMap, component);
   return (
     <div
       data-disabled={disabledState}
