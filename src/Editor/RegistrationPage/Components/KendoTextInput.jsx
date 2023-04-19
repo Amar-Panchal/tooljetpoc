@@ -31,9 +31,7 @@ const KendoTextInput = ({ component, onChange, value }) => {
     ),
     boxShadow: definition.generalStyles.boxShadow.value,
     width: "300px",
-    // width:  definition.styles.                    .value,
-    // height:  definition.styles.                    .value,
-    // position:  definition.styles.                    .value,
+    height: "100%",
   };
 
   function camelCaseToTitleCase(str) {
@@ -52,7 +50,13 @@ const KendoTextInput = ({ component, onChange, value }) => {
   console.log(titleCaseStr); // Outputs: "This Is Camel Case
 
   return (
-    <div style={{ display: "flex", alignItems: "baseline", gap: "10px" }}>
+    <div
+      style={{
+        display: "flex",
+        alignItems: "baseline",
+        gap: "10px",
+      }}
+    >
       <p>{titleCaseStr}</p>
       <Input
         style={styles}

@@ -50,8 +50,8 @@ export default function EditorHeader({
   const { is_maintenance_on } = app;
   // console.log("appVersionPreviewLink", reportTemplateDataMap);
   const payload = {
-    reportTemplateId: 41,
-    reportTemplateName: "report",
+    reportTemplateId: 43,
+    reportTemplateName: "registration",
     reportValues: appDefinition,
   };
   const updateReportTemplate = () => {

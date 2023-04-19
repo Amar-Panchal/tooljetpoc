@@ -116,6 +116,8 @@ export const Text = function Text({
   useEffect(() => {
     createDynamicValue();
   }, []);
+
+  console.log("object", reportTemplateDataMap, component);
   return (
     <div
       data-disabled={disabledState}
@@ -131,11 +133,13 @@ export const Text = function Text({
               `
            
           
-          ${text} : ${
-                reportTemplateDataMap[component.name]
-                  ? reportTemplateDataMap[component.name]
-                  : ""
-              }
+          ${text}  
+          
+          ${
+            reportTemplateDataMap && component
+              ? ":" + reportTemplateDataMap[component?.name]
+              : ""
+          }
           
               `
             ),

@@ -16,12 +16,14 @@ function KendoNumberInput({ component, onChange, value }) {
   const styles = {
     color: definition.styles.textColor.value,
     backgroundColor: definition.styles.backgroundColor.value,
-    border: `1px solid  ${component.definition.styles.borderColor.value}`,
+    // border: `1px solid  ${component.definition.styles.borderColor.value}`,
     borderRadius: parseInt(
       definition.styles.borderRadius.value.replace(/[^\d]/g, "")
     ),
     boxShadow: definition.generalStyles.boxShadow.value,
-    width: "300px",
+    width: "100%",
+    height: "100%",
+
     // width:  definition.styles.                    .value,
     // height:  definition.styles.                    .value,
     // position:  definition.styles.                    .value,
@@ -43,8 +45,16 @@ function KendoNumberInput({ component, onChange, value }) {
   console.log(titleCaseStr); // Outputs: "This Is Camel Case
 
   return (
-    <div style={{ display: "flex", alignItems: "baseline", gap: "10px" }}>
-      <p>{titleCaseStr}</p>
+    <div
+      style={{
+        display: "flex",
+        alignItems: "baseline",
+        gap: "10px",
+        width: "100%",
+      }}
+    >
+      <p> {titleCaseStr}</p>
+
       <NumericTextBox
         style={styles}
         defaultValue={properties.defaultValue}

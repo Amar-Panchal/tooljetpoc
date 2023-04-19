@@ -19,6 +19,11 @@ import KendoCheckBox from "./Components/KendoCheckBox";
 import { toast } from "react-hot-toast";
 import "./registration-page.css";
 import moment from "moment";
+import {
+  TileLayout,
+  TileLayoutRepositionEvent,
+} from "@progress/kendo-react-layout";
+
 function RegistrationPage() {
   const {
     componentsToRender,
@@ -76,11 +81,6 @@ function RegistrationPage() {
         "https://elabnextapi-dev.azurewebsites.net/api/PatientRegistration/GetPatientRegistration?PatientId=8"
       )
       .then((response) => {
-        console.log(
-          "ress",
-
-          JSON.parse(response.data.resultData.patientList[0].patientDescription)
-        );
         setRegistrationPageFormData(
           JSON.parse(response.data.resultData.patientList[0].patientDescription)
         );
@@ -103,11 +103,9 @@ function RegistrationPage() {
     });
   }, [selectedTests]);
 
-  console.log("object", RegistrationPageFormData);
-
   function renderComponent(component) {
     let componentType = component.component;
-    if (componentType === "text") console.log("componet type", componentType);
+
     switch (componentType) {
       case "TextInput":
         return (
@@ -213,6 +211,54 @@ function RegistrationPage() {
         );
     }
   }
+  const styles = {
+    fontSize: 24,
+    textAlign: "center",
+    margin: "auto",
+    userSelect: "none",
+  };
+
+  const [data, setData] = useState([]);
+
+  console.log("ccc", data);
+
+  // useEffect(() => {
+  //   const temp = [];
+  //   componentsToRender?.map((component) => {
+  //     if (component.component !== "Text" && component.component !== "Button") {
+  //       temp.push({
+  //         col: 1,
+  //         colSpan: 1,
+  //         rowSpan: 1,
+
+  //         item: renderComponent(component),
+  //       });
+  //     }
+  //   });
+
+  //   setData(temp);
+  // }, [componentsToRender]);
+  useEffect(() => {
+    setData(
+      componentsToRender
+        ?.filter(
+          (component) =>
+            component.component !== "Text" && component.component !== "Button"
+        )
+        .map((component, index) => ({
+          col: (index % 4) + 1,
+          colSpan: 1,
+          rowSpan: 1,
+          item: (
+            <div style={{ border: "1px solid red" }}>
+              {renderComponent(component)}
+            </div>
+          ),
+          resizable: false,
+          reorderable: false,
+        }))
+    );
+  }, [componentsToRender]);
 
   return (
     <div>
@@ -223,22 +269,8 @@ function RegistrationPage() {
             : "";
         })}
       </div>
-      <div
-        style={{
-          display: "flex",
-          // flexDirection: "column",
-          gap: "20px",
-          width: "100%",
-          flexWrap: "wrap",
-          padding: "20px",
-        }}
-      >
-        {componentsToRender?.map((component) => {
-          return component.component === "Button" ||
-            component.component === "Text"
-            ? ""
-            : renderComponent(component);
-        })}
+      <div>
+        <TileLayout columns={4} items={data} positions={data} rowHeight={50} />
       </div>
 
       <div
