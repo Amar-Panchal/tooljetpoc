@@ -10,7 +10,6 @@ export const NumberInput = function NumberInput({
   height,
   properties,
   styles,
-  setExposedVariable,
   darkMode,
   fireEvent,
   dataCy,
@@ -25,45 +24,14 @@ export const NumberInput = function NumberInput({
       ? "#fff"
       : styles.textColor;
 
-  const [value, setValue] = React.useState(parseInt(properties.value));
-
   const handleChange = (e) => {
     setPatientRegistrationFormData({
       ...PatientRegistrationFormData,
       [component.name]: e.value,
     });
-    if (
-      !isNaN(parseInt(properties.minValue)) &&
-      !isNaN(parseInt(properties.maxValue)) &&
-      parseInt(properties.minValue) > parseInt(properties.maxValue)
-    ) {
-      setValue(parseInt(properties.maxValue));
-    } else if (
-      !isNaN(parseInt(properties.maxValue)) &&
-      parseInt(e.target.value) > parseInt(properties.maxValue)
-    ) {
-      setValue(parseInt(properties.maxValue));
-    } else if (
-      !isNaN(parseInt(properties.minValue)) &&
-      parseInt(e.target.value) < parseInt(properties.minValue)
-    ) {
-      setValue(parseInt(properties.minValue));
-    } else {
-      setValue(parseInt(e.target.value));
-    }
+
     fireEvent("onChange");
   };
-
-  useEffect(() => {
-    setValue(parseInt(properties.value));
-  }, [properties.value]);
-
-  useEffect(() => {
-    if (!isNaN(value)) {
-      setExposedVariable("value", value);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [value]);
 
   const computedStyles = {
     height,
@@ -86,7 +54,7 @@ export const NumberInput = function NumberInput({
         // className='form-control'
         placeholder={properties.placeholder}
         style={computedStyles}
-        value={value}
+        value={PatientRegistrationFormData[component.name]}
         data-cy={dataCy}
       />
     </FieldWrapper>

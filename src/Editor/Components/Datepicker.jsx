@@ -103,7 +103,7 @@ export const Datepicker = function Datepicker({
           darkMode ? "bg-dark color-white" : "bg-light"
         }`}
         selected={date}
-        value={date !== null ? computeDateString(date) : "select date"}
+        value={date !== null ? computeDateString(date) : "Select Date"}
         onChange={(date) => onDateChange(date)}
         showTimeInput={enableTime ? true : false}
         showTimeSelectOnly={enableDate ? false : true}
