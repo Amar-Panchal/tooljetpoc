@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import DatePickerComponent from "react-datepicker";
 import moment from "moment";
 import "react-datepicker/dist/react-datepicker.css";
-import { DatePicker } from "@progress/kendo-react-all";
+import { DatePicker as KendoDatePicker } from "@progress/kendo-react-all";
 
 export const Datepicker = function Datepicker({
   height,
@@ -104,7 +104,11 @@ export const Datepicker = function Datepicker({
           darkMode ? "bg-dark color-white" : "bg-light"
         }`}
         selected={date}
-        value={date !== null ? computeDateString(date) : "Select Date"}
+        value={
+          date !== null
+            ? computeDateString(PatientRegistrationFormData[component.name])
+            : "Select Date"
+        }
         onChange={(date) => onDateChange(date)}
         showTimeInput={enableTime ? true : false}
         showTimeSelectOnly={enableDate ? false : true}

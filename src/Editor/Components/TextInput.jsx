@@ -155,7 +155,7 @@ export const TextInput = function TextInput({
         } validation-without-icon ${darkMode && "dark-theme-placeholder"}`}
         placeholder={properties.placeholder}
         style={computedStyles}
-        value={value}
+        value={PatientRegistrationFormData[component.name]}
         data-cy={dataCy}
       />
       <div

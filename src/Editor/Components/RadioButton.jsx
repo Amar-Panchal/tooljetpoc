@@ -38,11 +38,6 @@ export const RadioButton = function RadioButton({
   }
 
   function onSelect(selection) {
-    console.log("eeeeff", selection);
-    setPatientRegistrationFormData({
-      ...PatientRegistrationFormData,
-      [component.name]: selection,
-    });
     setValue(selection);
     setExposedVariable("value", selection).then(() =>
       fireEvent("onSelectionChange")
@@ -87,9 +82,15 @@ export const RadioButton = function RadioButton({
               className="form-check-input"
               checked={checkedValue === option.value}
               type="radio"
-              value={option.value}
+              value={PatientRegistrationFormData[component?.name]?.value}
               name={`${id}-${uuidv4()}`}
-              onChange={() => onSelect(option.value)}
+              onChange={() => {
+                onSelect(option.value);
+                setPatientRegistrationFormData({
+                  ...PatientRegistrationFormData,
+                  [component.name]: option,
+                });
+              }}
             />
             <span className="form-check-label" style={{ color: textColor }}>
               {option.name}

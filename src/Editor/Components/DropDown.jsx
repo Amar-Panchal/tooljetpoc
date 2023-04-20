@@ -188,7 +188,11 @@ export const DropDown = function DropDown({
       backgroundColor: darkMode ? "rgb(31,40,55)" : "white",
     }),
   };
-
+  console.log(
+    "  PatientRegistrationFormData[component.name]",
+    PatientRegistrationFormData[component.name],
+    currentValue
+  );
   return (
     <>
       <div
@@ -212,7 +216,9 @@ export const DropDown = function DropDown({
             isDisabled={disabledState}
             value={
               selectOptions.filter(
-                (option) => option.value === currentValue
+                (option) =>
+                  option.value ===
+                  PatientRegistrationFormData[component?.name]?.value
               )[0] ?? { label: "", value: undefined }
             }
             onChange={(selectedOption, actionProps) => {
@@ -232,7 +238,7 @@ export const DropDown = function DropDown({
             isLoading={properties.loadingState}
             onInputChange={onSearchTextChange}
             onFocus={(event) => onComponentClick(event, component, id)}
-            menuPortalTarget={document.body}
+            // menuPortalTarget={document.body}
           />
         </div>
       </div>
