@@ -144,7 +144,7 @@ class App extends React.Component {
             <Route path="/forgot-password" component={ForgotPassword} />
             <Route
               path="/registration-page"
-              component={Viewer}
+              component={RegistrationPage}
               switchDarkMode={this.switchDarkMode}
               darkMode={darkMode}
             />

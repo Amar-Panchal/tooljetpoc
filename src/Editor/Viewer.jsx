@@ -2992,8 +2992,7 @@ class ViewerComponent extends React.Component {
         // if (errorDetails) {
         //   this.handleError(errorDetails, errorAppId, errorVersionId);
         // }
-        console.log("aaaa", appDefinition);
-        const ref = React.createRef();
+
         return (
           <div className="viewer wrapper">
             {/* <Confirm
@@ -3028,7 +3027,6 @@ class ViewerComponent extends React.Component {
                   >
                     <div className="areas d-flex flex-rows justify-content-center">
                       <div
-                        ref={ref}
                         className="canvas-area"
                         style={{
                           width: "100%",
