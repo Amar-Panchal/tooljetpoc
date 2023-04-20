@@ -2514,7 +2514,6 @@ const temp = {
 
 class ViewerComponent extends React.Component {
   constructor(props) {
-    console.log("props viewer", props);
     super(props);
     const deviceWindowWidth = window.screen.width - 5;
     const isMobileDevice = deviceWindowWidth < 600;
@@ -2710,9 +2709,14 @@ class ViewerComponent extends React.Component {
         "https://elabnextapi-dev.azurewebsites.net/api/ReportSetup/GetReportTemplate?ReportTemplateId=43"
       )
       .then((response) => {
+        console.log(
+          "sss response",
+          JSON.parse(response?.data?.resultData[0].reportValues)
+        );
         temp.definition = JSON.parse(
           response?.data?.resultData[0].reportValues
         );
+
         this.setStateForApp(temp);
         this.setStateForContainer(temp);
       })
@@ -2877,6 +2881,8 @@ class ViewerComponent extends React.Component {
     if (["#2f3c4c", "#edeff5"].includes(resolvedBackgroundColor)) {
       return this.props.darkMode ? "#2f3c4c" : "#edeff5";
     }
+
+    console.log("resolvedBackgroundColor", resolvedBackgroundColor);
     return resolvedBackgroundColor;
   };
 
@@ -2986,6 +2992,7 @@ class ViewerComponent extends React.Component {
         // if (errorDetails) {
         //   this.handleError(errorDetails, errorAppId, errorVersionId);
         // }
+        console.log("aaaa", appDefinition);
         const ref = React.createRef();
         return (
           <div className="viewer wrapper">
@@ -3013,44 +3020,21 @@ class ViewerComponent extends React.Component {
               />
               <div className="sub-section">
                 <div className="main">
-                  <div className="canvas-container align-items-center">
+                  <div
+                    className="canvas-container align-items-center"
+                    style={{
+                      backgroundColor: this.computeCanvasBackgroundColor(),
+                    }}
+                  >
                     <div className="areas d-flex flex-rows justify-content-center">
-                      {/* {appDefinition?.showViewerNavigation && (
-                        <ViewerNavigation
-                          isMobileDevice={this.state.currentLayout === 'mobile'}
-                          canvasBackgroundColor={this.computeCanvasBackgroundColor()}
-                          pages={
-                            Object.entries(this.state.appDefinition?.pages) ??
-                            []
-                          }
-                          currentPageId={
-                            this.state?.currentPageId ??
-                            this.state.appDefinition?.homePageId
-                          }
-                          switchPage={this.switchPage}
-                          darkMode={this.props.darkMode}
-                        />
-                      )} */}
-
-                      <div>
-                        <Pdf targetRef={ref} filename="code-example.pdf">
-                          {({ toPdf }) => (
-                            <button onClick={toPdf}>Generate Pdf</button>
-                          )}
-                        </Pdf>
-                      </div>
                       <div
                         ref={ref}
                         className="canvas-area"
                         style={{
                           width: "100%",
-                          minHeight:
-                            +appDefinition.globalSettings?.canvasMaxHeight ||
-                            2400,
-                          maxWidth: canvasMaxWidth,
-                          maxHeight:
-                            +appDefinition.globalSettings?.canvasMaxHeight ||
-                            2400,
+                          minHeight: "100%",
+                          maxWidth: "100%",
+                          maxHeight: "100%",
                           backgroundColor: this.computeCanvasBackgroundColor(),
                           margin: 0,
                           padding: 0,

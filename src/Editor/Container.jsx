@@ -22,6 +22,8 @@ import { useHotkeys } from "react-hotkeys-hook";
 const produce = require("immer").default;
 import { addComponents, addNewWidgetToTheEditor } from "@/_helpers/appUtils";
 import { useHistory } from "react-router-dom";
+import axios from "axios";
+import { toast } from "react-hot-toast";
 
 export const Container = ({
   canvasWidth,
@@ -84,6 +86,22 @@ export const Container = ({
       "onSubmitPatientRegistrationFormData",
       PatientRegistrationFormData
     );
+
+    if (mode === "view") {
+      const payload = {
+        patientDescription: PatientRegistrationFormData,
+      };
+      axios
+        .post(
+          "https://elabnextapi-dev.azurewebsites.net/api/PatientRegistration/SavePatientRegistration",
+          payload
+        )
+        .then(() => {
+          setPatientRegistrationFormData({});
+          toast.success("Created Successfully");
+        })
+        .catch((err) => console.log("err saveRegistrationPageFormData", err));
+    }
   }
 
   useHotkeys("⌘+z, control+z", () => handleUndo());
