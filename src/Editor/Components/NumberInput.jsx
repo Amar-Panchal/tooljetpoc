@@ -1,10 +1,7 @@
 /** @format */
 
-import {
-  FieldWrapper,
-  NumericTextBox as KendoNumericTextBox,
-} from "@progress/kendo-react-all";
-import React, { useEffect } from "react";
+import { NumericTextBox as KendoNumericTextBox } from "@progress/kendo-react-all";
+import React from "react";
 
 export const NumberInput = function NumberInput({
   height,
@@ -46,17 +43,13 @@ export const NumberInput = function NumberInput({
   };
 
   return (
-    <FieldWrapper>
-      <KendoNumericTextBox
-        disabled={styles.disabledState}
-        onChange={handleChange}
-        type="number"
-        // className='form-control'
-        placeholder={properties.placeholder}
-        style={computedStyles}
-        value={PatientRegistrationFormData[component.name]}
-        data-cy={dataCy}
-      />
-    </FieldWrapper>
+    <KendoNumericTextBox
+      disabled={styles.disabledState}
+      onChange={handleChange}
+      placeholder={properties.placeholder}
+      style={computedStyles}
+      value={PatientRegistrationFormData[component.name]}
+      data-cy={dataCy}
+    />
   );
 };

@@ -1,6 +1,7 @@
 /** @format */
 
 import React, { useEffect } from "react";
+import { Checkbox as KendoCheckBoc } from "@progress/kendo-react-inputs";
 
 export const Checkbox = function Checkbox({
   height,
@@ -66,30 +67,26 @@ export const Checkbox = function Checkbox({
   return (
     <div
       data-disabled={disabledState}
-      className="row py-1"
-      style={{ height, display: visibility ? "" : "none" }}
+      style={{
+        height,
+        display: "flex",
+        gap: "10px",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
       data-cy={dataCy}
     >
-      <div className="col px-1 py-0 mt-0">
-        <label className="mx-1 form-check form-check-inline">
-          <input
-            className="form-check-input"
-            type="checkbox"
-            onClick={(e) => {
-              toggleValue(e);
-            }}
-            defaultChecked={defaultValue}
-            checked={checked}
-            style={{
-              backgroundColor: checked ? `${checkboxColor}` : "white",
-              marginTop: "1px",
-            }}
-          />
-          <span className="form-check-label" style={{ color: textColor }}>
-            {label}
-          </span>
-        </label>
-      </div>
+      <KendoCheckBoc
+        onClick={(e) => {
+          toggleValue(e);
+        }}
+        defaultChecked={defaultValue}
+        checked={checked}
+        style={{
+          backgroundColor: checked ? `${checkboxColor}` : "white",
+        }}
+      />
+      {label}
     </div>
   );
 };

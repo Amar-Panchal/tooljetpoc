@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
+import { RadioButton as KendoRadioButton } from "@progress/kendo-react-inputs";
 
 export const RadioButton = function RadioButton({
   id,
@@ -77,7 +78,7 @@ export const RadioButton = function RadioButton({
       <div className="col px-1 py-0 mt-0">
         {selectOptions.map((option, index) => (
           <label key={index} className="form-check form-check-inline">
-            <input
+            <KendoRadioButton
               style={{
                 marginTop: "1px",
                 backgroundColor:

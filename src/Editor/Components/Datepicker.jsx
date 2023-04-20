@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import DatePickerComponent from "react-datepicker";
 import moment from "moment";
 import "react-datepicker/dist/react-datepicker.css";
+import { DatePicker } from "@progress/kendo-react-all";
 
 export const Datepicker = function Datepicker({
   height,
@@ -118,6 +119,29 @@ export const Datepicker = function Datepicker({
           <input style={{ borderRadius: `${borderRadius}px`, height }} />
         }
       />
+
+      {/* <DatePicker
+        className={`input-field form-control ${
+          !isValid ? "is-invalid" : ""
+        } validation-without-icon px-2 ${
+          darkMode ? "bg-dark color-white" : "bg-light"
+        }`}
+        selected={date}
+        value={date !== null ? computeDateString(date) : "Select Date"}
+        onChange={(date) => onDateChange(date)}
+        showTimeInput={enableTime ? true : false}
+        showTimeSelectOnly={enableDate ? false : true}
+        onFocus={(event) => {
+          onComponentClick(id, component, event);
+        }}
+        showMonthDropdown
+        showYearDropdown
+        dropdownMode="select"
+        excludeDates={excludedDates}
+        customInput={
+          <input style={{ borderRadius: `${borderRadius}px`, height }} />
+        }
+      /> */}
 
       <div
         data-cy="date-picker-invalid-feedback"
