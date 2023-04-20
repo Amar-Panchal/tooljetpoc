@@ -17,6 +17,7 @@ import { resolveReferences, stripTrailingSlash } from "@/_helpers/utils";
 import { withTranslation } from "react-i18next";
 import _ from "lodash";
 import axios from "axios";
+import { SelectTests } from "./test";
 
 class RegistrationPageLauncher extends React.Component {
   constructor(props) {
@@ -373,6 +374,7 @@ class RegistrationPageLauncher extends React.Component {
                 className="canvas-container align-items-center"
                 style={{
                   backgroundColor: this.computeCanvasBackgroundColor(),
+                  border: "2px solid red",
                 }}
               >
                 <div className="areas d-flex flex-rows justify-content-center">
@@ -440,6 +442,7 @@ class RegistrationPageLauncher extends React.Component {
                     </>
                   </div>
                 </div>
+                <SelectTests />
               </div>
             </div>
           </div>
