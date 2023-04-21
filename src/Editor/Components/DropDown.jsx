@@ -188,11 +188,7 @@ export const DropDown = function DropDown({
       backgroundColor: darkMode ? "rgb(31,40,55)" : "white",
     }),
   };
-  console.log(
-    "  PatientRegistrationFormData[component.name]",
-    PatientRegistrationFormData[component.name],
-    currentValue
-  );
+
   return (
     <>
       <div
