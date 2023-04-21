@@ -7,6 +7,7 @@ import { process } from "@progress/kendo-data-query";
 import axios from "axios";
 
 import { useHistory } from "react-router-dom";
+import { toast } from "react-hot-toast";
 
 const initialDataState = {
   sort: [
@@ -39,7 +40,7 @@ function PatientDetails() {
         console.log("error -> getPatientDetailsList", error);
       });
   }
-  console.log("pati", PatientDetailsList);
+
   useEffect(() => {
     getPatientDetailsList();
   }, []);
@@ -59,8 +60,9 @@ function PatientDetails() {
   }, [PatientDetailsList]);
 
   const createGridColumn = (key) => {
+    console.log("key", key);
     switch (key) {
-      case "dateOfBirth":
+      case "registrationDate":
         return (
           <GridColumn
             field={key}
@@ -71,7 +73,32 @@ function PatientDetails() {
                 .toUpperCase() + key.replace(/([A-Z])/g, " $1").slice(1)
             }
             cell={(props) => {
-              return <td>{props.dataItem.dateOfBirth}</td>;
+              const today = new Date(props.dataItem.registrationDate);
+              const yyyy = today.getFullYear();
+              let mm = today.getMonth() + 1; // Months start at 0!
+              let dd = today.getDate();
+
+              if (dd < 10) dd = "0" + dd;
+              if (mm < 10) mm = "0" + mm;
+
+              const formattedToday = dd + "/" + mm + "/" + yyyy;
+              console.log("formattedToday", formattedToday);
+              return <td>{formattedToday}</td>;
+            }}
+          />
+        );
+      case "gender":
+        return (
+          <GridColumn
+            field={key}
+            title={
+              key
+                .replace(/([A-Z])/g, " $1")
+                .charAt(0)
+                .toUpperCase() + key.replace(/([A-Z])/g, " $1").slice(1)
+            }
+            cell={(props) => {
+              return <td>{props.dataItem.gender?.name}</td>;
             }}
           />
         );
@@ -88,30 +115,6 @@ function PatientDetails() {
             }
             cell={(props) => {
               return <td>{props.dataItem.membershipType?.label}</td>;
-            }}
-          />
-        );
-
-      case "sendSms":
-        return (
-          <GridColumn
-            field={key}
-            title={
-              key
-                .replace(/([A-Z])/g, " $1")
-                .charAt(0)
-                .toUpperCase() + key.replace(/([A-Z])/g, " $1").slice(1)
-            }
-            cell={(props) => {
-              return (
-                <td>
-                  <input
-                    disabled={false}
-                    type="checkbox"
-                    checked={props.dataItem.sendSms?.isCheck}
-                  />
-                </td>
-              );
             }}
           />
         );
@@ -158,7 +161,7 @@ function PatientDetails() {
             title="Actions"
             cell={(props) => {
               return (
-                <td>
+                <td style={{ display: "flex", gap: "10px" }}>
                   <button
                     onClick={() =>
                       history.push({
@@ -168,7 +171,21 @@ function PatientDetails() {
                       })
                     }
                   >
-                    print
+                    <span class="k-icon k-i-print"></span>
+                  </button>
+                  <button
+                    onClick={() => {
+                      toast.error("Hang on until we developed this");
+                    }}
+                  >
+                    <span class="k-icon k-i-edit"></span>
+                  </button>
+                  <button
+                    onClick={() => {
+                      toast.error("Hang on until we developed this");
+                    }}
+                  >
+                    <span class="k-icon k-i-delete"></span>
                   </button>
                 </td>
               );
