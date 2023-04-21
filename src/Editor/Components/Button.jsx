@@ -101,7 +101,8 @@ export const Button = function Button(props) {
   }
 
   const handleClick = (event) => {
-    props.onSubmitPatientRegistrationFormData();
+    if (props.component.name === "submit")
+      props.onSubmitPatientRegistrationFormData();
     const event1 = new CustomEvent("submitForm", {
       detail: { buttonComponentId: id },
     });

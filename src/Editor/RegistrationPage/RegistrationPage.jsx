@@ -1,6 +1,6 @@
 /** @format */
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { Container } from "../Container";
@@ -365,6 +365,7 @@ class RegistrationPageLauncher extends React.Component {
 
   render() {
     const { appDefinition, isLoading, currentLayout } = this.state;
+
     return (
       <div className="viewer wrapper">
         <DndProvider backend={HTML5Backend}>
@@ -374,7 +375,6 @@ class RegistrationPageLauncher extends React.Component {
                 className="canvas-container align-items-center"
                 style={{
                   backgroundColor: this.computeCanvasBackgroundColor(),
-                  border: "2px solid red",
                 }}
               >
                 <div className="areas d-flex flex-rows justify-content-center">
@@ -386,8 +386,6 @@ class RegistrationPageLauncher extends React.Component {
                       maxWidth: "100%",
                       maxHeight: "100%",
                       backgroundColor: this.computeCanvasBackgroundColor(),
-                      margin: 0,
-                      padding: 0,
                     }}
                   >
                     <>

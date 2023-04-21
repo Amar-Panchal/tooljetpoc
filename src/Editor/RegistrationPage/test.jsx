@@ -2,22 +2,8 @@
 
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { TextInput } from "../Components/TextInput";
-import KendoTextInput from "./Components/KendoTextInput";
-import KendoButton from "./Components/KendoButton";
-import { Form, Field, FormElement } from "@progress/kendo-react-form";
-import { Error } from "@progress/kendo-react-labels";
-import { Input } from "@progress/kendo-react-inputs";
-import { Button, DateInput } from "@progress/kendo-react-all";
-import useRegistrationPage from "./hooks/useRegistrationPage";
-import KendoNumberInput from "./Components/KendoNumberInput";
-import KendoDatePicker from "./Components/KendoDatePicker";
-import KendoDropDown from "./Components/KendoDropDown";
-import KendoText from "./Components/KendoText";
-import KendoRadioButton from "./Components/KendoRadioButton";
-import KendoCheckBox from "./Components/KendoCheckBox";
-import { toast } from "react-hot-toast";
 import "./registration-page.css";
+
 function SelectTests() {
   const [testList, setTestList] = useState([]);
   const [selectedTests, setSelectedTests] = useState([]);
@@ -54,8 +40,6 @@ function SelectTests() {
           overflowY: "scroll",
           margin: "10px",
           display: "flex",
-          top: "600px",
-          position: "absolute",
           width: "100%",
           border: "1px dotted gray",
         }}
