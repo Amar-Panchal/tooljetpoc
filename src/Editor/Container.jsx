@@ -24,6 +24,7 @@ import { addComponents, addNewWidgetToTheEditor } from "@/_helpers/appUtils";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-hot-toast";
+import { SelectTests } from "./RegistrationPage/test";
 
 export const Container = ({
   canvasWidth,
@@ -635,6 +636,13 @@ export const Container = ({
           );
         }
       })}
+
+      <div style={{ position: "relative", top: "500px" }}>
+        <SelectTests
+          setPatientRegistrationFormData={setPatientRegistrationFormData}
+          PatientRegistrationFormData={PatientRegistrationFormData}
+        />
+      </div>
 
       {Object.keys(boxes).length === 0 && !appLoading && !isDragging && (
         <div

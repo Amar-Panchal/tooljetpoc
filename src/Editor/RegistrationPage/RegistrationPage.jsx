@@ -440,7 +440,6 @@ class RegistrationPageLauncher extends React.Component {
                     </>
                   </div>
                 </div>
-                {/* <SelectTests /> */}
               </div>
             </div>
           </div>

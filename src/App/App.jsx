@@ -28,6 +28,7 @@ import { AppLoader } from "@/AppLoader";
 import SetupScreenSelfHost from "../SuccessInfoScreen/SetupScreenSelfHost";
 import { RegistrationPage } from "../Editor/RegistrationPage/RegistrationPage";
 import PatientDetails from "../Editor/PatientDetails/PatientDetails";
+import ResultPage from "../Editor/ResultPage/ResultPage";
 
 class App extends React.Component {
   constructor(props) {
@@ -149,6 +150,7 @@ class App extends React.Component {
               darkMode={darkMode}
             />
             <Route path="/patient-details" component={PatientDetails} />
+            <Route path="/result" component={ResultPage} />
             <Route
               path="/reset-password/:token"
               render={(props) => (

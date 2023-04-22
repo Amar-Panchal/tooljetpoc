@@ -4,11 +4,15 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./registration-page.css";
 
-function SelectTests() {
+function SelectTests({
+  setPatientRegistrationFormData,
+  PatientRegistrationFormData,
+}) {
   const [testList, setTestList] = useState([]);
   const [selectedTests, setSelectedTests] = useState([]);
 
   const handleItemClick = (item) => {
+    console.log("item selected", item);
     const itemIndex = selectedTests.indexOf(item);
 
     if (itemIndex === -1) {
@@ -31,6 +35,12 @@ function SelectTests() {
     getTestList();
   }, []);
 
+  useEffect(() => {
+    setPatientRegistrationFormData({
+      ...PatientRegistrationFormData,
+      selectedTests: selectedTests,
+    });
+  }, [selectedTests]);
   return (
     <div>
       <div
@@ -75,7 +85,7 @@ function SelectTests() {
           }}
         >
           <h3>Selected Test List</h3>
-          {selectedTests.length > 0 && (
+          {/* {selectedTests.length > 0 && (
             <div>
               {selectedTests.map((test) => {
                 return (
@@ -88,7 +98,7 @@ function SelectTests() {
                 );
               })}
             </div>
-          )}
+          )} */}
         </div>
       </div>
     </div>

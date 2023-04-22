@@ -107,8 +107,6 @@ export const Text = function Text({
   }
   // console.log("reportTemplateDataMap", sanitizeString(text));
 
-  console.log(" reportTemplateDataMap[component?.name]", component?.name);
-
   return (
     <div
       data-disabled={disabledState}

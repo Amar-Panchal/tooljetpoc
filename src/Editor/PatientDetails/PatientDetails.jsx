@@ -5,7 +5,6 @@ import "./PatientDetails.css";
 import { Grid, GridColumn } from "@progress/kendo-react-all";
 import { process } from "@progress/kendo-data-query";
 import axios from "axios";
-
 import { useHistory } from "react-router-dom";
 import { toast } from "react-hot-toast";
 
@@ -19,11 +18,13 @@ const initialDataState = {
   take: 50,
   skip: 0,
 };
+
 function PatientDetails() {
   const [PatientDetailsList, setPatientDetailsList] = useState([]);
   const [dataState, setDataState] = useState(initialDataState);
   const [keysForGrid, setKeysForGrid] = useState([]);
   const history = useHistory();
+
   function getPatientDetailsList() {
     axios
       .get(
@@ -181,11 +182,14 @@ function PatientDetails() {
                     <span class="k-icon k-i-edit"></span>
                   </button>
                   <button
-                    onClick={() => {
-                      toast.error("Hang on until we developed this");
-                    }}
+                    onClick={() =>
+                      history.push({
+                        pathname: "/result",
+                        state: props.dataItem,
+                      })
+                    }
                   >
-                    <span class="k-icon k-i-delete"></span>
+                    <span class="k-icon k-i-arrow-double-60-right"></span>
                   </button>
                 </td>
               );
