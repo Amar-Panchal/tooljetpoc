@@ -60,24 +60,61 @@ function ResultPage() {
 
     setTestResult(arr);
   }, [values]);
+  //save
+  // const handleSubmitResult = () => {
+  //   const payload = {
+  //     patientId: patientDetails.patientId,
+  //     resultValues: {
+  //       patientDetails,
+  //       selectedTestsWithParameters,
+  //       testResult,
+  //     },
+  //   };
+  //   axios
+  //     .post(
+  //       "https://elabnextapi-dev.azurewebsites.net/api/Result/SaveResult",
+  //       payload
+  //     )
+  //     .then((response) => {
+  //       console.log("fff", response);
+  //       toast.success("Saved Successfully");
+  //     })
+  //     .then(() => {
+  //       history.push({
+  //         pathname: "/applications/1/versions/1",
+  //         state: { payload },
+  //       });
+  //     })
+  //     .catch((error) => {
+  //       console.log("sss", error);
+  //     });
+  // };
 
+  //update
   const handleSubmitResult = () => {
     const payload = {
+      id: 11,
       patientId: patientDetails.patientId,
-      resultvalues: {
+      resultValues: {
         patientDetails,
         selectedTestsWithParameters,
         testResult,
       },
     };
     axios
-      .post(
-        "https://elabnextapi-dev.azurewebsites.net/api/Result/SaveResult",
+      .put(
+        "https://elabnextapi-dev.azurewebsites.net/api/Result/UpdateResult",
         payload
       )
       .then((response) => {
         console.log("fff", response);
         toast.success("Saved Successfully");
+      })
+      .then(() => {
+        history.push({
+          pathname: "/applications/1/versions/1",
+          state: { payload },
+        });
       })
       .catch((error) => {
         console.log("sss", error);

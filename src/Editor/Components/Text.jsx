@@ -105,7 +105,9 @@ export const Text = function Text({
 
     return str;
   }
-  // console.log("reportTemplateDataMap", sanitizeString(text));
+
+  reportTemplateDataMap =
+    reportTemplateDataMap?.payload?.resultValues?.patientDetails;
 
   return (
     <div

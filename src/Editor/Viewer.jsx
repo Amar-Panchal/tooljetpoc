@@ -2706,13 +2706,9 @@ class ViewerComponent extends React.Component {
 
     axios
       .get(
-        "https://elabnextapi-dev.azurewebsites.net/api/ReportSetup/GetReportTemplate?ReportTemplateId=43"
+        "https://elabnextapi-dev.azurewebsites.net/api/ReportSetup/GetReportTemplate?ReportTemplateId=41"
       )
       .then((response) => {
-        console.log(
-          "sss response",
-          JSON.parse(response?.data?.resultData[0].reportValues)
-        );
         temp.definition = JSON.parse(
           response?.data?.resultData[0].reportValues
         );
@@ -2882,7 +2878,6 @@ class ViewerComponent extends React.Component {
       return this.props.darkMode ? "#2f3c4c" : "#edeff5";
     }
 
-    console.log("resolvedBackgroundColor", resolvedBackgroundColor);
     return resolvedBackgroundColor;
   };
 
@@ -3023,6 +3018,9 @@ class ViewerComponent extends React.Component {
                     className="canvas-container align-items-center"
                     style={{
                       backgroundColor: this.computeCanvasBackgroundColor(),
+                      width: "80%",
+                      alignItems: "center",
+                      marginLeft: "100px",
                     }}
                   >
                     <div className="areas d-flex flex-rows justify-content-center">

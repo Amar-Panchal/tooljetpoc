@@ -25,6 +25,7 @@ import { useHistory } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-hot-toast";
 import { SelectTests } from "./RegistrationPage/test";
+import { Grid, GridColumn } from "@progress/kendo-react-all";
 
 export const Container = ({
   canvasWidth,
@@ -75,6 +76,8 @@ export const Container = ({
   const [commentsPreviewList, setCommentsPreviewList] = useState([]);
   const [newThread, addNewThread] = useState({});
   const [isContainerFocused, setContainerFocus] = useState(false);
+  const [testResultData, setTestResultData] = useState([]);
+  const [testResultDataKeys, setTestResultDataKeys] = useState([]);
   const router = useRouter();
   const canvasRef = useRef(null);
   const focusedParentIdRef = useRef(undefined);
@@ -128,6 +131,10 @@ export const Container = ({
     },
     [isContainerFocused, appDefinition, focusedParentIdRef]
   );
+
+  useEffect(() => {
+    setTestResultData(reportTemplateDataMap?.payload?.resultValues?.testResult);
+  }, [reportTemplateDataMap]);
 
   useEffect(() => {
     const handleClick = (e) => {
@@ -431,6 +438,22 @@ export const Container = ({
     // Update the list of threads on the current users page
   };
 
+  // const getResultById = () => {
+  //   axios
+  //     .get(
+  //       "https://elabnextapi-dev.azurewebsites.net/api/Result/GetResult?PatientId=73    "
+  //     )
+  //     .then((response) => {
+  //       console.log("response", response).catch((error) => {
+  //         console.log("error getResultById", error);
+  //       });
+  //     });
+  // };
+
+  // useEffect(() => {
+  //   getResultById();
+  // }, []);
+
   const handleAddThreadOnComponent = async (_, __, e) => {
     e.stopPropogation && e.stopPropogation();
 
@@ -637,12 +660,93 @@ export const Container = ({
         }
       })}
 
-      <div style={{ position: "relative", top: "500px" }}>
-        <SelectTests
-          setPatientRegistrationFormData={setPatientRegistrationFormData}
-          PatientRegistrationFormData={PatientRegistrationFormData}
-        />
-      </div>
+      {mode !== "view" && (
+        <div style={{ position: "relative", top: "500px" }}>
+          <SelectTests
+            setPatientRegistrationFormData={setPatientRegistrationFormData}
+            PatientRegistrationFormData={PatientRegistrationFormData}
+          />
+        </div>
+      )}
+
+      {mode == "view" && (
+        <div
+          style={{
+            height: "100%",
+            position: "relative",
+            top: "500px",
+            margin: "30px",
+          }}
+        >
+          {/* <Grid data={testResultData}>
+            <GridColumn field="testParamName" title="Parameter Name" />
+            <GridColumn field="paramValue" title="Value" width="100px" />
+            <GridColumn field="unitName" title="Unit" width="100px" />
+            <GridColumn field="" title="Normal Range " width="100px" />
+          </Grid> */}
+
+          <table className="fixed_headers" style={{ width: "100%" }}>
+            <tbody style={{ width: "100%" }}>
+              <tr
+                style={{
+                  height: "40px",
+                }}
+              >
+                <td
+                  style={{
+                    width: "40%",
+                  }}
+                >
+                  <h3> Parameter Name</h3>
+                </td>
+                <td
+                  style={{
+                    width: "20%",
+                  }}
+                >
+                  <h3> Value</h3>
+                </td>
+                <td style={{ width: "20%" }}>
+                  <h3>Unit Name</h3>
+                </td>
+                <td style={{ width: "20%" }}>
+                  <h3>demo Col</h3>
+                </td>
+              </tr>
+              {testResultData?.map((testResult) => {
+                console.log("testResulttestResult", testResult);
+                return (
+                  <tr
+                    style={{
+                      marginTop: "20px",
+
+                      padding: "10px",
+                      height: "40px",
+                    }}
+                  >
+                    <td
+                      style={{
+                        width: "40%",
+                      }}
+                    >
+                      {testResult.testParamName}
+                    </td>
+                    <td
+                      style={{
+                        width: "20%",
+                      }}
+                    >
+                      {testResult.paramValue}
+                    </td>
+                    <td style={{ width: "20%" }}>{testResult.unitName}</td>
+                    <td style={{ width: "20%" }}> -</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      )}
 
       {Object.keys(boxes).length === 0 && !appLoading && !isDragging && (
         <div
