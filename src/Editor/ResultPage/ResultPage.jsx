@@ -63,32 +63,43 @@ function ResultPage() {
 
   const handleSubmitResult = () => {
     const payload = {
-      // testResult,
-      // patientDetails,
-      // selectedTestsWithParameters,
-
       patientId: patientDetails.patientId,
-      resultvalues: JSON.stringify({
+      resultvalues: {
         patientDetails,
         selectedTestsWithParameters,
         testResult,
-      }),
+      },
     };
-    console.log("paramter name", payload);
     axios
       .post(
         "https://elabnextapi-dev.azurewebsites.net/api/Result/SaveResult",
         payload
       )
       .then((response) => {
+        console.log("fff", response);
         toast.success("Saved Successfully");
       })
       .catch((error) => {
         console.log("sss", error);
       });
-
-    axios.post;
   };
+
+  const getResult = () => {
+    axios
+      .get(
+        "https://elabnextapi-dev.azurewebsites.net/api/Result/GetResult     "
+      )
+      .then((response) => {
+        console.log("succes", response);
+      })
+      .catch((error) => {
+        console.log("error -> getResult", error);
+      });
+  };
+  useEffect(() => {
+    getResult();
+  }, []);
+
   return (
     <div style={{ width: "100%", padding: "20px" }}>
       <h1>Result</h1>
