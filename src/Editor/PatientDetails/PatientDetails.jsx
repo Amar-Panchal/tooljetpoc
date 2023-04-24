@@ -32,9 +32,12 @@ function PatientDetails() {
       )
       .then((response) => {
         setPatientDetailsList(
-          response.data.resultData.patientList.map((patient) =>
-            JSON.parse(patient.patientDescription)
-          )
+          response.data.resultData.patientList.map((patient) => {
+            const temp = JSON.parse(patient.patientDescription);
+            temp.patientId = patient.patientId;
+            console.log("dd", temp);
+            return temp;
+          })
         );
       })
       .catch((error) => {
@@ -60,8 +63,9 @@ function PatientDetails() {
     });
   }, [PatientDetailsList]);
 
+  console.log("PatientDetailsList", PatientDetailsList);
+
   const createGridColumn = (key) => {
-    console.log("key", key);
     switch (key) {
       case "registrationDate":
         return (
@@ -83,7 +87,7 @@ function PatientDetails() {
               if (mm < 10) mm = "0" + mm;
 
               const formattedToday = dd + "/" + mm + "/" + yyyy;
-              console.log("formattedToday", formattedToday);
+
               return <td>{formattedToday}</td>;
             }}
           />
@@ -132,7 +136,6 @@ function PatientDetails() {
                 .toUpperCase() + key.replace(/([A-Z])/g, " $1").slice(1)
             }
             cell={(props) => {
-              console.log("props select t es", props.dataItem.selectedTests);
               return (
                 <td>
                   {props.dataItem.selectedTests?.map((test) => {

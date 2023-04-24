@@ -12,9 +12,17 @@ function RenderParameterList({ parameterName, values, setValues }) {
   };
 
   const handleChange = (e) => {
+    const { unitId, unitName, testParamId, testParamName } = parameterName;
+
     setValues({
       ...values,
-      [parameterName.testParamId]: e.value,
+      [testParamId]: {
+        unitId,
+        unitName,
+        testParamId,
+        testParamName,
+        paramValue: e.value,
+      },
     });
   };
 

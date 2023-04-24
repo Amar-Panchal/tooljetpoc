@@ -7,12 +7,14 @@ import axios from "axios";
 import { toast } from "react-hot-toast";
 import RenderParameterList from "./RenderParameterList";
 import { UnitData } from "./StaticData";
+import { Button } from "@progress/kendo-react-all";
 
 function ResultPage() {
   const [patientDetails, setPatientDetails] = useState([]);
   const [selectedTestsWithParameters, setSelectedTestsWithParameters] =
     useState([]);
   const [values, setValues] = useState({});
+  const [testResult, setTestResult] = useState();
   const history = useHistory();
 
   useEffect(() => {
@@ -53,7 +55,40 @@ function ResultPage() {
     }
   };
 
-  console.log("paramter name", values);
+  useEffect(() => {
+    const arr = Object.entries(values).map(([key, value]) => value);
+
+    setTestResult(arr);
+  }, [values]);
+
+  const handleSubmitResult = () => {
+    const payload = {
+      // testResult,
+      // patientDetails,
+      // selectedTestsWithParameters,
+
+      patientId: patientDetails.patientId,
+      resultvalues: JSON.stringify({
+        patientDetails,
+        selectedTestsWithParameters,
+        testResult,
+      }),
+    };
+    console.log("paramter name", payload);
+    axios
+      .post(
+        "https://elabnextapi-dev.azurewebsites.net/api/Result/SaveResult",
+        payload
+      )
+      .then((response) => {
+        toast.success("Saved Successfully");
+      })
+      .catch((error) => {
+        console.log("sss", error);
+      });
+
+    axios.post;
+  };
   return (
     <div style={{ width: "100%", padding: "20px" }}>
       <h1>Result</h1>
@@ -180,6 +215,22 @@ function ResultPage() {
                 );
               })}
             </div>
+          </div>
+          <div
+            style={{
+              border: "1px dotted gray",
+              padding: "15px",
+              marginTop: "10px",
+              display: "flex",
+
+              borderRadius: "15px",
+              justifyContent: "space-evenly",
+            }}
+          >
+            <Button themeColor="primary" onClick={handleSubmitResult}>
+              Submit
+            </Button>
+            <Button>Cancel</Button>
           </div>
         </div>
       </div>
