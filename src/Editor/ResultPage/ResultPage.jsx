@@ -12,7 +12,7 @@ function ResultPage() {
   const [patientDetails, setPatientDetails] = useState([]);
   const [selectedTestsWithParameters, setSelectedTestsWithParameters] =
     useState([]);
-
+  const [values, setValues] = useState({});
   const history = useHistory();
 
   useEffect(() => {
@@ -53,25 +53,7 @@ function ResultPage() {
     }
   };
 
-  // const onTestChange = async (event) => {
-  //   const { testId } = JSON.parse(event.target.name);
-  //   const itemIndex = selectedTestsWithParameters.findIndex(
-  //     (test) => test.testId === testId
-  //   );
-  //   const response =
-  //     itemIndex === -1
-  //       ? await axios.get(
-  //           `https://elabnextapi-dev.azurewebsites.net/api/Test/GetTestWithParameter?TestId=${testId}`
-  //         )
-  //       : null;
-
-  //   setSelectedTestsWithParameters(
-  //     itemIndex === -1
-  //       ? [...selectedTestsWithParameters, response.data.resultData.testList[0]]
-  //       : selectedTestsWithParameters.filter((test) => test.testId !== testId)
-  //   );
-  // };
-
+  console.log("paramter name", values);
   return (
     <div style={{ width: "100%", padding: "20px" }}>
       <h1>Result</h1>
@@ -186,7 +168,13 @@ function ResultPage() {
                   >
                     <h3>{test.testName}</h3>
                     {test.testParameters.map((parameter) => {
-                      return RenderParameterList(parameter);
+                      return (
+                        <RenderParameterList
+                          parameterName={parameter}
+                          values={values}
+                          setValues={setValues}
+                        />
+                      );
                     })}
                   </div>
                 );

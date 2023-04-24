@@ -1,16 +1,23 @@
 /** @format */
 
-import { TileLayout } from "@progress/kendo-react-all";
-import React from "react";
+import { Input, TileLayout } from "@progress/kendo-react-all";
+import React, { useCallback, useState } from "react";
 
-function RenderParameterList(parameterName) {
+function RenderParameterList({ parameterName, values, setValues }) {
   const styles = {
     fontSize: 14,
     textAlign: "center",
     margin: "auto",
     userSelect: "none",
   };
-  console.log("aaa", parameterName);
+
+  const handleChange = (e) => {
+    setValues({
+      ...values,
+      [parameterName.testParamId]: e.value,
+    });
+  };
+
   const tiles = [
     {
       defaultPosition: {
@@ -29,7 +36,12 @@ function RenderParameterList(parameterName) {
       reorderable: false,
       item: (
         <span style={styles}>
-          <input style={{ width: "100%" }} />
+          <Input
+            id={parameterName.testParamId}
+            name={parameterName.testParamId}
+            style={{ width: "100%" }}
+            onChange={handleChange}
+          />
         </span>
       ),
     },
@@ -53,21 +65,15 @@ function RenderParameterList(parameterName) {
     },
   ];
   return (
-    <div>
-      {/* <ul>
-        <li> {parameterName.testParamName} </li>
-      </ul> */}
-
-      <TileLayout
-        columns={4}
-        rowHeight={50}
-        gap={{
-          rows: 10,
-          columns: 10,
-        }}
-        items={tiles}
-      />
-    </div>
+    <TileLayout
+      columns={4}
+      rowHeight={50}
+      gap={{
+        rows: 10,
+        columns: 10,
+      }}
+      items={tiles}
+    />
   );
 }
 
