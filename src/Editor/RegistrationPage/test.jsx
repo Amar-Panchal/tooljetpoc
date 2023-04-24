@@ -12,17 +12,19 @@ function SelectTests({
   const [selectedTests, setSelectedTests] = useState([]);
 
   const handleItemClick = (item) => {
-    console.log("item selected", item);
-    const itemIndex = selectedTests.indexOf(item);
+    const { testId, testName } = item;
+
+    const itemIndex = selectedTests.findIndex((test) => test.testId === testId);
 
     if (itemIndex === -1) {
-      setSelectedTests([...selectedTests, item]);
+      setSelectedTests([...selectedTests, { testId, testName }]);
     } else {
       const updatedItems = [...selectedTests];
       updatedItems.splice(itemIndex, 1);
       setSelectedTests(updatedItems);
     }
   };
+
   function getTestList() {
     axios
       .get("https://elabnextapi-dev.azurewebsites.net/api/TestMaster/GetTest")
@@ -68,7 +70,7 @@ function SelectTests({
                 return (
                   <div
                     className="selected-test"
-                    onClick={() => handleItemClick(test.testName)}
+                    onClick={() => handleItemClick(test)}
                   >
                     {test.testName}
                   </div>
@@ -85,20 +87,13 @@ function SelectTests({
           }}
         >
           <h3>Selected Test List</h3>
-          {/* {selectedTests.length > 0 && (
+          {selectedTests.length > 0 && (
             <div>
               {selectedTests.map((test) => {
-                return (
-                  <div
-                    className="selected-test"
-                    onClick={() => handleItemClick(test)}
-                  >
-                    {test}
-                  </div>
-                );
+                return <div className="selected-test">{test.testName}</div>;
               })}
             </div>
-          )} */}
+          )}
         </div>
       </div>
     </div>

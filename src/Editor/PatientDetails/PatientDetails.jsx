@@ -120,6 +120,30 @@ function PatientDetails() {
           />
         );
 
+      case "selectedTests":
+        return (
+          <GridColumn
+            field={key}
+            width={200}
+            title={
+              key
+                .replace(/([A-Z])/g, " $1")
+                .charAt(0)
+                .toUpperCase() + key.replace(/([A-Z])/g, " $1").slice(1)
+            }
+            cell={(props) => {
+              console.log("props select t es", props.dataItem.selectedTests);
+              return (
+                <td>
+                  {props.dataItem.selectedTests?.map((test) => {
+                    return test.testName ? <li>{test.testName}</li> : "";
+                  })}
+                </td>
+              );
+            }}
+          />
+        );
+
       default:
         return (
           <GridColumn
