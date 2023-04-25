@@ -6,8 +6,16 @@ import { Button as KendoButton } from "@progress/kendo-react-all";
 var tinycolor = require("tinycolor2");
 
 export const Button = function Button(props) {
-  const { height, properties, styles, fireEvent, registerAction, id, dataCy } =
-    props;
+  const {
+    height,
+    properties,
+    styles,
+    fireEvent,
+    registerAction,
+    id,
+    dataCy,
+    customMode,
+  } = props;
   const {
     backgroundColor,
     textColor,
@@ -16,7 +24,7 @@ export const Button = function Button(props) {
     disabledState,
     borderColor,
   } = styles;
-  const { setPatientRegistrationFormData, PatientRegistrationFormData } = props;
+  console.log("customMode in button", customMode);
   const [label, setLabel] = useState(properties.text);
   const [disable, setDisable] = useState(disabledState);
   const [visibility, setVisibility] = useState(styles.visibility);
@@ -100,8 +108,8 @@ export const Button = function Button(props) {
       .toString();
   }
 
-  const handleClick = (event) => {
-    if (props.component.name === "submit")
+  const handleClick = () => {
+    if (props.component.name === "submit" && customMode !== "preview")
       props.onSubmitPatientRegistrationFormData();
     const event1 = new CustomEvent("submitForm", {
       detail: { buttonComponentId: id },

@@ -108,6 +108,7 @@ export const DraggableBox = function DraggableBox({
   PatientRegistrationFormData,
   setPatientRegistrationFormData,
   onSubmitPatientRegistrationFormData,
+  customMode,
 }) {
   const [isResizing, setResizing] = useState(false);
   const [isDragging2, setDragging] = useState(false);
@@ -334,6 +335,7 @@ export const DraggableBox = function DraggableBox({
                   onSubmitPatientRegistrationFormData={
                     onSubmitPatientRegistrationFormData
                   }
+                  customMode={customMode}
                 />
               </ErrorBoundary>
             </div>
@@ -369,6 +371,7 @@ export const DraggableBox = function DraggableBox({
                 onSubmitPatientRegistrationFormData
               }
               reportTemplateDataMap={reportTemplateDataMap}
+              customMode={customMode}
             />
           </ErrorBoundary>
         </div>

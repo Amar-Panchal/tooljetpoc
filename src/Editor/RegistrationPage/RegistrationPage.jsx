@@ -145,7 +145,6 @@ class RegistrationPageLauncher extends React.Component {
           data?.definition?.pages[currentPage.id]?.components
         ).then(async () => {
           this.setState({ initialComputationOfStateDone: true });
-          console.log("Default component state computed and set");
 
           const { events } =
             this.state.appDefinition?.pages[this.state.currentPageId];

@@ -2515,6 +2515,7 @@ const temp = {
 
 class ViewerComponent extends React.Component {
   constructor(props) {
+    console.log("props in view", props.location.state.mode);
     super(props);
     const deviceWindowWidth = window.screen.width - 5;
     const isMobileDevice = deviceWindowWidth < 600;
@@ -2657,7 +2658,7 @@ class ViewerComponent extends React.Component {
           data?.definition?.pages[currentPage.id]?.components
         ).then(async () => {
           this.setState({ initialComputationOfStateDone: true });
-          console.log("Default component state computed and set");
+
           this.runQueries(data.data_queries);
           const { events } =
             this.state.appDefinition?.pages[this.state.currentPageId];
@@ -3097,6 +3098,7 @@ class ViewerComponent extends React.Component {
                                 reportTemplateDataMap={
                                   this.props.location.state
                                 }
+                                customMode={this.props.location.state.mode}
                               />
                             )}
                           </>

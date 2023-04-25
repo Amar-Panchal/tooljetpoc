@@ -58,7 +58,9 @@ export const Container = ({
   dataQueries,
   currentPageId,
   reportTemplateDataMap,
+  customMode,
 }) => {
+  console.log("customMode in containet", customMode);
   const styles = {
     width: currentLayout === "mobile" ? deviceWindowWidth : "100%",
     maxWidth: `${canvasWidth}px`,
@@ -654,6 +656,7 @@ export const Container = ({
                 onSubmitPatientRegistrationFormData={
                   onSubmitPatientRegistrationFormData
                 }
+                customMode={customMode}
               />
             </div>
           );

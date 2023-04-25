@@ -96,7 +96,10 @@ export default function EditorHeader({
         data-cy="preview-link-button"
         to={{
           pathname: appVersionPreviewLink,
-          state: reportTemplateDataMap,
+          state: {
+            reportTemplateDataMap: reportTemplateDataMap,
+            mode: "preview",
+          },
         }}
       >
         <svg

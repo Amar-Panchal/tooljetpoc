@@ -152,6 +152,7 @@ export const Box = function Box({
   PatientRegistrationFormData,
   setPatientRegistrationFormData,
   onSubmitPatientRegistrationFormData,
+  customMode,
 }) {
   const { t } = useTranslation();
   const backgroundColor = yellow ? "yellow" : "";
@@ -427,6 +428,7 @@ export const Box = function Box({
               onSubmitPatientRegistrationFormData={
                 onSubmitPatientRegistrationFormData
               }
+              customMode={customMode}
             ></ComponentToRender>
           ) : (
             <></>
