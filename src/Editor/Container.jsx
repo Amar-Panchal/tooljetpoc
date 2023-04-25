@@ -107,7 +107,7 @@ export const Container = ({
         .catch((err) => console.log("err saveRegistrationPageFormData", err));
     }
   }
-
+  console.log("ccboxes", boxes);
   useHotkeys("⌘+z, control+z", () => handleUndo());
   useHotkeys("⌘+shift+z, control+shift+z", () => handleRedo());
   useHotkeys(
@@ -517,7 +517,7 @@ export const Container = ({
     });
     return componentWithChildren;
   }, [components]);
-
+  console.log;
   return (
     <div
       {...(config.COMMENT_FEATURE_ENABLE &&
@@ -660,14 +660,14 @@ export const Container = ({
         }
       })}
 
-      {mode !== "view" && (
+      {/* {mode !== "view" && (
         <div style={{ position: "relative", top: "500px" }}>
           <SelectTests
             setPatientRegistrationFormData={setPatientRegistrationFormData}
             PatientRegistrationFormData={PatientRegistrationFormData}
           />
         </div>
-      )}
+      )} */}
 
       {mode == "view" && (
         <div

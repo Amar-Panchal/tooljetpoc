@@ -4671,26 +4671,10 @@ export const widgets = [
       properties: {
         visible: { value: "{{true}}" },
         data: {
-          value: `{{{ title: 'Hi! There', buttonText: 'Update Title'}}}`,
+          value: "",
         },
         code: {
-          value: `import React from 'https://cdn.skypack.dev/react';
-import ReactDOM from 'https://cdn.skypack.dev/react-dom';
-import { Button, Container } from 'https://cdn.skypack.dev/@material-ui/core';
-const MyCustomComponent = ({data, updateData, runQuery}) => (
-  <Container>
-      <h1>{data.title}</h1>
-      <Button
-        color="primary"
-        variant="outlined"
-        onClick={() => {updateData({title: 'Hello World!!'})}}
-      >
-        {data.buttonText}
-      </Button>
-    </Container>
-);
-const ConnectedComponent = Tooljet.connectComponent(MyCustomComponent);
-ReactDOM.render(<ConnectedComponent />, document.body);`,
+          value: "",
           skipResolve: true,
         },
       },
