@@ -34,7 +34,7 @@ function PatientDetails() {
         setPatientDetailsList(
           response.data.resultData.patientList.map((patient) => {
             const temp = JSON.parse(patient.patientDescription);
-            temp.patientId = patient.patientId;
+            temp.patientId = patient?.patientId;
             console.log("dd", temp);
             return temp;
           })
@@ -161,7 +161,7 @@ function PatientDetails() {
         );
     }
   };
-
+  console.log("fff", PatientDetailsList);
   return (
     <div className="patient-details-layout">
       <h1>Patient Details:</h1>

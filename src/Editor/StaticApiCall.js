@@ -1,6 +1,6 @@
 /** @format */
 
 export const ApiCallParams = {
-  id: 43,
-  name: "registration",
+  id: 41,
+  name: "report",
 };
