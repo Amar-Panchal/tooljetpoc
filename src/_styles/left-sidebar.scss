@@ -1,3 +1,5 @@
+/** @format */
+
 @import "./colors.scss";
 
 .left-sidebar {
@@ -5,7 +7,7 @@
 
   .sidebar-svg-icon {
     &:hover {
-      background: #ECEEF0;
+      background: #eceef0;
       border-radius: 6px;
     }
   }
@@ -113,7 +115,7 @@
     position: absolute;
     top: 5px;
     right: 5px;
-    transform: translate(50%,-50%);
+    transform: translate(50%, -50%);
     transform-origin: 100% 0%;
   }
 }
@@ -385,7 +387,8 @@
   cursor: pointer;
 }
 
-.close-btn.dark,.back-btn.dark {
+.close-btn.dark,
+.back-btn.dark {
   filter: brightness(0) invert(1);
 }
 
@@ -406,18 +409,18 @@
   background: transparent;
 }
 
-
 .viewer-page-handler {
   height: 32px;
   padding: 0;
   // max-width: 185px;
-  
+
   .card {
     background: none;
     border: none;
     box-shadow: none;
   }
-  .card,.card-body {
+  .card,
+  .card-body {
     padding: 3px;
     height: 32px;
   }
@@ -447,7 +450,7 @@
 
   .card.active {
     width: inherit;
-    background-color: #ECEEF0;
+    background-color: #eceef0;
     color: #3e525b;
   }
 }
@@ -472,11 +475,7 @@
 .sidebar-comments.dark {
   border-color: #324156;
 }
-.sidebar-global-settings {
-  position: absolute;
-  left: 50px;
-  top: 8px;
-}
+
 .sidebar-h-100-popover {
   height: 100vh;
   margin-top: 0px;
@@ -484,12 +483,12 @@
 .sidebar-h-100-popover-inspector {
   min-width: 422px;
 }
-.theme-dark{
-  .left-sidebar{
+.theme-dark {
+  .left-sidebar {
     .sidebar-svg-icon {
       &:hover {
-        background: #2F3C4C;
+        background: #2f3c4c;
       }
     }
-  } 
+  }
 }

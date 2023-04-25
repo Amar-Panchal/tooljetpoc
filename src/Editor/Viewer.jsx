@@ -32,6 +32,7 @@ import Spinner from "@/_ui/Spinner";
 import { toast } from "react-hot-toast";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
+import { ApiCallParams } from "./StaticApiCall";
 const temp = {
   id: "42af8904-10f3-43e9-a76d-984feb4a8cc4",
   name: "2",
@@ -2706,7 +2707,7 @@ class ViewerComponent extends React.Component {
 
     axios
       .get(
-        "https://elabnextapi-dev.azurewebsites.net/api/ReportSetup/GetReportTemplate?ReportTemplateId=41"
+        `https://elabnextapi-dev.azurewebsites.net/api/ReportSetup/GetReportTemplate?ReportTemplateId=${ApiCallParams.id}`
       )
       .then((response) => {
         temp.definition = JSON.parse(
