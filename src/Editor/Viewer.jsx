@@ -3020,9 +3020,10 @@ class ViewerComponent extends React.Component {
                     className="canvas-container align-items-center"
                     style={{
                       backgroundColor: this.computeCanvasBackgroundColor(),
-                      width: "80%",
-                      alignItems: "center",
-                      marginLeft: "100px",
+                      width:
+                        this.props.location.state.mode === "preview"
+                          ? "100%"
+                          : "80%",
                     }}
                   >
                     <div className="areas d-flex flex-rows justify-content-center">
