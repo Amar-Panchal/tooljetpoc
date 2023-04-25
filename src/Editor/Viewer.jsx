@@ -3024,6 +3024,15 @@ class ViewerComponent extends React.Component {
                         this.props.location.state.mode === "preview"
                           ? "100%"
                           : "80%",
+
+                      marginLeft:
+                        this.props.location.state.mode === "preview"
+                          ? ""
+                          : "150px",
+                      marginTop:
+                        this.props.location.state.mode === "preview"
+                          ? ""
+                          : "15px",
                     }}
                   >
                     <div className="areas d-flex flex-rows justify-content-center">

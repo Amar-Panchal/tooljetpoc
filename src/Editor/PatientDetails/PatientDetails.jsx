@@ -87,8 +87,8 @@ function PatientDetails() {
               if (mm < 10) mm = "0" + mm;
 
               const formattedToday = dd + "/" + mm + "/" + yyyy;
-
-              return <td>{formattedToday}</td>;
+              console.log("props.dataItem.registrati", formattedToday);
+              return <td> {dd === NaN ? "" : formattedToday}</td>;
             }}
           />
         );

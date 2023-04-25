@@ -15,6 +15,7 @@ function ResultPage() {
     useState([]);
   const [values, setValues] = useState({});
   const [testResult, setTestResult] = useState();
+  const [unitData, setUnitData] = useState([]);
   const history = useHistory();
 
   useEffect(() => {
@@ -36,7 +37,7 @@ function ResultPage() {
             response.data.resultData.testList[0];
 
           testParameters.map((parameter) => {
-            const unitName = UnitData.filter((unit) => {
+            const unitName = unitData?.filter((unit) => {
               if (unit.unitId === parameter.unitId)
                 return unit.unitId === parameter.unitId;
             });
@@ -47,6 +48,9 @@ function ResultPage() {
             ...selectedTestsWithParameters,
             { testId, testName, testParameters },
           ]);
+        })
+        .catch((error) => {
+          console.log("error onTestChange ", error);
         });
     } else {
       const updatedItems = [...selectedTestsWithParameters];
@@ -54,12 +58,22 @@ function ResultPage() {
       setSelectedTestsWithParameters(updatedItems);
     }
   };
-
   useEffect(() => {
     const arr = Object.entries(values).map(([key, value]) => value);
 
     setTestResult(arr);
   }, [values]);
+
+  useEffect(() => {
+    axios
+      .get("https://elabnextapi-dev.azurewebsites.net/api/TestMaster/GetUnit")
+      .then((response) => {
+        const { unitMasterList } = response.data.resultData;
+
+        setUnitData(unitMasterList);
+      });
+  }, []);
+
   //save
   // const handleSubmitResult = () => {
   //   const payload = {
@@ -107,7 +121,6 @@ function ResultPage() {
         payload
       )
       .then((response) => {
-        console.log("fff", response);
         toast.success("Saved Successfully");
       })
       .then(() => {
@@ -121,21 +134,21 @@ function ResultPage() {
       });
   };
 
-  const getResult = () => {
-    axios
-      .get(
-        "https://elabnextapi-dev.azurewebsites.net/api/Result/GetResult     "
-      )
-      .then((response) => {
-        console.log("succes", response);
-      })
-      .catch((error) => {
-        console.log("error -> getResult", error);
-      });
-  };
-  useEffect(() => {
-    getResult();
-  }, []);
+  // const getResult = () => {
+  //   axios
+  //     .get(
+  //       "https://elabnextapi-dev.azurewebsites.net/api/Result/GetResult     "
+  //     )
+  //     .then((response) => {
+  //       console.log("succes", response);
+  //     })
+  //     .catch((error) => {
+  //       console.log("error -> getResult", error);
+  //     });
+  // };
+  // useEffect(() => {
+  //   getResult();
+  // }, []);
 
   return (
     <div style={{ width: "100%", padding: "20px" }}>
