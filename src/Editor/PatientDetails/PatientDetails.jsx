@@ -75,13 +75,9 @@ function PatientDetails() {
   }, [PatientDetailsList]);
 
   const createGridColumn = (field) => {
-    console.log("key in create ocol", field);
-
     switch (field.componentType) {
       case "TextInput":
-        return (
-          <GridColumn field={field.value} title={field.label}></GridColumn>
-        );
+        return <GridColumn field={field.value} title={field.label} />;
       case "Datepicker":
         return (
           <GridColumn
@@ -96,25 +92,22 @@ function PatientDetails() {
                     month: "2-digit",
                     year: "numeric",
                   })
-                : "No date Entered";
+                : "Date Not Entered";
 
               return <td> {formattedToday} </td>;
             }}
           />
         );
-
       case "DropDown":
         return (
           <GridColumn
             field={field.value}
             title={field.label}
             cell={(props) => {
-              console.log("propss dropdown", props.dataItem[field.value]);
               return <td>{props.dataItem[field.value]?.label}</td>;
             }}
           />
         );
-
       case "RadioButton":
         return (
           <GridColumn
@@ -125,7 +118,12 @@ function PatientDetails() {
             }}
           />
         );
+      default:
+        return <GridColumn field={field.value} title={field.label} />;
     }
+  };
+  const handleColumnReorder = (event) => {
+    console.log("event", event);
   };
 
   return (
@@ -137,6 +135,7 @@ function PatientDetails() {
           pageable={true}
           sortable={true}
           filterable={true}
+          reorderable={true}
           style={{
             height: "500px",
           }}
@@ -145,6 +144,8 @@ function PatientDetails() {
           onDataStateChange={(e) => {
             setDataState(e.dataState);
           }}
+          onColumnReorder={handleColumnReorder}
+          GridEvent={(event) => console.log("eve", event)}
         >
           {keysForGrid?.map((key) => {
             return fieldMasterList.map((field) => {
@@ -154,9 +155,6 @@ function PatientDetails() {
             });
           })}
           <GridColumn
-            sortable={false}
-            reorderable={false}
-            filterable={false}
             field="dd"
             title="Actions"
             cell={(props) => {

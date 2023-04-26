@@ -24,7 +24,6 @@ export const Button = function Button(props) {
     disabledState,
     borderColor,
   } = styles;
-  console.log("customMode in button", customMode);
   const [label, setLabel] = useState(properties.text);
   const [disable, setDisable] = useState(disabledState);
   const [visibility, setVisibility] = useState(styles.visibility);

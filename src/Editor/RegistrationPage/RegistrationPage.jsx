@@ -21,7 +21,6 @@ import { SelectTests } from "./test";
 
 class RegistrationPageLauncher extends React.Component {
   constructor(props) {
-    console.log("props in reg", props);
     super(props);
     const deviceWindowWidth = window.screen.width - 5;
     const isMobileDevice = deviceWindowWidth < 600;
@@ -63,7 +62,6 @@ class RegistrationPageLauncher extends React.Component {
   }
 
   setStateForApp = (data) => {
-    console.log("setStateForApp ", data);
     const copyDefinition = _.cloneDeep(data.definition);
     const pagesObj = copyDefinition?.pages || {};
 
@@ -81,7 +79,6 @@ class RegistrationPageLauncher extends React.Component {
   };
 
   setStateForContainer = async (data) => {
-    console.log("setStateForContainer ", data);
     let userVars = {};
 
     let mobileLayoutHasWidgets = false;
@@ -307,7 +304,6 @@ class RegistrationPageLauncher extends React.Component {
       return this.props.darkMode ? "#2f3c4c" : "#edeff5";
     }
 
-    console.log("resolvedBackgroundColor", resolvedBackgroundColor);
     return resolvedBackgroundColor;
   };
 

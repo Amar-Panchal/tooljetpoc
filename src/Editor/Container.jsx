@@ -60,7 +60,6 @@ export const Container = ({
   reportTemplateDataMap,
   customMode,
 }) => {
-  console.log("customMode in containet", customMode);
   const styles = {
     width: currentLayout === "mobile" ? deviceWindowWidth : "100%",
     maxWidth: `${canvasWidth}px`,
@@ -79,11 +78,9 @@ export const Container = ({
   const [newThread, addNewThread] = useState({});
   const [isContainerFocused, setContainerFocus] = useState(false);
   const [testResultData, setTestResultData] = useState([]);
-  const [testResultDataKeys, setTestResultDataKeys] = useState([]);
   const router = useRouter();
   const canvasRef = useRef(null);
   const focusedParentIdRef = useRef(undefined);
-  const history = useHistory();
 
   const [PatientRegistrationFormData, setPatientRegistrationFormData] =
     useState({});
@@ -672,7 +669,7 @@ export const Container = ({
         </div>
       )} */}
 
-      {mode == "view" && (
+      {mode == "view" && testResultData && (
         <div
           style={{
             height: "100%",
@@ -681,13 +678,6 @@ export const Container = ({
             margin: "30px",
           }}
         >
-          {/* <Grid data={testResultData}>
-            <GridColumn field="testParamName" title="Parameter Name" />
-            <GridColumn field="paramValue" title="Value" width="100px" />
-            <GridColumn field="unitName" title="Unit" width="100px" />
-            <GridColumn field="" title="Normal Range " width="100px" />
-          </Grid> */}
-
           <table className="fixed_headers" style={{ width: "100%" }}>
             <tbody style={{ width: "100%" }}>
               <tr
@@ -717,7 +707,6 @@ export const Container = ({
                 </td>
               </tr>
               {testResultData?.map((testResult) => {
-                console.log("testResulttestResult", testResult);
                 return (
                   <tr
                     style={{
