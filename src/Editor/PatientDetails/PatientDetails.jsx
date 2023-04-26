@@ -127,40 +127,89 @@ function PatientDetails() {
   };
 
   return (
-    <div className="patient-details-layout">
-      <h1>Patient Details:</h1>
-      <div>
-        <Grid
-          resizable={true}
-          pageable={true}
-          sortable={true}
-          filterable={true}
-          reorderable={true}
+    <div>
+      <div
+        style={{
+          position: "fixed",
+          width: "58px",
+          height: "100vh",
+          top: "45px",
+        }}
+      >
+        <img
+          src="https://elabnextstorage.blob.core.windows.net/test/image_2023_04_25T07_21_59_615Z_Default_947499017.png"
+          style={{ width: "100%", height: "100%" }}
+        />
+      </div>
+      <div
+        style={{
+          position: "fixed",
+          width: "100%",
+          height: "50px",
+        }}
+      >
+        <img
+          src="https://elabnextstorage.blob.core.windows.net/test/elab%20fial%202_Default_393598438.JPG"
+          style={{ width: "100%", height: "100%" }}
+        />
+      </div>
+      <div
+        style={{
+          position: "fixed",
+          width: "95%",
+          height: "100vh",
+          top: "60px",
+          left: "60px",
+        }}
+        // className="patient-details-layout"
+      >
+        <div
           style={{
-            height: "500px",
+            fontStyle: "normal",
+
+            fontSize: "30px",
+            lineHeight: "50px",
+            display: "flex",
+            alignItems: "center",
+            color: "#212529",
+            marginLeft: "50px",
           }}
-          data={process(PatientDetailsList, dataState)}
-          {...dataState}
-          onDataStateChange={(e) => {
-            setDataState(e.dataState);
-          }}
-          onColumnReorder={handleColumnReorder}
-          GridEvent={(event) => console.log("eve", event)}
         >
-          {keysForGrid?.map((key) => {
-            return fieldMasterList.map((field) => {
-              if (field.value === key) {
-                return createGridColumn(field);
-              }
-            });
-          })}
-          <GridColumn
-            field="dd"
-            title="Actions"
-            cell={(props) => {
-              return (
-                <td style={{ display: "flex", gap: "10px" }}>
-                  {/* <button
+          Patient Details
+        </div>
+        <div>
+          <Grid
+            resizable={true}
+            pageable={true}
+            sortable={true}
+            filterable={true}
+            reorderable={true}
+            style={{
+              height: "80vh",
+              marginTop: "20px",
+            }}
+            data={process(PatientDetailsList, dataState)}
+            {...dataState}
+            onDataStateChange={(e) => {
+              setDataState(e.dataState);
+            }}
+            onColumnReorder={handleColumnReorder}
+            GridEvent={(event) => console.log("eve", event)}
+          >
+            {keysForGrid?.map((key) => {
+              return fieldMasterList.map((field) => {
+                if (field.value === key) {
+                  return createGridColumn(field);
+                }
+              });
+            })}
+            <GridColumn
+              field="dd"
+              title="Actions"
+              cell={(props) => {
+                return (
+                  <td style={{ display: "flex", gap: "10px" }}>
+                    {/* <button
                     onClick={() =>
                       history.push({
                         pathname: "/",
@@ -178,21 +227,22 @@ function PatientDetails() {
                   >
                     <span class="k-icon k-i-edit"></span>
                   </button> */}
-                  <button
-                    onClick={() =>
-                      history.push({
-                        pathname: "/result",
-                        state: props.dataItem,
-                      })
-                    }
-                  >
-                    <span class="k-icon k-i-arrow-double-60-right"></span>
-                  </button>
-                </td>
-              );
-            }}
-          />
-        </Grid>
+                    <button
+                      onClick={() =>
+                        history.push({
+                          pathname: "/result",
+                          state: props.dataItem,
+                        })
+                      }
+                    >
+                      <span class="k-icon k-i-arrow-double-60-right"></span>
+                    </button>
+                  </td>
+                );
+              }}
+            />
+          </Grid>
+        </div>
       </div>
     </div>
   );
