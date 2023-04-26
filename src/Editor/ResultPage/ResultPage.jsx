@@ -69,7 +69,6 @@ function ResultPage() {
       .get("https://elabnextapi-dev.azurewebsites.net/api/TestMaster/GetUnit")
       .then((response) => {
         const { unitMasterList } = response.data.resultData;
-
         setUnitData(unitMasterList);
       });
   }, []);
@@ -133,22 +132,6 @@ function ResultPage() {
         console.log("sss", error);
       });
   };
-
-  // const getResult = () => {
-  //   axios
-  //     .get(
-  //       "https://elabnextapi-dev.azurewebsites.net/api/Result/GetResult     "
-  //     )
-  //     .then((response) => {
-  //       console.log("succes", response);
-  //     })
-  //     .catch((error) => {
-  //       console.log("error -> getResult", error);
-  //     });
-  // };
-  // useEffect(() => {
-  //   getResult();
-  // }, []);
 
   return (
     <div style={{ width: "100%", padding: "20px" }}>

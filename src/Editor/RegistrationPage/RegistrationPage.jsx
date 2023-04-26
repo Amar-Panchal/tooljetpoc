@@ -21,6 +21,7 @@ import { SelectTests } from "./test";
 
 class RegistrationPageLauncher extends React.Component {
   constructor(props) {
+    console.log("props in reg", props);
     super(props);
     const deviceWindowWidth = window.screen.width - 5;
     const isMobileDevice = deviceWindowWidth < 600;
@@ -155,27 +156,27 @@ class RegistrationPageLauncher extends React.Component {
       }
     );
   };
-  /**************************************    DO not DELETE this    ******************************************** */
-  // loadApplicationByVersion = () => {
-  //   const temp = {
-  //     definition: {},
-  //   };
-  //   axios
-  //     .get(
-  //       "https://elabnextapi-dev.azurewebsites.net/api/ReportSetup/GetReportTemplate?ReportTemplateId=43"
-  //     )
-  //     .then((response) => {
-  //       temp.definition = JSON.parse(
-  //         response?.data?.resultData[0].reportValues
-  //       );
-
-  //       this.setStateForApp(temp);
-  //       this.setStateForContainer(temp);
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  // };
+  /**************************************    DO not DELETE this    ******************************************** 
+   *         // loadApplicationByVersion = () => {
+   *         //   const temp = {
+   *         //     definition: {},
+   *         //   };
+   *         //   axios
+   *         //     .get(
+   *         //       "https://elabnextapi-dev.azurewebsites.net/api/ReportSetup/GetReportTemplate?ReportTemplateId=43"
+   *         //     )
+   *         //     .then((response) => {
+   *         //       temp.definition = JSON.parse(
+   *         //         response?.data?.resultData[0].reportValues
+   *         //       );
+ *         
+   *         //       this.setStateForApp(temp);
+   *         //       this.setStateForContainer(temp);
+   *         //     })
+   *         //     .catch((error) => {
+   *         //       console.log(error);
+   *         //     });
+   *         // };
   /**************************************    DO not DELETE this        ***************************************** */
 
   loadApplicationByVersion = async () => {
@@ -186,7 +187,6 @@ class RegistrationPageLauncher extends React.Component {
       .then(({ data }) => {
         const { reportValues: reportValuesString } =
           data?.resultData?.[0] ?? {};
-
         this.setStateForApp({
           definition: JSON.parse(reportValuesString ?? "{}"),
         });

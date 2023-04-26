@@ -109,7 +109,7 @@ export const Container = ({
         .catch((err) => console.log("err saveRegistrationPageFormData", err));
     }
   }
-  console.log("ccboxes", boxes);
+
   useHotkeys("⌘+z, control+z", () => handleUndo());
   useHotkeys("⌘+shift+z, control+shift+z", () => handleRedo());
   useHotkeys(

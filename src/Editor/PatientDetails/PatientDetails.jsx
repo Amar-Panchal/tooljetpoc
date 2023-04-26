@@ -23,6 +23,7 @@ function PatientDetails() {
   const [PatientDetailsList, setPatientDetailsList] = useState([]);
   const [dataState, setDataState] = useState(initialDataState);
   const [keysForGrid, setKeysForGrid] = useState([]);
+  const [fieldMasterList, setFieldMasterList] = useState([]);
   const history = useHistory();
 
   function getPatientDetailsList() {
@@ -35,10 +36,20 @@ function PatientDetails() {
           response.data.resultData.patientList.map((patient) => {
             const temp = JSON.parse(patient.patientDescription);
             temp.patientId = patient?.patientId;
-            console.log("dd", temp);
+
             return temp;
           })
         );
+      })
+      .catch((error) => {
+        console.log("error -> getPatientDetailsList", error);
+      });
+    axios
+      .get(
+        "https://elabnextapi-dev.azurewebsites.net/api/ReportSetup/GetFieldMaster        "
+      )
+      .then((response) => {
+        setFieldMasterList(response.data.resultData.fieldMaster);
       })
       .catch((error) => {
         console.log("error -> getPatientDetailsList", error);
@@ -63,105 +74,60 @@ function PatientDetails() {
     });
   }, [PatientDetailsList]);
 
-  console.log("PatientDetailsList", PatientDetailsList);
+  const createGridColumn = (field) => {
+    console.log("key in create ocol", field);
 
-  const createGridColumn = (key) => {
-    switch (key) {
-      case "registrationDate":
+    switch (field.componentType) {
+      case "TextInput":
         return (
-          <GridColumn
-            field={key}
-            title={
-              key
-                .replace(/([A-Z])/g, " $1")
-                .charAt(0)
-                .toUpperCase() + key.replace(/([A-Z])/g, " $1").slice(1)
-            }
-            cell={(props) => {
-              const today = new Date(props.dataItem.registrationDate);
-              const yyyy = today.getFullYear();
-              let mm = today.getMonth() + 1; // Months start at 0!
-              let dd = today.getDate();
-
-              if (dd < 10) dd = "0" + dd;
-              if (mm < 10) mm = "0" + mm;
-
-              const formattedToday = dd + "/" + mm + "/" + yyyy;
-              console.log("props.dataItem.registrati", formattedToday);
-              return <td> {dd === NaN ? "" : formattedToday}</td>;
-            }}
-          />
+          <GridColumn field={field.value} title={field.label}></GridColumn>
         );
-      case "gender":
+      case "Datepicker":
         return (
           <GridColumn
-            field={key}
-            title={
-              key
-                .replace(/([A-Z])/g, " $1")
-                .charAt(0)
-                .toUpperCase() + key.replace(/([A-Z])/g, " $1").slice(1)
-            }
+            field={field.value}
+            title={field.label}
             cell={(props) => {
-              return <td>{props.dataItem.gender?.name}</td>;
-            }}
-          />
-        );
-      case "membershipType":
-        return (
-          <GridColumn
-            field={key}
-            width={200}
-            title={
-              key
-                .replace(/([A-Z])/g, " $1")
-                .charAt(0)
-                .toUpperCase() + key.replace(/([A-Z])/g, " $1").slice(1)
-            }
-            cell={(props) => {
-              return <td>{props.dataItem.membershipType?.label}</td>;
+              const today = new Date(props.dataItem[field.value]);
+
+              const formattedToday = props.dataItem[field.value]
+                ? today.toLocaleDateString("en-GB", {
+                    day: "2-digit",
+                    month: "2-digit",
+                    year: "numeric",
+                  })
+                : "No date Entered";
+
+              return <td> {formattedToday} </td>;
             }}
           />
         );
 
-      case "selectedTests":
+      case "DropDown":
         return (
           <GridColumn
-            field={key}
-            width={200}
-            title={
-              key
-                .replace(/([A-Z])/g, " $1")
-                .charAt(0)
-                .toUpperCase() + key.replace(/([A-Z])/g, " $1").slice(1)
-            }
+            field={field.value}
+            title={field.label}
             cell={(props) => {
-              return (
-                <td>
-                  {props.dataItem.selectedTests?.map((test) => {
-                    return test.testName ? <li>{test.testName}</li> : "";
-                  })}
-                </td>
-              );
+              console.log("propss dropdown", props.dataItem[field.value]);
+              return <td>{props.dataItem[field.value]?.label}</td>;
             }}
           />
         );
 
-      default:
+      case "RadioButton":
         return (
           <GridColumn
-            field={key}
-            title={
-              key
-                .replace(/([A-Z])/g, " $1")
-                .charAt(0)
-                .toUpperCase() + key.replace(/([A-Z])/g, " $1").slice(1)
-            }
+            field={field.value}
+            title={field.label}
+            cell={(props) => {
+              return <td>{props.dataItem[field.value]?.name}</td>;
+            }}
           />
         );
     }
   };
-  console.log("fff", PatientDetailsList);
+
   return (
     <div className="patient-details-layout">
       <h1>Patient Details:</h1>
@@ -170,7 +136,6 @@ function PatientDetails() {
           resizable={true}
           pageable={true}
           sortable={true}
-          reorderable={true}
           filterable={true}
           style={{
             height: "500px",
@@ -182,15 +147,22 @@ function PatientDetails() {
           }}
         >
           {keysForGrid?.map((key) => {
-            return createGridColumn(key);
+            return fieldMasterList.map((field) => {
+              if (field.value === key) {
+                return createGridColumn(field);
+              }
+            });
           })}
           <GridColumn
+            sortable={false}
+            reorderable={false}
+            filterable={false}
             field="dd"
             title="Actions"
             cell={(props) => {
               return (
                 <td style={{ display: "flex", gap: "10px" }}>
-                  <button
+                  {/* <button
                     onClick={() =>
                       history.push({
                         pathname: "/",
@@ -207,7 +179,7 @@ function PatientDetails() {
                     }}
                   >
                     <span class="k-icon k-i-edit"></span>
-                  </button>
+                  </button> */}
                   <button
                     onClick={() =>
                       history.push({
