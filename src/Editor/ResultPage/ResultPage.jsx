@@ -270,13 +270,17 @@ function ResultPage() {
         <div>
           <div
             style={{
-              marginTop: "20px",
+              margin: "20px",
             }}
           >
             <div
               style={{
-                border: "1px dotted gray",
+                width: "100%",
+                display: "flex",
+                flexDirection: "column",
+
                 padding: "20px",
+                border: "1px dotted gray",
                 borderRadius: "15px",
               }}
             >
@@ -307,22 +311,22 @@ function ResultPage() {
                 })}
               </div>
             </div>
-            <div
-              style={{
-                border: "1px dotted gray",
-                padding: "15px",
-                marginTop: "10px",
-                display: "flex",
+          </div>
+          <div
+            style={{
+              border: "1px dotted gray",
+              padding: "15px",
+              margin: "20px",
+              display: "flex",
 
-                borderRadius: "15px",
-                justifyContent: "space-evenly",
-              }}
-            >
-              <Button themeColor="primary" onClick={handleSubmitResult}>
-                Submit
-              </Button>
-              <Button>Cancel</Button>
-            </div>
+              borderRadius: "15px",
+              justifyContent: "space-evenly",
+            }}
+          >
+            <Button themeColor="primary" onClick={handleSubmitResult}>
+              Submit
+            </Button>
+            <Button>Cancel</Button>
           </div>
         </div>
       </div>

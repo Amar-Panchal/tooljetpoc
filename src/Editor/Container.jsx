@@ -565,6 +565,39 @@ export const Container = ({
           ))}
         </>
       )}
+      {mode === "view" && (
+        <>
+          {" "}
+          <div
+            style={{
+              position: "fixed",
+              width: "58px",
+              height: "100vh",
+              top: "45px",
+              left: "0px",
+              zIndex: "9999",
+            }}
+          >
+            <img
+              src="https://elabnextstorage.blob.core.windows.net/test/image_2023_04_25T07_21_59_615Z_Default_947499017.png"
+              style={{ width: "100%", height: "100%" }}
+            />
+          </div>
+          <div
+            style={{
+              position: "fixed",
+              width: "100%",
+              height: "50px",
+              left: "0px",
+            }}
+          >
+            <img
+              src="https://elabnextstorage.blob.core.windows.net/test/elab%20fial%202_Default_393598438.JPG"
+              style={{ width: "100%", height: "100%" }}
+            />
+          </div>
+        </>
+      )}
       {Object.keys(boxes).map((key) => {
         const box = boxes[key];
         const canShowInCurrentLayout =

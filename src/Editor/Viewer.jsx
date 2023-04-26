@@ -3039,7 +3039,7 @@ class ViewerComponent extends React.Component {
                       <div
                         className="canvas-area"
                         style={{
-                          width: "100%",
+                          width: "90%",
                           minHeight: "100%",
                           maxWidth: "100%",
                           maxHeight: "100%",
