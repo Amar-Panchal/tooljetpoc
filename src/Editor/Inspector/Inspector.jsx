@@ -387,6 +387,7 @@ export const Inspector = ({
                   return option.value === newComponentName;
                 })}
                 label="Single select"
+                required
               />
               <span className="input-icon-addon">
                 <svg

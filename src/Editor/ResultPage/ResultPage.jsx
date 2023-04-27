@@ -8,6 +8,92 @@ import { toast } from "react-hot-toast";
 import RenderParameterList from "./RenderParameterList";
 import { UnitData } from "./StaticData";
 import { Button, TileLayout } from "@progress/kendo-react-all";
+const styles = {
+  fontSize: 14,
+  textAlign: "center",
+  margin: "auto",
+  userSelect: "none",
+};
+
+const tiles = [
+  {
+    defaultPosition: {
+      colSpan: 1,
+      rowSpan: 1,
+    },
+
+    item: (
+      <span style={styles}>
+        <b>Parameter Name</b>
+      </span>
+    ),
+  },
+  {
+    defaultPosition: {
+      colSpan: 1,
+      rowSpan: 1,
+    },
+    resizable: false,
+    reorderable: false,
+    item: (
+      <span style={styles}>
+        <b>Result</b>
+      </span>
+    ),
+  },
+  {
+    defaultPosition: {
+      colSpan: 1,
+      rowSpan: 1,
+    },
+    resizable: false,
+    reorderable: false,
+    item: (
+      <span style={styles}>
+        <b>Unit</b>
+      </span>
+    ),
+  },
+  {
+    defaultPosition: {
+      colSpan: 1,
+      rowSpan: 1,
+    },
+    resizable: false,
+    reorderable: false,
+    item: (
+      <span style={styles}>
+        <b>Normal Range </b>{" "}
+      </span>
+    ),
+  },
+  {
+    defaultPosition: {
+      colSpan: 1,
+      rowSpan: 1,
+    },
+    resizable: false,
+    reorderable: false,
+    item: (
+      <span style={styles}>
+        <b>Critical High</b>{" "}
+      </span>
+    ),
+  },
+  {
+    defaultPosition: {
+      colSpan: 1,
+      rowSpan: 1,
+    },
+    resizable: false,
+    reorderable: false,
+    item: (
+      <span style={styles}>
+        <b>Critical Low</b>{" "}
+      </span>
+    ),
+  },
+];
 
 function ResultPage() {
   const [patientDetails, setPatientDetails] = useState([]);
@@ -21,7 +107,6 @@ function ResultPage() {
   useEffect(() => {
     setPatientDetails(history.location.state);
   }, [history]);
-
   const onTestChange = (event) => {
     const { testId } = JSON.parse(event.target.name);
     const itemIndex = selectedTestsWithParameters.findIndex(
@@ -73,6 +158,42 @@ function ResultPage() {
       });
   }, []);
 
+  function mapRangesWithParameters() {
+    let paramWithRanges = [];
+    selectedTestsWithParameters.map((selectedTestWithParameter) => {
+      const tempTestParams = selectedTestWithParameter.testParameters;
+      tempTestParams.map((testParam) => {
+        const { testParamId, testParamName, ranges } = testParam;
+
+        const obj = {
+          testParamId,
+          testParamName,
+          ranges,
+          age: patientDetails.age,
+          gender: patientDetails.gender.name,
+        };
+        paramWithRanges.push(obj);
+      });
+
+      // paramWithRanges.map((paramWithRange) => {
+      //   paramWithRange.ranges.map((range) => {
+      //     if (
+      //       range.rangeMaster.ageFrom < paramWithRange.age &&
+      //       paramWithRange.age < range.rangeMaster.ageTo
+      //     )
+      //       console.log("rangeee", range, paramWithRange);
+      //   });
+      // });
+      console.log("paramWithRanges", paramWithRanges);
+
+      paramWithRanges.map((elem) => {});
+      paramWithRanges = [];
+    });
+  }
+
+  useEffect(() => {
+    mapRangesWithParameters();
+  }, [selectedTestsWithParameters]);
   //save
   // const handleSubmitResult = () => {
   //   const payload = {
@@ -132,92 +253,6 @@ function ResultPage() {
         console.log("sss", error);
       });
   };
-  const styles = {
-    fontSize: 14,
-    textAlign: "center",
-    margin: "auto",
-    userSelect: "none",
-  };
-
-  const tiles = [
-    {
-      defaultPosition: {
-        colSpan: 1,
-        rowSpan: 1,
-      },
-
-      item: (
-        <span style={styles}>
-          <b>Parameter Name</b>
-        </span>
-      ),
-    },
-    {
-      defaultPosition: {
-        colSpan: 1,
-        rowSpan: 1,
-      },
-      resizable: false,
-      reorderable: false,
-      item: (
-        <span style={styles}>
-          <b>Result</b>
-        </span>
-      ),
-    },
-    {
-      defaultPosition: {
-        colSpan: 1,
-        rowSpan: 1,
-      },
-      resizable: false,
-      reorderable: false,
-      item: (
-        <span style={styles}>
-          <b>Unit</b>
-        </span>
-      ),
-    },
-    {
-      defaultPosition: {
-        colSpan: 1,
-        rowSpan: 1,
-      },
-      resizable: false,
-      reorderable: false,
-      item: (
-        <span style={styles}>
-          <b>Normal Range </b>{" "}
-        </span>
-      ),
-    },
-    {
-      defaultPosition: {
-        colSpan: 1,
-        rowSpan: 1,
-      },
-      resizable: false,
-      reorderable: false,
-      item: (
-        <span style={styles}>
-          <b>Critical High</b>{" "}
-        </span>
-      ),
-    },
-    {
-      defaultPosition: {
-        colSpan: 1,
-        rowSpan: 1,
-      },
-      resizable: false,
-      reorderable: false,
-      item: (
-        <span style={styles}>
-          <b>Critical Low</b>{" "}
-        </span>
-      ),
-    },
-  ];
 
   return (
     <div style={{ border: "1px solid transparent" }}>
@@ -239,6 +274,7 @@ function ResultPage() {
           position: "fixed",
           width: "100%",
           height: "50px",
+          zIndex: "9999",
         }}
       >
         <img
@@ -364,7 +400,6 @@ function ResultPage() {
                 width: "100%",
                 display: "flex",
                 flexDirection: "column",
-
                 padding: "20px",
                 border: "1px dotted gray",
                 borderRadius: "15px",

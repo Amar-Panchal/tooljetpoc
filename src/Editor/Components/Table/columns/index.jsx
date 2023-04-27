@@ -1,12 +1,14 @@
-import React from 'react';
-import _ from 'lodash';
-import SelectSearch, { fuzzySearch } from 'react-select-search';
-import { resolveReferences, validateWidget } from '@/_helpers/utils';
-import { CustomSelect } from '../CustomSelect';
-import { Tags } from '../Tags';
-import { Radio } from '../Radio';
-import { Toggle } from '../Toggle';
-import { Datepicker } from '../Datepicker';
+/** @format */
+
+import React from "react";
+import _ from "lodash";
+import SelectSearch, { fuzzySearch } from "react-select-search";
+import { resolveReferences, validateWidget } from "@/_helpers/utils";
+import { CustomSelect } from "../CustomSelect";
+import { Tags } from "../Tags";
+import { Radio } from "../Radio";
+import { Toggle } from "../Toggle";
+import { Datepicker } from "../Datepicker";
 
 export default function generateColumnsData({
   columnProperties,
@@ -31,12 +33,12 @@ export default function generateColumnsData({
 
     const columnOptions = {};
     if (
-      columnType === 'dropdown' ||
-      columnType === 'multiselect' ||
-      columnType === 'badge' ||
-      columnType === 'badges' ||
-      columnType === 'radio' ||
-      columnType === 'image'
+      columnType === "dropdown" ||
+      columnType === "multiselect" ||
+      columnType === "badge" ||
+      columnType === "badges" ||
+      columnType === "radio" ||
+      columnType === "image"
     ) {
       columnOptions.selectOptions = [];
       const values = resolveReferences(column.values, currentState, []);
@@ -48,9 +50,11 @@ export default function generateColumnsData({
         });
       }
     }
-    if (columnType === 'datepicker') {
-      column.isTimeChecked = column.isTimeChecked ? column.isTimeChecked : false;
-      column.dateFormat = column.dateFormat ? column.dateFormat : 'DD/MM/YYYY';
+    if (columnType === "datepicker") {
+      column.isTimeChecked = column.isTimeChecked
+        ? column.isTimeChecked
+        : false;
+      column.dateFormat = column.dateFormat ? column.dateFormat : "DD/MM/YYYY";
       column.parseDateFormat = column.parseDateFormat ?? column.dateFormat; //backwards compatibility
     }
 
@@ -76,7 +80,9 @@ export default function generateColumnsData({
       customRule: column?.customRule,
       Cell: function (cell) {
         const rowChangeSet = changeSet ? changeSet[cell.row.index] : null;
-        let cellValue = rowChangeSet ? rowChangeSet[column.name] ?? cell.value : cell.value;
+        let cellValue = rowChangeSet
+          ? rowChangeSet[column.name] ?? cell.value
+          : cell.value;
         const rowData = tableData[cell.row.index];
         if (
           cell.row.index === 0 &&
@@ -84,19 +90,31 @@ export default function generateColumnsData({
           !_.isEqual(variablesExposedForPreview[id]?.rowData, rowData)
         ) {
           const customResolvables = {};
-          customResolvables[id] = { ...variablesExposedForPreview[id], rowData };
-          exposeToCodeHinter((prevState) => ({ ...prevState, ...customResolvables }));
+          customResolvables[id] = {
+            ...variablesExposedForPreview[id],
+            rowData,
+          };
+          exposeToCodeHinter((prevState) => ({
+            ...prevState,
+            ...customResolvables,
+          }));
         }
-        cellValue = cellValue === undefined || cellValue === null ? '' : cellValue;
+        cellValue =
+          cellValue === undefined || cellValue === null ? "" : cellValue;
 
         switch (columnType) {
-          case 'string':
+          case "string":
           case undefined:
-          case 'default': {
-            const textColor = resolveReferences(column.textColor, currentState, '', { cellValue, rowData });
+          case "default": {
+            const textColor = resolveReferences(
+              column.textColor,
+              currentState,
+              "",
+              { cellValue, rowData }
+            );
 
             const cellStyles = {
-              color: textColor ?? '',
+              color: textColor ?? "",
             };
 
             if (column.isEditable) {
@@ -122,16 +140,20 @@ export default function generateColumnsData({
 
               const { isValid, validationError } = validationData;
               const cellStyles = {
-                color: textColor ?? '',
+                color: textColor ?? "",
               };
 
               return (
                 <div className="h-100 d-flex flex-column justify-content-center">
                   <input
                     type="text"
-                    style={{ ...cellStyles, maxWidth: width, minWidth: width - 10 }}
+                    style={{
+                      ...cellStyles,
+                      maxWidth: width,
+                      minWidth: width - 10,
+                    }}
                     onKeyDown={(e) => {
-                      if (e.key === 'Enter') {
+                      if (e.key === "Enter") {
                         if (e.target.defaultValue !== e.target.value) {
                           handleCellValueChange(
                             cell.row.index,
@@ -152,7 +174,9 @@ export default function generateColumnsData({
                         );
                       }
                     }}
-                    className={`form-control-plaintext form-control-plaintext-sm ${!isValid ? 'is-invalid' : ''}`}
+                    className={`form-control-plaintext form-control-plaintext-sm ${
+                      !isValid ? "is-invalid" : ""
+                    }`}
                     defaultValue={cellValue}
                   />
                   <div className="invalid-feedback">{validationError}</div>
@@ -161,11 +185,16 @@ export default function generateColumnsData({
             }
             return <span style={cellStyles}>{String(cellValue)}</span>;
           }
-          case 'number': {
-            const textColor = resolveReferences(column.textColor, currentState, '', { cellValue, rowData });
+          case "number": {
+            const textColor = resolveReferences(
+              column.textColor,
+              currentState,
+              "",
+              { cellValue, rowData }
+            );
 
             const cellStyles = {
-              color: textColor ?? '',
+              color: textColor ?? "",
             };
             if (column.isEditable) {
               const validationData = validateWidget({
@@ -183,18 +212,27 @@ export default function generateColumnsData({
               });
 
               const { isValid, validationError } = validationData;
-              console.log('validationData', column.minValue, column.maxValue, validationData);
+              console.log(
+                "validationData",
+                column.minValue,
+                column.maxValue,
+                validationData
+              );
               const cellStyles = {
-                color: textColor ?? '',
+                color: textColor ?? "",
               };
 
               return (
                 <div className="h-100 d-flex flex-column justify-content-center">
                   <input
                     type="number"
-                    style={{ ...cellStyles, maxWidth: width, minWidth: width - 10 }}
+                    style={{
+                      ...cellStyles,
+                      maxWidth: width,
+                      minWidth: width - 10,
+                    }}
                     onKeyDown={(e) => {
-                      if (e.key === 'Enter') {
+                      if (e.key === "Enter") {
                         if (e.target.defaultValue !== e.target.value) {
                           handleCellValueChange(
                             cell.row.index,
@@ -215,7 +253,9 @@ export default function generateColumnsData({
                         );
                       }
                     }}
-                    className={`form-control-plaintext form-control-plaintext-sm ${!isValid ? 'is-invalid' : ''}`}
+                    className={`form-control-plaintext form-control-plaintext-sm ${
+                      !isValid ? "is-invalid" : ""
+                    }`}
                     defaultValue={cellValue}
                   />
                   <div className="invalid-feedback">{validationError}</div>
@@ -224,31 +264,41 @@ export default function generateColumnsData({
             }
             return <span style={cellStyles}>{cellValue}</span>;
           }
-          case 'text': {
+          case "text": {
             return (
               <textarea
                 rows="1"
                 className={`form-control-plaintext text-container ${
-                  darkMode ? 'text-light textarea-dark-theme' : 'text-muted'
+                  darkMode ? "text-light textarea-dark-theme" : "text-muted"
                 }`}
                 readOnly={!column.isEditable}
                 style={{ maxWidth: width, minWidth: width - 10 }}
                 onBlur={(e) => {
                   if (column.isEditable) {
-                    handleCellValueChange(cell.row.index, column.key || column.name, e.target.value, cell.row.original);
+                    handleCellValueChange(
+                      cell.row.index,
+                      column.key || column.name,
+                      e.target.value,
+                      cell.row.original
+                    );
                   }
                 }}
                 onKeyDown={(e) => {
                   e.persist();
-                  if (e.key === 'Enter' && column.isEditable) {
-                    handleCellValueChange(cell.row.index, column.key || column.name, e.target.value, cell.row.original);
+                  if (e.key === "Enter" && column.isEditable) {
+                    handleCellValueChange(
+                      cell.row.index,
+                      column.key || column.name,
+                      e.target.value,
+                      cell.row.original
+                    );
                   }
                 }}
                 defaultValue={cellValue}
               ></textarea>
             );
           }
-          case 'dropdown': {
+          case "dropdown": {
             const validationData = validateWidget({
               validationObject: {
                 regex: {
@@ -278,46 +328,67 @@ export default function generateColumnsData({
                   value={cellValue}
                   search={true}
                   onChange={(value) => {
-                    handleCellValueChange(cell.row.index, column.key || column.name, value, cell.row.original);
+                    handleCellValueChange(
+                      cell.row.index,
+                      column.key || column.name,
+                      value,
+                      cell.row.original
+                    );
                   }}
                   filterOptions={fuzzySearch}
-                  placeholder={t('globals.select', 'Select') + '...'}
+                  placeholder={t("globals.select", "Select") + "..."}
                   disabled={!column.isEditable}
-                  className={`${darkMode ? 'select-search-dark' : 'select-search'}`}
+                  className={`${
+                    darkMode ? "select-search-dark" : "select-search"
+                  }`}
                 />
-                <div className={`invalid-feedback ${isValid ? '' : 'd-flex'}`}>{validationError}</div>
+                <div className={`invalid-feedback ${isValid ? "" : "d-flex"}`}>
+                  {validationError}
+                </div>
               </div>
             );
           }
-          case 'multiselect': {
+          case "multiselect": {
             return (
               <div className="h-100 d-flex align-items-center">
                 <SelectSearch
                   printOptions="on-focus"
                   multiple
                   search={true}
-                  placeholder={t('globals.select', 'Select') + '...'}
+                  placeholder={t("globals.select", "Select") + "..."}
                   options={columnOptions.selectOptions}
                   value={cellValue}
                   onChange={(value) => {
-                    handleCellValueChange(cell.row.index, column.key || column.name, value, cell.row.original);
+                    handleCellValueChange(
+                      cell.row.index,
+                      column.key || column.name,
+                      value,
+                      cell.row.original
+                    );
                   }}
                   disabled={!column.isEditable}
-                  className={`${darkMode ? 'select-search-dark' : 'select-search'}`}
+                  className={`${
+                    darkMode ? "select-search-dark" : "select-search"
+                  }`}
                 />
               </div>
             );
           }
-          case 'badge':
-          case 'badges': {
+          case "badge":
+          case "badges": {
             return (
               <div className="h-100 d-flex align-items-center">
                 <CustomSelect
                   options={columnOptions.selectOptions}
                   value={cellValue}
-                  multiple={columnType === 'badges'}
+                  multiple={columnType === "badges"}
                   onChange={(value) => {
-                    handleCellValueChange(cell.row.index, column.key || column.name, value, cell.row.original);
+                    handleCellValueChange(
+                      cell.row.index,
+                      column.key || column.name,
+                      value,
+                      cell.row.original
+                    );
                   }}
                   darkMode={darkMode}
                   isEditable={column.isEditable}
@@ -325,26 +396,31 @@ export default function generateColumnsData({
               </div>
             );
           }
-          case 'tags': {
+          case "tags": {
             return (
               <div>
                 <Tags
                   value={cellValue}
                   onChange={(value) => {
-                    handleCellValueChange(cell.row.index, column.key || column.name, value, cell.row.original);
+                    handleCellValueChange(
+                      cell.row.index,
+                      column.key || column.name,
+                      value,
+                      cell.row.original
+                    );
                   }}
                 />
               </div>
             );
           }
-          case 'image': {
+          case "image": {
             return (
               <div>
                 {cellValue && (
                   <img
                     src={cellValue}
                     style={{
-                      pointerEvents: 'auto',
+                      pointerEvents: "auto",
                       width: `${column?.width}px`,
                       height: `${column?.height}px`,
                       borderRadius: `${column?.borderRadius}%`,
@@ -356,7 +432,7 @@ export default function generateColumnsData({
               </div>
             );
           }
-          case 'radio': {
+          case "radio": {
             return (
               <div className="h-100 d-flex align-items-center">
                 <Radio
@@ -364,13 +440,18 @@ export default function generateColumnsData({
                   value={cellValue}
                   readOnly={!column.isEditable}
                   onChange={(value) => {
-                    handleCellValueChange(cell.row.index, column.key || column.name, value, cell.row.original);
+                    handleCellValueChange(
+                      cell.row.index,
+                      column.key || column.name,
+                      value,
+                      cell.row.original
+                    );
                   }}
                 />
               </div>
             );
           }
-          case 'toggle': {
+          case "toggle": {
             return (
               <div className="h-100 d-flex align-items-center">
                 <Toggle
@@ -378,21 +459,24 @@ export default function generateColumnsData({
                   readOnly={!column.isEditable}
                   activeColor={column.activeColor}
                   onChange={(value) => {
-                    handleCellValueChange(cell.row.index, column.key || column.name, value, cell.row.original).then(
-                      () => {
-                        fireEvent('OnTableToggleCellChanged', {
-                          column: column,
-                          rowId: cell.row.id,
-                          row: cell.row.original,
-                        });
-                      }
-                    );
+                    handleCellValueChange(
+                      cell.row.index,
+                      column.key || column.name,
+                      value,
+                      cell.row.original
+                    ).then(() => {
+                      fireEvent("OnTableToggleCellChanged", {
+                        column: column,
+                        rowId: cell.row.id,
+                        row: cell.row.original,
+                      });
+                    });
                   }}
                 />
               </div>
             );
           }
-          case 'datepicker': {
+          case "datepicker": {
             return (
               <div className="h-100 d-flex align-items-center">
                 <Datepicker
@@ -404,7 +488,12 @@ export default function generateColumnsData({
                   readOnly={column.isEditable}
                   parseDateFormat={column.parseDateFormat}
                   onChange={(value) => {
-                    handleCellValueChange(cell.row.index, column.key || column.name, value, cell.row.original);
+                    handleCellValueChange(
+                      cell.row.index,
+                      column.key || column.name,
+                      value,
+                      cell.row.original
+                    );
                   }}
                   tableRef={tableRef}
                 />
@@ -412,7 +501,7 @@ export default function generateColumnsData({
             );
           }
         }
-        return cellValue || '';
+        return cellValue || "";
       },
     };
   });
