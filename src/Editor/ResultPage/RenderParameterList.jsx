@@ -11,6 +11,8 @@ function RenderParameterList({ parameterName, values, setValues }) {
     userSelect: "none",
   };
 
+  const randomNumb = Math.floor(Math.random() * 90) + 10;
+
   const handleChange = (e) => {
     const { unitId, unitName, testParamId, testParamName } = parameterName;
 
@@ -69,12 +71,34 @@ function RenderParameterList({ parameterName, values, setValues }) {
       },
       resizable: false,
       reorderable: false,
-      item: <span style={styles}>Tile 4</span>,
+      item: (
+        <span style={styles}>{`${randomNumb} - ${
+          randomNumb + Math.floor(Math.random() * 90) + 10
+        }`}</span>
+      ),
+    },
+    {
+      defaultPosition: {
+        colSpan: 1,
+        rowSpan: 1,
+      },
+      resizable: false,
+      reorderable: false,
+      item: <span style={styles}>{Math.floor(Math.random() * 90)}</span>,
+    },
+    {
+      defaultPosition: {
+        colSpan: 1,
+        rowSpan: 1,
+      },
+      resizable: false,
+      reorderable: false,
+      item: <span style={styles}>{Math.floor(Math.random() * 90)}</span>,
     },
   ];
   return (
     <TileLayout
-      columns={4}
+      columns={6}
       rowHeight={50}
       gap={{
         rows: 10,

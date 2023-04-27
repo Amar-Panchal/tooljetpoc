@@ -589,6 +589,7 @@ export const Container = ({
               width: "100%",
               height: "50px",
               left: "0px",
+              top: "0px",
             }}
           >
             <img
@@ -707,7 +708,7 @@ export const Container = ({
           style={{
             height: "100%",
             position: "relative",
-            top: "400px",
+            top: "420px",
             margin: "30px",
           }}
         >

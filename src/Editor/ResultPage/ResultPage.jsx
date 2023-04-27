@@ -7,7 +7,7 @@ import axios from "axios";
 import { toast } from "react-hot-toast";
 import RenderParameterList from "./RenderParameterList";
 import { UnitData } from "./StaticData";
-import { Button } from "@progress/kendo-react-all";
+import { Button, TileLayout } from "@progress/kendo-react-all";
 
 function ResultPage() {
   const [patientDetails, setPatientDetails] = useState([]);
@@ -132,6 +132,92 @@ function ResultPage() {
         console.log("sss", error);
       });
   };
+  const styles = {
+    fontSize: 14,
+    textAlign: "center",
+    margin: "auto",
+    userSelect: "none",
+  };
+
+  const tiles = [
+    {
+      defaultPosition: {
+        colSpan: 1,
+        rowSpan: 1,
+      },
+
+      item: (
+        <span style={styles}>
+          <b>Parameter Name</b>
+        </span>
+      ),
+    },
+    {
+      defaultPosition: {
+        colSpan: 1,
+        rowSpan: 1,
+      },
+      resizable: false,
+      reorderable: false,
+      item: (
+        <span style={styles}>
+          <b>Result</b>
+        </span>
+      ),
+    },
+    {
+      defaultPosition: {
+        colSpan: 1,
+        rowSpan: 1,
+      },
+      resizable: false,
+      reorderable: false,
+      item: (
+        <span style={styles}>
+          <b>Unit</b>
+        </span>
+      ),
+    },
+    {
+      defaultPosition: {
+        colSpan: 1,
+        rowSpan: 1,
+      },
+      resizable: false,
+      reorderable: false,
+      item: (
+        <span style={styles}>
+          <b>Normal Range </b>{" "}
+        </span>
+      ),
+    },
+    {
+      defaultPosition: {
+        colSpan: 1,
+        rowSpan: 1,
+      },
+      resizable: false,
+      reorderable: false,
+      item: (
+        <span style={styles}>
+          <b>Critical High</b>{" "}
+        </span>
+      ),
+    },
+    {
+      defaultPosition: {
+        colSpan: 1,
+        rowSpan: 1,
+      },
+      resizable: false,
+      reorderable: false,
+      item: (
+        <span style={styles}>
+          <b>Critical Low</b>{" "}
+        </span>
+      ),
+    },
+  ];
 
   return (
     <div style={{ border: "1px solid transparent" }}>
@@ -297,6 +383,15 @@ function ResultPage() {
                       }}
                     >
                       <h3>{test.testName}</h3>
+                      <TileLayout
+                        columns={6}
+                        rowHeight={50}
+                        gap={{
+                          rows: 10,
+                          columns: 10,
+                        }}
+                        items={tiles}
+                      />
                       {test.testParameters.map((parameter) => {
                         return (
                           <RenderParameterList
