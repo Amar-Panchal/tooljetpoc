@@ -43,6 +43,7 @@ import { SvgImage } from "./Components/SvgImage";
 import { Html } from "./Components/Html";
 import { ButtonGroup } from "./Components/ButtonGroup";
 import { CustomComponent } from "./Components/CustomComponent/CustomComponent";
+import { ReportResultTable } from "./Components/ReportResultTable/ReportResultTable";
 import { VerticalDivider } from "./Components/verticalDivider";
 import { PDF } from "./Components/PDF";
 import { ColorPicker } from "./Components/ColorPicker";
@@ -120,6 +121,7 @@ const AllComponents = {
   Icon,
   Form,
   BoundedBox,
+  ReportResultTable,
 };
 
 export const Box = function Box({
@@ -153,6 +155,7 @@ export const Box = function Box({
   setPatientRegistrationFormData,
   onSubmitPatientRegistrationFormData,
   customMode,
+  testResultData,
 }) {
   const { t } = useTranslation();
   const backgroundColor = yellow ? "yellow" : "";
@@ -429,6 +432,7 @@ export const Box = function Box({
                 onSubmitPatientRegistrationFormData
               }
               customMode={customMode}
+              testResultData={testResultData}
             ></ComponentToRender>
           ) : (
             <></>

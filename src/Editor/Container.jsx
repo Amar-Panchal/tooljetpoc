@@ -688,6 +688,7 @@ export const Container = ({
                   onSubmitPatientRegistrationFormData
                 }
                 customMode={customMode}
+                testResultData={testResultData}
               />
             </div>
           );
@@ -703,7 +704,7 @@ export const Container = ({
         </div>
       )} */}
 
-      {mode == "view" && testResultData && (
+      {/* {mode == "view" && testResultData && (
         <div
           style={{
             height: "100%",
@@ -772,7 +773,7 @@ export const Container = ({
             </tbody>
           </table>
         </div>
-      )}
+      )} */}
 
       {Object.keys(boxes).length === 0 && !appLoading && !isDragging && (
         <div
