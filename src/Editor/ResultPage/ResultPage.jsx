@@ -99,9 +99,12 @@ function ResultPage() {
   const [patientDetails, setPatientDetails] = useState([]);
   const [selectedTestsWithParameters, setSelectedTestsWithParameters] =
     useState([]);
-  const [values, setValues] = useState({});
-  const [testResult, setTestResult] = useState();
+
+  const [testResult, setTestResult] = useState([]);
   const [unitData, setUnitData] = useState([]);
+  const [values, setValues] = useState({});
+  const [ResultDataWithRanges, setResultDataWithRanges] = useState([]);
+  const [finalData, setFinalData] = useState([]);
   const history = useHistory();
 
   useEffect(() => {
@@ -159,41 +162,53 @@ function ResultPage() {
   }, []);
 
   function mapRangesWithParameters() {
-    let paramWithRanges = [];
-    selectedTestsWithParameters.map((selectedTestWithParameter) => {
-      const tempTestParams = selectedTestWithParameter.testParameters;
-      tempTestParams.map((testParam) => {
-        const { testParamId, testParamName, ranges } = testParam;
+    const temp = [];
+    selectedTestsWithParameters.map((testWithParameters) => {
+      console.log("testWithParameters", testWithParameters);
 
+      testWithParameters.testParameters.map((parameter) => {
         const obj = {
-          testParamId,
-          testParamName,
-          ranges,
-          age: patientDetails.age,
-          gender: patientDetails.gender.name,
+          testParamId: parameter.testParamId,
+          ranges: parameter.ranges.filter(
+            (range) =>
+              range.rangeMaster.ageFrom < patientDetails.age &&
+              range.rangeMaster.ageTo > patientDetails.age
+          ),
+          testName: testWithParameters.testName,
+          testId: testWithParameters.testId,
         };
-        paramWithRanges.push(obj);
+
+        temp.push(obj);
       });
-
-      // paramWithRanges.map((paramWithRange) => {
-      //   paramWithRange.ranges.map((range) => {
-      //     if (
-      //       range.rangeMaster.ageFrom < paramWithRange.age &&
-      //       paramWithRange.age < range.rangeMaster.ageTo
-      //     )
-      //       console.log("rangeee", range, paramWithRange);
-      //   });
-      // });
-      console.log("paramWithRanges", paramWithRanges);
-
-      paramWithRanges.map((elem) => {});
-      paramWithRanges = [];
     });
+
+    setResultDataWithRanges(temp);
   }
 
   useEffect(() => {
     mapRangesWithParameters();
   }, [selectedTestsWithParameters]);
+
+  // console.log("aaaa", ResultDataWithRanges);
+  // console.log("resultt", testResult);
+
+  useEffect(() => {
+    const temp = [];
+    testResult.map((testresult) => {
+      ResultDataWithRanges.map((resultData) => {
+        // console.log("testresult", testresult);
+        if (testresult.testParamId === resultData.testParamId) {
+          temp.push({
+            ...testresult,
+            ...resultData,
+          });
+        }
+      });
+    });
+
+    setFinalData(temp);
+  }, [testResult]);
+
   //save
   // const handleSubmitResult = () => {
   //   const payload = {
@@ -233,6 +248,7 @@ function ResultPage() {
         patientDetails,
         selectedTestsWithParameters,
         testResult,
+        finalData,
       },
     };
     axios
@@ -428,11 +444,16 @@ function ResultPage() {
                         items={tiles}
                       />
                       {test.testParameters.map((parameter) => {
+                        if (parameter.testParamId === finalData.testParamId) {
+                          parameter.ranges = finalData.ranges;
+                        }
+
                         return (
                           <RenderParameterList
                             parameterName={parameter}
                             values={values}
                             setValues={setValues}
+                            finalData={finalData}
                           />
                         );
                       })}

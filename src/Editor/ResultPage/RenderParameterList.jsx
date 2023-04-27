@@ -10,7 +10,8 @@ function RenderParameterList({ parameterName, values, setValues }) {
     margin: "auto",
     userSelect: "none",
   };
-
+  // if (parameterName.testParamId === finalData.testParamId) {
+  // }
   const randomNumb = Math.floor(Math.random() * 90) + 10;
 
   const handleChange = (e) => {
