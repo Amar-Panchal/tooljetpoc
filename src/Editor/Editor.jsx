@@ -11,7 +11,6 @@ import { LeftSidebar } from "./LeftSidebar";
 import { componentTypes } from "./WidgetManager/components";
 import { Inspector } from "./Inspector/Inspector";
 // import { DataSourceTypes } from './DataSourceManager/SourceComponents';
-import { QueryManager, QueryPanel } from "./QueryManager";
 import {
   onComponentOptionChanged,
   onComponentOptionsChanged,

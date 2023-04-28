@@ -3,29 +3,15 @@
 import React, { Suspense } from "react";
 // eslint-disable-next-line no-unused-vars
 import config from "config";
-import { BrowserRouter, Route, Redirect } from "react-router-dom";
+import { BrowserRouter, Route } from "react-router-dom";
 import { history } from "@/_helpers";
-import { PrivateRoute, AdminRoute } from "@/_components";
-import { HomePage } from "@/HomePage";
-import { LoginPage } from "@/LoginPage";
-import { SignupPage } from "@/SignupPage";
-import { TooljetDatabase } from "@/TooljetDatabase";
-import { OrganizationInvitationPage } from "@/ConfirmationPage";
-import { Authorize } from "@/Oauth2";
-import { Authorize as Oauth } from "@/Oauth";
+import { PrivateRoute } from "@/_components";
 import { Viewer } from "@/Editor";
-import { OrganizationSettings } from "@/OrganizationSettingsPage";
-import { SettingsPage } from "../SettingsPage/SettingsPage";
-import { ForgotPassword } from "@/ForgotPassword";
-import { ResetPassword } from "@/ResetPassword";
-import { MarketplacePage } from "@/MarketplacePage";
 import { lt } from "semver";
 import Toast from "@/_ui/Toast";
-import { VerificationSuccessInfoScreen } from "@/SuccessInfoScreen";
 import "@/_styles/theme.scss";
 import "emoji-mart/css/emoji-mart.css";
 import { AppLoader } from "@/AppLoader";
-import SetupScreenSelfHost from "../SuccessInfoScreen/SetupScreenSelfHost";
 import { RegistrationPage } from "../Editor/RegistrationPage/RegistrationPage";
 import PatientDetails from "../Editor/PatientDetails/PatientDetails";
 import ResultPage from "../Editor/ResultPage/ResultPage";
@@ -130,19 +116,6 @@ class App extends React.Component {
               switchDarkMode={this.switchDarkMode}
               darkMode={darkMode}
             />
-            <Route path="/login/:organizationId" exact component={LoginPage} />
-            <Route path="/login" exact component={LoginPage} />
-            <Route
-              path="/setup"
-              exact
-              component={(props) => (
-                <SetupScreenSelfHost {...props} darkMode={darkMode} />
-              )}
-            />
-            <Route path="/sso/:origin/:configId" exact component={Oauth} />
-            <Route path="/sso/:origin" exact component={Oauth} />
-            <Route path="/signup" component={SignupPage} />
-            <Route path="/forgot-password" component={ForgotPassword} />
             <Route
               path="/registration-page"
               component={RegistrationPage}
@@ -151,77 +124,7 @@ class App extends React.Component {
             />
             <Route path="/patient-details" component={PatientDetails} />
             <Route path="/result" component={ResultPage} />
-            <Route
-              path="/reset-password/:token"
-              render={(props) => (
-                <Redirect
-                  to={{
-                    pathname: "/reset-password",
-                    state: {
-                      token: props.match.params.token,
-                    },
-                  }}
-                />
-              )}
-            />
-            <Route path="/reset-password" component={ResetPassword} />
-            <Route
-              path="/invitations/:token"
-              render={(props) => (
-                <Redirect
-                  to={{
-                    pathname: "/confirm",
-                    state: {
-                      token: props.match.params.token,
-                      search: props.location.search,
-                    },
-                  }}
-                />
-              )}
-            />
-            <Route
-              path="/invitations/:token/workspaces/:organizationToken"
-              render={(props) => (
-                <Redirect
-                  to={{
-                    pathname: "/confirm",
-                    state: {
-                      token: props.match.params.token,
-                      organizationToken: props.match.params.organizationToken,
-                      search: props.location.search,
-                    },
-                  }}
-                />
-              )}
-            />
-            <Route path="/confirm" component={VerificationSuccessInfoScreen} />
-            <Route
-              path="/organization-invitations/:token"
-              render={(props) => (
-                <Redirect
-                  to={{
-                    pathname: "/confirm-invite",
-                    state: {
-                      token: props.match.params.token,
-                      search: props.location.search,
-                    },
-                  }}
-                />
-              )}
-            />
-            <Route
-              path="/confirm-invite"
-              component={(props) => (
-                <OrganizationInvitationPage {...props} darkMode={darkMode} />
-              )}
-            />
-            <PrivateRoute
-              exact
-              path="/apps/:id/:pageHandle?"
-              component={AppLoader}
-              switchDarkMode={this.switchDarkMode}
-              darkMode={darkMode}
-            />
+
             <PrivateRoute
               exact
               path="/applications/:id/versions/:versionId"
@@ -233,41 +136,6 @@ class App extends React.Component {
               exact
               path="/applications/:slug/:pageHandle?"
               component={Viewer}
-              switchDarkMode={this.switchDarkMode}
-              darkMode={darkMode}
-            />
-            <PrivateRoute
-              exact
-              path="/oauth2/authorize"
-              component={Authorize}
-              switchDarkMode={this.switchDarkMode}
-              darkMode={darkMode}
-            />
-            <PrivateRoute
-              exact
-              path="/workspace-settings"
-              component={OrganizationSettings}
-              switchDarkMode={this.switchDarkMode}
-              darkMode={darkMode}
-            />
-            <PrivateRoute
-              exact
-              path="/settings"
-              component={SettingsPage}
-              switchDarkMode={this.switchDarkMode}
-              darkMode={darkMode}
-            />
-            <PrivateRoute
-              exact
-              path="/database"
-              component={TooljetDatabase}
-              switchDarkMode={this.switchDarkMode}
-              darkMode={darkMode}
-            />
-            <AdminRoute
-              exact
-              path="/integrations"
-              component={MarketplacePage}
               switchDarkMode={this.switchDarkMode}
               darkMode={darkMode}
             />
