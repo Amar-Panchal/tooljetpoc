@@ -3,7 +3,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { isEqual } from "lodash";
 import iframeContent from "./iframe.html";
-import { SelectTests } from "../../RegistrationPage/test";
 
 export const CustomComponent = (props) => {
   const {
@@ -16,8 +15,6 @@ export const CustomComponent = (props) => {
     fireEvent,
     dataQueries,
     dataCy,
-    setPatientRegistrationFormData,
-    PatientRegistrationFormData,
   } = props;
   const { visibility } = styles;
   const { code, data } = properties;
@@ -124,11 +121,6 @@ export const CustomComponent = (props) => {
         ref={iFrameRef}
         data-id={id}
       ></iframe>
-
-      {/* <SelectTests
-        setPatientRegistrationFormData={setPatientRegistrationFormData}
-        PatientRegistrationFormData={PatientRegistrationFormData}
-      /> */}
     </div>
   );
 };
