@@ -44,6 +44,7 @@ import { Html } from "./Components/Html";
 import { ButtonGroup } from "./Components/ButtonGroup";
 import { CustomComponent } from "./Components/CustomComponent/CustomComponent";
 import { ReportResultTable } from "./Components/ReportResultTable/ReportResultTable";
+import { TestList } from "./Components/TestList";
 import { VerticalDivider } from "./Components/verticalDivider";
 import { PDF } from "./Components/PDF";
 import { ColorPicker } from "./Components/ColorPicker";
@@ -122,6 +123,7 @@ const AllComponents = {
   Form,
   BoundedBox,
   ReportResultTable,
+  TestList,
 };
 
 export const Box = function Box({

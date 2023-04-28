@@ -5840,14 +5840,7 @@ export const widgets = [
     displayName: "ReportResultTable",
     description: "Visual representation of a sequence of events",
     component: "ReportResultTable",
-    properties: {
-      data: {
-        type: "code",
-        displayName: "Data",
-        validation: { schema: { type: "object" } },
-      },
-      code: { type: "code", displayName: "Code" },
-    },
+    properties: {},
     defaultSize: {
       width: 20,
       height: 140,
@@ -5857,34 +5850,134 @@ export const widgets = [
       showOnMobile: { type: "toggle", displayName: "Show on mobile" },
     },
     events: {},
-    styles: {
-      visibility: {
-        type: "toggle",
-        displayName: "Visibility",
-        validation: { schema: { type: "boolean" } },
-      },
-    },
-    exposedVariables: {
-      data: { value: `{{{ title: 'Hi! There', buttonText: 'Update Title'}}}` },
-    },
+    styles: {},
+    exposedVariables: {},
     definition: {
       others: {
         showOnDesktop: { value: "{{true}}" },
         showOnMobile: { value: "{{false}}" },
       },
-      properties: {
-        visible: { value: "{{true}}" },
-        data: {
-          value: "",
-        },
-        code: {
-          value: "",
-          skipResolve: true,
+      properties: {},
+      events: [],
+      styles: {},
+    },
+  },
+  // {
+  //   name: "TestList",
+  //   displayName: "Test List",
+  //   description: "Visual representation of a sequence of events",
+  //   component: "TestList",
+  //   properties: {
+  //     data: {
+  //       type: "code",
+  //       displayName: "Data",
+  //       validation: { schema: { type: "object" } },
+  //     },
+  //     code: { type: "code", displayName: "Code" },
+  //   },
+  //   defaultSize: {
+  //     width: 20,
+  //     height: 140,
+  //   },
+  //   others: {
+  //     showOnDesktop: { type: "toggle", displayName: "Show on desktop" },
+  //     showOnMobile: { type: "toggle", displayName: "Show on mobile" },
+  //   },
+  //   events: {},
+  //   styles: {
+  //     visibility: {
+  //       type: "toggle",
+  //       displayName: "Visibility",
+  //       validation: { schema: { type: "boolean" } },
+  //     },
+  //   },
+  //   exposedVariables: {
+  //     data: { value: `{{{ title: 'Hi! There', buttonText: 'Update Title'}}}` },
+  //   },
+  //   definition: {
+  //     others: {
+  //       showOnDesktop: { value: "{{true}}" },
+  //       showOnMobile: { value: "{{false}}" },
+  //     },
+  //     properties: {
+  //       visible: { value: "{{true}}" },
+  //       data: {
+  //         value: "",
+  //       },
+  //       code: {
+  //         value: "",
+  //         skipResolve: true,
+  //       },
+  //     },
+  //     events: [],
+  //     styles: {
+  //       visibility: { value: "{{true}}" },
+  //     },
+  //   },
+  // },
+  {
+    name: "TestList",
+    displayName: "Test List",
+    description: "Renders a list of tests available in database",
+    component: "TestList",
+    defaultSize: {
+      width: 20,
+      height: 100,
+    },
+    others: {
+      showOnDesktop: { type: "toggle", displayName: "Show on desktop" },
+      showOnMobile: { type: "toggle", displayName: "Show on mobile" },
+    },
+
+    styles: {
+      backgroundColor: {
+        type: "color",
+        displayName: "Background color",
+        validation: {
+          schema: { type: "string" },
+          defaultValue: false,
         },
       },
+      textColor: {
+        type: "color",
+        displayName: "Text color",
+        validation: {
+          schema: { type: "string" },
+          defaultValue: false,
+        },
+      },
+
+      borderRadius: {
+        type: "number",
+        displayName: "Border radius",
+        validation: {
+          schema: { type: "number" },
+          defaultValue: false,
+        },
+      },
+      borderColor: {
+        type: "color",
+        displayName: "Border color",
+        validation: {
+          schema: { type: "string" },
+          defaultValue: false,
+        },
+      },
+    },
+    exposedVariables: {},
+
+    definition: {
+      others: {
+        showOnDesktop: { value: "{{true}}" },
+        showOnMobile: { value: "{{false}}" },
+      },
+
       events: [],
       styles: {
-        visibility: { value: "{{true}}" },
+        backgroundColor: { value: "#FFFFFF" },
+        textColor: { value: "#080000" },
+
+        borderRadius: { value: "{{0}}" },
       },
     },
   },

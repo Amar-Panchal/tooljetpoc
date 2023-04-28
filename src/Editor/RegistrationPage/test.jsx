@@ -7,6 +7,7 @@ import "./registration-page.css";
 function SelectTests({
   setPatientRegistrationFormData,
   PatientRegistrationFormData,
+  textColor,
 }) {
   const [testList, setTestList] = useState([]);
   const [selectedTests, setSelectedTests] = useState([]);
@@ -47,15 +48,18 @@ function SelectTests({
     <div
       style={{
         overflowY: "scroll",
+        overflow: "hidden",
         display: "flex",
         width: "100%",
         padding: "10px",
         backgroundColor: "none",
+        color: textColor,
       }}
     >
       <div
         style={{
           overflowY: "scroll",
+
           width: "50%",
           cursor: "pointer",
         }}

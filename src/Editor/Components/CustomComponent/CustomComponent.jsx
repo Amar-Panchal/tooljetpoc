@@ -118,17 +118,17 @@ export const CustomComponent = (props) => {
       style={{ display: visibility ? "" : "none", height }}
       data-cy={dataCy}
     >
-      {/* <iframe
+      <iframe
         srcDoc={iframeContent}
-        style={{ width: '100%', height: '100%', border: 'none' }}
+        style={{ width: "100%", height: "100%", border: "none" }}
         ref={iFrameRef}
         data-id={id}
-      ></iframe> */}
+      ></iframe>
 
-      <SelectTests
+      {/* <SelectTests
         setPatientRegistrationFormData={setPatientRegistrationFormData}
         PatientRegistrationFormData={PatientRegistrationFormData}
-      />
+      /> */}
     </div>
   );
 };
