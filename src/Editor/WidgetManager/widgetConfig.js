@@ -1258,13 +1258,7 @@ export const widgets = [
           schema: { type: "string" },
         },
       },
-      value: {
-        type: "code",
-        displayName: "Default value",
-        validation: {
-          schema: { type: "boolean" },
-        },
-      },
+
       values: {
         type: "code",
         displayName: "Option values",
@@ -1286,9 +1280,7 @@ export const widgets = [
         },
       },
     },
-    events: {
-      onSelectionChange: { displayName: "On select" },
-    },
+
     styles: {
       textColor: {
         type: "color",
@@ -1304,33 +1296,8 @@ export const widgets = [
           schema: { type: "string" },
         },
       },
-      visibility: {
-        type: "toggle",
-        displayName: "Visibility",
-        validation: {
-          schema: { type: "boolean" },
-        },
-      },
-      disabledState: {
-        type: "toggle",
-        displayName: "Disable",
-        validation: {
-          schema: { type: "boolean" },
-        },
-      },
     },
-    actions: [
-      {
-        handle: "selectOption",
-        displayName: "Select Option",
-        params: [
-          {
-            handle: "option",
-            displayName: "Option",
-          },
-        ],
-      },
-    ],
+
     exposedVariables: {},
     definition: {
       others: {
@@ -1339,17 +1306,14 @@ export const widgets = [
       },
       properties: {
         label: { value: "Select" },
-        value: { value: "{{true}}" },
+
         values: { value: "{{[true,false]}}" },
         display_values: { value: '{{["yes", "no"]}}' },
-        visible: { value: "{{true}}" },
       },
       events: [],
       styles: {
         textColor: { value: "" },
         activeColor: { value: "" },
-        visibility: { value: "{{true}}" },
-        disabledState: { value: "{{false}}" },
       },
     },
   },
@@ -1647,13 +1611,6 @@ export const widgets = [
           },
         },
       },
-      loadingState: {
-        type: "toggle",
-        displayName: "Show loading state",
-        validation: {
-          schema: { type: "boolean" },
-        },
-      },
     },
     defaultSize: {
       width: 6,
@@ -1743,53 +1700,18 @@ export const widgets = [
           schema: { type: "string" },
         },
       },
-      visibility: {
-        type: "toggle",
-        displayName: "Visibility",
-        validation: {
-          schema: { type: "boolean" },
-        },
-      },
-      disabledState: {
-        type: "toggle",
-        displayName: "Disable",
-        validation: {
-          schema: { type: "boolean" },
-        },
-      },
     },
     exposedVariables: {
-      text: "Hello, there!",
+      text: "Write Your Text ",
     },
-    actions: [
-      {
-        handle: "setText",
-        displayName: "Set Text",
-        params: [
-          { handle: "text", displayName: "Text", defaultValue: "New text" },
-        ],
-      },
-      {
-        handle: "visibility",
-        displayName: "Set Visibility",
-        params: [
-          {
-            handle: "visibility",
-            displayName: "Value",
-            defaultValue: `{{false}}`,
-            type: "toggle",
-          },
-        ],
-      },
-    ],
+
     definition: {
       others: {
         showOnDesktop: { value: "{{true}}" },
         showOnMobile: { value: "{{false}}" },
       },
       properties: {
-        text: { value: "Hello, there!" },
-        loadingState: { value: `{{false}}` },
+        text: { value: "Write Your Text " },
       },
       events: [],
       styles: {
@@ -1806,8 +1728,6 @@ export const widgets = [
         letterSpacing: { value: 0 },
         wordSpacing: { value: 0 },
         fontVariant: { value: "normal" },
-        visibility: { value: "{{true}}" },
-        disabledState: { value: "{{false}}" },
       },
     },
   },
