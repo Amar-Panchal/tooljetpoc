@@ -1955,9 +1955,7 @@ export const widgets = [
       showOnDesktop: { type: "toggle", displayName: "Show on desktop" },
       showOnMobile: { type: "toggle", displayName: "Show on mobile" },
     },
-    validation: {
-      customRule: { type: "code", displayName: "Custom validation" },
-    },
+
     properties: {
       label: {
         type: "code",
@@ -1966,20 +1964,7 @@ export const widgets = [
           schema: { type: "string" },
         },
       },
-      value: {
-        type: "code",
-        displayName: "Default value",
-        validation: {
-          schema: {
-            type: "union",
-            schemas: [
-              { type: "string" },
-              { type: "number" },
-              { type: "boolean" },
-            ],
-          },
-        },
-      },
+
       values: {
         type: "code",
         displayName: "Option values",
@@ -2014,18 +1999,8 @@ export const widgets = [
           },
         },
       },
-      loadingState: {
-        type: "toggle",
-        displayName: "Options loading state",
-        validation: {
-          schema: { type: "boolean" },
-        },
-      },
     },
-    events: {
-      onSelect: { displayName: "On select" },
-      onSearchTextChanged: { displayName: "On search text changed" },
-    },
+
     styles: {
       borderRadius: {
         type: "code",
@@ -2037,13 +2012,7 @@ export const widgets = [
           },
         },
       },
-      visibility: {
-        type: "toggle",
-        displayName: "Visibility",
-        validation: {
-          schema: { type: "boolean" },
-        },
-      },
+
       selectedTextColor: {
         type: "color",
         displayName: "Selected Text Color",
@@ -2053,15 +2022,7 @@ export const widgets = [
           },
         },
       },
-      disabledState: {
-        type: "toggle",
-        displayName: "Disable",
-        validation: {
-          schema: {
-            type: "boolean",
-          },
-        },
-      },
+
       justifyContent: {
         type: "alignButtons",
         displayName: "Align Text",
@@ -2077,34 +2038,22 @@ export const widgets = [
       searchText: "",
       label: "Select",
     },
-    actions: [
-      {
-        handle: "selectOption",
-        displayName: "Select option",
-        params: [{ handle: "select", displayName: "Select" }],
-      },
-    ],
+
     definition: {
       others: {
         showOnDesktop: { value: "{{true}}" },
         showOnMobile: { value: "{{false}}" },
       },
-      validation: {
-        customRule: { value: null },
-      },
+
       properties: {
         label: { value: "Select" },
-        value: { value: "{{2}}" },
+
         values: { value: "{{[1,2,3]}}" },
         display_values: { value: '{{["one", "two", "three"]}}' },
-        visible: { value: "{{true}}" },
-        loadingState: { value: "{{false}}" },
       },
       events: [],
       styles: {
         borderRadius: { value: "0" },
-        visibility: { value: "{{true}}" },
-        disabledState: { value: "{{false}}" },
         justifyContent: { value: "left" },
       },
     },
@@ -2642,13 +2591,6 @@ export const widgets = [
           schema: { type: "string" },
         },
       },
-      visibility: {
-        type: "toggle",
-        displayName: "Visibility",
-        validation: {
-          schema: { type: "boolean" },
-        },
-      },
     },
     exposedVariables: {
       value: {},
@@ -2661,7 +2603,6 @@ export const widgets = [
       properties: {},
       events: [],
       styles: {
-        visibility: { value: "{{true}}" },
         dividerColor: { value: "" },
       },
     },
@@ -4216,13 +4157,6 @@ export const widgets = [
           schema: { type: "string" },
         },
       },
-      visibility: {
-        type: "toggle",
-        displayName: "Visibility",
-        validation: {
-          schema: { type: "boolean" },
-        },
-      },
     },
     exposedVariables: {
       value: {},
@@ -4235,7 +4169,6 @@ export const widgets = [
       properties: {},
       events: [],
       styles: {
-        visibility: { value: "{{true}}" },
         dividerColor: { value: "#000000" },
       },
     },
@@ -5444,31 +5377,80 @@ export const widgets = [
       },
     },
   },
+
+  // {
+  //   name: "ReportResultTable",
+  //   displayName: "ReportResultTable",
+  //   description: "Visual representation of a sequence of events",
+  //   component: "ReportResultTable",
+  //   properties: {},
+  //   defaultSize: {
+  //     width: 20,
+  //     height: 140,
+  //   },
+  //   others: {
+  //     showOnDesktop: { type: "toggle", displayName: "Show on desktop" },
+  //     showOnMobile: { type: "toggle", displayName: "Show on mobile" },
+  //   },
+  //   events: {},
+  //   styles: {},
+  //   exposedVariables: {},
+  //   definition: {
+  //     others: {
+  //       showOnDesktop: { value: "{{true}}" },
+  //       showOnMobile: { value: "{{false}}" },
+  //     },
+  //     properties: {},
+  //     events: [],
+  //     styles: {},
+  //   },
+  // },
+
   {
     name: "ReportResultTable",
     displayName: "ReportResultTable",
     description: "Visual representation of a sequence of events",
     component: "ReportResultTable",
-    properties: {},
     defaultSize: {
       width: 20,
-      height: 140,
+      height: 100,
     },
     others: {
       showOnDesktop: { type: "toggle", displayName: "Show on desktop" },
       showOnMobile: { type: "toggle", displayName: "Show on mobile" },
     },
-    events: {},
-    styles: {},
+
+    styles: {
+      backgroundColor: {
+        type: "color",
+        displayName: "Background color",
+        validation: {
+          schema: { type: "string" },
+          defaultValue: false,
+        },
+      },
+      textColor: {
+        type: "color",
+        displayName: "Text color",
+        validation: {
+          schema: { type: "string" },
+          defaultValue: false,
+        },
+      },
+    },
     exposedVariables: {},
+
     definition: {
       others: {
         showOnDesktop: { value: "{{true}}" },
         showOnMobile: { value: "{{false}}" },
       },
-      properties: {},
+
       events: [],
-      styles: {},
+      styles: {
+        backgroundColor: { value: "#FFFFFF" },
+        textColor: { value: "#080000" },
+      },
     },
   },
   // {
@@ -5564,14 +5546,6 @@ export const widgets = [
           defaultValue: false,
         },
       },
-      borderColor: {
-        type: "color",
-        displayName: "Border color",
-        validation: {
-          schema: { type: "string" },
-          defaultValue: false,
-        },
-      },
     },
     exposedVariables: {},
 
@@ -5585,8 +5559,6 @@ export const widgets = [
       styles: {
         backgroundColor: { value: "#FFFFFF" },
         textColor: { value: "#080000" },
-
-        borderRadius: { value: "{{0}}" },
       },
     },
   },

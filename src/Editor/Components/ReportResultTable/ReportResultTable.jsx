@@ -20,13 +20,18 @@ export const ReportResultTable = (props) => {
     PatientRegistrationFormData,
     testResultData,
   } = props;
-  const { visibility } = styles;
+  const { backgroundColor, textColor } = styles;
 
   console.log("testresultdata", testResultData);
   return (
     <div
       className="card"
-      style={{ display: visibility ? "" : "none", height, border: "none" }}
+      style={{
+        height,
+        border: "none",
+        backgroundColor,
+        color: textColor,
+      }}
       data-cy={dataCy}
     >
       {/* <iframe
