@@ -22,7 +22,6 @@ export const ReportResultTable = (props) => {
   } = props;
   const { backgroundColor, textColor } = styles;
 
-  console.log("testresultdata", testResultData);
   return (
     <div
       className="card"

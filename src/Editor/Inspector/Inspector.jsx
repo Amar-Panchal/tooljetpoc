@@ -354,7 +354,6 @@ export const Inspector = ({
     setNewComponentName(e.value);
   };
 
-  console.log("InputFieldDropdown", InputFieldDropdown);
   return (
     <div className="inspector">
       <ConfirmDialog

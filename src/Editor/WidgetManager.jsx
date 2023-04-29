@@ -56,263 +56,6 @@ export const WidgetManager = function WidgetManager({
       </>
     );
   }
-  function getarray() {
-    const temp = [];
-    {
-      mediaLogoList.map((mediaLogoList) => {
-        temp.push({
-          properties: {
-            source: {
-              type: "code",
-              displayName: "URL",
-              validation: {
-                schema: {
-                  type: "string",
-                },
-              },
-            },
-            loadingState: {
-              type: "toggle",
-              displayName: "Loading state",
-              validation: {
-                schema: {
-                  type: "boolean",
-                },
-              },
-            },
-            alternativeText: {
-              type: "code",
-              displayName: "Alternative text",
-              validation: {
-                schema: {
-                  type: "string",
-                },
-              },
-            },
-            zoomButtons: {
-              type: "toggle",
-              displayName: "Zoom button",
-              validation: {
-                schema: {
-                  type: "boolean",
-                },
-              },
-            },
-            rotateButton: {
-              type: "toggle",
-              displayName: "Rotate button",
-              validation: {
-                schema: {
-                  type: "boolean",
-                },
-              },
-            },
-          },
-          general: {
-            tooltip: {
-              type: "code",
-              displayName: "Tooltip",
-              validation: {
-                schema: {
-                  type: "string",
-                },
-              },
-            },
-          },
-          others: {
-            showOnDesktop: {
-              type: "toggle",
-              displayName: "Show on desktop",
-            },
-            showOnMobile: {
-              type: "toggle",
-              displayName: "Show on mobile",
-            },
-          },
-          events: {
-            onClick: {
-              displayName: "On click",
-            },
-          },
-          styles: {
-            borderType: {
-              type: "select",
-              displayName: "Border type",
-              options: [
-                {
-                  name: "None",
-                  value: "none",
-                },
-                {
-                  name: "Rounded",
-                  value: "rounded",
-                },
-                {
-                  name: "Circle",
-                  value: "rounded-circle",
-                },
-                {
-                  name: "Thumbnail",
-                  value: "img-thumbnail",
-                },
-              ],
-              validation: {
-                schema: {
-                  type: "string",
-                },
-              },
-            },
-            backgroundColor: {
-              type: "color",
-              displayName: "Background color",
-              validation: {
-                schema: {
-                  type: "string",
-                },
-              },
-            },
-            padding: {
-              type: "code",
-              displayName: "Padding",
-              validation: {
-                schema: {
-                  type: "union",
-                  schemas: [
-                    {
-                      type: "string",
-                    },
-                    {
-                      type: "number",
-                    },
-                  ],
-                },
-              },
-            },
-            visibility: {
-              type: "toggle",
-              displayName: "Visibility",
-              validation: {
-                schema: {
-                  type: "boolean",
-                },
-              },
-            },
-            disabledState: {
-              type: "toggle",
-              displayName: "Disable",
-              validation: {
-                schema: {
-                  type: "boolean",
-                },
-              },
-            },
-            imageFit: {
-              type: "select",
-              displayName: "Image fit",
-              options: [
-                {
-                  name: "fill",
-                  value: "fill",
-                },
-                {
-                  name: "contain",
-                  value: "contain",
-                },
-                {
-                  name: "cover",
-                  value: "cover",
-                },
-                {
-                  name: "scale-down",
-                  value: "scale-down",
-                },
-              ],
-              validation: {
-                schema: {
-                  type: "string",
-                },
-              },
-            },
-          },
-          validate: true,
-          generalStyles: {
-            boxShadow: {
-              type: "boxShadow",
-              displayName: "Box Shadow",
-            },
-          },
-          definition: {
-            others: {
-              showOnDesktop: {
-                value: "{{true}}",
-              },
-              showOnMobile: {
-                value: "{{false}}",
-              },
-            },
-            events: [],
-            styles: {
-              borderType: {
-                value: "none",
-              },
-              padding: {
-                value: "0",
-              },
-              visibility: {
-                value: "{{true}}",
-              },
-              disabledState: {
-                value: "{{false}}",
-              },
-              imageFit: {
-                value: "contain",
-              },
-              backgroundColor: {
-                value: "",
-              },
-            },
-            generalStyles: {
-              boxShadow: {
-                value: "0px 0px 0px 0px #00000040",
-              },
-            },
-            properties: {
-              source: {
-                value: mediaLogoList.imageUrl,
-              },
-              visible: {
-                value: "{{true}}",
-              },
-              loadingState: {
-                value: "{{false}}",
-              },
-              alternativeText: {
-                value: "",
-              },
-              zoomButtons: {
-                value: "{{false}}",
-              },
-              rotateButton: {
-                value: "{{false}}",
-              },
-            },
-            general: {},
-            exposedVariables: {},
-          },
-          name: mediaLogoList.imageName,
-          displayName: "Image",
-          description: "Display an Image",
-          defaultSize: {
-            width: 3,
-            height: 100,
-          },
-          component: "Image",
-          exposedVariables: {},
-        });
-      });
-    }
-    return temp;
-  }
 
   function segregateSections() {
     if (filteredComponents.length === 0) {
@@ -346,15 +89,23 @@ export const WidgetManager = function WidgetManager({
         </div>
       );
     }
-    const mediaLogoSection = {
-      title: t("media logo", "media logo"),
-      items: getarray(),
-    };
+
     const commonSection = {
       title: t("widgetManager.commonlyUsed", "commonly used"),
       items: [],
     };
 
+    const reportTemplateSection = {
+      title: t("widgetManager.reportTemplate", "Report Template Components "),
+      items: [],
+    };
+    const registrationTemplateSection = {
+      title: t(
+        "widgetManager.registrationTemplate",
+        "Registration Template Components "
+      ),
+      items: [],
+    };
     const layoutsSection = {
       title: t("widgetManager.layouts", "layouts"),
       items: [],
@@ -370,22 +121,18 @@ export const WidgetManager = function WidgetManager({
     };
     const allWidgets = [];
 
-    const commonItems = [
+    const commonItems = ["Text", "Image", "Divider", "VerticalDivider"];
+    const registrationTemplateItems = [
       "Button",
-      "Text",
       "Datepicker",
-      "Image",
       "TextInput",
       "NumberInput",
       "Dropdown",
       "Checkbox",
       "Radio-button",
-      "Divider",
-      "VerticalDivider",
-      "ReportResultTable",
-      "CustomComponent",
       "TestList",
     ];
+    const reportTemplateItems = ["ReportResultTable"];
 
     const formItems = [
       "TextInput",
@@ -407,8 +154,13 @@ export const WidgetManager = function WidgetManager({
     const layoutItems = ["Container", "Listview", "Tabs", "Modal"];
 
     filteredComponents.forEach((f) => {
+      console.log("ffffff", f);
       if (searchQuery) allWidgets.push(f);
       if (commonItems.includes(f.name)) commonSection.items.push(f);
+      if (reportTemplateItems.includes(f.name))
+        reportTemplateSection.items.push(f);
+      if (registrationTemplateItems.includes(f.name))
+        registrationTemplateSection.items.push(f);
       if (formItems.includes(f.name)) formSection.items.push(f);
       else if (integrationItems.includes(f.name))
         integrationSection.items.push(f);
@@ -422,6 +174,12 @@ export const WidgetManager = function WidgetManager({
       return (
         <>
           {renderList(commonSection.title, commonSection.items)}
+          {renderList(reportTemplateSection.title, reportTemplateSection.items)}
+          {renderList(
+            registrationTemplateSection.title,
+            registrationTemplateSection.items
+          )}
+
           {/* {renderList(mediaLogoSection.title, mediaLogoSection.items)}
           {renderList(layoutsSection.title, layoutsSection.items)}
           {renderList(formSection.title, formSection.items)}
