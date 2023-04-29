@@ -904,15 +904,6 @@ export const widgets = [
       showOnMobile: { type: "toggle", displayName: "Show on mobile" },
     },
     properties: {
-      value: {
-        type: "code",
-        displayName: "Default value",
-        validation: {
-          schema: {
-            type: "string",
-          },
-        },
-      },
       placeholder: {
         type: "code",
         displayName: "Placeholder",
@@ -921,18 +912,7 @@ export const widgets = [
         },
       },
     },
-    validation: {
-      regex: { type: "code", displayName: "Regex" },
-      minLength: { type: "code", displayName: "Min length" },
-      maxLength: { type: "code", displayName: "Max length" },
-      customRule: { type: "code", displayName: "Custom validation" },
-    },
-    events: {
-      onChange: { displayName: "On change" },
-      onEnterPressed: { displayName: "On Enter Pressed" },
-      onFocus: { displayName: "On focus" },
-      onBlur: { displayName: "On blur" },
-    },
+
     styles: {
       textColor: {
         type: "color",
@@ -949,11 +929,7 @@ export const widgets = [
         displayName: "Border Color",
         validation: { schema: { type: "string" } },
       },
-      errTextColor: {
-        type: "color",
-        displayName: "Error Text Color",
-        validation: { schema: { type: "string" } },
-      },
+
       borderRadius: {
         type: "code",
         displayName: "Border radius",
@@ -964,88 +940,26 @@ export const widgets = [
           },
         },
       },
-      visibility: {
-        type: "toggle",
-        displayName: "Visibility",
-        validation: { schema: { type: "boolean" } },
-      },
-      disabledState: {
-        type: "toggle",
-        displayName: "Disable",
-        validation: { schema: { type: "boolean" } },
-      },
     },
     exposedVariables: {
       value: "",
     },
-    actions: [
-      {
-        handle: "setText",
-        displayName: "Set text",
-        params: [
-          { handle: "text", displayName: "text", defaultValue: "New Text" },
-        ],
-      },
-      {
-        handle: "clear",
-        displayName: "Clear",
-      },
-      {
-        handle: "setFocus",
-        displayName: "Set focus",
-      },
-      {
-        handle: "setBlur",
-        displayName: "Set blur",
-      },
-      {
-        handle: "disable",
-        displayName: "Disable",
-        params: [
-          {
-            handle: "disable",
-            displayName: "Value",
-            defaultValue: "{{false}}",
-            type: "toggle",
-          },
-        ],
-      },
-      {
-        handle: "visibility",
-        displayName: "Visibility",
-        params: [
-          {
-            handle: "visibility",
-            displayName: "Value",
-            defaultValue: "{{false}}",
-            type: "toggle",
-          },
-        ],
-      },
-    ],
+    actions: [],
     definition: {
-      validation: {
-        regex: { value: "" },
-        minLength: { value: null },
-        maxLength: { value: null },
-        customRule: { value: null },
-      },
       others: {
         showOnDesktop: { value: "{{true}}" },
         showOnMobile: { value: "{{false}}" },
       },
       properties: {
-        value: { value: "" },
         placeholder: { value: "Enter your input" },
       },
       events: [],
       styles: {
         textColor: { value: "#000" },
         borderColor: { value: "#dadcde" },
-        errTextColor: { value: "#ff0000" },
+
         borderRadius: { value: "{{0}}" },
-        visibility: { value: "{{true}}" },
-        disabledState: { value: "{{false}}" },
+
         backgroundColor: { value: "#fff" },
       },
     },
