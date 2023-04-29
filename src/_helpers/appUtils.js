@@ -1,3 +1,5 @@
+/** @format */
+
 import React from "react";
 import { toast } from "react-hot-toast";
 import {
@@ -1410,14 +1412,14 @@ export function computeComponentState(_ref, components = {}) {
 
       if (!isListView && !isForm) {
         componentState[component.component.name] = {
-          ...componentMeta.exposedVariables,
+          ...componentMeta?.exposedVariables,
           id: key,
           ...existingValues,
         };
       }
     } else {
       componentState[component.component.name] = {
-        ...componentMeta.exposedVariables,
+        ...componentMeta?.exposedVariables,
         id: key,
         ...existingValues,
       };

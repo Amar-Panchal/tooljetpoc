@@ -70,7 +70,7 @@ export const ReportResultTable = (props) => {
                 <h3>Unit Name</h3>
               </td>
               <td style={{ width: "20%" }}>
-                <h3>demo Col</h3>
+                <h3>Normal Range</h3>
               </td>
             </tr>
             {testResultData?.map((testResult) => {
