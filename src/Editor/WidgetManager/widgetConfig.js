@@ -978,36 +978,6 @@ export const widgets = [
       showOnMobile: { type: "toggle", displayName: "Show on mobile" },
     },
     properties: {
-      value: {
-        type: "code",
-        displayName: "Default value",
-        validation: {
-          schema: {
-            type: "union",
-            schemas: [{ type: "string" }, { type: "number" }],
-          },
-        },
-      },
-      minValue: {
-        type: "code",
-        displayName: "Minimum value",
-        validation: {
-          schema: {
-            type: "union",
-            schemas: [{ type: "string" }, { type: "number" }],
-          },
-        },
-      },
-      maxValue: {
-        type: "code",
-        displayName: "Maximum value",
-        validation: {
-          schema: {
-            type: "union",
-            schemas: [{ type: "string" }, { type: "number" }],
-          },
-        },
-      },
       placeholder: {
         type: "code",
         displayName: "Placeholder",
@@ -1016,24 +986,8 @@ export const widgets = [
         },
       },
     },
-    events: {
-      onChange: { displayName: "On change" },
-    },
+
     styles: {
-      visibility: {
-        type: "toggle",
-        displayName: "Visibility",
-        validation: {
-          schema: { type: "boolean" },
-        },
-      },
-      disabledState: {
-        type: "toggle",
-        displayName: "Disable",
-        validation: {
-          schema: { type: "boolean" },
-        },
-      },
       borderRadius: {
         type: "code",
         displayName: "Border radius",
@@ -1070,18 +1024,13 @@ export const widgets = [
         showOnMobile: { value: "{{false}}" },
       },
       properties: {
-        value: { value: "99" },
-        maxValue: { value: "" },
-        minValue: { value: "" },
         placeholder: { value: "0" },
       },
       events: [],
       styles: {
-        visibility: { value: "{{true}}" },
-        disabledState: { value: "{{false}}" },
         borderRadius: { value: "{{0}}" },
         backgroundColor: { value: "#ffffffff" },
-        borderColor: { value: "#fff" },
+        borderColor: { value: "#dadcde" },
         textColor: { value: "#232e3c" },
       },
     },
