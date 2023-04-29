@@ -590,6 +590,7 @@ export const Container = ({
               height: "50px",
               left: "0px",
               top: "0px",
+              zIndex: "9999",
             }}
           >
             <img

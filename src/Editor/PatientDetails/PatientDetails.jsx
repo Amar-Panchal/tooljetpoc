@@ -150,7 +150,7 @@ function PatientDetails() {
       >
         <img
           src="https://elabnextstorage.blob.core.windows.net/test/elab%20fial%202_Default_393598438.JPG"
-          style={{ width: "100%", height: "100%" }}
+          style={{ width: "100%", height: "100%", zIndex: "9999" }}
         />
       </div>
       <div

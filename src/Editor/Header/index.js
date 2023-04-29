@@ -73,7 +73,7 @@ export default function EditorHeader({
     <div
       className="header"
       style={{
-        zIndex: "1",
+        zIndex: "9999",
         display: "flex",
       }}
     >
