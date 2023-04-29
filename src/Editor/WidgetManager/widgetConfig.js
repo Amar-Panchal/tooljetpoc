@@ -1196,13 +1196,7 @@ export const widgets = [
       width: 5,
       height: 30,
     },
-    actions: [
-      {
-        handle: "setChecked",
-        displayName: "Set checked",
-        params: [{ handle: "status", displayName: "status" }],
-      },
-    ],
+
     others: {
       showOnDesktop: { type: "toggle", displayName: "Show on desktop" },
       showOnMobile: { type: "toggle", displayName: "Show on mobile" },
@@ -1215,45 +1209,14 @@ export const widgets = [
           schema: { type: "string" },
         },
       },
-      defaultValue: {
-        type: "toggle",
-        displayName: "Default Status",
-        validation: {
-          schema: { type: "boolean" },
-        },
-      },
     },
-    events: {
-      onCheck: { displayName: "On check" },
-      onUnCheck: { displayName: "On uncheck" },
-    },
+
     styles: {
-      textColor: {
-        type: "color",
-        displayName: "Text Color",
-        validation: {
-          schema: { type: "string" },
-        },
-      },
       checkboxColor: {
         type: "color",
         displayName: "Checkbox Color",
         validation: {
           schema: { type: "string" },
-        },
-      },
-      visibility: {
-        type: "toggle",
-        displayName: "Visibility",
-        validation: {
-          schema: { type: "boolean" },
-        },
-      },
-      disabledState: {
-        type: "toggle",
-        displayName: "Disable",
-        validation: {
-          schema: { type: "boolean" },
         },
       },
     },
@@ -1267,14 +1230,10 @@ export const widgets = [
       },
       properties: {
         label: { value: "Checkbox label" },
-        defaultValue: { value: "{{false}}" },
       },
       events: [],
       styles: {
-        textColor: { value: "" },
-        checkboxColor: { value: "" },
-        visibility: { value: "{{true}}" },
-        disabledState: { value: "{{false}}" },
+        checkboxColor: { value: "#00FF2B" },
       },
     },
   },
