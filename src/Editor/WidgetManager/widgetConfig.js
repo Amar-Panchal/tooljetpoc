@@ -486,18 +486,8 @@ export const widgets = [
           schema: { type: "string" },
         },
       },
-      loadingState: {
-        type: "toggle",
-        displayName: "Loading State",
-        validation: {
-          schema: { type: "boolean" },
-        },
-      },
     },
-    events: {
-      onClick: { displayName: "On click" },
-      onHover: { displayName: "On hover" },
-    },
+    events: {},
     styles: {
       backgroundColor: {
         type: "color",
@@ -515,30 +505,7 @@ export const widgets = [
           defaultValue: false,
         },
       },
-      loaderColor: {
-        type: "color",
-        displayName: "Loader color",
-        validation: {
-          schema: { type: "string" },
-          defaultValue: false,
-        },
-      },
-      visibility: {
-        type: "toggle",
-        displayName: "Visibility",
-        validation: {
-          schema: { type: "boolean" },
-          defaultValue: false,
-        },
-      },
-      disabledState: {
-        type: "toggle",
-        displayName: "Disable",
-        validation: {
-          schema: { type: "boolean" },
-          defaultValue: false,
-        },
-      },
+
       borderRadius: {
         type: "number",
         displayName: "Border radius",
@@ -557,73 +524,21 @@ export const widgets = [
       },
     },
     exposedVariables: {},
-    actions: [
-      {
-        handle: "click",
-        displayName: "Click",
-      },
-      {
-        handle: "setText",
-        displayName: "Set Text",
-        params: [
-          { handle: "text", displayName: "Text", defaultValue: "New Text" },
-        ],
-      },
-      {
-        handle: "disable",
-        displayName: "Disable",
-        params: [
-          {
-            handle: "disable",
-            displayName: "Value",
-            defaultValue: `{{false}}`,
-            type: "toggle",
-          },
-        ],
-      },
-      {
-        handle: "visibility",
-        displayName: "Visibility",
-        params: [
-          {
-            handle: "visible",
-            displayName: "Value",
-            defaultValue: `{{false}}`,
-            type: "toggle",
-          },
-        ],
-      },
-      {
-        handle: "loading",
-        displayName: "Loading",
-        params: [
-          {
-            handle: "loading",
-            displayName: "Value",
-            defaultValue: `{{false}}`,
-            type: "toggle",
-          },
-        ],
-      },
-    ],
+    actions: [],
     definition: {
       others: {
         showOnDesktop: { value: "{{true}}" },
         showOnMobile: { value: "{{false}}" },
       },
       properties: {
-        text: { value: `Button` },
-        loadingState: { value: `{{false}}` },
+        text: { value: `Save` },
       },
       events: [],
       styles: {
         backgroundColor: { value: "#375FCF" },
         textColor: { value: "#fff" },
-        loaderColor: { value: "#fff" },
-        visibility: { value: "{{true}}" },
         borderRadius: { value: "{{0}}" },
         borderColor: { value: "#375FCF" },
-        disabledState: { value: "{{false}}" },
       },
     },
   },
