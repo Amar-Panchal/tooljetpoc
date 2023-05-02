@@ -9,16 +9,16 @@ function SelectTests({
   setPatientRegistrationFormData,
   PatientRegistrationFormData,
   textColor,
+  onHoverColor,
+  backgroundColor,
 }) {
   const [testList, setTestList] = useState([]);
   const [selectedTests, setSelectedTests] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
-
   const [testListFiltered, setTestListFiltered] = useState([]);
 
   const handleItemClick = (item) => {
     const { testId, testName } = item;
-
     const itemIndex = selectedTests.findIndex((test) => test.testId === testId);
 
     if (itemIndex === -1) {
@@ -64,12 +64,14 @@ function SelectTests({
 
     setTestListFiltered(filteredList);
   }, [searchQuery]);
+
+  console.log("colorrrrr", onHoverColor);
   return (
     <div style={{ height: "100%", overflowY: "scroll" }}>
       <div
         style={{
           // border: "1px solid #EBEBEB",
-          width: "300px",
+          width: "30%",
           display: "flex",
           gap: "5px",
           alignItems: "center",
@@ -112,9 +114,18 @@ function SelectTests({
               {testListFiltered.map((test) => {
                 return (
                   <div
-                    className="selected-test"
                     onClick={() => handleItemClick(test)}
                     key={test.testId}
+                    style={{
+                      color: textColor,
+                      backgroundColor: backgroundColor,
+                    }}
+                    onMouseEnter={(event) => {
+                      event.target.style.backgroundColor = onHoverColor;
+                    }}
+                    onMouseLeave={(event) => {
+                      event.target.style.backgroundColor = backgroundColor;
+                    }}
                   >
                     {` ${test.testName} (${
                       test.shortName ? test.shortName : ""

@@ -1014,6 +1014,14 @@ export const widgets = [
           defaultValue: false,
         },
       },
+      onHoverColor: {
+        type: "color",
+        displayName: "Test Hover color",
+        validation: {
+          schema: { type: "string" },
+          defaultValue: false,
+        },
+      },
 
       borderRadius: {
         type: "number",
@@ -1036,6 +1044,7 @@ export const widgets = [
       styles: {
         backgroundColor: { value: "#FFFFFF" },
         textColor: { value: "#080000" },
+        onHoverColor: { value: "#BCBAF1" },
       },
     },
   },
