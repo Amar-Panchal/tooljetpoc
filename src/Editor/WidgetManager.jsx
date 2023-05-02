@@ -154,7 +154,6 @@ export const WidgetManager = function WidgetManager({
     const layoutItems = ["Container", "Listview", "Tabs", "Modal"];
 
     filteredComponents.forEach((f) => {
-      console.log("ffffff", f);
       if (searchQuery) allWidgets.push(f);
       if (commonItems.includes(f.name)) commonSection.items.push(f);
       if (reportTemplateItems.includes(f.name))

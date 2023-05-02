@@ -6,7 +6,7 @@ import { SelectTests } from "../RegistrationPage/test";
 export const TestList = (props) => {
   const { height, styles } = props;
   const { visibility, backgroundColor, borderRadius, textColor } = styles;
-  console.log("props in test list", props);
+
   return (
     <div
       className="card"
