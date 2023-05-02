@@ -68,15 +68,16 @@ function SelectTests({
     <div style={{ height: "100%", overflowY: "scroll" }}>
       <div
         style={{
-          border: "1px solid #EBEBEB",
+          // border: "1px solid #EBEBEB",
           width: "300px",
           display: "flex",
           gap: "5px",
           alignItems: "center",
           borderRadius: "10px",
+          margin: "5px",
         }}
       >
-        <span class="k-icon k-i-zoom"></span>
+        <span className="k-icon k-i-zoom"></span>
 
         <Input
           value={searchQuery}
@@ -113,6 +114,7 @@ function SelectTests({
                   <div
                     className="selected-test"
                     onClick={() => handleItemClick(test)}
+                    key={test.testId}
                   >
                     {` ${test.testName} (${
                       test.shortName ? test.shortName : ""
