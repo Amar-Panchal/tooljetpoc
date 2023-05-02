@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { useState } from "react";
+import React from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { defaults, cloneDeep, isEqual, isEmpty, debounce, omit } from "lodash";
@@ -10,7 +10,6 @@ import { CustomDragLayer } from "./CustomDragLayer";
 import { LeftSidebar } from "./LeftSidebar";
 import { componentTypes } from "./WidgetManager/components";
 import { Inspector } from "./Inspector/Inspector";
-// import { DataSourceTypes } from './DataSourceManager/SourceComponents';
 import {
   onComponentOptionChanged,
   onComponentOptionsChanged,
@@ -26,7 +25,6 @@ import {
 } from "../_helpers/appUtils";
 import { Confirm } from "./Viewer/Confirm";
 import ReactTooltip from "react-tooltip";
-import CommentNotifications from "./CommentNotifications";
 import { WidgetManager } from "./WidgetManager";
 import Fuse from "fuse.js";
 import config from "config";
@@ -38,21 +36,19 @@ const {
   setAutoFreeze,
   applyPatches,
 } = require("immer");
-import { SearchBox } from "@/_components/SearchBox";
-import { createWebsocketConnection } from "@/_helpers/websocketConnection";
+
 import Tooltip from "react-bootstrap/Tooltip";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
-import RealtimeCursors from "../Editor/RealtimeCursors";
+
 import { initEditorWalkThrough } from "../_helpers/createWalkThrough";
 import { EditorContextWrapper } from "./Context/EditorContextWrapper";
 import Selecto from "react-selecto";
-import { withTranslation } from "react-i18next";
+
 import { v4 as uuid } from "uuid";
-import Skeleton from "react-loading-skeleton";
-import EmptyQueriesIllustration from "@assets/images/icons/no-queries-added.svg";
+
 import EditorHeader from "./Header";
 import axios from "axios";
-import StaticApiCall, { ApiCallParams } from "./StaticApiCall";
+import { ApiCallParams } from "./StaticApiCall";
 
 setAutoFreeze(false);
 enablePatches();
@@ -65,11 +61,8 @@ class EditorComponent extends React.Component {
 
     const pageHandle = this.props.match.params.pageHandle;
 
-    // const { socket } = createWebsocketConnection(appId);
-
     this.renameQueryNameId = React.createRef();
 
-    // this.socket = socket;
     let userVars = {};
 
     const defaultPageId = uuid();
@@ -167,12 +160,10 @@ class EditorComponent extends React.Component {
 
   componentDidMount() {
     this.autoSave();
-    // this.fetchApps(0);
     this.fetchApp(this.props.match.params.pageHandle);
-    // this.fetchOrgEnvironmentVariables();
     this.initComponentVersioning();
     this.initRealtimeSave();
-    this.initEventListeners();
+
     this.setState({
       currentSidebarTab: 2,
       selectedComponents: [],
@@ -185,12 +176,6 @@ class EditorComponent extends React.Component {
     this.getReportTemplate();
   }
 
-  /**
-   * When a new update is received over-the-websocket connection
-   * the useEffect in Container.jsx is triggered, but already appDef had been updated
-   * to avoid ymap observe going into a infinite loop a check is added where if the
-   * current appDef is equal to the newAppDef then we do not trigger a realtimeSave
-   */
   initRealtimeSave = () => {
     if (!config.ENABLE_MULTIPLAYER_EDITING) return null;
 
@@ -217,28 +202,6 @@ class EditorComponent extends React.Component {
     });
   };
 
-  fetchOrgEnvironmentVariables = () => {
-    // orgEnvironmentVariableService.getVariables().then((data) => {
-    //   const client_variables = {};
-    //   const server_variables = {};
-    //   data.variables.map((variable) => {
-    //     if (variable.variable_type === "server") {
-    //       server_variables[variable.variable_name] =
-    //         "HiddenEnvironmentVariable";
-    //     } else {
-    //       client_variables[variable.variable_name] = variable.value;
-    //     }
-    //   });
-    // this.setState({
-    //   currentState: {
-    //     ...this.state.currentState,
-    //     server: server_variables,
-    //     client: client_variables,
-    //   },
-    // });
-    // });
-  };
-
   componentDidUpdate(prevProps, prevState) {
     if (!isEqual(prevState.appDefinition, this.state.appDefinition)) {
       computeComponentState(
@@ -259,23 +222,12 @@ class EditorComponent extends React.Component {
     this.setState({ isSaving: false, showCreateVersionModalPrompt: false });
   };
 
-  initEventListeners() {
-    // this.socket?.addEventListener("message", (event) => {
-    //   if (event.data === "versionReleased") this.fetchApp();
-    //   else if (event.data === "dataQueriesChanged") this.fetchDataQueries();
-    //   else if (event.data === "dataSourcesChanged") this.fetchDataSources();
-    // });
-  }
-
   componentWillUnmount() {
     document.title = "Tooljet - Dashboard";
-    // this.socket && this.socket?.close();
+
     if (config.ENABLE_MULTIPLAYER_EDITING) this.props?.provider?.disconnect();
   }
 
-  // 1. When we receive an undoable action – we can always undo but cannot redo anymore.
-  // 2. Whenever you perform an undo – you can always redo and keep doing undo as long as we have a patch for it.
-  // 3. Whenever you redo – you can always undo and keep doing redo as long as we have a patch for it.
   initComponentVersioning = () => {
     this.currentVersion = {
       [this.state.currentPageId]: -1,
@@ -286,101 +238,6 @@ class EditorComponent extends React.Component {
     this.canRedo = false;
   };
 
-  // fetchDataSources = () => {
-  //   this.setState(
-  //     {
-  //       loadingDataSources: true,
-  //     },
-  //     () => {
-  //       datasourceService.getAll(this.state.editingVersion?.id).then((data) =>
-  //         this.setState({
-  //           dataSources: data.data_sources,
-  //           loadingDataSources: false,
-  //         })
-  //       );
-  //     }
-  //   );
-  // };
-
-  // fetchDataQueries = () => {
-  //   this.setState(
-  //     {
-  //       loadingDataQueries: true,
-  //     },
-  //     () => {
-  //       dataqueryService.getAll(this.state.editingVersion?.id).then((data) => {
-  //         this.setState(
-  //           {
-  //             allDataQueries: data.data_queries,
-  //             dataQueries: data.data_queries,
-  //             filterDataQueries: data.data_queries,
-  //             loadingDataQueries: false,
-  //             app: {
-  //               ...this.state.app,
-  //               data_queries: data.data_queries,
-  //             },
-  //           },
-  //           () => {
-  //             let queryState = {};
-  //             data.data_queries.forEach((query) => {
-  //               if (query.plugin?.plugin_id) {
-  //                 queryState[query.name] = {
-  //                   ...query.plugin.manifest_file.data.source.exposedVariables,
-  //                   kind: query.plugin.manifest_file.data.source.kind,
-  //                   ...this.state.currentState.queries[query.name],
-  //                 };
-  //               } else {
-  //                 // queryState[query.name] = {
-  //                 //   ...DataSourceTypes.find((source) => source.kind === query.kind).exposedVariables,
-  //                 //   kind: DataSourceTypes.find((source) => source.kind === query.kind).kind,
-  //                 //   ...this.state.currentState.queries[query.name],
-  //                 // };
-  //               }
-  //             });
-
-  //             // Select first query by default
-  //             if (this.state.draftQuery === null) {
-  //               let selectedQuery =
-  //                 data.data_queries.find(
-  //                   (dq) => dq.id === this.state.selectedQuery?.id
-  //                 ) || data.data_queries[0];
-  //               let editingQuery = selectedQuery ? true : false;
-  //               this.setState({
-  //                 selectedQuery,
-  //                 editingQuery,
-  //                 currentState: {
-  //                   ...this.state.currentState,
-  //                   queries: {
-  //                     ...queryState,
-  //                   },
-  //                 },
-  //               });
-  //             } else {
-  //               this.setState({
-  //                 currentState: {
-  //                   ...this.state.currentState,
-  //                   queries: {
-  //                     ...queryState,
-  //                   },
-  //                 },
-  //                 addingQuery: true,
-  //                 // showQuerySearchField: false,
-  //               });
-  //             }
-
-  //             if (data.data_queries.length === 0) {
-  //               this.setState({
-  //                 dataQueriesDefaultText: "No queries added",
-  //                 // showQuerySearchField: false,
-  //               });
-  //             }
-  //           }
-  //         );
-  //       });
-  //     }
-  //   );
-  // };
-
   runQueries = (queries) => {
     queries.forEach((query) => {
       if (query.options.runOnPageLoad) {
@@ -388,34 +245,6 @@ class EditorComponent extends React.Component {
       }
     });
   };
-
-  // toggleAppMaintenance = () => {
-  //   const newState = !this.state.app.is_maintenance_on;
-
-  //   // eslint-disable-next-line no-unused-vars
-  //   appService.setMaintenance(this.state.app.id, newState).then((data) => {
-  //     this.setState({
-  //       app: {
-  //         ...this.state.app,
-  //         is_maintenance_on: newState,
-  //       },
-  //     });
-
-  //     if (newState) {
-  //       toast.success("Application is on maintenance.");
-  //     } else {
-  //       toast.success("Application maintenance is completed");
-  //     }
-  //   });
-  // };
-
-  // fetchApps = (page) => {
-  //   appService.getAll(page).then((data) =>
-  //     this.setState({
-  //       apps: data.apps,
-  //     })
-  //   );
-  // };
 
   fetchApp = (startingPageHandle) => {
     const appId = this.props.match.params.id;
@@ -468,19 +297,8 @@ class EditorComponent extends React.Component {
         }
       );
 
-      // this.fetchDataSources();
-      // this.fetchDataQueries();
       initEditorWalkThrough();
     };
-
-    // this.setState(
-    //   {
-    //     isLoading: true,
-    //   },
-    //   () => {
-    //     appService.getApp(appId).then(callBack);
-    //   }
-    // );
   };
 
   setAppDefinitionFromVersion = (version) => {
@@ -502,46 +320,6 @@ class EditorComponent extends React.Component {
     this.fetchDataQueries();
     this.initComponentVersioning();
   };
-
-  /**
-   * https://developer.mozilla.org/en-US/docs/Web/API/WebSocket/readyState
-   */
-  // dataSourcesChanged = () => {
-  //   if (
-  //     this.socket instanceof WebSocket &&
-  //     this.socket?.readyState === WebSocket.OPEN
-  //   ) {
-  //     this.socket?.send(
-  //       JSON.stringify({
-  //         event: "events",
-  //         data: { message: "dataSourcesChanged", appId: this.state.appId },
-  //       })
-  //     );
-  //   } else {
-  //     this.fetchDataSources();
-  //   }
-  // };
-
-  /**
-   * https://developer.mozilla.org/en-US/docs/Web/API/WebSocket/readyState
-   */
-  // dataQueriesChanged = () => {
-  //   this.setState({ addingQuery: false }, () => {
-  //     if (
-  //       this.socket instanceof WebSocket &&
-  //       this.socket?.readyState === WebSocket.OPEN
-  //     ) {
-  //       this.socket?.send(
-  //         JSON.stringify({
-  //           event: "events",
-  //           data: { message: "dataQueriesChanged", appId: this.state.appId },
-  //         })
-  //       );
-  //     } else {
-  //       this.fetchDataQueries();
-  //     }
-  //   });
-  // };
 
   switchSidebarTab = (tabIndex) => {
     this.setState({
@@ -990,10 +768,7 @@ class EditorComponent extends React.Component {
     }
     this.setState({
       isDeletingDataQuery: false,
-      // isUnsavedQueriesAvailable:
-      //   queryToBeDeleted === selectedQuery?.id
-      //     ? false
-      //     : isUnsavedQueriesAvailable,
+
       queryToBeDeleted: null,
     });
   };
@@ -1321,40 +1096,7 @@ class EditorComponent extends React.Component {
   };
 
   saveEditingVersion = () => {
-    // setReport(this.state.appDefinition);
     this.reptemp = this.state.appDefinition;
-
-    // localStorage.setItem('appdef', JSON.stringify(this.state.appDefinition));
-
-    // if (this.isVersionReleased()) {
-    //   this.setState({ isSaving: false, showCreateVersionModalPrompt: true });
-    // } else if (!isEmpty(this.state.editingVersion)) {
-    //   appVersionService
-    //     .save(this.state.appId, this.state.editingVersion.id, {
-    //       definition: this.state.appDefinition,
-    //     })
-    //     .then(() => {
-    //       this.setState(
-    //         {
-    //           saveError: false,
-    //           editingVersion: {
-    //             ...this.state.editingVersion,
-    //             ...{ definition: this.state.appDefinition },
-    //           },
-    //         },
-    //         () => {
-    //           this.setState({
-    //             isSaving: false,
-    //           });
-    //         }
-    //       );
-    //     })
-    //     .catch(() => {
-    //       this.setState({ saveError: true, isSaving: false }, () => {
-    //         toast.error('App could not save.');
-    //       });
-    //     });
-    // }
   };
 
   handleOnComponentOptionChanged = (component, optionName, value) => {
@@ -1972,36 +1714,7 @@ class EditorComponent extends React.Component {
           eventOff="click"
           delayShow={250}
         />
-        <Confirm
-          show={queryConfirmationList.length > 0}
-          message={`Do you want to run this query - ${queryConfirmationList[0]?.queryName}?`}
-          onConfirm={(queryConfirmationData) =>
-            onQueryConfirmOrCancel(this, queryConfirmationData, true)
-          }
-          onCancel={() =>
-            onQueryConfirmOrCancel(this, queryConfirmationList[0])
-          }
-          queryConfirmationData={queryConfirmationList[0]}
-          darkMode={this.props.darkMode}
-          key={queryConfirmationList[0]?.queryName}
-        />
-        <Confirm
-          show={showDataQueryDeletionConfirmation}
-          message={"Do you really want to delete this query?"}
-          confirmButtonLoading={isDeletingDataQuery}
-          onConfirm={() => this.executeDataQueryDeletion()}
-          onCancel={() => this.cancelDeleteDataQuery()}
-          darkMode={this.props.darkMode}
-        />
-        <Confirm
-          show={this.state.showPageDeletionConfirmation?.isOpen ?? false}
-          title={"Delete Page"}
-          message={`Do you really want to delete this page?`}
-          confirmButtonLoading={this.state.isDeletingPage}
-          onConfirm={() => this.executeDeletepageRequest()}
-          onCancel={() => this.cancelDeletePageRequest()}
-          darkMode={this.props.darkMode}
-        />
+
         <EditorContextWrapper>
           <EditorHeader
             darkMode={this.props.darkMode}
@@ -2035,82 +1748,6 @@ class EditorComponent extends React.Component {
           />
           <DndProvider backend={HTML5Backend}>
             <div className="sub-section">
-              <LeftSidebar
-                appVersionsId={this.state?.editingVersion?.id}
-                showComments={showComments}
-                errorLogs={currentState.errors}
-                components={currentState.components}
-                appId={appId}
-                darkMode={this.props.darkMode}
-                dataSources={this.state.dataSources}
-                dataSourcesChanged={this.dataSourcesChanged}
-                dataQueriesChanged={this.dataQueriesChanged}
-                onZoomChanged={this.onZoomChanged}
-                toggleComments={this.toggleComments}
-                switchDarkMode={this.changeDarkMode}
-                currentState={currentState}
-                debuggerActions={this.sideBarDebugger}
-                appDefinition={{
-                  components:
-                    appDefinition.pages[this.state.currentPageId]?.components ??
-                    {},
-                  queries: dataQueries,
-                  selectedComponent: selectedComponents
-                    ? selectedComponents[selectedComponents.length - 1]
-                    : {},
-                  pages: this.state.appDefinition.pages,
-                  homePageId: this.state.appDefinition.homePageId,
-                  showViewerNavigation:
-                    this.state.appDefinition.showViewerNavigation,
-                }}
-                setSelectedComponent={this.setSelectedComponent}
-                removeComponent={this.removeComponent}
-                runQuery={(queryId, queryName) =>
-                  runQuery(this, queryId, queryName)
-                }
-                ref={this.dataSourceModalRef}
-                isSaving={this.state.isSaving}
-                isUnsavedQueriesAvailable={this.state.isUnsavedQueriesAvailable}
-                currentPageId={this.state.currentPageId}
-                addNewPage={this.addNewPage}
-                switchPage={this.switchPage}
-                deletePage={this.deletePageRequest}
-                renamePage={this.renamePage}
-                clonePage={this.clonePage}
-                hidePage={this.hidePage}
-                unHidePage={this.unHidePage}
-                updateHomePage={this.updateHomePage}
-                updatePageHandle={this.updatePageHandle}
-                updateOnPageLoadEvents={this.updateOnPageLoadEvents}
-                showHideViewerNavigationControls={this.showHideViewerNavigation}
-                updateOnSortingPages={this.updateOnSortingPages}
-                apps={apps}
-                dataQueries={dataQueries}
-                queryPanelHeight={queryPanelHeight}
-              />
-              {!showComments && (
-                <Selecto
-                  dragContainer={".canvas-container"}
-                  selectableTargets={[".react-draggable"]}
-                  hitRate={0}
-                  selectByClick={true}
-                  toggleContinueSelect={["shift"]}
-                  ref={this.selectionRef}
-                  scrollOptions={this.state.scrollOptions}
-                  onSelectStart={this.onAreaSelectionStart}
-                  onSelectEnd={this.onAreaSelectionEnd}
-                  onSelect={this.onAreaSelection}
-                  onDragStart={this.onAreaSelectionDragStart}
-                  onDrag={this.onAreaSelectionDrag}
-                  onDragEnd={this.onAreaSelectionDragEnd}
-                  onScroll={(e) => {
-                    this.canvasContainerRef.current.scrollBy(
-                      e.direction[0] * 10,
-                      e.direction[1] * 10
-                    );
-                  }}
-                />
-              )}
               <div className="main main-editor-canvas" id="main-editor-canvas">
                 <div
                   className={`canvas-container align-items-center ${
@@ -2150,94 +1787,46 @@ class EditorComponent extends React.Component {
                       border: "5 px solid red",
                     }}
                   >
-                    {/* {config.ENABLE_MULTIPLAYER_EDITING && (
-                      <RealtimeCursors
-                        editingVersionId={this.state?.editingVersion?.id}
-                        editingPageId={this.state.currentPageId}
-                      />
-                    )} */}
-                    {/* {isLoading && (
-                      <div className="apploader">
-                        <div className="col col-* editor-center-wrapper">
-                          <div className="editor-center">
-                            <div className="canvas">
-                              <div className="mt-5 d-flex flex-column">
-                                <div className="mb-1">
-                                  <Skeleton
-                                    width={"150px"}
-                                    height={15}
-                                    className="skeleton"
-                                  />
-                                </div>
-                                {Array.from(Array(4)).map((_item, index) => (
-                                  <Skeleton
-                                    key={index}
-                                    width={"300px"}
-                                    height={10}
-                                    className="skeleton"
-                                  />
-                                ))}
-                                <div className="align-self-end">
-                                  <Skeleton
-                                    width={"100px"}
-                                    className="skeleton"
-                                  />
-                                </div>
-                                <Skeleton className="skeleton mt-4" />
-                                <Skeleton
-                                  height={"150px"}
-                                  className="skeleton mt-2"
-                                />
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    )} */}
-
-                    <div style={{ border: "5 px solid red" }}>
-                      <Container
-                        canvasWidth={this.getCanvasWidth()}
-                        canvasHeight={this.getCanvasHeight()}
-                        // socket={this.socket}
-                        showComments={showComments}
-                        appVersionsId={this.state?.editingVersion?.id}
-                        appDefinition={appDefinition}
-                        appDefinitionChanged={this.appDefinitionChanged}
-                        snapToGrid={true}
-                        darkMode={this.props.darkMode}
-                        mode={"edit"}
-                        zoomLevel={zoomLevel}
-                        currentLayout={currentLayout}
-                        deviceWindowWidth={deviceWindowWidth}
-                        selectedComponents={selectedComponents}
-                        appLoading={isLoading}
-                        onEvent={this.handleEvent}
-                        onComponentOptionChanged={
-                          this.handleOnComponentOptionChanged
-                        }
-                        onComponentOptionsChanged={
-                          this.handleOnComponentOptionsChanged
-                        }
-                        currentState={this.state.currentState}
-                        setSelectedComponent={this.setSelectedComponent}
-                        handleUndo={this.handleUndo}
-                        handleRedo={this.handleRedo}
-                        removeComponent={this.removeComponent}
-                        onComponentClick={this.handleComponentClick}
-                        onComponentHover={this.handleComponentHover}
-                        hoveredComponent={hoveredComponent}
-                        sideBarDebugger={this.sideBarDebugger}
-                        dataQueries={dataQueries}
-                        currentPageId={this.state.currentPageId}
-                        reportTemplateDataMap={this.props.location.state}
-                      />
-                      <CustomDragLayer
-                        snapToGrid={true}
-                        currentLayout={currentLayout}
-                        canvasWidth={this.getCanvasWidth()}
-                      />
-                    </div>
+                    <Container
+                      canvasWidth={this.getCanvasWidth()}
+                      canvasHeight={this.getCanvasHeight()}
+                      showComments={showComments}
+                      appVersionsId={this.state?.editingVersion?.id}
+                      appDefinition={appDefinition}
+                      appDefinitionChanged={this.appDefinitionChanged}
+                      snapToGrid={true}
+                      darkMode={this.props.darkMode}
+                      mode={"edit"}
+                      zoomLevel={zoomLevel}
+                      currentLayout={currentLayout}
+                      deviceWindowWidth={deviceWindowWidth}
+                      selectedComponents={selectedComponents}
+                      appLoading={isLoading}
+                      onEvent={this.handleEvent}
+                      onComponentOptionChanged={
+                        this.handleOnComponentOptionChanged
+                      }
+                      onComponentOptionsChanged={
+                        this.handleOnComponentOptionsChanged
+                      }
+                      currentState={this.state.currentState}
+                      setSelectedComponent={this.setSelectedComponent}
+                      handleUndo={this.handleUndo}
+                      handleRedo={this.handleRedo}
+                      removeComponent={this.removeComponent}
+                      onComponentClick={this.handleComponentClick}
+                      onComponentHover={this.handleComponentHover}
+                      hoveredComponent={hoveredComponent}
+                      sideBarDebugger={this.sideBarDebugger}
+                      dataQueries={dataQueries}
+                      currentPageId={this.state.currentPageId}
+                      reportTemplateDataMap={this.props.location.state}
+                    />
+                    <CustomDragLayer
+                      snapToGrid={true}
+                      currentLayout={currentLayout}
+                      canvasWidth={this.getCanvasWidth()}
+                    />
                   </div>
                 </div>
               </div>
@@ -2304,14 +1893,6 @@ class EditorComponent extends React.Component {
                   ></WidgetManager>
                 )}
               </div>
-              {/* {config.COMMENT_FEATURE_ENABLE && showComments && (
-                <CommentNotifications
-                  // socket={this.socket}
-                  appVersionsId={this.state?.editingVersion?.id}
-                  toggleComments={this.toggleComments}
-                  pageId={this.state.currentPageId}
-                />
-              )} */}
             </div>
           </DndProvider>
         </EditorContextWrapper>

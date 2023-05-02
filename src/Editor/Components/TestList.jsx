@@ -5,11 +5,11 @@ import { SelectTests } from "../RegistrationPage/test";
 
 export const TestList = (props) => {
   const { height, styles } = props;
-  const { visibility, backgroundColor, borderRadius, textColor } = styles;
+  const { visibility, backgroundColor, borderRadius, textColor, onHoverColor } =
+    styles;
 
   return (
     <div
-      className="card"
       style={{
         display: visibility ? "" : "none",
         height,
@@ -21,6 +21,8 @@ export const TestList = (props) => {
         setPatientRegistrationFormData={props.setPatientRegistrationFormData}
         PatientRegistrationFormData={props.PatientRegistrationFormData}
         textColor={textColor}
+        onHoverColor={onHoverColor}
+        backgroundColor={backgroundColor}
       />
     </div>
   );
