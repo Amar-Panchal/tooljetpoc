@@ -151,6 +151,7 @@ class EditorComponent extends React.Component {
       queryPanelHeight: this.queryManagerPreferences?.isExpanded
         ? this.queryManagerPreferences?.queryPanelHeight
         : 95 ?? 70,
+      templateName: "",
     };
 
     this.reptemp = {
@@ -1916,6 +1917,7 @@ class EditorComponent extends React.Component {
         this.setState({
           appDefinition: JSON.parse(response.data.resultData[0].reportValues),
           currentPageId: Object.keys(tempPageId.pages)[0],
+          templateName: response?.data?.resultData[0]?.name,
         });
 
         // this.state.appDefinition = JSON.parse(
@@ -1926,6 +1928,12 @@ class EditorComponent extends React.Component {
       })
 
       .catch((error) => console.log("error", error));
+  };
+
+  onChangeTemplateName = (e) => {
+    this.setState({
+      templateName: e.value,
+    });
   };
 
   render() {
@@ -2032,62 +2040,11 @@ class EditorComponent extends React.Component {
             saveEditingVersion={this.saveEditingVersion}
             getReportTemplate={this.getReportTemplate}
             reportTemplateDataMap={this.props.location.state}
+            templateName={this.state.templateName}
+            onChangeTemplateName={this.onChangeTemplateName}
           />
           <DndProvider backend={HTML5Backend}>
             <div className="sub-section">
-              <LeftSidebar
-                appVersionsId={this.state?.editingVersion?.id}
-                showComments={showComments}
-                errorLogs={currentState.errors}
-                components={currentState.components}
-                appId={appId}
-                darkMode={this.props.darkMode}
-                dataSources={this.state.dataSources}
-                dataSourcesChanged={this.dataSourcesChanged}
-                dataQueriesChanged={this.dataQueriesChanged}
-                onZoomChanged={this.onZoomChanged}
-                toggleComments={this.toggleComments}
-                switchDarkMode={this.changeDarkMode}
-                currentState={currentState}
-                debuggerActions={this.sideBarDebugger}
-                appDefinition={{
-                  components:
-                    appDefinition.pages[this.state.currentPageId]?.components ??
-                    {},
-                  queries: dataQueries,
-                  selectedComponent: selectedComponents
-                    ? selectedComponents[selectedComponents.length - 1]
-                    : {},
-                  pages: this.state.appDefinition.pages,
-                  homePageId: this.state.appDefinition.homePageId,
-                  showViewerNavigation:
-                    this.state.appDefinition.showViewerNavigation,
-                }}
-                setSelectedComponent={this.setSelectedComponent}
-                removeComponent={this.removeComponent}
-                runQuery={(queryId, queryName) =>
-                  runQuery(this, queryId, queryName)
-                }
-                ref={this.dataSourceModalRef}
-                isSaving={this.state.isSaving}
-                isUnsavedQueriesAvailable={this.state.isUnsavedQueriesAvailable}
-                currentPageId={this.state.currentPageId}
-                addNewPage={this.addNewPage}
-                switchPage={this.switchPage}
-                deletePage={this.deletePageRequest}
-                renamePage={this.renamePage}
-                clonePage={this.clonePage}
-                hidePage={this.hidePage}
-                unHidePage={this.unHidePage}
-                updateHomePage={this.updateHomePage}
-                updatePageHandle={this.updatePageHandle}
-                updateOnPageLoadEvents={this.updateOnPageLoadEvents}
-                showHideViewerNavigationControls={this.showHideViewerNavigation}
-                updateOnSortingPages={this.updateOnSortingPages}
-                apps={apps}
-                dataQueries={dataQueries}
-                queryPanelHeight={queryPanelHeight}
-              />
               {!showComments && (
                 <Selecto
                   dragContainer={".canvas-container"}

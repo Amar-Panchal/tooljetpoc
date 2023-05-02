@@ -86,11 +86,6 @@ export const LeftSidebar = forwardRef((props, ref) => {
       className="left-sidebar"
       data-cy="left-sidebar-inspector"
       style={{ width: "50px" }}
-    >
-      <img
-        src="https://elabnextstorage.blob.core.windows.net/test/image_2023_04_25T07_21_59_615Z_Default_947499017.png"
-        height="100%"
-      />
-    </div>
+    ></div>
   );
 });

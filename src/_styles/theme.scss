@@ -500,16 +500,17 @@ button {
 
     .canvas-container {
       height: 100%;
-      top: 45px;
+      top: 50px;
       position: fixed;
-      right: 300px;
-      left: 48px;
+      right: 340px;
+      left: 35px;
       overflow-y: auto;
       overflow-x: scroll;
       -webkit-box-pack: center;
       justify-content: center;
       -webkit-box-align: center;
       align-items: center;
+      border: 2px solid rgb(179, 179, 179);
 
       .real-canvas {
         outline: 1px dotted transparent;
