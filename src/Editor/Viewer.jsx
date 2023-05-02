@@ -547,7 +547,7 @@ class ViewerComponent extends React.Component {
                       width:
                         this.props.location.state.mode === "preview"
                           ? "95%"
-                          : "100%",
+                          : "80%",
 
                       marginLeft:
                         this.props.location.state.mode === "preview"
