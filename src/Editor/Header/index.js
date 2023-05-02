@@ -79,7 +79,7 @@ export default function EditorHeader({
       }}
     >
       <Button
-        style={{ width: "40px", height: "30px", marginTop: "5px" }}
+        style={{ width: "40px", height: "30px" }}
         onClick={updateReportTemplate}
       >
         Save
