@@ -271,39 +271,10 @@ function ResultPage() {
   };
 
   return (
-    <div style={{ border: "1px solid transparent" }}>
+    <div style={{ border: "2px solid red", width: "100%", height: "100%" }}>
       <div
         style={{
-          position: "fixed",
-          width: "58px",
-          height: "100vh",
-          top: "45px",
-        }}
-      >
-        <img
-          src="https://elabnextstorage.blob.core.windows.net/test/image_2023_04_25T07_21_59_615Z_Default_947499017.png"
-          style={{ width: "100%", height: "100%" }}
-        />
-      </div>
-      <div
-        style={{
-          position: "fixed",
-          width: "100%",
-          height: "50px",
-          zIndex: "9999",
-        }}
-      >
-        <img
-          src="https://elabnextstorage.blob.core.windows.net/test/elab%20fial%202_Default_393598438.JPG"
-          style={{ width: "100%", height: "100%" }}
-        />
-      </div>
-      <div
-        style={{
-          width: "95%",
           padding: "20px",
-          marginTop: "30px",
-          marginLeft: "50px",
           height: "100%",
           minHeight: "100vh",
         }}

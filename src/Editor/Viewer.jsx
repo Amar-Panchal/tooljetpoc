@@ -207,19 +207,6 @@ class ViewerComponent extends React.Component {
       client: {},
       server: {},
     };
-
-    let variablesResult;
-    // if (!isPublic) {
-    //   variablesResult = await orgEnvironmentVariableService.getVariables();
-    // } else {
-    //   variablesResult = await orgEnvironmentVariableService.getVariablesFromPublicApp(slug);
-    // }
-
-    // variablesResult.variables.map((variable) => {
-    //   variables[variable.variable_type][variable.variable_name] =
-    //     variable.variable_type === 'server' ? 'HiddenEnvironmentVariable' : variable.value;
-    // });
-    // return variables;
   };
 
   loadApplicationBySlug = (slug) => {
