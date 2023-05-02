@@ -66,9 +66,9 @@ export const Container = ({
     height: `${canvasHeight}px`,
     position: "absolute",
     backgroundSize: `${canvasWidth / 43}px 10px`,
+    border: "2px solid gray",
   };
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   const components = appDefinition.pages[currentPageId]?.components ?? {};
 
   const [boxes, setBoxes] = useState(components);

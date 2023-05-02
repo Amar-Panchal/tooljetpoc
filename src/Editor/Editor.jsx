@@ -1714,36 +1714,7 @@ class EditorComponent extends React.Component {
           eventOff="click"
           delayShow={250}
         />
-        <Confirm
-          show={queryConfirmationList.length > 0}
-          message={`Do you want to run this query - ${queryConfirmationList[0]?.queryName}?`}
-          onConfirm={(queryConfirmationData) =>
-            onQueryConfirmOrCancel(this, queryConfirmationData, true)
-          }
-          onCancel={() =>
-            onQueryConfirmOrCancel(this, queryConfirmationList[0])
-          }
-          queryConfirmationData={queryConfirmationList[0]}
-          darkMode={this.props.darkMode}
-          key={queryConfirmationList[0]?.queryName}
-        />
-        <Confirm
-          show={showDataQueryDeletionConfirmation}
-          message={"Do you really want to delete this query?"}
-          confirmButtonLoading={isDeletingDataQuery}
-          onConfirm={() => this.executeDataQueryDeletion()}
-          onCancel={() => this.cancelDeleteDataQuery()}
-          darkMode={this.props.darkMode}
-        />
-        <Confirm
-          show={this.state.showPageDeletionConfirmation?.isOpen ?? false}
-          title={"Delete Page"}
-          message={`Do you really want to delete this page?`}
-          confirmButtonLoading={this.state.isDeletingPage}
-          onConfirm={() => this.executeDeletepageRequest()}
-          onCancel={() => this.cancelDeletePageRequest()}
-          darkMode={this.props.darkMode}
-        />
+
         <EditorContextWrapper>
           <EditorHeader
             darkMode={this.props.darkMode}
@@ -1777,82 +1748,6 @@ class EditorComponent extends React.Component {
           />
           <DndProvider backend={HTML5Backend}>
             <div className="sub-section">
-              <LeftSidebar
-                appVersionsId={this.state?.editingVersion?.id}
-                showComments={showComments}
-                errorLogs={currentState.errors}
-                components={currentState.components}
-                appId={appId}
-                darkMode={this.props.darkMode}
-                dataSources={this.state.dataSources}
-                dataSourcesChanged={this.dataSourcesChanged}
-                dataQueriesChanged={this.dataQueriesChanged}
-                onZoomChanged={this.onZoomChanged}
-                toggleComments={this.toggleComments}
-                switchDarkMode={this.changeDarkMode}
-                currentState={currentState}
-                debuggerActions={this.sideBarDebugger}
-                appDefinition={{
-                  components:
-                    appDefinition.pages[this.state.currentPageId]?.components ??
-                    {},
-                  queries: dataQueries,
-                  selectedComponent: selectedComponents
-                    ? selectedComponents[selectedComponents.length - 1]
-                    : {},
-                  pages: this.state.appDefinition.pages,
-                  homePageId: this.state.appDefinition.homePageId,
-                  showViewerNavigation:
-                    this.state.appDefinition.showViewerNavigation,
-                }}
-                setSelectedComponent={this.setSelectedComponent}
-                removeComponent={this.removeComponent}
-                runQuery={(queryId, queryName) =>
-                  runQuery(this, queryId, queryName)
-                }
-                ref={this.dataSourceModalRef}
-                isSaving={this.state.isSaving}
-                isUnsavedQueriesAvailable={this.state.isUnsavedQueriesAvailable}
-                currentPageId={this.state.currentPageId}
-                addNewPage={this.addNewPage}
-                switchPage={this.switchPage}
-                deletePage={this.deletePageRequest}
-                renamePage={this.renamePage}
-                clonePage={this.clonePage}
-                hidePage={this.hidePage}
-                unHidePage={this.unHidePage}
-                updateHomePage={this.updateHomePage}
-                updatePageHandle={this.updatePageHandle}
-                updateOnPageLoadEvents={this.updateOnPageLoadEvents}
-                showHideViewerNavigationControls={this.showHideViewerNavigation}
-                updateOnSortingPages={this.updateOnSortingPages}
-                apps={apps}
-                dataQueries={dataQueries}
-                queryPanelHeight={queryPanelHeight}
-              />
-              {!showComments && (
-                <Selecto
-                  dragContainer={".canvas-container"}
-                  selectableTargets={[".react-draggable"]}
-                  hitRate={0}
-                  selectByClick={true}
-                  toggleContinueSelect={["shift"]}
-                  ref={this.selectionRef}
-                  scrollOptions={this.state.scrollOptions}
-                  onSelectStart={this.onAreaSelectionStart}
-                  onSelectEnd={this.onAreaSelectionEnd}
-                  onSelect={this.onAreaSelection}
-                  onDragStart={this.onAreaSelectionDragStart}
-                  onDrag={this.onAreaSelectionDrag}
-                  onDragEnd={this.onAreaSelectionDragEnd}
-                  onScroll={(e) => {
-                    this.canvasContainerRef.current.scrollBy(
-                      e.direction[0] * 10,
-                      e.direction[1] * 10
-                    );
-                  }}
-                />
-              )}
               <div className="main main-editor-canvas" id="main-editor-canvas">
                 <div
                   className={`canvas-container align-items-center ${
@@ -1892,48 +1787,46 @@ class EditorComponent extends React.Component {
                       border: "5 px solid red",
                     }}
                   >
-                    <div style={{ border: "5 px solid red" }}>
-                      <Container
-                        canvasWidth={this.getCanvasWidth()}
-                        canvasHeight={this.getCanvasHeight()}
-                        showComments={showComments}
-                        appVersionsId={this.state?.editingVersion?.id}
-                        appDefinition={appDefinition}
-                        appDefinitionChanged={this.appDefinitionChanged}
-                        snapToGrid={true}
-                        darkMode={this.props.darkMode}
-                        mode={"edit"}
-                        zoomLevel={zoomLevel}
-                        currentLayout={currentLayout}
-                        deviceWindowWidth={deviceWindowWidth}
-                        selectedComponents={selectedComponents}
-                        appLoading={isLoading}
-                        onEvent={this.handleEvent}
-                        onComponentOptionChanged={
-                          this.handleOnComponentOptionChanged
-                        }
-                        onComponentOptionsChanged={
-                          this.handleOnComponentOptionsChanged
-                        }
-                        currentState={this.state.currentState}
-                        setSelectedComponent={this.setSelectedComponent}
-                        handleUndo={this.handleUndo}
-                        handleRedo={this.handleRedo}
-                        removeComponent={this.removeComponent}
-                        onComponentClick={this.handleComponentClick}
-                        onComponentHover={this.handleComponentHover}
-                        hoveredComponent={hoveredComponent}
-                        sideBarDebugger={this.sideBarDebugger}
-                        dataQueries={dataQueries}
-                        currentPageId={this.state.currentPageId}
-                        reportTemplateDataMap={this.props.location.state}
-                      />
-                      <CustomDragLayer
-                        snapToGrid={true}
-                        currentLayout={currentLayout}
-                        canvasWidth={this.getCanvasWidth()}
-                      />
-                    </div>
+                    <Container
+                      canvasWidth={this.getCanvasWidth()}
+                      canvasHeight={this.getCanvasHeight()}
+                      showComments={showComments}
+                      appVersionsId={this.state?.editingVersion?.id}
+                      appDefinition={appDefinition}
+                      appDefinitionChanged={this.appDefinitionChanged}
+                      snapToGrid={true}
+                      darkMode={this.props.darkMode}
+                      mode={"edit"}
+                      zoomLevel={zoomLevel}
+                      currentLayout={currentLayout}
+                      deviceWindowWidth={deviceWindowWidth}
+                      selectedComponents={selectedComponents}
+                      appLoading={isLoading}
+                      onEvent={this.handleEvent}
+                      onComponentOptionChanged={
+                        this.handleOnComponentOptionChanged
+                      }
+                      onComponentOptionsChanged={
+                        this.handleOnComponentOptionsChanged
+                      }
+                      currentState={this.state.currentState}
+                      setSelectedComponent={this.setSelectedComponent}
+                      handleUndo={this.handleUndo}
+                      handleRedo={this.handleRedo}
+                      removeComponent={this.removeComponent}
+                      onComponentClick={this.handleComponentClick}
+                      onComponentHover={this.handleComponentHover}
+                      hoveredComponent={hoveredComponent}
+                      sideBarDebugger={this.sideBarDebugger}
+                      dataQueries={dataQueries}
+                      currentPageId={this.state.currentPageId}
+                      reportTemplateDataMap={this.props.location.state}
+                    />
+                    <CustomDragLayer
+                      snapToGrid={true}
+                      currentLayout={currentLayout}
+                      canvasWidth={this.getCanvasWidth()}
+                    />
                   </div>
                 </div>
               </div>
