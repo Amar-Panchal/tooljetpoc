@@ -18,6 +18,7 @@ import { withTranslation } from "react-i18next";
 import _ from "lodash";
 import axios from "axios";
 import { SelectTests } from "./test";
+import { ApiCallParams } from "../StaticApiCall";
 
 class RegistrationPageLauncher extends React.Component {
   constructor(props) {
@@ -179,7 +180,7 @@ class RegistrationPageLauncher extends React.Component {
   loadApplicationByVersion = async () => {
     return await axios
       .get(
-        "https://elabnextapi-dev.azurewebsites.net/api/ReportSetup/GetReportTemplate?ReportTemplateId=43"
+        `https://elabnextapi-dev.azurewebsites.net/api/ReportSetup/GetReportTemplate?ReportTemplateId=${ApiCallParams.id}`
       )
       .then(({ data }) => {
         const { reportValues: reportValuesString } =
@@ -370,13 +371,15 @@ class RegistrationPageLauncher extends React.Component {
                 className="canvas-container align-items-center"
                 style={{
                   backgroundColor: this.computeCanvasBackgroundColor(),
+                  position: "fixed",
+                  top: "50px",
+                  height: "-webkit-fill-available",
                 }}
               >
                 <div className="areas d-flex flex-rows justify-content-center">
                   <div
                     className="canvas-area"
                     style={{
-                      width: "90%",
                       minHeight: "100%",
                       maxWidth: "100%",
                       maxHeight: "100%",

@@ -546,8 +546,8 @@ class ViewerComponent extends React.Component {
                       backgroundColor: this.computeCanvasBackgroundColor(),
                       width:
                         this.props.location.state.mode === "preview"
-                          ? "100%"
-                          : "80%",
+                          ? "95%"
+                          : "100%",
 
                       marginLeft:
                         this.props.location.state.mode === "preview"
@@ -557,13 +557,18 @@ class ViewerComponent extends React.Component {
                         this.props.location.state.mode === "preview"
                           ? ""
                           : "15px",
+
+                      position: "fixed",
+                      top: "50px",
+                      left: "60px",
+                      height: "-webkit-fill-available",
                     }}
                   >
                     <div className="areas d-flex flex-rows justify-content-center">
                       <div
                         className="canvas-area"
                         style={{
-                          width: "90%",
+                          width: "100%",
                           minHeight: "100%",
                           maxWidth: "100%",
                           maxHeight: "100%",
