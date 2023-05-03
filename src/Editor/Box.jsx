@@ -44,8 +44,9 @@ import { Html } from "./Components/Html";
 import { ButtonGroup } from "./Components/ButtonGroup";
 import { CustomComponent } from "./Components/CustomComponent/CustomComponent";
 import { ReportResultTable } from "./Components/ReportResultTable/ReportResultTable";
-import { TestList } from "./Components/TestList";
 import { VerticalDivider } from "./Components/verticalDivider";
+import { TestList } from "./Components/TestList";
+import { DemographicField } from "./Components/DemographicField";
 import { PDF } from "./Components/PDF";
 import { ColorPicker } from "./Components/ColorPicker";
 import { KanbanBoard } from "./Components/KanbanBoard/KanbanBoard";
@@ -124,6 +125,7 @@ const AllComponents = {
   BoundedBox,
   ReportResultTable,
   TestList,
+  DemographicField,
 };
 
 export const Box = function Box({

@@ -132,7 +132,7 @@ export const WidgetManager = function WidgetManager({
       "Radio-button",
       "TestList",
     ];
-    const reportTemplateItems = ["ReportResultTable"];
+    const reportTemplateItems = ["ReportResultTable", "DemographicField"];
 
     const formItems = [
       "TextInput",

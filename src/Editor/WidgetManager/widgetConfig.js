@@ -1048,4 +1048,144 @@ export const widgets = [
       },
     },
   },
+  {
+    name: "DemographicField",
+    displayName: "Demographic Field",
+    description: "Display markdown or HTML",
+    component: "DemographicField",
+    others: {
+      showOnDesktop: { type: "toggle", displayName: "Show on desktop" },
+      showOnMobile: { type: "toggle", displayName: "Show on mobile" },
+    },
+    properties: {
+      text: {
+        type: "code",
+        displayName: "Text",
+        validation: {
+          schema: {
+            type: "union",
+            schemas: [{ type: "string" }, { type: "number" }],
+          },
+        },
+      },
+    },
+    defaultSize: {
+      width: 6,
+      height: 30,
+    },
+    events: [],
+    styles: {
+      fontWeight: {
+        type: "select",
+        displayName: "Font Weight",
+        options: [
+          { name: "normal", value: "normal" },
+          { name: "bold", value: "bold" },
+          { name: "lighter", value: "lighter" },
+          { name: "bolder", value: "bolder" },
+        ],
+      },
+      decoration: {
+        type: "select",
+        displayName: "Text Decoration",
+        options: [
+          { name: "none", value: "none" },
+          { name: "overline", value: "overline" },
+          { name: "line-through", value: "line-through" },
+          { name: "underline", value: "underline" },
+          { name: "overline underline", value: "overline underline" },
+        ],
+      },
+      transformation: {
+        type: "select",
+        displayName: "Text Transformation",
+        options: [
+          { name: "none", value: "none" },
+          { name: "uppercase", value: "uppercase" },
+          { name: "lowercase", value: "lowercase" },
+          { name: "capitalize", value: "capitalize" },
+        ],
+      },
+      fontStyle: {
+        type: "select",
+        displayName: "Font Style",
+        options: [
+          { name: "normal", value: "normal" },
+          { name: "italic", value: "italic" },
+          { name: "oblique", value: "oblique" },
+        ],
+      },
+      lineHeight: { type: "number", displayName: "Line Height" },
+      textIndent: { type: "number", displayName: "Text Indent" },
+      letterSpacing: { type: "number", displayName: "Letter Spacing" },
+      wordSpacing: { type: "number", displayName: "Word Spacing" },
+      fontVariant: {
+        type: "select",
+        displayName: "Font Variant",
+        options: [
+          { name: "normal", value: "normal" },
+          { name: "small-caps", value: "small-caps" },
+          { name: "initial", value: "initial" },
+          { name: "inherit", value: "inherit" },
+        ],
+      },
+      textSize: {
+        type: "number",
+        displayName: "Text Size",
+        validation: {
+          schema: { type: "number" },
+        },
+      },
+      backgroundColor: {
+        type: "color",
+        displayName: "Background Color",
+        validation: {
+          schema: { type: "string" },
+        },
+      },
+      textColor: {
+        type: "color",
+        displayName: "Text Color",
+        validation: {
+          schema: { type: "string" },
+        },
+      },
+      textAlign: {
+        type: "alignButtons",
+        displayName: "Align Text",
+        validation: {
+          schema: { type: "string" },
+        },
+      },
+    },
+    exposedVariables: {
+      text: "Write Your Text ",
+    },
+
+    definition: {
+      others: {
+        showOnDesktop: { value: "{{true}}" },
+        showOnMobile: { value: "{{false}}" },
+      },
+      properties: {
+        text: { value: "Write Your Text " },
+      },
+      events: [],
+      styles: {
+        backgroundColor: { value: "" },
+        textColor: { value: "#000000" },
+        textSize: { value: 14 },
+        textAlign: { value: "left" },
+        fontWeight: { value: "normal" },
+        decoration: { value: "none" },
+        transformation: { value: "none" },
+        fontStyle: { value: "normal" },
+        lineHeight: { value: 1.5 },
+        textIndent: { value: 0 },
+        letterSpacing: { value: 0 },
+        wordSpacing: { value: 0 },
+        fontVariant: { value: "normal" },
+      },
+    },
+  },
 ];
