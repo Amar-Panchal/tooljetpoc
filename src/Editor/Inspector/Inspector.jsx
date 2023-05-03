@@ -335,7 +335,7 @@ export const Inspector = ({
       .then((response) => {
         let temp = [];
         response?.data?.resultData?.fieldMaster?.map((element) => {
-          if (component.component.component === "Text") {
+          if (component.component.component === "DemographicField") {
             temp = response?.data?.resultData?.fieldMaster;
           } else if (component.component.component === element.componentType)
             temp.push({
@@ -351,6 +351,7 @@ export const Inspector = ({
   };
 
   const handleTypeSelect = (e) => {
+    console.log("eeeee", e);
     setNewComponentName(e.value);
   };
 

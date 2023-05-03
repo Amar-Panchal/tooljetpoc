@@ -11,8 +11,6 @@ export const Text = function Text({
   registerAction,
   setExposedVariable,
   dataCy,
-  reportTemplateDataMap,
-  component,
 }) {
   let {
     textSize,
@@ -106,9 +104,6 @@ export const Text = function Text({
     return str;
   }
 
-  reportTemplateDataMap =
-    reportTemplateDataMap?.payload?.resultValues?.patientDetails;
-
   return (
     <div
       data-disabled={disabledState}
@@ -120,24 +115,7 @@ export const Text = function Text({
         <div
           style={{ width: "100%", fontSize: textSize }}
           dangerouslySetInnerHTML={{
-            __html: DOMPurify.sanitize(
-              `
-           
-          
-          ${text}  
-          
-          ${
-            reportTemplateDataMap &&
-            component &&
-            reportTemplateDataMap[component?.name]
-              ? component?.name === "gender"
-                ? reportTemplateDataMap[component?.name].name
-                : reportTemplateDataMap[component?.name]
-              : ""
-          }
-          
-              `
-            ),
+            __html: DOMPurify.sanitize(text),
           }}
         />
       )}

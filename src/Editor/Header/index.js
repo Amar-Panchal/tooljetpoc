@@ -51,25 +51,59 @@ export default function EditorHeader({
   templateName,
 }) {
   const { is_maintenance_on } = app;
-  // console.log("appVersionPreviewLink", reportTemplateDataMap);
   const payload = {
     reportTemplateId: ApiCallParams.id,
     reportTemplateName: templateName,
     reportValues: appDefinition,
-    templateType: 1, // 1 for report 2 for registration
+    templateType: ApiCallParams.templateType,
   };
+
+  function searchEmptyDemographicField(jsonObj, searchValue) {
+    if (typeof jsonObj === "object" && jsonObj !== null) {
+      for (const key in jsonObj) {
+        const val = jsonObj[key];
+        if (typeof val === "string" && val.includes(searchValue)) {
+          return true;
+        } else if (searchEmptyDemographicField(val, searchValue)) {
+          return true;
+        }
+      }
+      if (
+        Array.isArray(jsonObj) &&
+        jsonObj.some((val) => searchEmptyDemographicField(val, searchValue))
+      ) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   const updateReportTemplate = () => {
-    axios
-      .put(
-        "https://elabnextapi-dev.azurewebsites.net/api/ReportSetup/UpdateReportTemplate",
-        payload
-      )
-      .then((response) => {
-        toast.success("Saved Successfully");
-      })
-      .catch((error) => {
-        console.log("sss", error);
-      });
+    const tem = searchEmptyDemographicField(appDefinition, "demographicfield");
+    const tem3 = searchEmptyDemographicField(
+      appDefinition,
+      "reportresulttable"
+    );
+    const tem2 = searchEmptyDemographicField(appDefinition, "testlist");
+    console.log("fff", tem2);
+    if (tem) toast.error("Demographic field cannot be empty");
+    else if (payload.templateType === 1 && !tem3)
+      toast.error("Please Add Report Result Table Component");
+    else if (payload.templateType === 2 && !tem2)
+      toast.error("Please Add Test List Component");
+    else {
+      axios
+        .put(
+          "https://elabnextapi-dev.azurewebsites.net/api/ReportSetup/UpdateReportTemplate",
+          payload
+        )
+        .then((response) => {
+          toast.success("Saved Successfully");
+        })
+        .catch((error) => {
+          console.log("sss", error);
+        });
+    }
   };
 
   return (
