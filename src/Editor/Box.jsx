@@ -18,7 +18,6 @@ import { DaterangePicker } from "./Components/DaterangePicker";
 import { Multiselect } from "./Components/Multiselect";
 import { Modal } from "./Components/Modal";
 import { Chart } from "./Components/Chart";
-import { Map } from "./Components/Map/Map";
 import { QrScanner } from "./Components/QrScanner/QrScanner";
 import { ToggleSwitch } from "./Components/Toggle";
 import { RadioButton } from "./Components/RadioButton";
@@ -48,13 +47,11 @@ import { TestList } from "./Components/TestList";
 import { DemographicField } from "./Components/DemographicField";
 import { PDF } from "./Components/PDF";
 import { ColorPicker } from "./Components/ColorPicker";
-import { KanbanBoard } from "./Components/KanbanBoard/KanbanBoard";
 import { Steps } from "./Components/Steps";
 import { TreeSelect } from "./Components/TreeSelect";
 import { Icon } from "./Components/Icon";
 import { Link } from "./Components/Link";
 import { Form } from "./Components/Form";
-import { BoundedBox } from "./Components/BoundedBox/BoundedBox";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import "@/_styles/custom.scss";
 import { validateProperties } from "./component-properties-validation";
@@ -88,7 +85,6 @@ const AllComponents = {
   Multiselect,
   Modal,
   Chart,
-  Map,
   QrScanner,
   ToggleSwitch,
   RadioButton,
@@ -110,18 +106,16 @@ const AllComponents = {
   Timeline,
   SvgImage,
   Html,
-
   CustomComponent,
   VerticalDivider,
   PDF,
   ColorPicker,
-  KanbanBoard,
+
   Steps,
   TreeSelect,
   Link,
   Icon,
   Form,
-  BoundedBox,
   ReportResultTable,
   TestList,
   DemographicField,
