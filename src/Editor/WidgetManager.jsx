@@ -7,6 +7,7 @@ import { isEmpty } from "lodash";
 import { useTranslation } from "react-i18next";
 import axios from "axios";
 import { mediaLogoList } from "./ConstantsData";
+import { ApiCallParams } from "./StaticApiCall";
 
 export const WidgetManager = function WidgetManager({
   componentTypes,
@@ -173,11 +174,16 @@ export const WidgetManager = function WidgetManager({
       return (
         <>
           {renderList(commonSection.title, commonSection.items)}
-          {renderList(reportTemplateSection.title, reportTemplateSection.items)}
-          {renderList(
-            registrationTemplateSection.title,
-            registrationTemplateSection.items
-          )}
+          {ApiCallParams.templateType === 1 &&
+            renderList(
+              reportTemplateSection.title,
+              reportTemplateSection.items
+            )}
+          {ApiCallParams.templateType === 2 &&
+            renderList(
+              registrationTemplateSection.title,
+              registrationTemplateSection.items
+            )}
 
           {/* {renderList(mediaLogoSection.title, mediaLogoSection.items)}
           {renderList(layoutsSection.title, layoutsSection.items)}
