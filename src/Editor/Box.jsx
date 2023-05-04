@@ -41,7 +41,6 @@ import { RangeSlider } from "./Components/RangeSlider";
 import { Timeline } from "./Components/Timeline";
 import { SvgImage } from "./Components/SvgImage";
 import { Html } from "./Components/Html";
-import { ButtonGroup } from "./Components/ButtonGroup";
 import { CustomComponent } from "./Components/CustomComponent/CustomComponent";
 import { ReportResultTable } from "./Components/ReportResultTable/ReportResultTable";
 import { VerticalDivider } from "./Components/verticalDivider";
@@ -111,7 +110,7 @@ const AllComponents = {
   Timeline,
   SvgImage,
   Html,
-  ButtonGroup,
+
   CustomComponent,
   VerticalDivider,
   PDF,
