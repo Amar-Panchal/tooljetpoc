@@ -1,12 +1,14 @@
-/* eslint-disable import/no-named-as-default */
+/**
+ * eslint-disable import/no-named-as-default
+ *
+ * @format
+ */
+
 import React from "react";
 import { LeftSidebarItem } from "./SidebarItem";
 import { Button, HeaderSection } from "@/_ui/LeftSidebar";
-import { DataSourceManager } from "../DataSourceManager";
-// import { DataSourceTypes } from '../DataSourceManager/SourceComponents';
 import { getSvgIcon } from "@/_helpers/appUtils";
 import { ConfirmDialog } from "@/_components";
-import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import Popover from "@/_ui/Popover";
 // eslint-disable-next-line import/no-unresolved
@@ -133,7 +135,7 @@ export const LeftSidebarDataSources = ({
         />
       </Popover>
 
-      <DataSourceManager
+      {/* <DataSourceManager
         appId={appId}
         showDataSourceManagerModal={showDataSourceManagerModal}
         darkMode={darkMode}
@@ -144,7 +146,7 @@ export const LeftSidebarDataSources = ({
         editingVersionId={editingVersionId}
         dataSourcesChanged={dataSourcesChanged}
         selectedDataSource={selectedDataSource}
-      />
+      /> */}
     </>
   );
 };

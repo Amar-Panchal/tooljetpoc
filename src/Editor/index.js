@@ -1,4 +1,8 @@
-/* eslint-disable import/export */
-export * from './Editor';
-export * from './Viewer';
-export * from './DataSourceManager';
+/**
+ * eslint-disable import/export
+ *
+ * @format
+ */
+
+export * from "./Editor";
+export * from "./Viewer";

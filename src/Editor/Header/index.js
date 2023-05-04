@@ -1,51 +1,21 @@
 /** @format */
 
 import React from "react";
-import { Link, useHistory } from "react-router-dom";
-import AppLogo from "@/_components/AppLogo";
+import { Link } from "react-router-dom";
 import { GlobalSettings } from "./GlobalSettings";
-import EditAppName from "./EditAppName";
-import HeaderActions from "./HeaderActions";
-import RealtimeAvatars from "../RealtimeAvatars";
-import { AppVersionsManager } from "../AppVersionsManager/List";
-import { ManageAppUsers } from "../ManageAppUsers";
-import { ReleaseVersionButton } from "../ReleaseVersionButton";
-import cx from "classnames";
-import config from "config";
 import { toast } from "react-hot-toast";
 import axios from "axios";
 import { Button, Input } from "@progress/kendo-react-all";
-import useRouter from "../../_hooks/use-router";
 import { ApiCallParams } from "../StaticApiCall";
 
 export default function EditorHeader({
   darkMode,
   currentState,
-  currentLayout,
   globalSettingsChanged,
   appDefinition,
   toggleAppMaintenance,
-  editingVersion,
-  showCreateVersionModalPrompt,
   app,
   appVersionPreviewLink,
-  slug,
-  appId,
-  canUndo,
-  canRedo,
-  handleUndo,
-  handleRedo,
-  toggleCurrentLayout,
-  isSaving,
-  saveError,
-  isVersionReleased,
-  onNameChanged,
-  setAppDefinitionFromVersion,
-  closeCreateVersionModalPrompt,
-  handleSlugChange,
-  onVersionRelease,
-  saveEditingVersion,
-  getReportTemplate,
   reportTemplateDataMap,
   onChangeTemplateName,
   templateName,

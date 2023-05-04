@@ -10,7 +10,6 @@ import { CustomDragLayer } from "./CustomDragLayer";
 import { LeftSidebar } from "./LeftSidebar";
 import { componentTypes } from "./WidgetManager/components";
 import { Inspector } from "./Inspector/Inspector";
-// import { DataSourceTypes } from './DataSourceManager/SourceComponents';
 import {
   onComponentOptionChanged,
   onComponentOptionsChanged,

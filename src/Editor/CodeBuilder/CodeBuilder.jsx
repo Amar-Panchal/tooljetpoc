@@ -1,30 +1,39 @@
-import React, { useState } from 'react';
-import CodeMirror from '@uiw/react-codemirror';
-import 'codemirror/theme/duotone-light.css';
-import { componentTypes } from '../WidgetManager/components';
-import { DataSourceTypes } from '../DataSourceManager/SourceComponents';
-import { debounce } from 'lodash';
-import Fuse from 'fuse.js';
-import { useTranslation } from 'react-i18next';
+/** @format */
 
-export function CodeBuilder({ initialValue, onChange, components, dataQueries }) {
+import React, { useState } from "react";
+import CodeMirror from "@uiw/react-codemirror";
+import "codemirror/theme/duotone-light.css";
+import { componentTypes } from "../WidgetManager/components";
+import { debounce } from "lodash";
+import Fuse from "fuse.js";
+import { useTranslation } from "react-i18next";
+
+export function CodeBuilder({
+  initialValue,
+  onChange,
+  components,
+  dataQueries,
+}) {
   const [showDropdown, setShowDropdown] = useState(false);
   const [cursorPosition, setCursorPosition] = useState(0);
   const [currentValue, setCurrentValue] = useState(initialValue);
   const [codeMirrorInstance, setCodeMirrorInstance] = useState(null);
-  const [currentWord, setCurrentWord] = useState('');
+  const [currentWord, setCurrentWord] = useState("");
   const { t } = useTranslation();
 
   function computeCurrentWord(value, _cursorPosition) {
     const sliced = value
-      .replace('{{', '')
-      .replace('}}', '')
+      .replace("{{", "")
+      .replace("}}", "")
       .slice(0, _cursorPosition - 2);
-    const split = sliced.split(' ');
+    const split = sliced.split(" ");
     return split[split.length - 1];
   }
 
-  const delayedHandleChange = debounce((instance) => computeIfDropDownCanBeShown(instance), 500);
+  const delayedHandleChange = debounce(
+    (instance) => computeIfDropDownCanBeShown(instance),
+    500
+  );
 
   function computeIfDropDownCanBeShown(instance) {
     const value = instance.getValue();
@@ -34,8 +43,8 @@ export function CodeBuilder({ initialValue, onChange, components, dataQueries })
     setCodeMirrorInstance(instance);
 
     // Check if the user is trying to enter code or string
-    if (value.startsWith('{{') && value.endsWith('}}')) isCode = true;
-    console.log('[CB]', 'isCode', isCode);
+    if (value.startsWith("{{") && value.endsWith("}}")) isCode = true;
+    console.log("[CB]", "isCode", isCode);
 
     if (isCode && value !== initialValue) {
       setShowDropdown(true);
@@ -49,7 +58,7 @@ export function CodeBuilder({ initialValue, onChange, components, dataQueries })
     const slice2 = currentValue.slice(cursorPosition);
     const slice3 = `${type}.${key}.${variable}`;
 
-    if (currentWord !== '') {
+    if (currentWord !== "") {
       slice1 = currentValue.slice(0, cursorPosition - currentWord.length);
     }
 
@@ -86,9 +95,9 @@ export function CodeBuilder({ initialValue, onChange, components, dataQueries })
     const filterableData = variables.map((variable) => {
       return { name: variable, key };
     });
-    const fuse = new Fuse(filterableData, { keys: ['name', 'key'] });
+    const fuse = new Fuse(filterableData, { keys: ["name", "key"] });
     let filteredVariables = [];
-    if (['', ' ', '{{', '{}}', '{{}', '{{}}', '{', '}'].includes(currentWord)) {
+    if (["", " ", "{{", "{}}", "{{}", "{{}}", "{", "}"].includes(currentWord)) {
       filteredVariables = filterableData.map((item) => {
         return { item: item };
       });
@@ -96,34 +105,46 @@ export function CodeBuilder({ initialValue, onChange, components, dataQueries })
       console.log(currentWord);
       filteredVariables = fuse.search(currentWord);
     }
-    return filteredVariables.map((variable) => renderVariable(type, key, variable.item.name));
+    return filteredVariables.map((variable) =>
+      renderVariable(type, key, variable.item.name)
+    );
   }
 
   function renderComponentVariables(component) {
     const componentType = component.component.component;
-    const componentMeta = componentTypes.find((comp) => componentType === comp.component);
+    const componentMeta = componentTypes.find(
+      (comp) => componentType === comp.component
+    );
     const exposedVariables = componentMeta.exposedVariables;
 
-    return renderVariables('components', component.component.name, Object.keys(exposedVariables));
+    return renderVariables(
+      "components",
+      component.component.name,
+      Object.keys(exposedVariables)
+    );
   }
 
   function renderQueryVariables(query) {
     let dataSourceMeta;
     if (query?.pluginId) {
       dataSourceMeta = query.manifestFile.data.source;
-    } else {
-      dataSourceMeta = DataSourceTypes.find((source) => query.kind === source.kind);
     }
     const exposedVariables = dataSourceMeta.exposedVariables;
 
-    return renderVariables('queries', query.name, Object.keys(exposedVariables));
+    return renderVariables(
+      "queries",
+      query.name,
+      Object.keys(exposedVariables)
+    );
   }
 
   return (
     <div className="code-builder">
       <CodeMirror
         fontSize="2"
-        onCursorActivity={(instance) => setCursorPosition(instance.getCursor().ch)}
+        onCursorActivity={(instance) =>
+          setCursorPosition(instance.getCursor().ch)
+        }
         // onChange={ (instance, change) => computeIfDropDownCanBeShown(instance) }
         onChange={(instance) => delayedHandleChange(instance)}
         value={currentValue}
@@ -132,7 +153,7 @@ export function CodeBuilder({ initialValue, onChange, components, dataQueries })
           setShowDropdown(false);
         }}
         options={{
-          mode: 'javascript',
+          mode: "javascript",
           lineWrapping: true,
           scrollbarStyle: null,
           lineNumbers: false,
@@ -141,13 +162,19 @@ export function CodeBuilder({ initialValue, onChange, components, dataQueries })
       {showDropdown && (
         <div className="variables-dropdown">
           <div className="card">
-            <div className="group-header p-2">{t('globals.components', 'components')}</div>
+            <div className="group-header p-2">
+              {t("globals.components", "components")}
+            </div>
             <div className="group-body p-2">
-              {Object.keys(components).map((component) => renderComponentVariables(components[component]))}
+              {Object.keys(components).map((component) =>
+                renderComponentVariables(components[component])
+              )}
             </div>
 
             <div className="group-header p-1">queries</div>
-            <div className="group-body p-2">{dataQueries.map((query) => renderQueryVariables(query))}</div>
+            <div className="group-body p-2">
+              {dataQueries.map((query) => renderQueryVariables(query))}
+            </div>
           </div>
         </div>
       )}
