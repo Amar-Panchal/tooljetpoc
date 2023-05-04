@@ -1,21 +1,7 @@
-import React from 'react';
-import { Code } from './Elements/Code';
-import { QuerySelector } from './QuerySelector';
+/** @format */
 
-export function renderQuerySelector(component, dataQueries, eventOptionUpdated, eventName, eventMeta) {
-  let definition = component.component.definition.events[eventName];
-  definition = definition || {};
-
-  return (
-    <QuerySelector
-      param={{ name: eventName }}
-      definition={definition}
-      eventMeta={eventMeta}
-      dataQueries={dataQueries}
-      eventOptionUpdated={eventOptionUpdated}
-    />
-  );
-}
+import React from "react";
+import { Code } from "./Elements/Code";
 
 export function renderElement(
   component,
@@ -49,7 +35,12 @@ export function renderElement(
       type={meta.type}
       fxActive={definition.fxActive ?? false}
       onFxPress={(active) => {
-        paramUpdated({ name: param, ...component.component.properties[param] }, 'fxActive', active, paramType);
+        paramUpdated(
+          { name: param, ...component.component.properties[param] },
+          "fxActive",
+          active,
+          paramType
+        );
       }}
       component={component}
     />
