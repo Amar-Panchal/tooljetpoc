@@ -19,34 +19,10 @@ import ResultPage from "../Editor/ResultPage/ResultPage";
 class App extends React.Component {
   constructor(props) {
     super(props);
-
     this.state = {
-      currentUser: null,
-      fetchedMetadata: false,
       darkMode: localStorage.getItem("darkMode") === "true",
     };
   }
-
-  fetchMetadata = () => {
-    if (this.state.currentUser) {
-      tooljetService.fetchMetaData().then((data) => {
-        localStorage.setItem("currentVersion", data.installed_version);
-        if (
-          data.latest_version &&
-          lt(data.installed_version, data.latest_version) &&
-          data.version_ignored === false
-        ) {
-          this.setState({ updateAvailable: true });
-        }
-      });
-    }
-  };
-
-  componentDidMount() {}
-
-  logout = () => {
-    history.push("/login");
-  };
 
   switchDarkMode = (newMode) => {
     this.setState({ darkMode: newMode });
@@ -54,7 +30,7 @@ class App extends React.Component {
   };
 
   render() {
-    const { updateAvailable, darkMode } = this.state;
+    const { darkMode } = this.state;
     let toastOptions = {
       style: {
         wordBreak: "break-all",
@@ -83,32 +59,6 @@ class App extends React.Component {
             className={`main-wrapper ${darkMode ? "theme-dark" : ""}`}
             data-cy="main-wrapper"
           >
-            {updateAvailable && (
-              <div className="alert alert-info alert-dismissible" role="alert">
-                <h3 className="mb-1">Update available</h3>
-                <p>A new version of ToolJet has been released.</p>
-                <div className="btn-list">
-                  <a
-                    href="https://docs.tooljet.io/docs/setup/updating"
-                    target="_blank"
-                    className="btn btn-info"
-                    rel="noreferrer"
-                  >
-                    Read release notes & update
-                  </a>
-                  <a
-                    onClick={() => {
-                      tooljetService.skipVersion();
-                      this.setState({ updateAvailable: false });
-                    }}
-                    className="btn"
-                  >
-                    Skip this version
-                  </a>
-                </div>
-              </div>
-            )}
-
             <PrivateRoute
               exact
               path="/"
@@ -128,13 +78,6 @@ class App extends React.Component {
             <PrivateRoute
               exact
               path="/applications/:id/versions/:versionId"
-              component={Viewer}
-              switchDarkMode={this.switchDarkMode}
-              darkMode={darkMode}
-            />
-            <PrivateRoute
-              exact
-              path="/applications/:slug/:pageHandle?"
               component={Viewer}
               switchDarkMode={this.switchDarkMode}
               darkMode={darkMode}
