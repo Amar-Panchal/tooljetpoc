@@ -271,7 +271,7 @@ function ResultPage() {
   };
 
   return (
-    <div style={{ border: "2px solid red", width: "100%", height: "100%" }}>
+    <div style={{ width: "100%", height: "100%" }}>
       <div
         style={{
           padding: "20px",
