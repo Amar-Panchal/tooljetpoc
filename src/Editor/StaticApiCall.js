@@ -5,6 +5,6 @@
 // 41 45 report
 
 export const ApiCallParams = {
-  id: 45,
+  id: 41,
   templateType: 1, // 1 for report 2 for registration
 };

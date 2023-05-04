@@ -49,17 +49,17 @@ export default function EditorHeader({
   }
 
   const updateReportTemplate = () => {
-    const tem = searchEmptyDemographicField(appDefinition, "demographicfield");
-    const tem3 = searchEmptyDemographicField(
-      appDefinition,
-      "reportresulttable"
-    );
-    const tem2 = searchEmptyDemographicField(appDefinition, "testlist");
-    console.log("fff", tem2);
-    if (tem) toast.error("Demographic field cannot be empty");
-    else if (payload.templateType === 1 && !tem3)
+    if (searchEmptyDemographicField(appDefinition, "demographicfield"))
+      toast.error("Demographic field cannot be empty");
+    else if (
+      payload.templateType === 1 &&
+      !searchEmptyDemographicField(appDefinition, "reportresulttable")
+    )
       toast.error("Please Add Report Result Table Component");
-    else if (payload.templateType === 2 && !tem2)
+    else if (
+      payload.templateType === 2 &&
+      !searchEmptyDemographicField(appDefinition, "testlist")
+    )
       toast.error("Please Add Test List Component");
     else {
       axios
