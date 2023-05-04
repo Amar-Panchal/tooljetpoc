@@ -18,11 +18,9 @@ import { DaterangePicker } from "./Components/DaterangePicker";
 import { Multiselect } from "./Components/Multiselect";
 import { Modal } from "./Components/Modal";
 import { Chart } from "./Components/Chart";
-import { Map } from "./Components/Map/Map";
 import { QrScanner } from "./Components/QrScanner/QrScanner";
 import { ToggleSwitch } from "./Components/Toggle";
 import { RadioButton } from "./Components/RadioButton";
-import { StarRating } from "./Components/StarRating";
 import { Divider } from "./Components/Divider";
 import { FilePicker } from "./Components/FilePicker";
 import { PasswordInput } from "./Components/PasswordInput";
@@ -42,7 +40,6 @@ import { Timeline } from "./Components/Timeline";
 import { SvgImage } from "./Components/SvgImage";
 import { Html } from "./Components/Html";
 import { ButtonGroup } from "./Components/ButtonGroup";
-import { CustomComponent } from "./Components/CustomComponent/CustomComponent";
 import { ReportResultTable } from "./Components/ReportResultTable/ReportResultTable";
 import { VerticalDivider } from "./Components/verticalDivider";
 import { TestList } from "./Components/TestList";
@@ -55,7 +52,7 @@ import { TreeSelect } from "./Components/TreeSelect";
 import { Icon } from "./Components/Icon";
 import { Link } from "./Components/Link";
 import { Form } from "./Components/Form";
-import { BoundedBox } from "./Components/BoundedBox/BoundedBox";
+
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import "@/_styles/custom.scss";
 import { validateProperties } from "./component-properties-validation";
@@ -89,11 +86,11 @@ const AllComponents = {
   Multiselect,
   Modal,
   Chart,
-  Map,
+
   QrScanner,
   ToggleSwitch,
   RadioButton,
-  StarRating,
+
   Divider,
   FilePicker,
   PasswordInput,
@@ -112,7 +109,7 @@ const AllComponents = {
   SvgImage,
   Html,
   ButtonGroup,
-  CustomComponent,
+
   VerticalDivider,
   PDF,
   ColorPicker,
@@ -122,7 +119,6 @@ const AllComponents = {
   Link,
   Icon,
   Form,
-  BoundedBox,
   ReportResultTable,
   TestList,
   DemographicField,
