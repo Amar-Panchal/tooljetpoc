@@ -7,51 +7,16 @@ import { Text } from "./Components/Text";
 import { Table } from "./Components/Table/Table";
 import { TextInput } from "./Components/TextInput";
 import { NumberInput } from "./Components/NumberInput";
-import { TextArea } from "./Components/TextArea";
-import { Container } from "./Components/Container";
-import { Tabs } from "./Components/Tabs";
-import { RichTextEditor } from "./Components/RichTextEditor";
 import { DropDown } from "./Components/DropDown";
 import { Checkbox } from "./Components/Checkbox";
 import { Datepicker } from "./Components/Datepicker";
-import { DaterangePicker } from "./Components/DaterangePicker";
-import { Multiselect } from "./Components/Multiselect";
-import { Modal } from "./Components/Modal";
-import { Chart } from "./Components/Chart";
-import { QrScanner } from "./Components/QrScanner/QrScanner";
-import { ToggleSwitch } from "./Components/Toggle";
 import { RadioButton } from "./Components/RadioButton";
-import { StarRating } from "./Components/StarRating";
 import { Divider } from "./Components/Divider";
-import { FilePicker } from "./Components/FilePicker";
-import { PasswordInput } from "./Components/PasswordInput";
-import { Calendar } from "./Components/Calendar";
-import { Listview } from "./Components/Listview";
-import { IFrame } from "./Components/IFrame";
-import { CodeEditor } from "./Components/CodeEditor";
-import { Timer } from "./Components/Timer";
-import { Statistics } from "./Components/Statistics";
-import { Pagination } from "./Components/Pagination";
-import { Tags } from "./Components/Tags";
-import { Spinner } from "./Components/Spinner";
-import { CircularProgressBar } from "./Components/CirularProgressbar";
 import { renderTooltip, getComponentName } from "@/_helpers/appUtils";
-import { RangeSlider } from "./Components/RangeSlider";
-import { Timeline } from "./Components/Timeline";
-import { SvgImage } from "./Components/SvgImage";
-import { Html } from "./Components/Html";
-import { CustomComponent } from "./Components/CustomComponent/CustomComponent";
 import { ReportResultTable } from "./Components/ReportResultTable/ReportResultTable";
 import { VerticalDivider } from "./Components/verticalDivider";
 import { TestList } from "./Components/TestList";
 import { DemographicField } from "./Components/DemographicField";
-import { PDF } from "./Components/PDF";
-import { ColorPicker } from "./Components/ColorPicker";
-import { Steps } from "./Components/Steps";
-import { TreeSelect } from "./Components/TreeSelect";
-import { Icon } from "./Components/Icon";
-import { Link } from "./Components/Link";
-import { Form } from "./Components/Form";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import "@/_styles/custom.scss";
 import { validateProperties } from "./component-properties-validation";
@@ -73,52 +38,18 @@ const AllComponents = {
   Text,
   TextInput,
   NumberInput,
+
   Table,
-  TextArea,
-  Container,
-  Tabs,
-  RichTextEditor,
   DropDown,
   Checkbox,
   Datepicker,
-  DaterangePicker,
-  Multiselect,
-  Modal,
-  Chart,
-  QrScanner,
-  ToggleSwitch,
   RadioButton,
-  StarRating,
-  Divider,
-  FilePicker,
-  PasswordInput,
-  Calendar,
-  IFrame,
-  CodeEditor,
-  Listview,
-  Timer,
-  Statistics,
-  Pagination,
-  Tags,
-  Spinner,
-  CircularProgressBar,
-  RangeSlider,
-  Timeline,
-  SvgImage,
-  Html,
-  CustomComponent,
-  VerticalDivider,
-  PDF,
-  ColorPicker,
 
-  Steps,
-  TreeSelect,
-  Link,
-  Icon,
-  Form,
+  Divider,
   ReportResultTable,
   TestList,
   DemographicField,
+  VerticalDivider,
 };
 
 export const Box = function Box({
