@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { Container } from "../Container";
@@ -9,7 +9,6 @@ import {
   onComponentOptionsChanged,
   onComponentClick,
   onEvent,
-  runQuery,
   computeComponentState,
 } from "@/_helpers/appUtils";
 import queryString from "query-string";
@@ -17,7 +16,6 @@ import { resolveReferences, stripTrailingSlash } from "@/_helpers/utils";
 import { withTranslation } from "react-i18next";
 import _ from "lodash";
 import axios from "axios";
-import { SelectTests } from "./test";
 import { ApiCallParams } from "../StaticApiCall";
 
 class RegistrationPageLauncher extends React.Component {
