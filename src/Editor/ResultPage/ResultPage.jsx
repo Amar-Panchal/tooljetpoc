@@ -261,7 +261,7 @@ function ResultPage() {
       })
       .then(() => {
         history.push({
-          pathname: "/applications/1/versions/1",
+          pathname: "/preview",
           state: { payload },
         });
       })

@@ -11,16 +11,17 @@ import { lt } from "semver";
 import Toast from "@/_ui/Toast";
 import "@/_styles/theme.scss";
 import "emoji-mart/css/emoji-mart.css";
-import { AppLoader } from "@/AppLoader";
 import { RegistrationPage } from "../Editor/RegistrationPage/RegistrationPage";
 import PatientDetails from "../Editor/PatientDetails/PatientDetails";
 import ResultPage from "../Editor/ResultPage/ResultPage";
+import { Editor } from "../Editor/Editor";
+import { Button } from "@progress/kendo-react-all";
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      darkMode: localStorage.getItem("darkMode") === "true",
+      darkMode: false,
     };
   }
 
@@ -61,8 +62,8 @@ class App extends React.Component {
           >
             <PrivateRoute
               exact
-              path="/"
-              component={AppLoader}
+              path="/editor"
+              component={Editor}
               switchDarkMode={this.switchDarkMode}
               darkMode={darkMode}
             />
@@ -77,13 +78,14 @@ class App extends React.Component {
 
             <PrivateRoute
               exact
-              path="/applications/:id/versions/:versionId"
+              path="/preview"
               component={Viewer}
               switchDarkMode={this.switchDarkMode}
               darkMode={darkMode}
             />
           </div>
         </BrowserRouter>
+
         <Toast toastOptions={toastOptions} />
       </Suspense>
     );

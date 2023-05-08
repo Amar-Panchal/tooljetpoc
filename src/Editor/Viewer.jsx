@@ -42,7 +42,7 @@ class ViewerComponent extends React.Component {
     super(props);
     const deviceWindowWidth = window.screen.width - 5;
     const isMobileDevice = deviceWindowWidth < 600;
-
+    console.log("fff", props);
     const pageHandle = this.props.match?.params?.pageHandle;
 
     const slug = this.props.match.params.slug;

@@ -15,7 +15,7 @@ export default function EditorHeader({
   appDefinition,
   toggleAppMaintenance,
   app,
-  appVersionPreviewLink,
+
   reportTemplateDataMap,
   onChangeTemplateName,
   templateName,
@@ -112,7 +112,7 @@ export default function EditorHeader({
           rel="noreferrer"
           data-cy="preview-link-button"
           to={{
-            pathname: appVersionPreviewLink,
+            pathname: "/preview",
             state: {
               reportTemplateDataMap: reportTemplateDataMap,
               mode: "preview",

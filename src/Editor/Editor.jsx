@@ -59,7 +59,7 @@ enablePatches();
 class EditorComponent extends React.Component {
   constructor(props) {
     super(props);
-
+    console.log("pops niss", props);
     const appId = this.props.match.params.id;
 
     const pageHandle = this.props.match.params.pageHandle;
@@ -1969,8 +1969,6 @@ class EditorComponent extends React.Component {
       queryConfirmationList,
     } = this.state;
 
-    const appVersionPreviewLink = `/applications/1/versions/1`;
-
     return (
       <div className="editor wrapper">
         <ReactTooltip
@@ -2020,7 +2018,6 @@ class EditorComponent extends React.Component {
             editingVersion={editingVersion}
             showCreateVersionModalPrompt={showCreateVersionModalPrompt}
             app={app}
-            appVersionPreviewLink={appVersionPreviewLink}
             slug={slug}
             appId={appId}
             canUndo={this.canUndo}
@@ -2242,10 +2239,7 @@ class EditorComponent extends React.Component {
                       ></Inspector>
                     ) : (
                       <center className="mt-5 p-2">
-                        {this.props.t(
-                          "editor.inspectComponent",
-                          "Please select a component to inspect"
-                        )}
+                        "Please select a component to inspect"
                       </center>
                     )}
                   </div>
