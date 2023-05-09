@@ -44,16 +44,7 @@ class ViewerComponent extends React.Component {
     const deviceWindowWidth = window.screen.width - 5;
     const isMobileDevice = deviceWindowWidth < 600;
 
-    const pageHandle = this.props.match?.params?.pageHandle;
-
-    const slug = this.props.match.params.slug;
-    const appId = this.props.match.params.id;
-    const versionId = this.props.match.params.versionId;
-
     this.state = {
-      slug,
-      appId,
-      versionId,
       deviceWindowWidth,
       currentLayout: isMobileDevice ? "mobile" : "desktop",
       isLoading: true,
@@ -64,12 +55,10 @@ class ViewerComponent extends React.Component {
         components: {},
         globals: {
           currentUser: {},
-          theme: { name: props.darkMode ? "dark" : "light" },
+          theme: "light",
           urlparams: {},
           environment_variables: {},
-          page: {
-            handle: pageHandle,
-          },
+          page: {},
         },
         variables: {},
       },
@@ -136,7 +125,7 @@ class ViewerComponent extends React.Component {
       ([pageId, page]) => ({ id: pageId, ...page })
     );
     const homePageId = data.definition.homePageId;
-    const startingPageHandle = this.props.match?.params?.pageHandle;
+    const startingPageHandle = "";
     const currentPageId =
       pages.filter((page) => page.handle === startingPageHandle)[0]?.id ??
       homePageId;
@@ -158,10 +147,8 @@ class ViewerComponent extends React.Component {
           components: {},
           globals: {
             currentUser: userVars,
-            theme: { name: this.props.darkMode ? "dark" : "light" },
-            urlparams: JSON.parse(
-              JSON.stringify(queryString.parse(this.props.location.search))
-            ),
+            theme: "light",
+            urlparams: "",
           },
           variables: {},
           page: {
@@ -275,31 +262,15 @@ class ViewerComponent extends React.Component {
   // };
 
   componentDidMount() {
-    const slug = this.props.match.params.slug;
-    const appId = this.props.match.params.id;
-    const versionId = this.props.match.params.versionId;
-
     this.setState({ isLoading: false });
-    slug
-      ? this.loadApplicationBySlug(slug)
-      : this.loadApplicationByVersion(appId, versionId);
+
+    this.loadApplicationByVersion();
   }
 
-  componentDidUpdate(prevProps) {
-    if (
-      this.props.match.params.slug &&
-      this.props.match.params.slug !== prevProps.match.params.slug
-    ) {
-      this.setState({ isLoading: true });
-      this.loadApplicationBySlug(this.props.match.params.slug);
-    }
-
-    if (this.state.initialComputationOfStateDone)
-      this.handlePageSwitchingBasedOnURLparam();
-  }
+  componentDidUpdate(prevProps) {}
 
   handlePageSwitchingBasedOnURLparam() {
-    const handleOnURL = this.props.match.params.pageHandle;
+    const handleOnURL = "";
     const pageIdCorrespondingToHandleOnURL = handleOnURL
       ? this.findPageIdFromHandle(handleOnURL)
       : this.state.appDefinition.homePageId;
@@ -326,9 +297,7 @@ class ViewerComponent extends React.Component {
             ...this.state.currentState,
             globals: {
               ...this.state.currentState.globals,
-              urlparams: JSON.parse(
-                JSON.stringify(queryString.parse(this.props.location.search))
-              ),
+              urlparams: "",
             },
             page: {
               ...this.state.currentState.page,
@@ -385,9 +354,6 @@ class ViewerComponent extends React.Component {
       bgColor,
       this.state.currentState
     );
-    if (["#2f3c4c", "#edeff5"].includes(resolvedBackgroundColor)) {
-      return this.props.darkMode ? "#2f3c4c" : "#edeff5";
-    }
 
     return resolvedBackgroundColor;
   };
@@ -403,26 +369,10 @@ class ViewerComponent extends React.Component {
       },
       showQuerySearchField: false,
     });
-    this.props.switchDarkMode(newMode);
   };
 
   switchPage = (id, queryParams = []) => {
     if (this.state.currentPageId === id) return;
-
-    const { handle } = this.state.appDefinition.pages[id];
-
-    const queryParamsString = queryParams
-      .map(([key, value]) => `${key}=${value}`)
-      .join("&");
-
-    if (this.state.slug)
-      this.props.history.push(
-        `/applications/${this.state.slug}/${handle}?${queryParamsString}`
-      );
-    else
-      this.props.history.push(
-        `/applications/${this.state.appId}/versions/${this.state.versionId}/${handle}?${queryParamsString}`
-      );
   };
 
   handleEvent = (eventName, options) =>
@@ -484,12 +434,7 @@ class ViewerComponent extends React.Component {
                   justifyContent: "center",
                 }}
               >
-                <h3>
-                  {this.props.t(
-                    "viewer",
-                    "Sorry!. This app is under maintenance"
-                  )}
-                </h3>
+                <h3>viewer</h3>
               </div>
             </div>
           </div>
@@ -514,7 +459,7 @@ class ViewerComponent extends React.Component {
                 // showHeader={!appDefinition.globalSettings?.hideHeader && isAppLoaded}
                 appName={this.state.app?.name ?? null}
                 changeDarkMode={this.changeDarkMode}
-                darkMode={this.props.darkMode}
+                darkMode={false}
                 pages={Object.entries(this.state.appDefinition?.pages) ?? []}
                 currentPageId={
                   this.state?.currentPageId ??
