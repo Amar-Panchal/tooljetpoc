@@ -24,7 +24,7 @@ const tiles = [
 
     item: (
       <span style={styles}>
-        <b>Parameter Names</b>
+        <b>Parameter Name</b>
       </span>
     ),
   },
