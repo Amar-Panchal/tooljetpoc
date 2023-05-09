@@ -39,10 +39,11 @@ const temp = {
 
 class ViewerComponent extends React.Component {
   constructor(props) {
+    console.log("props in viewer", props);
     super(props);
     const deviceWindowWidth = window.screen.width - 5;
     const isMobileDevice = deviceWindowWidth < 600;
-    console.log("fff", props);
+
     const pageHandle = this.props.match?.params?.pageHandle;
 
     const slug = this.props.match.params.slug;
@@ -214,11 +215,9 @@ class ViewerComponent extends React.Component {
   };
 
   loadApplicationByVersion = (appId, versionId) => {
-    // console.log("appdef",JSON.parse(localStorage.getItem('appdef')));
-
     axios
       .get(
-        `https://elabnextapi-dev.azurewebsites.net/api/ReportSetup/GetReportTemplate?ReportTemplateId=${ApiCallParams.id}`
+        `https://elabnextapi-dev.azurewebsites.net/api/ReportSetup/GetReportTemplate?ReportTemplateId=${this.props.location.state.reportTemplateDataMap.reportTemplateId}`
       )
       .then((response) => {
         temp.definition = JSON.parse(

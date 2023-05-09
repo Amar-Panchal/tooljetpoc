@@ -1907,15 +1907,16 @@ class EditorComponent extends React.Component {
   getReportTemplate = async () => {
     await axios
       .get(
-        `https://elabnextapi-dev.azurewebsites.net/api/ReportSetup/GetReportTemplate?ReportTemplateId=${this.props.location.state}`
+        `https://elabnextapi-dev.azurewebsites.net/api/ReportSetup/GetReportTemplate?ReportTemplateId=${this.props.location.state.reportTemplateId}`
       )
       .then((response) => {
         const tempPageId = JSON.parse(
           response?.data?.resultData[0]?.reportValues
         );
+        console.log("temp name editor", tempPageId);
         this.setState({
           appDefinition: JSON.parse(response.data.resultData[0].reportValues),
-          currentPageId: Object.keys(tempPageId.pages)[0],
+          currentPageId: Object.keys(tempPageId?.pages)[0],
           templateName: response?.data?.resultData[0]?.name,
         });
 
@@ -1968,7 +1969,6 @@ class EditorComponent extends React.Component {
       hoveredComponent,
       queryConfirmationList,
     } = this.state;
-
     return (
       <div className="editor wrapper">
         <ReactTooltip
@@ -2038,6 +2038,11 @@ class EditorComponent extends React.Component {
             reportTemplateDataMap={this.props.location.state}
             templateName={this.state.templateName}
             onChangeTemplateName={this.onChangeTemplateName}
+            updateTemplatePayload={{
+              templateId: this.props.location.state.reportTemplateId,
+              templateName: this.state.templateName,
+              templateType: this.props.location.state.templateType,
+            }}
           />
           <DndProvider backend={HTML5Backend}>
             <div className="sub-section">

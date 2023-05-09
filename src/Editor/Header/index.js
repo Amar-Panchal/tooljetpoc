@@ -18,15 +18,16 @@ export default function EditorHeader({
   reportTemplateDataMap,
   onChangeTemplateName,
   templateName,
+  updateTemplatePayload,
 }) {
   const { is_maintenance_on } = app;
   const payload = {
-    reportTemplateId: ApiCallParams.id,
+    reportTemplateId: updateTemplatePayload.templateId,
     reportTemplateName: templateName,
     reportValues: appDefinition,
-    templateType: ApiCallParams.templateType,
+    templateType: updateTemplatePayload.templateType,
   };
-
+  // console.log("updateTemplatePayload", updateTemplatePayload);
   function searchEmptyDemographicField(jsonObj, searchValue) {
     if (typeof jsonObj === "object" && jsonObj !== null) {
       for (const key in jsonObj) {

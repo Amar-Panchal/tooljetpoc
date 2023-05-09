@@ -2,11 +2,37 @@
 
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { toast } from "react-hot-toast";
 import { useHistory } from "react-router-dom";
+
+const emptyJSON = {
+  showViewerNavigation: true,
+  homePageId: "38b5f18a-1427-46f0-b218-316321712282",
+  pages: {
+    "38b5f18a-1427-46f0-b218-316321712282": {
+      components: {},
+      handle: "home",
+      name: "Home",
+    },
+  },
+  globalSettings: {
+    hideHeader: false,
+    appInMaintenance: false,
+    canvasMaxWidth: "1320",
+    canvasMaxWidthType: "px",
+    canvasMaxHeight: 2400,
+    canvasBackgroundColor: "#ffffff",
+    backgroundFxQuery: "#ffffff",
+  },
+};
 
 function TemplateHandler(props) {
   const history = useHistory();
   const [templateList, setTemplateList] = useState([]);
+  const [createTemplateData, setCreateTemplateData] = useState({
+    templateName: "",
+    templateType: 0,
+  });
   const getReportTemplate = async () => {
     await axios
       .get(
@@ -30,17 +56,79 @@ function TemplateHandler(props) {
     getReportTemplate();
   }, []);
 
+  const handleCreateTemplate = () => {
+    if (createTemplateData.templateName === "")
+      toast.error("template name cannot be blank");
+    else if (createTemplateData.templateType === 0)
+      toast.error("template type cannot be blank");
+    else {
+      console.log("object", createTemplateData);
+      const payload = {
+        reportTemplateName: createTemplateData.templateName,
+        templateType: createTemplateData.templateType,
+        reportValues: emptyJSON,
+        // templateId: 0,
+      };
+      axios
+        .post(
+          `https://elabnextapi-dev.azurewebsites.net/api/ReportSetup/SaveReportTemplate`,
+          payload
+        )
+        .then((response) => {
+          console.log("response handleCreateTemplate", response);
+          getReportTemplate();
+        })
+        .catch((error) => console.log("error handleCreateTemplate", error));
+    }
+  };
+
   return (
     <div
       style={{
         display: "flex",
-        flexDirection: "column",
+        alignItems: "center",
         alignItems: "center",
         justifyContent: "center",
         width: "100vw",
         height: "100vh",
       }}
     >
+      <div>
+        <h1>create template</h1>
+        <input
+          placeholder="template Name"
+          onChange={(e) =>
+            setCreateTemplateData({
+              ...createTemplateData,
+              templateName: e.target.value,
+            })
+          }
+        />
+        {/* <input
+          placeholder="template id"
+          onChange={(e) =>
+            setCreateTemplateData({
+              ...createTemplateData,
+              templateType: e.target.value,
+            })
+          }
+        /> */}
+        <select
+          id="dropdown"
+          onChange={(e) =>
+            setCreateTemplateData({
+              ...createTemplateData,
+              templateType: e.target.value,
+            })
+          }
+        >
+          <option value="null">Select ...</option>
+          <option value="1">report</option>
+          <option value="2">registration</option>
+        </select>
+
+        <button onClick={handleCreateTemplate}>create template</button>
+      </div>
       <div>
         <h3>Report template List</h3>
         <div>
@@ -56,11 +144,15 @@ function TemplateHandler(props) {
                 onClick={() =>
                   history.push({
                     pathname: "/editor",
-                    state: template.reportTemplateId,
+                    state: template,
                   })
                 }
               >
-                {template.name}
+                name : {template.name}
+                <br /> id: {template.reportTemplateId}
+                <br /> templateType : {template.templateType}
+                <br /> templateTypeName :{" "}
+                {template.templateType == 1 ? "report" : "registration"}
               </li>
             ) : null;
           })}
@@ -82,11 +174,15 @@ function TemplateHandler(props) {
                 onClick={() =>
                   history.push({
                     pathname: "/editor",
-                    state: template.reportTemplateId,
+                    state: template,
                   })
                 }
               >
-                {template.name}
+                name : {template.name}
+                <br /> id: {template.reportTemplateId}
+                <br /> templateType : {template.templateType}
+                <br /> templateTypeName :{" "}
+                {template.templateType == 1 ? "report" : "registration"}
               </li>
             ) : null;
           })}
