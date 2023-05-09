@@ -127,7 +127,7 @@ function TemplateHandler(props) {
           <option value="2">registration</option>
         </select>
 
-        <button onClick={handleCreateTemplate}>create template</button>
+        <button onClick={handleCreateTemplate}>Create Template</button>
       </div>
       <div>
         <h3>Report template List</h3>
