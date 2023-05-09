@@ -5,37 +5,21 @@ import React from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { Container } from "./Container";
-import { Confirm } from "./Viewer/Confirm";
-import Pdf from "react-to-pdf";
+
 import { ViewerNavigation } from "./Viewer/ViewerNavigation";
 import {
   onComponentOptionChanged,
   onComponentOptionsChanged,
   onComponentClick,
-  onQueryConfirmOrCancel,
   onEvent,
-  runQuery,
   computeComponentState,
 } from "@/_helpers/appUtils";
-import queryString from "query-string";
 import ViewerLogoIcon from "./Icons/viewer-logo.svg";
-import {
-  resolveReferences,
-  safelyParseJSON,
-  stripTrailingSlash,
-} from "@/_helpers/utils";
+import { resolveReferences, stripTrailingSlash } from "@/_helpers/utils";
 import { withTranslation } from "react-i18next";
 import _ from "lodash";
-import { Redirect } from "react-router-dom";
 import Spinner from "@/_ui/Spinner";
-import { toast } from "react-hot-toast";
 import axios from "axios";
-import { useLocation } from "react-router-dom";
-import { ApiCallParams } from "./StaticApiCall";
-const temp = {
-  dataQueries: [],
-  data_queries: [],
-};
 
 class ViewerComponent extends React.Component {
   constructor(props) {
@@ -103,24 +87,7 @@ class ViewerComponent extends React.Component {
     }
 
     let queryState = {};
-    data.data_queries.forEach((query) => {
-      if (query.pluginId || query?.plugin?.id) {
-        queryState[query.name] = {
-          ...query.plugin.manifestFile.data.source.exposedVariables,
-          ...this.state.currentState.queries[query.name],
-        };
-      } else {
-        // queryState[query.name] = {
-        //   ...DataSourceTypes.find((source) => source.kind === query.kind).exposedVariables,
-        //   ...this.state.currentState.queries[query.name],
-        // };
-      }
-    });
 
-    const variables = await this.fetchOrgEnvironmentVariables(
-      data.slug,
-      data.is_public
-    );
     const pages = Object?.entries(data?.definition?.pages).map(
       ([pageId, page]) => ({ id: pageId, ...page })
     );
@@ -157,9 +124,8 @@ class ViewerComponent extends React.Component {
             name: currentPage.name,
             variables: {},
           },
-          ...variables,
         },
-        dataQueries: data.data_queries,
+
         currentPageId: currentPage.id,
         pages: {},
       },
@@ -170,7 +136,6 @@ class ViewerComponent extends React.Component {
         ).then(async () => {
           this.setState({ initialComputationOfStateDone: true });
 
-          this.runQueries(data.data_queries);
           const { events } =
             this.state.appDefinition?.pages[this.state.currentPageId];
           for (const event of events ?? []) {
@@ -181,32 +146,13 @@ class ViewerComponent extends React.Component {
     );
   };
 
-  runQueries = (data_queries) => {
-    data_queries.forEach((query) => {
-      if (query.options.runOnPageLoad) {
-        runQuery(this, query.id, query.name, undefined, "view");
-      }
-    });
-  };
-
-  fetchOrgEnvironmentVariables = async (slug, isPublic) => {
-    const variables = {
-      client: {},
-      server: {},
-    };
-  };
-
-  loadApplicationBySlug = (slug) => {
-    // this.setStateForApp(temp);
-    // this.setStateForContainer(temp);
-  };
-
-  loadApplicationByVersion = (appId, versionId) => {
+  loadApplicationByVersion = () => {
     axios
       .get(
         `https://elabnextapi-dev.azurewebsites.net/api/ReportSetup/GetReportTemplate?ReportTemplateId=${this.props.location.state.reportTemplateDataMap.reportTemplateId}`
       )
       .then((response) => {
+        const temp = {};
         temp.definition = JSON.parse(
           response?.data?.resultData[0].reportValues
         );
