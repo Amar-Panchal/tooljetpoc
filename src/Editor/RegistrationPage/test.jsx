@@ -3,10 +3,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./registration-page.css";
-import { Input } from "@progress/kendo-react-all";
 
-import { Button } from "@progress/kendo-react-buttons";
-import { Icon } from "@progress/kendo-react-common";
 import {
   InputClearValue,
   InputPrefix,

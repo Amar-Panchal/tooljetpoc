@@ -4,7 +4,6 @@ import React, { useEffect, useState } from "react";
 import DatePickerComponent from "react-datepicker";
 import moment from "moment";
 import "react-datepicker/dist/react-datepicker.css";
-import { DatePicker as KendoDatePicker } from "@progress/kendo-react-all";
 
 export const Datepicker = function Datepicker({
   height,

@@ -15,7 +15,6 @@ import { RegistrationPage } from "../Editor/RegistrationPage/RegistrationPage";
 import PatientDetails from "../Editor/PatientDetails/PatientDetails";
 import ResultPage from "../Editor/ResultPage/ResultPage";
 import { Editor } from "../Editor/Editor";
-import { Button } from "@progress/kendo-react-all";
 import TemplateHandler from "../Editor/TemplateHandler/TemplateHandler";
 
 class App extends React.Component {
