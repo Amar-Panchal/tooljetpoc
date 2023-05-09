@@ -16,6 +16,7 @@ import PatientDetails from "../Editor/PatientDetails/PatientDetails";
 import ResultPage from "../Editor/ResultPage/ResultPage";
 import { Editor } from "../Editor/Editor";
 import { Button } from "@progress/kendo-react-all";
+import TemplateHandler from "../Editor/TemplateHandler/TemplateHandler";
 
 class App extends React.Component {
   constructor(props) {
@@ -64,6 +65,13 @@ class App extends React.Component {
               exact
               path="/editor"
               component={Editor}
+              switchDarkMode={this.switchDarkMode}
+              darkMode={darkMode}
+            />
+            <PrivateRoute
+              exact
+              path="/"
+              component={TemplateHandler}
               switchDarkMode={this.switchDarkMode}
               darkMode={darkMode}
             />

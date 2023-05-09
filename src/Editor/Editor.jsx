@@ -59,7 +59,7 @@ enablePatches();
 class EditorComponent extends React.Component {
   constructor(props) {
     super(props);
-    console.log("pops niss", props);
+    console.log("pops niss editor", props);
     const appId = this.props.match.params.id;
 
     const pageHandle = this.props.match.params.pageHandle;
@@ -1907,7 +1907,7 @@ class EditorComponent extends React.Component {
   getReportTemplate = async () => {
     await axios
       .get(
-        `https://elabnextapi-dev.azurewebsites.net/api/ReportSetup/GetReportTemplate?ReportTemplateId=${ApiCallParams.id}`
+        `https://elabnextapi-dev.azurewebsites.net/api/ReportSetup/GetReportTemplate?ReportTemplateId=${this.props.location.state}`
       )
       .then((response) => {
         const tempPageId = JSON.parse(
