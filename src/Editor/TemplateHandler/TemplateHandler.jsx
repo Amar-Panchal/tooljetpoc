@@ -131,7 +131,7 @@ function TemplateHandler(props) {
       </div>
       <div>
         <h3>Report template List</h3>
-        <div>
+        <div style={{ height: "500px", overflow: "scroll", width: "300px" }}>
           {templateList.map((template) => {
             return template.templateType === 1 ? (
               <li
@@ -160,7 +160,7 @@ function TemplateHandler(props) {
       </div>
       <div>
         <h3>registration template List</h3>
-        <div>
+        <div style={{ height: "500px", overflow: "scroll", width: "300px" }}>
           {" "}
           {templateList.map((template) => {
             return template.templateType === 2 ? (
