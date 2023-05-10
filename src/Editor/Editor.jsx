@@ -2256,6 +2256,7 @@ class EditorComponent extends React.Component {
                     zoomLevel={zoomLevel}
                     currentLayout={currentLayout}
                     darkMode={this.props.darkMode}
+                    templateType={this.props.location.state.templateType}
                   ></WidgetManager>
                 )}
               </div>

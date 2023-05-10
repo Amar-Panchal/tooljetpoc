@@ -7,13 +7,13 @@ import { isEmpty } from "lodash";
 import { useTranslation } from "react-i18next";
 import axios from "axios";
 import { mediaLogoList } from "./ConstantsData";
-import { ApiCallParams } from "./StaticApiCall";
 
 export const WidgetManager = function WidgetManager({
   componentTypes,
   zoomLevel,
   currentLayout,
   darkMode,
+  templateType,
 }) {
   const [filteredComponents, setFilteredComponents] = useState(componentTypes);
   const [searchQuery, setSearchQuery] = useState("");
@@ -174,12 +174,12 @@ export const WidgetManager = function WidgetManager({
       return (
         <>
           {renderList(commonSection.title, commonSection.items)}
-          {ApiCallParams.templateType === 1 &&
+          {templateType === 1 &&
             renderList(
               reportTemplateSection.title,
               reportTemplateSection.items
             )}
-          {ApiCallParams.templateType === 2 &&
+          {templateType === 2 &&
             renderList(
               registrationTemplateSection.title,
               registrationTemplateSection.items
