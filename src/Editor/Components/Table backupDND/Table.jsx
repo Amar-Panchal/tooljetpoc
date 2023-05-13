@@ -1,19 +1,6 @@
-/**
- * eslint-disable no-unused-vars
- *
- * @format
- */
-
+/* eslint-disable no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, {
-  useMemo,
-  useState,
-  useEffect,
-  useCallback,
-  useContext,
-  useReducer,
-  useRef,
-} from "react";
+import React, { useMemo, useState, useEffect, useCallback, useContext, useReducer, useRef } from 'react';
 import {
   useTable,
   useFilters,
@@ -25,37 +12,37 @@ import {
   useResizeColumns,
   useRowSelect,
   useColumnOrder,
-} from "react-table";
-import cx from "classnames";
-import { resolveReferences, validateWidget } from "@/_helpers/utils";
-import { useExportData } from "react-table-plugins";
-import Papa from "papaparse";
-import { Pagination } from "./Pagination";
-import { Filter } from "./Filter";
-import { GlobalFilter } from "./GlobalFilter";
-var _ = require("lodash");
-import loadPropertiesAndStyles from "./load-properties-and-styles";
-import { reducer, reducerActions, initialState } from "./reducer";
-import customFilter from "./custom-filter";
-import generateColumnsData from "./columns";
-import generateActionsData from "./columns/actions";
-import autogenerateColumns from "./columns/autogenerateColumns";
-import IndeterminateCheckbox from "./IndeterminateCheckbox";
-import { useTranslation } from "react-i18next";
+} from 'react-table';
+import cx from 'classnames';
+import { resolveReferences, validateWidget } from '@/_helpers/utils';
+import { useExportData } from 'react-table-plugins';
+import Papa from 'papaparse';
+import { Pagination } from './Pagination';
+import { Filter } from './Filter';
+import { GlobalFilter } from './GlobalFilter';
+var _ = require('lodash');
+import loadPropertiesAndStyles from './load-properties-and-styles';
+import { reducer, reducerActions, initialState } from './reducer';
+import customFilter from './custom-filter';
+import generateColumnsData from './columns';
+import generateActionsData from './columns/actions';
+import autogenerateColumns from './columns/autogenerateColumns';
+import IndeterminateCheckbox from './IndeterminateCheckbox';
+import { useTranslation } from 'react-i18next';
 // eslint-disable-next-line import/no-unresolved
-import JsPDF from "jspdf";
+import JsPDF from 'jspdf';
 // eslint-disable-next-line import/no-unresolved
-import "jspdf-autotable";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import 'jspdf-autotable';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 // eslint-disable-next-line import/no-unresolved
-import { IconEyeOff } from "@tabler/icons";
-import * as XLSX from "xlsx/xlsx.mjs";
-import OverlayTrigger from "react-bootstrap/OverlayTrigger";
-import Popover from "react-bootstrap/Popover";
-import { useMounted } from "@/_hooks/use-mount";
-import GenerateEachCellValue from "./GenerateEachCellValue";
+import { IconEyeOff } from '@tabler/icons';
+import * as XLSX from 'xlsx/xlsx.mjs';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import Popover from 'react-bootstrap/Popover';
+import { useMounted } from '@/_hooks/use-mount';
+import GenerateEachCellValue from './GenerateEachCellValue';
 // eslint-disable-next-line import/no-unresolved
-import { toast } from "react-hot-toast";
+import { toast } from 'react-hot-toast';
 
 export function Table({
   id,
@@ -83,7 +70,6 @@ export function Table({
   mode,
   exposedVariables,
 }) {
-  console.log("ccdcsd", component);
   const {
     color,
     serverSidePagination,
@@ -116,48 +102,43 @@ export function Table({
 
   const getItemStyle = ({ isDragging, isDropAnimating }, draggableStyle) => ({
     ...draggableStyle,
-    userSelect: "none",
-    background: isDragging ? "rgba(77, 114, 250, 0.2)" : "",
-    top: "auto",
-    borderRadius: "4px",
+    userSelect: 'none',
+    background: isDragging ? 'rgba(77, 114, 250, 0.2)' : '',
+    top: 'auto',
+    borderRadius: '4px',
     ...(isDragging && {
-      marginLeft: "-120px",
-      display: "flex",
-      alignItems: "center",
-      paddingLeft: "10px",
-      height: "30px",
+      marginLeft: '-120px',
+      display: 'flex',
+      alignItems: 'center',
+      paddingLeft: '10px',
+      height: '30px',
     }),
-    ...(!isDragging && { transform: "translate(0,0)", width: "100%" }),
-    ...(isDropAnimating && { transitionDuration: "0.001s" }),
+    ...(!isDragging && { transform: 'translate(0,0)', width: '100%' }),
+    ...(isDropAnimating && { transitionDuration: '0.001s' }),
   });
   const { t } = useTranslation();
 
   const [tableDetails, dispatch] = useReducer(reducer, initialState());
   const [hoverAdded, setHoverAdded] = useState(false);
-  const mergeToTableDetails = (payload) =>
-    dispatch(reducerActions.mergeToTableDetails(payload));
-  const mergeToFilterDetails = (payload) =>
-    dispatch(reducerActions.mergeToFilterDetails(payload));
+  const mergeToTableDetails = (payload) => dispatch(reducerActions.mergeToTableDetails(payload));
+  const mergeToFilterDetails = (payload) => dispatch(reducerActions.mergeToFilterDetails(payload));
   const mounted = useMounted();
 
   useEffect(() => {
     setExposedVariable(
-      "filters",
+      'filters',
       tableDetails.filterDetails.filters.map((filter) => filter.value)
     );
   }, [JSON.stringify(tableDetails.filterDetails.filters)]);
 
   useEffect(
-    () =>
-      mergeToTableDetails({
-        columnProperties: component?.definition?.properties?.columns?.value,
-      }),
+    () => mergeToTableDetails({ columnProperties: component?.definition?.properties?.columns?.value }),
     [component?.definition?.properties]
   );
 
   useEffect(() => {
     const hoverEvent = component?.definition?.events?.find((event) => {
-      return event?.eventId == "onRowHovered";
+      return event?.eventId == 'onRowHovered';
     });
     if (hoverEvent?.eventId) {
       setHoverAdded(true);
@@ -208,25 +189,16 @@ export function Table({
       };
     });
 
-    const changesToBeSavedAndExposed = {
-      dataUpdates: newDataUpdates,
-      changeSet: newChangeset,
-    };
+    const changesToBeSavedAndExposed = { dataUpdates: newDataUpdates, changeSet: newChangeset };
     mergeToTableDetails(changesToBeSavedAndExposed);
 
-    fireEvent("onCellValueChanged");
-    return setExposedVariables({
-      ...changesToBeSavedAndExposed,
-      updatedData: clonedTableData,
-    });
+    fireEvent('onCellValueChanged');
+    return setExposedVariables({ ...changesToBeSavedAndExposed, updatedData: clonedTableData });
   }
 
   function getExportFileBlob({ columns, fileType, fileName }) {
     let headers = columns.map((column) => {
-      return {
-        exportValue: String(column.exportValue),
-        key: column.key ? String(column.key) : column.key,
-      };
+      return { exportValue: String(column.exportValue), key: column.key ? String(column.key) : column.key };
     });
     const data = globalFilteredRows.map((row) => {
       return headers.reduce((accumulator, header) => {
@@ -241,10 +213,10 @@ export function Table({
       }, {});
     });
     headers = headers.map((header) => header.exportValue.toUpperCase());
-    if (fileType === "csv") {
+    if (fileType === 'csv') {
       const csvString = Papa.unparse({ fields: headers, data });
-      return new Blob([csvString], { type: "text/csv" });
-    } else if (fileType === "pdf") {
+      return new Blob([csvString], { type: 'text/csv' });
+    } else if (fileType === 'pdf') {
       const pdfData = data.map((obj) => Object.values(obj));
       const doc = new JsPDF();
       doc.autoTable({
@@ -254,17 +226,17 @@ export function Table({
           minCellHeight: 9,
           minCellWidth: 20,
           fontSize: 11,
-          color: "black",
+          color: 'black',
         },
-        theme: "grid",
+        theme: 'grid',
       });
       doc.save(`${fileName}.pdf`);
-    } else if (fileType === "xlsx") {
+    } else if (fileType === 'xlsx') {
       let wb = XLSX.utils.book_new();
       let ws1 = XLSX.utils.json_to_sheet(data, {
         headers,
       });
-      XLSX.utils.book_append_sheet(wb, ws1, "React Table Data");
+      XLSX.utils.book_append_sheet(wb, ws1, 'React Table Data');
       XLSX.writeFile(wb, `${fileName}.xlsx`);
       // Returning false as downloading of file is already taken care of
       return false;
@@ -272,8 +244,8 @@ export function Table({
   }
 
   function onPageIndexChanged(page) {
-    onComponentOptionChanged(component, "pageIndex", page).then(() => {
-      onEvent("onPageChanged", { component, data: {} });
+    onComponentOptionChanged(component, 'pageIndex', page).then(() => {
+      onEvent('onPageChanged', { component, data: {} });
     });
   }
 
@@ -296,7 +268,7 @@ export function Table({
       dataUpdates: [],
     }).then(() => {
       mergeToTableDetails({ dataUpdates: {}, changeSet: {} });
-      fireEvent("onCancelChanges");
+      fireEvent('onCancelChanges');
     });
   }
 
@@ -306,17 +278,13 @@ export function Table({
     if (color !== undefined) {
       return color;
     } else {
-      return darkMode ? "#ffffff" : "#000000";
+      return darkMode ? '#ffffff' : '#000000';
     }
   }, [color, darkMode]);
 
   let tableData = [];
   if (currentState) {
-    tableData = resolveReferences(
-      component.definition.properties.data.value,
-      currentState,
-      []
-    );
+    tableData = resolveReferences(component.definition.properties.data.value, currentState, []);
     if (!Array.isArray(tableData)) tableData = [];
   }
 
@@ -362,9 +330,7 @@ export function Table({
     return wrapOption?.textWrap;
   };
 
-  const optionsData = columnData.map(
-    (column) => column.columnOptions?.selectOptions
-  );
+  const optionsData = columnData.map((column) => column.columnOptions?.selectOptions);
 
   const columns = useMemo(
     () => [...leftActionsCellData, ...columnData, ...rightActionsCellData],
@@ -378,9 +344,7 @@ export function Table({
       JSON.stringify(optionsData),
       JSON.stringify(component.definition.properties.columns),
       showBulkSelector,
-      JSON.stringify(
-        variablesExposedForPreview && variablesExposedForPreview[id]
-      ),
+      JSON.stringify(variablesExposedForPreview && variablesExposedForPreview[id]),
       darkMode,
     ] // Hack: need to fix
   );
@@ -395,11 +359,7 @@ export function Table({
   );
 
   useEffect(() => {
-    if (
-      tableData.length != 0 &&
-      component.definition.properties.autogenerateColumns?.value &&
-      mode === "edit"
-    ) {
+    if (tableData.length != 0 && component.definition.properties.autogenerateColumns?.value && mode === 'edit') {
       autogenerateColumns(
         tableData,
         component.definition.properties.columns.value,
@@ -470,12 +430,10 @@ export function Table({
       showBulkSelector &&
         hooks.visibleColumns.push((columns) => [
           {
-            id: "selection",
+            id: 'selection',
             Header: ({ getToggleAllPageRowsSelectedProps }) => (
               <div className="d-flex flex-column align-items-center">
-                <IndeterminateCheckbox
-                  {...getToggleAllPageRowsSelectedProps()}
-                />
+                <IndeterminateCheckbox {...getToggleAllPageRowsSelectedProps()} />
               </div>
             ),
             Cell: ({ row }) => (
@@ -484,7 +442,7 @@ export function Table({
               </div>
             ),
             width: 1,
-            columnType: "selector",
+            columnType: 'selector',
           },
           ...columns,
         ]);
@@ -497,58 +455,49 @@ export function Table({
       return;
     }
 
-    const columnName = columns.find(
-      (column) => column.id === state?.sortBy?.[0]?.id
-    ).accessor;
+    const columnName = columns.find((column) => column.id === state?.sortBy?.[0]?.id).accessor;
 
     return [
       {
         column: columnName,
-        direction: state?.sortBy?.[0]?.desc ? "desc" : "asc",
+        direction: state?.sortBy?.[0]?.desc ? 'desc' : 'asc',
       },
     ];
   }, [JSON.stringify(state)]);
 
   useEffect(() => {
     if (!sortOptions) {
-      setExposedVariable("sortApplied", []);
+      setExposedVariable('sortApplied', []);
     }
-    if (mounted)
-      setExposedVariable("sortApplied", sortOptions).then(() =>
-        fireEvent("onSort")
-      );
+    if (mounted) setExposedVariable('sortApplied', sortOptions).then(() => fireEvent('onSort'));
   }, [sortOptions]);
 
   registerAction(
-    "setPage",
+    'setPage',
     async function (targetPageIndex) {
       setPaginationInternalPageIndex(targetPageIndex);
-      setExposedVariable("pageIndex", targetPageIndex);
-      if (!serverSidePagination && clientSidePagination)
-        gotoPage(targetPageIndex - 1);
+      setExposedVariable('pageIndex', targetPageIndex);
+      if (!serverSidePagination && clientSidePagination) gotoPage(targetPageIndex - 1);
     },
     [serverSidePagination, clientSidePagination, setPaginationInternalPageIndex]
   );
   registerAction(
-    "selectRow",
+    'selectRow',
     async function (key, value) {
       const item = tableData.filter((item) => item[key] == value);
       const row = rows.find((item, index) => item.original[key] == value);
       if (row != undefined) {
-        const selectedRowDetails = {
-          selectedRow: item[0],
-          selectedRowId: row.id,
-        };
+        const selectedRowDetails = { selectedRow: item[0], selectedRowId: row.id };
         mergeToTableDetails(selectedRowDetails);
         setExposedVariables(selectedRowDetails).then(() => {
-          fireEvent("onRowClicked");
+          fireEvent('onRowClicked');
         });
       }
     },
     [JSON.stringify(tableData), JSON.stringify(tableDetails.selectedRow)]
   );
   registerAction(
-    "deselectRow",
+    'deselectRow',
     async function () {
       if (!_.isEmpty(tableDetails.selectedRow)) {
         const selectedRowDetails = { selectedRow: {}, selectedRowId: {} };
@@ -560,7 +509,7 @@ export function Table({
     [JSON.stringify(tableData), JSON.stringify(tableDetails.selectedRow)]
   );
   registerAction(
-    "discardChanges",
+    'discardChanges',
     async function () {
       if (Object.keys(tableDetails.changeSet || {}).length > 0) {
         setExposedVariables({
@@ -575,14 +524,8 @@ export function Table({
   );
 
   useEffect(() => {
-    const selectedRowsOriginalData = selectedFlatRows.map(
-      (row) => row.original
-    );
-    onComponentOptionChanged(
-      component,
-      "selectedRows",
-      selectedRowsOriginalData
-    );
+    const selectedRowsOriginalData = selectedFlatRows.map((row) => row.original);
+    onComponentOptionChanged(component, 'selectedRows', selectedRowsOriginalData);
   }, [selectedFlatRows.length]);
 
   React.useEffect(() => {
@@ -597,21 +540,18 @@ export function Table({
   useEffect(() => {
     const pageData = page.map((row) => row.original);
     onComponentOptionsChanged(component, [
-      ["currentPageData", pageData],
-      ["currentData", data],
-      ["selectedRow", []],
-      ["selectedRowId", null],
+      ['currentPageData', pageData],
+      ['currentData', data],
+      ['selectedRow', []],
+      ['selectedRowId', null],
     ]);
   }, [tableData.length, tableDetails.changeSet, page, data]);
 
   useEffect(() => {
-    const newColumnSizes = {
-      ...columnSizes,
-      ...state.columnResizing.columnWidths,
-    };
+    const newColumnSizes = { ...columnSizes, ...state.columnResizing.columnWidths };
     if (!state.columnResizing.isResizingColumn && !_.isEmpty(newColumnSizes)) {
       changeCanDrag(true);
-      paramUpdated(id, "columnSizes", {
+      paramUpdated(id, 'columnSizes', {
         value: newColumnSizes,
       });
     } else {
@@ -619,8 +559,7 @@ export function Table({
     }
   }, [state.columnResizing.isResizingColumn]);
 
-  const [paginationInternalPageIndex, setPaginationInternalPageIndex] =
-    useState(pageIndex ?? 1);
+  const [paginationInternalPageIndex, setPaginationInternalPageIndex] = useState(pageIndex ?? 1);
   const [rowDetails, setRowDetails] = useState();
   useEffect(() => {
     if (pageCount <= pageIndex) gotoPage(pageCount - 1);
@@ -629,16 +568,12 @@ export function Table({
   const hoverRef = useRef();
 
   useEffect(() => {
-    if (
-      rowDetails?.hoveredRowId !== "" &&
-      hoverRef.current !== rowDetails?.hoveredRowId
-    )
-      rowHover();
+    if (rowDetails?.hoveredRowId !== '' && hoverRef.current !== rowDetails?.hoveredRowId) rowHover();
   }, [rowDetails]);
 
   useEffect(() => {
     setExposedVariable(
-      "filteredData",
+      'filteredData',
       globalFilteredRows.map((row) => row.original)
     );
   }, [JSON.stringify(globalFilteredRows.map((row) => row.original))]);
@@ -646,12 +581,12 @@ export function Table({
   const rowHover = () => {
     mergeToTableDetails(rowDetails);
     setExposedVariables(rowDetails).then(() => {
-      fireEvent("onRowHovered");
+      fireEvent('onRowHovered');
     });
   };
   useEffect(() => {
     if (_.isEmpty(changeSet)) {
-      setExposedVariable("updatedData", tableData);
+      setExposedVariable('updatedData', tableData);
     }
   }, [JSON.stringify(changeSet)]);
 
@@ -660,31 +595,25 @@ export function Table({
       <Popover
         id="popover-basic"
         data-cy="popover-card"
-        className={`${
-          darkMode && "popover-dark-themed theme-dark"
-        } shadow table-widget-download-popup`}
+        className={`${darkMode && 'popover-dark-themed theme-dark'} shadow table-widget-download-popup`}
         placement="bottom"
       >
         <Popover.Content>
           <div className="d-flex flex-column">
-            <span
-              data-cy={`option-download-CSV`}
-              className="cursor-pointer"
-              onClick={() => exportData("csv", true)}
-            >
+            <span data-cy={`option-download-CSV`} className="cursor-pointer" onClick={() => exportData('csv', true)}>
               Download as CSV
             </span>
             <span
               data-cy={`option-download-execel`}
               className="pt-2 cursor-pointer"
-              onClick={() => exportData("xlsx", true)}
+              onClick={() => exportData('xlsx', true)}
             >
               Download as Excel
             </span>
             <span
               data-cy={`option-download-pdf`}
               className="pt-2 cursor-pointer"
-              onClick={() => exportData("pdf", true)}
+              onClick={() => exportData('pdf', true)}
             >
               Download as PDF
             </span>
@@ -701,8 +630,8 @@ export function Table({
       style={{
         width: `100%`,
         height: `${height}px`,
-        display: parsedWidgetVisibility ? "" : "none",
-        overflow: "hidden",
+        display: parsedWidgetVisibility ? '' : 'none',
+        overflow: 'hidden',
         borderRadius: Number.parseFloat(borderRadius),
       }}
       onClick={(event) => {
@@ -712,13 +641,103 @@ export function Table({
       ref={tableRef}
     >
       {/* Show top bar unless search box is disabled and server pagination is enabled */}
+      {(displaySearchBox || showDownloadButton || showFilterButton) && (
+        <div className="card-body border-bottom py-3 ">
+          <div
+            className={`d-flex align-items-center ms-auto text-muted ${
+              displaySearchBox ? 'justify-content-between' : 'justify-content-end'
+            }`}
+          >
+            {displaySearchBox && (
+              <GlobalFilter
+                globalFilter={state.globalFilter}
+                useAsyncDebounce={useAsyncDebounce}
+                setGlobalFilter={setGlobalFilter}
+                onComponentOptionChanged={onComponentOptionChanged}
+                component={component}
+                onEvent={onEvent}
+                darkMode={darkMode}
+              />
+            )}
+            <div>
+              {showFilterButton && (
+                <span data-tip="Filter data" className="btn btn-light btn-sm p-1 mx-1" onClick={() => showFilters()}>
+                  <img src="assets/images/icons/filter.svg" width="15" height="15" />
+                  {tableDetails.filterDetails.filters.length > 0 && (
+                    <a className="badge bg-azure" style={{ width: '4px', height: '4px', marginTop: '5px' }}></a>
+                  )}
+                </span>
+              )}
+              {showDownloadButton && (
+                <OverlayTrigger trigger="click" overlay={downlaodPopover()} rootClose={true} placement={'bottom-end'}>
+                  <span data-tip="Download" className="btn btn-light btn-sm p-1">
+                    <img src="assets/images/icons/download.svg" width="15" height="15" />
+                  </span>
+                </OverlayTrigger>
+              )}
+              {!hideColumnSelectorButton && (
+                <OverlayTrigger
+                  trigger="click"
+                  rootClose={true}
+                  overlay={
+                    <Popover>
+                      <div
+                        data-cy={`dropdown-hide-column`}
+                        className={`dropdown-table-column-hide-common ${
+                          darkMode ? 'dropdown-table-column-hide-dark-themed' : 'dropdown-table-column-hide'
+                        } `}
+                      >
+                        <div className="dropdown-item">
+                          <IndeterminateCheckbox {...getToggleHideAllColumnsProps()} />
+                          <span className="hide-column-name" data-cy={`options-select-all-coloumn`}>
+                            Select All
+                          </span>
+                        </div>
+                        {allColumns.map(
+                          (column) =>
+                            typeof column.Header === 'string' && (
+                              <div key={column.id}>
+                                <div>
+                                  <label className="dropdown-item">
+                                    <input
+                                      type="checkbox"
+                                      data-cy={`checkbox-coloumn-${String(column.Header)
+                                        .toLowerCase()
+                                        .replace(/\s+/g, '-')}`}
+                                      {...column.getToggleHiddenProps()}
+                                    />
+                                    <span
+                                      className="hide-column-name"
+                                      data-cy={`options-coloumn-${String(column.Header)
+                                        .toLowerCase()
+                                        .replace(/\s+/g, '-')}`}
+                                    >
+                                      {` ${column.Header}`}
+                                    </span>
+                                  </label>
+                                </div>
+                              </div>
+                            )
+                        )}
+                      </div>
+                    </Popover>
+                  }
+                  placement={'bottom-end'}
+                >
+                  <span data-cy={`select-column-icon`} className={`btn btn-light btn-sm p-1 mb-0 mx-1 `}>
+                    <IconEyeOff style={{ width: '15', height: '15', margin: '0px' }} />
+                  </span>
+                </OverlayTrigger>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
 
       <div className="table-responsive jet-data-table">
         <table
           {...getTableProps()}
-          className={`table table-vcenter table-nowrap ${tableType} ${
-            darkMode && "table-dark"
-          }`}
+          className={`table table-vcenter table-nowrap ${tableType} ${darkMode && 'table-dark'}`}
           style={computedStyles}
         >
           <thead>
@@ -731,14 +750,9 @@ export function Table({
                 onDragUpdate={(dragUpdateObj) => {
                   const colOrder = [...currentColOrder.current];
                   const sIndex = dragUpdateObj.source.index;
-                  const dIndex =
-                    dragUpdateObj.destination &&
-                    dragUpdateObj.destination.index;
+                  const dIndex = dragUpdateObj.destination && dragUpdateObj.destination.index;
 
-                  if (
-                    typeof sIndex === "number" &&
-                    typeof dIndex === "number"
-                  ) {
+                  if (typeof sIndex === 'number' && typeof dIndex === 'number') {
                     colOrder.splice(sIndex, 1);
                     colOrder.splice(dIndex, 0, dragUpdateObj.draggableId);
                     setColumnOrder(colOrder);
@@ -767,32 +781,21 @@ export function Table({
                                 key={index}
                                 {...column.getHeaderProps()}
                                 className={
-                                  column.isSorted
-                                    ? column.isSortedDesc
-                                      ? "sort-desc th"
-                                      : "sort-asc th"
-                                    : "th"
+                                  column.isSorted ? (column.isSortedDesc ? 'sort-desc th' : 'sort-asc th') : 'th'
                                 }
                               >
                                 <div
-                                  data-cy={`column-header-${String(
-                                    column.exportValue
-                                  )
+                                  data-cy={`column-header-${String(column.exportValue)
                                     .toLowerCase()
-                                    .replace(/\s+/g, "-")}`}
+                                    .replace(/\s+/g, '-')}`}
                                   {...column.getSortByToggleProps()}
                                   {...provided.draggableProps}
                                   {...provided.dragHandleProps}
                                   // {...extraProps}
                                   ref={provided.innerRef}
-                                  style={{
-                                    ...getItemStyle(
-                                      snapshot,
-                                      provided.draggableProps.style
-                                    ),
-                                  }}
+                                  style={{ ...getItemStyle(snapshot, provided.draggableProps.style) }}
                                 >
-                                  {column.render("Header")}
+                                  {column.render('Header')}
                                 </div>
                                 <div
                                   onClick={(e) => {
@@ -801,9 +804,7 @@ export function Table({
                                   }}
                                   draggable="true"
                                   {...column.getResizerProps()}
-                                  className={`resizer ${
-                                    column.isResizing ? "isResizing" : ""
-                                  }`}
+                                  className={`resizer ${column.isResizing ? 'isResizing' : ''}`}
                                 />
                               </th>
                             );
@@ -824,155 +825,98 @@ export function Table({
           )}
 
           {!loadingState && (
-            <tbody
-              {...getTableBodyProps()}
-              style={{ color: computeFontColor() }}
-            >
+            <tbody {...getTableBodyProps()} style={{ color: computeFontColor() }}>
               {page.map((row, index) => {
                 prepareRow(row);
                 return (
                   <tr
                     key={index}
                     className={`table-row ${
-                      highlightSelectedRow &&
-                      row.id === tableDetails.selectedRowId
-                        ? "selected"
-                        : ""
+                      highlightSelectedRow && row.id === tableDetails.selectedRowId ? 'selected' : ''
                     }`}
                     {...row.getRowProps()}
                     onClick={(e) => {
                       e.stopPropagation();
-                      const selectedRowDetails = {
-                        selectedRowId: row.id,
-                        selectedRow: row.original,
-                      };
+                      const selectedRowDetails = { selectedRowId: row.id, selectedRow: row.original };
                       mergeToTableDetails(selectedRowDetails);
                       setExposedVariables(selectedRowDetails).then(() => {
-                        fireEvent("onRowClicked");
+                        fireEvent('onRowClicked');
                       });
                     }}
                     onMouseOver={(e) => {
                       if (hoverAdded) {
-                        const hoveredRowDetails = {
-                          hoveredRowId: row.id,
-                          hoveredRow: row.original,
-                        };
+                        const hoveredRowDetails = { hoveredRowId: row.id, hoveredRow: row.original };
                         setRowDetails(hoveredRowDetails);
                         hoverRef.current = rowDetails?.hoveredRowId;
                       }
                     }}
                     onMouseLeave={(e) => {
-                      hoverAdded &&
-                        setRowDetails({ hoveredRowId: "", hoveredRow: "" });
+                      hoverAdded && setRowDetails({ hoveredRowId: '', hoveredRow: '' });
                     }}
                   >
                     {row.cells.map((cell, index) => {
                       let cellProps = cell.getCellProps();
                       if (tableDetails.changeSet) {
                         if (tableDetails.changeSet[cell.row.index]) {
-                          const currentColumn = columnData.find(
-                            (column) => column.id === cell.column.id
-                          );
+                          const currentColumn = columnData.find((column) => column.id === cell.column.id);
                           if (
-                            _.get(
-                              tableDetails.changeSet[cell.row.index],
-                              currentColumn?.accessor,
-                              undefined
-                            ) !== undefined
+                            _.get(tableDetails.changeSet[cell.row.index], currentColumn?.accessor, undefined) !==
+                            undefined
                           ) {
-                            cellProps.style.backgroundColor = darkMode
-                              ? "#1c252f"
-                              : "#ffffde";
-                            cellProps.style["--tblr-table-accent-bg"] = darkMode
-                              ? "#1c252f"
-                              : "#ffffde";
+                            cellProps.style.backgroundColor = darkMode ? '#1c252f' : '#ffffde';
+                            cellProps.style['--tblr-table-accent-bg'] = darkMode ? '#1c252f' : '#ffffde';
                           }
                         }
                       }
                       const wrapAction = textWrapActions(cell.column.id);
-                      const rowChangeSet = changeSet
-                        ? changeSet[cell.row.index]
-                        : null;
-                      const cellValue = rowChangeSet
-                        ? rowChangeSet[cell.column.name] || cell.value
-                        : cell.value;
+                      const rowChangeSet = changeSet ? changeSet[cell.row.index] : null;
+                      const cellValue = rowChangeSet ? rowChangeSet[cell.column.name] || cell.value : cell.value;
                       const rowData = tableData[cell.row.index];
                       const cellBackgroundColor = resolveReferences(
                         cell.column?.cellBackgroundColor,
                         currentState,
-                        "",
+                        '',
                         {
                           cellValue,
                           rowData,
                         }
                       );
-                      const cellTextColor = resolveReferences(
-                        cell.column?.textColor,
-                        currentState,
-                        "",
-                        {
-                          cellValue,
-                          rowData,
-                        }
-                      );
+                      const cellTextColor = resolveReferences(cell.column?.textColor, currentState, '', {
+                        cellValue,
+                        rowData,
+                      });
                       return (
                         // Does not require key as its already being passed by react-table via cellProps
                         // eslint-disable-next-line react/jsx-key
                         <td
-                          data-cy={`${cell.column.columnType ?? ""}${String(
-                            cell.column.id === "rightActions" ||
-                              cell.column.id === "leftActions"
-                              ? cell.column.id
-                              : ""
-                          )}${String(
-                            cellValue ?? ""
-                          ).toLocaleLowerCase()}-cell-${index}`}
-                          className={cx(
-                            `${wrapAction ? wrapAction : "wrap"}-wrapper`,
-                            {
-                              "has-actions":
-                                cell.column.id === "rightActions" ||
-                                cell.column.id === "leftActions",
-                              "has-text":
-                                cell.column.columnType === "text" ||
-                                cell.column.isEditable,
-                              "has-dropdown":
-                                cell.column.columnType === "dropdown",
-                              "has-multiselect":
-                                cell.column.columnType === "multiselect",
-                              "has-datepicker":
-                                cell.column.columnType === "datepicker",
-                              "align-items-center flex-column":
-                                cell.column.columnType === "selector",
-                              [cellSize]: true,
-                            }
-                          )}
+                          data-cy={`${cell.column.columnType ?? ''}${String(
+                            cell.column.id === 'rightActions' || cell.column.id === 'leftActions' ? cell.column.id : ''
+                          )}${String(cellValue ?? '').toLocaleLowerCase()}-cell-${index}`}
+                          className={cx(`${wrapAction ? wrapAction : 'wrap'}-wrapper`, {
+                            'has-actions': cell.column.id === 'rightActions' || cell.column.id === 'leftActions',
+                            'has-text': cell.column.columnType === 'text' || cell.column.isEditable,
+                            'has-dropdown': cell.column.columnType === 'dropdown',
+                            'has-multiselect': cell.column.columnType === 'multiselect',
+                            'has-datepicker': cell.column.columnType === 'datepicker',
+                            'align-items-center flex-column': cell.column.columnType === 'selector',
+                            [cellSize]: true,
+                          })}
                           {...cellProps}
-                          style={{
-                            ...cellProps.style,
-                            backgroundColor: cellBackgroundColor ?? "inherit",
-                          }}
+                          style={{ ...cellProps.style, backgroundColor: cellBackgroundColor ?? 'inherit' }}
                         >
                           <div
                             className={`td-container ${
-                              cell.column.columnType === "image" &&
-                              "jet-table-image-column"
-                            } ${
-                              cell.column.columnType !== "image" &&
-                              "w-100 h-100"
-                            }`}
+                              cell.column.columnType === 'image' && 'jet-table-image-column'
+                            } ${cell.column.columnType !== 'image' && 'w-100 h-100'}`}
                           >
                             <GenerateEachCellValue
                               cellValue={cellValue}
                               globalFilter={state.globalFilter}
-                              cellRender={cell.render("Cell")}
+                              cellRender={cell.render('Cell')}
                               rowChangeSet={rowChangeSet}
                               isEditable={cell.column.isEditable}
                               columnType={cell.column.columnType}
-                              isColumnTypeAction={[
-                                "rightActions",
-                                "leftActions",
-                              ].includes(cell.column.id)}
+                              isColumnTypeAction={['rightActions', 'leftActions'].includes(cell.column.id)}
                               cellTextColor={cellTextColor}
                               cell={cell}
                               currentState={currentState}
@@ -988,16 +932,14 @@ export function Table({
           )}
         </table>
         {loadingState === true && (
-          <div style={{ width: "100%" }} className="p-2">
+          <div style={{ width: '100%' }} className="p-2">
             <center>
               <div className="spinner-border mt-5" role="status"></div>
             </center>
           </div>
         )}
       </div>
-      {(clientSidePagination ||
-        serverSidePagination ||
-        Object.keys(tableDetails.changeSet || {}).length > 0) && (
+      {(clientSidePagination || serverSidePagination || Object.keys(tableDetails.changeSet || {}).length > 0) && (
         <div className="card-footer d-flex align-items-center jet-table-footer justify-content-center">
           <div className="table-footer row gx-0">
             <div className="col">
@@ -1018,15 +960,12 @@ export function Table({
               )}
             </div>
             <div className="col d-flex justify-content-end">
-              {showBulkUpdateActions &&
-              Object.keys(tableDetails.changeSet || {}).length > 0 ? (
+              {showBulkUpdateActions && Object.keys(tableDetails.changeSet || {}).length > 0 ? (
                 <>
                   <button
-                    className={`btn btn-primary btn-sm mx-2 ${
-                      tableDetails.isSavingChanges ? "btn-loading" : ""
-                    }`}
+                    className={`btn btn-primary btn-sm mx-2 ${tableDetails.isSavingChanges ? 'btn-loading' : ''}`}
                     onClick={() =>
-                      onEvent("onBulkUpdate", { component }).then(() => {
+                      onEvent('onBulkUpdate', { component }).then(() => {
                         handleChangesSaved();
                       })
                     }
@@ -1043,11 +982,28 @@ export function Table({
                   </button>
                 </>
               ) : (
-                <></>
+                <span data-cy={`footer-number-of-records`}>
+                  {clientSidePagination && !serverSidePagination && `${globalFilteredRows.length} Records`}
+                  {serverSidePagination && totalRecords ? `${totalRecords} Records` : ''}
+                </span>
               )}
             </div>
           </div>
         </div>
+      )}
+      {tableDetails.filterDetails.filtersVisible && (
+        <Filter
+          hideFilters={hideFilters}
+          filters={tableDetails.filterDetails.filters}
+          columns={columnData.map((column) => {
+            return { name: column.Header, value: column.id };
+          })}
+          mergeToFilterDetails={mergeToFilterDetails}
+          filterDetails={tableDetails.filterDetails}
+          darkMode={darkMode}
+          setAllFilters={setAllFilters}
+          fireEvent={fireEvent}
+        />
       )}
     </div>
   );

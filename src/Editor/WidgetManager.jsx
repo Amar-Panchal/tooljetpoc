@@ -133,7 +133,11 @@ export const WidgetManager = function WidgetManager({
       "Radio-button",
       "TestList",
     ];
-    const reportTemplateItems = ["ReportResultTable", "DemographicField"];
+    const reportTemplateItems = [
+      "ReportResultTable",
+      "DemographicField",
+      "Table",
+    ];
 
     const formItems = [
       "TextInput",
@@ -212,7 +216,7 @@ export const WidgetManager = function WidgetManager({
       <div className="widgets-list col-sm-12 col-lg-12 row">
         {segregateSections()}
       </div>
-      <div>
+      {/* <div>
         <p>Media Logos</p>
         <div>
           {mediaLogoList.map((mediaLogoList, index) => {
@@ -474,7 +478,7 @@ export const WidgetManager = function WidgetManager({
             );
           })}
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };
