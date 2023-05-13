@@ -213,17 +213,267 @@ export const WidgetManager = function WidgetManager({
         {segregateSections()}
       </div>
       <div>
-        {/* <p>Media Logos</p> */}
-        {/* <div>
-          {mediaLogoList.map((mediaLogoList) => {
+        <p>Media Logos</p>
+        <div>
+          {mediaLogoList.map((mediaLogoList, index) => {
+            const temp = {
+              properties: {
+                source: {
+                  type: "code",
+                  displayName: "URL",
+                  validation: {
+                    schema: {
+                      type: "string",
+                    },
+                  },
+                },
+                loadingState: {
+                  type: "toggle",
+                  displayName: "Loading state",
+                  validation: {
+                    schema: {
+                      type: "boolean",
+                    },
+                  },
+                },
+                alternativeText: {
+                  type: "code",
+                  displayName: "Alternative text",
+                  validation: {
+                    schema: {
+                      type: "string",
+                    },
+                  },
+                },
+                zoomButtons: {
+                  type: "toggle",
+                  displayName: "Zoom button",
+                  validation: {
+                    schema: {
+                      type: "boolean",
+                    },
+                  },
+                },
+                rotateButton: {
+                  type: "toggle",
+                  displayName: "Rotate button",
+                  validation: {
+                    schema: {
+                      type: "boolean",
+                    },
+                  },
+                },
+              },
+              general: {
+                tooltip: {
+                  type: "code",
+                  displayName: "Tooltip",
+                  validation: {
+                    schema: {
+                      type: "string",
+                    },
+                  },
+                },
+              },
+              others: {
+                showOnDesktop: {
+                  type: "toggle",
+                  displayName: "Show on desktop",
+                },
+                showOnMobile: {
+                  type: "toggle",
+                  displayName: "Show on mobile",
+                },
+              },
+              events: {
+                onClick: {
+                  displayName: "On click",
+                },
+              },
+              styles: {
+                borderType: {
+                  type: "select",
+                  displayName: "Border type",
+                  options: [
+                    {
+                      name: "None",
+                      value: "none",
+                    },
+                    {
+                      name: "Rounded",
+                      value: "rounded",
+                    },
+                    {
+                      name: "Circle",
+                      value: "rounded-circle",
+                    },
+                    {
+                      name: "Thumbnail",
+                      value: "img-thumbnail",
+                    },
+                  ],
+                  validation: {
+                    schema: {
+                      type: "string",
+                    },
+                  },
+                },
+                backgroundColor: {
+                  type: "color",
+                  displayName: "Background color",
+                  validation: {
+                    schema: {
+                      type: "string",
+                    },
+                  },
+                },
+                padding: {
+                  type: "code",
+                  displayName: "Padding",
+                  validation: {
+                    schema: {
+                      type: "union",
+                      schemas: [
+                        {
+                          type: "string",
+                        },
+                        {
+                          type: "number",
+                        },
+                      ],
+                    },
+                  },
+                },
+                visibility: {
+                  type: "toggle",
+                  displayName: "Visibility",
+                  validation: {
+                    schema: {
+                      type: "boolean",
+                    },
+                  },
+                },
+                disabledState: {
+                  type: "toggle",
+                  displayName: "Disable",
+                  validation: {
+                    schema: {
+                      type: "boolean",
+                    },
+                  },
+                },
+                imageFit: {
+                  type: "select",
+                  displayName: "Image fit",
+                  options: [
+                    {
+                      name: "fill",
+                      value: "fill",
+                    },
+                    {
+                      name: "contain",
+                      value: "contain",
+                    },
+                    {
+                      name: "cover",
+                      value: "cover",
+                    },
+                    {
+                      name: "scale-down",
+                      value: "scale-down",
+                    },
+                  ],
+                  validation: {
+                    schema: {
+                      type: "string",
+                    },
+                  },
+                },
+              },
+              validate: true,
+              generalStyles: {
+                boxShadow: {
+                  type: "boxShadow",
+                  displayName: "Box Shadow",
+                },
+              },
+              definition: {
+                others: {
+                  showOnDesktop: {
+                    value: "{{true}}",
+                  },
+                  showOnMobile: {
+                    value: "{{false}}",
+                  },
+                },
+                events: [],
+                styles: {
+                  borderType: {
+                    value: "none",
+                  },
+                  padding: {
+                    value: "0",
+                  },
+                  visibility: {
+                    value: "{{true}}",
+                  },
+                  disabledState: {
+                    value: "{{false}}",
+                  },
+                  imageFit: {
+                    value: "contain",
+                  },
+                  backgroundColor: {
+                    value: "",
+                  },
+                },
+                generalStyles: {
+                  boxShadow: {
+                    value: "0px 0px 0px 0px #00000040",
+                  },
+                },
+                properties: {
+                  source: {
+                    value: mediaLogoList.imageUrl,
+                  },
+                  visible: {
+                    value: "{{true}}",
+                  },
+                  loadingState: {
+                    value: "{{false}}",
+                  },
+                  alternativeText: {
+                    value: "",
+                  },
+                  zoomButtons: {
+                    value: "{{false}}",
+                  },
+                  rotateButton: {
+                    value: "{{false}}",
+                  },
+                },
+                general: {},
+                exposedVariables: {},
+              },
+              name: "MediaLogos",
+              displayName: mediaLogoList.imageName,
+              description: "Display an Logo",
+              defaultSize: {
+                width: 3,
+                height: 100,
+              },
+              component: "MediaLogos",
+              exposedVariables: {},
+            };
             return (
-              <div draggable={true}>
-                <img src={mediaLogoList.imageUrl} width='80px' />
-                <p>{mediaLogoList.imageName}</p>
-              </div>
+              // <div draggable={true}>
+              //   <img src={mediaLogoList.imageUrl} width="80px" />
+              //   <p>{mediaLogoList.imageName}</p>
+              // </div>
+              renderComponentCard(temp, index)
             );
           })}
-        </div> */}
+        </div>
       </div>
     </div>
   );

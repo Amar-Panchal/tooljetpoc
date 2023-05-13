@@ -17,6 +17,7 @@ import { ReportResultTable } from "./Components/ReportResultTable/ReportResultTa
 import { VerticalDivider } from "./Components/verticalDivider";
 import { TestList } from "./Components/TestList";
 import { DemographicField } from "./Components/DemographicField";
+import { MediaLogos } from "./Components/MediaLogos";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import "@/_styles/custom.scss";
 import { validateProperties } from "./component-properties-validation";
@@ -50,6 +51,7 @@ const AllComponents = {
   TestList,
   DemographicField,
   VerticalDivider,
+  MediaLogos,
 };
 
 export const Box = function Box({
@@ -241,7 +243,11 @@ export const Box = function Box({
       ...{ validationObject: component.definition.validation, currentState },
       customResolveObjects: customResolvables,
     });
-
+  if (component.component === "MediaLogos")
+    console.log(
+      "inCanvasinCanvas",
+      component.definition.properties.source.value
+    );
   return (
     <OverlayTrigger
       placement={inCanvas ? "auto" : "top"}
@@ -382,15 +388,19 @@ export const Box = function Box({
                 .replace(/\s+/g, "-")}`}
             >
               <center>
-                <div
-                  style={{
-                    width: "20px",
-                    height: "20px",
-                    backgroundSize: "contain",
-                    backgroundImage: `url(assets/images/icons/widgets/${component.name.toLowerCase()}.svg)`,
-                    backgroundRepeat: "no-repeat",
-                  }}
-                ></div>
+                {component.component === "MediaLogos" ? (
+                  <img src={component.definition.properties.source.value} />
+                ) : (
+                  <div
+                    style={{
+                      width: "20px",
+                      height: "20px",
+                      backgroundSize: "contain",
+                      backgroundImage: `url(assets/images/icons/widgets/${component.name.toLowerCase()}.svg)`,
+                      backgroundRepeat: "no-repeat",
+                    }}
+                  ></div>
+                )}
               </center>
               <span className="component-title">
                 {t(`${component.name}`, component.displayName)}

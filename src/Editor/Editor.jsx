@@ -1913,7 +1913,7 @@ class EditorComponent extends React.Component {
         const tempPageId = JSON.parse(
           response?.data?.resultData[0]?.reportValues
         );
-        console.log("temp name editor", tempPageId);
+
         this.setState({
           appDefinition: JSON.parse(response.data.resultData[0].reportValues),
           currentPageId: Object.keys(tempPageId?.pages)[0],
