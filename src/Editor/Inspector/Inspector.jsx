@@ -4,6 +4,10 @@ import React, { useState, useRef, useEffect } from "react";
 import cx from "classnames";
 import { componentTypes } from "../WidgetManager/components";
 import { Table } from "./Components/Table";
+import { TwoColumn } from "./Components/TwoColumn";
+import { ThreeColumn } from "./Components/ThreeColumn";
+import { FourColumn } from "./Components/FourColumn";
+import { FiveColumn } from "./Components/FiveColumn";
 import { Chart } from "./Components/Chart";
 import { Form } from "./Components/Form";
 import { renderElement } from "./Utils";
@@ -604,6 +608,14 @@ const GetAccordion = React.memo(
     switch (componentName) {
       case "Table":
         return <Table {...restProps} />;
+      case "TwoColumn":
+        return <TwoColumn {...restProps} />;
+      case "ThreeColumn":
+        return <ThreeColumn {...restProps} />;
+      case "FourColumn":
+        return <FourColumn {...restProps} />;
+      case "FiveColumn":
+        return <FiveColumn {...restProps} />;
 
       case "Chart":
         return <Chart {...restProps} />;

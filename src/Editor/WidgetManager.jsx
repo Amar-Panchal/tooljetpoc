@@ -137,6 +137,10 @@ export const WidgetManager = function WidgetManager({
       "ReportResultTable",
       "DemographicField",
       "Table",
+      "TwoColumn",
+      "ThreeColumn",
+      "FourColumn",
+      "FiveColumn",
     ];
 
     const formItems = [

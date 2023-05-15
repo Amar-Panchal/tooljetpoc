@@ -1,6 +1,7 @@
 /** @format */
 
 export const widgets = [
+  //table
   {
     name: "Table",
     displayName: "Table",
@@ -35,106 +36,127 @@ export const widgets = [
       columns: {
         type: "array",
         displayName: "Table Columns",
-        // validation: {
-        //   schema: {
-        //     type: 'array',
-        //     element: {
-        //       type: 'union',
-        //       schemas: [
-        //         {
-        //           type: 'object',
-        //           object: {
-        //             columnType: { type: 'string' },
-        //             name: { type: 'string' },
-        //             textWrap: { type: 'string' },
-        //             key: { type: 'union', schemas: [{ type: 'string' }, { type: 'number' }] },
-        //             textColor: { type: 'string' },
-        //             regex: { type: 'string' },
-        //             minLength: { type: 'union', schemas: [{ type: 'string' }, { type: 'number' }] },
-        //             maxLength: { type: 'union', schemas: [{ type: 'string' }, { type: 'number' }] },
-        //             customRule: { type: 'string' },
-        //           },
-        //         },
-        //         {
-        //           type: 'object',
-        //           object: {
-        //             columnType: { type: 'string' },
-        //             name: { type: 'string' },
-        //             key: { type: 'union', schemas: [{ type: 'string' }, { type: 'number' }] },
-        //           },
-        //           isEditable: { type: 'boolean' },
-        //         },
-        //         {
-        //           type: 'object',
-        //           object: {
-        //             columnType: { type: 'string' },
-        //             name: { type: 'string' },
-        //             activeColor: { type: 'string' },
-        //             isEditable: { type: 'boolean' },
-        //           },
-        //         },
-        //         {
-        //           type: 'object',
-        //           object: {
-        //             columnType: { type: 'string' },
-        //             name: { type: 'string' },
-        //             key: { type: 'union', schemas: [{ type: 'string' }, { type: 'number' }] },
-        //             values: {
-        //               type: 'union',
-        //               schemas: [
-        //                 { type: 'array', element: { type: 'string' } },
-        //                 { type: 'array', element: { type: 'number' } },
-        //               ],
-        //             },
-        //             labels: {
-        //               type: 'union',
-        //               schemas: [
-        //                 { type: 'array', element: { type: 'string' } },
-        //                 { type: 'array', element: { type: 'number' } },
-        //               ],
-        //             },
-        //           },
-        //           isEditable: { type: 'boolean' },
-        //         },
-        //         {
-        //           type: 'object',
-        //           object: {
-        //             columnType: { type: 'string' },
-        //             name: { type: 'string' },
-        //             key: { type: 'union', schemas: [{ type: 'string' }, { type: 'number' }] },
-        //             values: {
-        //               type: 'union',
-        //               schemas: [
-        //                 { type: 'array', element: { type: 'string' } },
-        //                 { type: 'array', element: { type: 'number' } },
-        //               ],
-        //             },
-        //             labels: {
-        //               type: 'union',
-        //               schemas: [
-        //                 { type: 'array', element: { type: 'string' } },
-        //                 { type: 'array', element: { type: 'number' } },
-        //               ],
-        //             },
-        //           },
-        //           isEditable: { type: 'boolean' },
-        //         },
-        //         {
-        //           type: 'object',
-        //           object: {
-        //             columnType: { type: 'string' },
-        //             name: { type: 'string' },
-        //             key: { type: 'union', schemas: [{ type: 'string' }, { type: 'number' }] },
-        //             dateFormat: { type: 'string' },
-        //             parseDateFormat: { type: 'string' },
-        //             isTimeChecked: { type: 'boolean' },
-        //             isEditable: { type: 'boolean' },
-        //           },
-        //         },
-        //       ],
-        //     },
-        //   },
-        // },
+        validation: {
+          schema: {
+            type: "array",
+            element: {
+              type: "union",
+              schemas: [
+                {
+                  type: "object",
+                  object: {
+                    columnType: { type: "string" },
+                    name: { type: "string" },
+                    textWrap: { type: "string" },
+                    key: {
+                      type: "union",
+                      schemas: [{ type: "string" }, { type: "number" }],
+                    },
+                    textColor: { type: "string" },
+                    regex: { type: "string" },
+                    minLength: {
+                      type: "union",
+                      schemas: [{ type: "string" }, { type: "number" }],
+                    },
+                    maxLength: {
+                      type: "union",
+                      schemas: [{ type: "string" }, { type: "number" }],
+                    },
+                    customRule: { type: "string" },
+                  },
+                },
+                {
+                  type: "object",
+                  object: {
+                    columnType: { type: "string" },
+                    name: { type: "string" },
+                    key: {
+                      type: "union",
+                      schemas: [{ type: "string" }, { type: "number" }],
+                    },
+                  },
+                  isEditable: { type: "boolean" },
+                },
+                {
+                  type: "object",
+                  object: {
+                    columnType: { type: "string" },
+                    name: { type: "string" },
+                    activeColor: { type: "string" },
+                    isEditable: { type: "boolean" },
+                  },
+                },
+                {
+                  type: "object",
+                  object: {
+                    columnType: { type: "string" },
+                    name: { type: "string" },
+                    key: {
+                      type: "union",
+                      schemas: [{ type: "string" }, { type: "number" }],
+                    },
+                    values: {
+                      type: "union",
+                      schemas: [
+                        { type: "array", element: { type: "string" } },
+                        { type: "array", element: { type: "number" } },
+                      ],
+                    },
+                    labels: {
+                      type: "union",
+                      schemas: [
+                        { type: "array", element: { type: "string" } },
+                        { type: "array", element: { type: "number" } },
+                      ],
+                    },
+                  },
+                  isEditable: { type: "boolean" },
+                },
+                {
+                  type: "object",
+                  object: {
+                    columnType: { type: "string" },
+                    name: { type: "string" },
+                    key: {
+                      type: "union",
+                      schemas: [{ type: "string" }, { type: "number" }],
+                    },
+                    values: {
+                      type: "union",
+                      schemas: [
+                        { type: "array", element: { type: "string" } },
+                        { type: "array", element: { type: "number" } },
+                      ],
+                    },
+                    labels: {
+                      type: "union",
+                      schemas: [
+                        { type: "array", element: { type: "string" } },
+                        { type: "array", element: { type: "number" } },
+                      ],
+                    },
+                  },
+                  isEditable: { type: "boolean" },
+                },
+                {
+                  type: "object",
+                  object: {
+                    columnType: { type: "string" },
+                    name: { type: "string" },
+                    key: {
+                      type: "union",
+                      schemas: [{ type: "string" }, { type: "number" }],
+                    },
+                    dateFormat: { type: "string" },
+                    parseDateFormat: { type: "string" },
+                    isTimeChecked: { type: "boolean" },
+                    isEditable: { type: "boolean" },
+                  },
+                },
+              ],
+            },
+          },
+        },
       },
       rowsPerPage: {
         type: "code",
@@ -419,7 +441,7 @@ export const widgets = [
         enableNextButton: { value: "{{true}}" },
         enablePrevButton: { value: "{{true}}" },
         totalRecords: { value: "" },
-        clientSidePagination: { value: "{{true}}" },
+        clientSidePagination: { value: "{{false}}" },
         serverSideSort: { value: "{{false}}" },
         serverSideFilter: { value: "{{false}}" },
         displaySearchBox: { value: "{{true}}" },
@@ -450,7 +472,7 @@ export const widgets = [
         highlightSelectedRow: { value: "{{false}}" },
         columnSizes: { value: "{{({})}}" },
         actions: { value: [] },
-        enabledSort: { value: "{{true}}" },
+        enabledSort: { value: "{{false}}" },
         hideColumnSelectorButton: { value: "{{false}}" },
       },
       events: [],
@@ -465,6 +487,1960 @@ export const widgets = [
       },
     },
   },
+  //TwoColumn
+  {
+    name: "TwoColumn",
+    displayName: "Two Column",
+    description: "Display paginated tabular data",
+    component: "TwoColumn",
+    properties: {
+      title: {
+        type: "string",
+        displayName: "Title",
+        validation: {
+          schema: { type: "string" },
+        },
+      },
+      data: {
+        type: "code",
+        displayName: "Table data",
+        validation: {
+          schema: {
+            type: "array",
+            element: { type: "object" },
+            optional: true,
+          },
+        },
+      },
+      loadingState: {
+        type: "toggle",
+        displayName: "Loading state",
+        validation: {
+          schema: { type: "boolean" },
+        },
+      },
+      columns: {
+        type: "array",
+        displayName: "Table Columns",
+        validation: {
+          schema: {
+            type: "array",
+            element: {
+              type: "union",
+              schemas: [
+                {
+                  type: "object",
+                  object: {
+                    columnType: { type: "string" },
+                    name: { type: "string" },
+                    textWrap: { type: "string" },
+                    key: {
+                      type: "union",
+                      schemas: [{ type: "string" }, { type: "number" }],
+                    },
+                    textColor: { type: "string" },
+                    regex: { type: "string" },
+                    minLength: {
+                      type: "union",
+                      schemas: [{ type: "string" }, { type: "number" }],
+                    },
+                    maxLength: {
+                      type: "union",
+                      schemas: [{ type: "string" }, { type: "number" }],
+                    },
+                    customRule: { type: "string" },
+                  },
+                },
+                {
+                  type: "object",
+                  object: {
+                    columnType: { type: "string" },
+                    name: { type: "string" },
+                    key: {
+                      type: "union",
+                      schemas: [{ type: "string" }, { type: "number" }],
+                    },
+                  },
+                  isEditable: { type: "boolean" },
+                },
+                {
+                  type: "object",
+                  object: {
+                    columnType: { type: "string" },
+                    name: { type: "string" },
+                    activeColor: { type: "string" },
+                    isEditable: { type: "boolean" },
+                  },
+                },
+                {
+                  type: "object",
+                  object: {
+                    columnType: { type: "string" },
+                    name: { type: "string" },
+                    key: {
+                      type: "union",
+                      schemas: [{ type: "string" }, { type: "number" }],
+                    },
+                    values: {
+                      type: "union",
+                      schemas: [
+                        { type: "array", element: { type: "string" } },
+                        { type: "array", element: { type: "number" } },
+                      ],
+                    },
+                    labels: {
+                      type: "union",
+                      schemas: [
+                        { type: "array", element: { type: "string" } },
+                        { type: "array", element: { type: "number" } },
+                      ],
+                    },
+                  },
+                  isEditable: { type: "boolean" },
+                },
+                {
+                  type: "object",
+                  object: {
+                    columnType: { type: "string" },
+                    name: { type: "string" },
+                    key: {
+                      type: "union",
+                      schemas: [{ type: "string" }, { type: "number" }],
+                    },
+                    values: {
+                      type: "union",
+                      schemas: [
+                        { type: "array", element: { type: "string" } },
+                        { type: "array", element: { type: "number" } },
+                      ],
+                    },
+                    labels: {
+                      type: "union",
+                      schemas: [
+                        { type: "array", element: { type: "string" } },
+                        { type: "array", element: { type: "number" } },
+                      ],
+                    },
+                  },
+                  isEditable: { type: "boolean" },
+                },
+                {
+                  type: "object",
+                  object: {
+                    columnType: { type: "string" },
+                    name: { type: "string" },
+                    key: {
+                      type: "union",
+                      schemas: [{ type: "string" }, { type: "number" }],
+                    },
+                    dateFormat: { type: "string" },
+                    parseDateFormat: { type: "string" },
+                    isTimeChecked: { type: "boolean" },
+                    isEditable: { type: "boolean" },
+                  },
+                },
+              ],
+            },
+          },
+        },
+      },
+      rowsPerPage: {
+        type: "code",
+        displayName: "Number of rows per page",
+        validation: {
+          schema: {
+            type: "union",
+            schemas: [{ type: "string" }, { type: "number" }],
+          },
+        },
+      },
+      serverSidePagination: {
+        type: "toggle",
+        displayName: "Server-side pagination",
+        validation: {
+          schema: { type: "boolean" },
+        },
+      },
+      enableNextButton: {
+        type: "toggle",
+        displayName: "Enable next page button",
+        validation: {
+          schema: { type: "boolean" },
+        },
+      },
+      enabledSort: {
+        type: "toggle",
+        displayName: "Enable sorting",
+        validation: {
+          schema: { type: "boolean" },
+        },
+      },
+      hideColumnSelectorButton: {
+        type: "toggle",
+        displayName: "Hide column selector button",
+        validation: {
+          schema: { type: "boolean" },
+        },
+      },
+      enablePrevButton: {
+        type: "toggle",
+        displayName: "Enable previous page button",
+        validation: {
+          schema: { type: "boolean" },
+        },
+      },
+      totalRecords: {
+        type: "code",
+        displayName: "Total records server side",
+        validation: {
+          schema: {
+            type: "union",
+            schemas: [{ type: "string" }, { type: "number" }],
+          },
+        },
+      },
+      clientSidePagination: {
+        type: "toggle",
+        displayName: "Client-side pagination",
+        validation: {
+          schema: { type: "boolean" },
+        },
+      },
+      serverSideSearch: {
+        type: "toggle",
+        displayName: "Server-side search",
+        validation: {
+          schema: { type: "boolean" },
+        },
+      },
+      serverSideSort: {
+        type: "toggle",
+        displayName: "Server-side sort",
+        validation: {
+          schema: { type: "boolean" },
+        },
+      },
+      serverSideFilter: {
+        type: "toggle",
+        displayName: "Server-side filter",
+        validation: {
+          schema: { type: "boolean" },
+        },
+      },
+      actionButtonBackgroundColor: {
+        type: "color",
+        displayName: "Background color",
+        validation: {
+          schema: { type: "string" },
+        },
+      },
+      actionButtonTextColor: {
+        type: "color",
+        displayName: "Text color",
+        validation: {
+          schema: { type: "string" },
+        },
+      },
+      displaySearchBox: {
+        type: "toggle",
+        displayName: "Show search box",
+        validation: {
+          schema: { type: "boolean" },
+        },
+      },
+      showDownloadButton: {
+        type: "toggle",
+        displayName: "Show download button",
+        validation: {
+          schema: { type: "boolean" },
+        },
+      },
+      showFilterButton: {
+        type: "toggle",
+        displayName: "Show filter button",
+        validation: {
+          schema: { type: "boolean" },
+        },
+      },
+      showBulkUpdateActions: {
+        type: "toggle",
+        displayName: "Show update buttons",
+        validation: {
+          schema: { type: "boolean" },
+        },
+      },
+      showBulkSelector: {
+        type: "toggle",
+        displayName: "Bulk selection",
+        validation: {
+          schema: { type: "boolean" },
+        },
+      },
+      highlightSelectedRow: {
+        type: "toggle",
+        displayName: "Highlight selected row",
+        validation: {
+          schema: { type: "boolean" },
+        },
+      },
+    },
+    others: {
+      showOnDesktop: { type: "toggle", displayName: "Show on desktop " },
+      showOnMobile: { type: "toggle", displayName: "Show on mobile" },
+    },
+    defaultSize: {
+      width: 20,
+      height: 300,
+    },
+    events: {
+      onRowHovered: { displayName: "Row hovered" },
+      onRowClicked: { displayName: "Row clicked" },
+      onBulkUpdate: { displayName: "Save changes" },
+      onPageChanged: { displayName: "Page changed" },
+      onSearch: { displayName: "Search" },
+      onCancelChanges: { displayName: "Cancel changes" },
+      onSort: { displayName: "Sort applied" },
+      onCellValueChanged: { displayName: "Cell value changed" },
+      onFilterChanged: { displayName: "Filter changed" },
+    },
+    styles: {
+      textColor: {
+        type: "color",
+        displayName: "Text Color",
+        validation: {
+          schema: { type: "string" },
+        },
+      },
+      actionButtonRadius: {
+        type: "code",
+        displayName: "Action Button Radius",
+        validation: {
+          schema: {
+            type: "union",
+            schemas: [{ type: "string" }, { type: "boolean" }],
+          },
+        },
+      },
+      tableType: {
+        type: "select",
+        displayName: "Table type",
+        options: [
+          { name: "Bordered", value: "table-bordered" },
+          { name: "Borderless", value: "table-borderless" },
+          { name: "Classic", value: "table-classic" },
+          { name: "Striped", value: "table-striped" },
+          { name: "Striped & bordered", value: "table-striped table-bordered" },
+        ],
+        validation: {
+          schema: { type: "string" },
+        },
+      },
+      cellSize: {
+        type: "select",
+        displayName: "Cell size",
+        options: [
+          { name: "Compact", value: "compact" },
+          { name: "Spacious", value: "spacious" },
+        ],
+        validation: {
+          schema: { type: "string" },
+        },
+      },
+      borderRadius: {
+        type: "code",
+        displayName: "Border Radius",
+        validation: {
+          schema: {
+            type: "union",
+            schemas: [{ type: "string" }, { type: "number" }],
+          },
+        },
+      },
+      visibility: {
+        type: "toggle",
+        displayName: "Visibility",
+        validation: {
+          schema: { type: "boolean" },
+        },
+      },
+      disabledState: {
+        type: "toggle",
+        displayName: "Disable",
+        validation: {
+          schema: { type: "boolean" },
+        },
+      },
+    },
+    exposedVariables: {
+      selectedRow: {},
+      changeSet: {},
+      dataUpdates: [],
+      pageIndex: 1,
+      searchText: "",
+      selectedRows: [],
+      filters: [],
+    },
+    actions: [
+      {
+        handle: "setPage",
+        displayName: "Set page",
+        params: [
+          {
+            handle: "page",
+            displayName: "Page",
+            defaultValue: "{{1}}",
+          },
+        ],
+      },
+      {
+        handle: "selectRow",
+        displayName: "Select row",
+        params: [
+          { handle: "key", displayName: "Key" },
+          { handle: "value", displayName: "Value" },
+        ],
+      },
+      {
+        handle: "deselectRow",
+        displayName: "Deselect row",
+      },
+      {
+        handle: "discardChanges",
+        displayName: "Discard Changes",
+      },
+    ],
+    definition: {
+      others: {
+        showOnDesktop: { value: "{{true}}" },
+        showOnMobile: { value: "{{false}}" },
+      },
+      properties: {
+        title: { value: "Table" },
+        visible: { value: "{{true}}" },
+        loadingState: { value: "{{false}}" },
+        data: {
+          value: "{{ [ \n\t\t{ ParameterName: 1, Value: 'Sarah'} \n] }}",
+        },
+        rowsPerPage: { value: "{{10}}" },
+        serverSidePagination: { value: "{{false}}" },
+        enableNextButton: { value: "{{true}}" },
+        enablePrevButton: { value: "{{true}}" },
+        totalRecords: { value: "" },
+        clientSidePagination: { value: "{{false}}" },
+        serverSideSort: { value: "{{false}}" },
+        serverSideFilter: { value: "{{false}}" },
+        displaySearchBox: { value: "{{true}}" },
+        showDownloadButton: { value: "{{true}}" },
+        showFilterButton: { value: "{{true}}" },
+        autogenerateColumns: { value: true },
+        columns: {
+          value: [
+            {
+              name: "ParameterName",
+              id: "e3ecbf7fa52c4d7210a93edb8f43776267a489bad52bd108be9588f790126737",
+              autogenerated: true,
+            },
+            {
+              name: "Value",
+              id: "5d2a3744a006388aadd012fcc15cc0dbcb5f9130e0fbb64c558561c97118754a",
+              autogenerated: true,
+            },
+          ],
+        },
+        showBulkUpdateActions: { value: "{{true}}" },
+        showBulkSelector: { value: "{{false}}" },
+        highlightSelectedRow: { value: "{{false}}" },
+        columnSizes: { value: "{{({})}}" },
+        actions: { value: [] },
+        enabledSort: { value: "{{false}}" },
+        hideColumnSelectorButton: { value: "{{false}}" },
+      },
+      events: [],
+      styles: {
+        textColor: { value: "#000" },
+        actionButtonRadius: { value: "0" },
+        visibility: { value: "{{true}}" },
+        disabledState: { value: "{{false}}" },
+        cellSize: { value: "spacious" },
+        borderRadius: { value: "0" },
+        tableType: { value: "borderless" },
+      },
+    },
+  },
+  //  ThreeColumn
+  {
+    name: "ThreeColumn",
+    displayName: "Three Column",
+    description: "Display paginated tabular data",
+    component: "ThreeColumn",
+    properties: {
+      title: {
+        type: "string",
+        displayName: "Title",
+        validation: {
+          schema: { type: "string" },
+        },
+      },
+      data: {
+        type: "code",
+        displayName: "Table data",
+        validation: {
+          schema: {
+            type: "array",
+            element: { type: "object" },
+            optional: true,
+          },
+        },
+      },
+      loadingState: {
+        type: "toggle",
+        displayName: "Loading state",
+        validation: {
+          schema: { type: "boolean" },
+        },
+      },
+      columns: {
+        type: "array",
+        displayName: "Table Columns",
+        validation: {
+          schema: {
+            type: "array",
+            element: {
+              type: "union",
+              schemas: [
+                {
+                  type: "object",
+                  object: {
+                    columnType: { type: "string" },
+                    name: { type: "string" },
+                    textWrap: { type: "string" },
+                    key: {
+                      type: "union",
+                      schemas: [{ type: "string" }, { type: "number" }],
+                    },
+                    textColor: { type: "string" },
+                    regex: { type: "string" },
+                    minLength: {
+                      type: "union",
+                      schemas: [{ type: "string" }, { type: "number" }],
+                    },
+                    maxLength: {
+                      type: "union",
+                      schemas: [{ type: "string" }, { type: "number" }],
+                    },
+                    customRule: { type: "string" },
+                  },
+                },
+                {
+                  type: "object",
+                  object: {
+                    columnType: { type: "string" },
+                    name: { type: "string" },
+                    key: {
+                      type: "union",
+                      schemas: [{ type: "string" }, { type: "number" }],
+                    },
+                  },
+                  isEditable: { type: "boolean" },
+                },
+                {
+                  type: "object",
+                  object: {
+                    columnType: { type: "string" },
+                    name: { type: "string" },
+                    activeColor: { type: "string" },
+                    isEditable: { type: "boolean" },
+                  },
+                },
+                {
+                  type: "object",
+                  object: {
+                    columnType: { type: "string" },
+                    name: { type: "string" },
+                    key: {
+                      type: "union",
+                      schemas: [{ type: "string" }, { type: "number" }],
+                    },
+                    values: {
+                      type: "union",
+                      schemas: [
+                        { type: "array", element: { type: "string" } },
+                        { type: "array", element: { type: "number" } },
+                      ],
+                    },
+                    labels: {
+                      type: "union",
+                      schemas: [
+                        { type: "array", element: { type: "string" } },
+                        { type: "array", element: { type: "number" } },
+                      ],
+                    },
+                  },
+                  isEditable: { type: "boolean" },
+                },
+                {
+                  type: "object",
+                  object: {
+                    columnType: { type: "string" },
+                    name: { type: "string" },
+                    key: {
+                      type: "union",
+                      schemas: [{ type: "string" }, { type: "number" }],
+                    },
+                    values: {
+                      type: "union",
+                      schemas: [
+                        { type: "array", element: { type: "string" } },
+                        { type: "array", element: { type: "number" } },
+                      ],
+                    },
+                    labels: {
+                      type: "union",
+                      schemas: [
+                        { type: "array", element: { type: "string" } },
+                        { type: "array", element: { type: "number" } },
+                      ],
+                    },
+                  },
+                  isEditable: { type: "boolean" },
+                },
+                {
+                  type: "object",
+                  object: {
+                    columnType: { type: "string" },
+                    name: { type: "string" },
+                    key: {
+                      type: "union",
+                      schemas: [{ type: "string" }, { type: "number" }],
+                    },
+                    dateFormat: { type: "string" },
+                    parseDateFormat: { type: "string" },
+                    isTimeChecked: { type: "boolean" },
+                    isEditable: { type: "boolean" },
+                  },
+                },
+              ],
+            },
+          },
+        },
+      },
+      rowsPerPage: {
+        type: "code",
+        displayName: "Number of rows per page",
+        validation: {
+          schema: {
+            type: "union",
+            schemas: [{ type: "string" }, { type: "number" }],
+          },
+        },
+      },
+      serverSidePagination: {
+        type: "toggle",
+        displayName: "Server-side pagination",
+        validation: {
+          schema: { type: "boolean" },
+        },
+      },
+      enableNextButton: {
+        type: "toggle",
+        displayName: "Enable next page button",
+        validation: {
+          schema: { type: "boolean" },
+        },
+      },
+      enabledSort: {
+        type: "toggle",
+        displayName: "Enable sorting",
+        validation: {
+          schema: { type: "boolean" },
+        },
+      },
+      hideColumnSelectorButton: {
+        type: "toggle",
+        displayName: "Hide column selector button",
+        validation: {
+          schema: { type: "boolean" },
+        },
+      },
+      enablePrevButton: {
+        type: "toggle",
+        displayName: "Enable previous page button",
+        validation: {
+          schema: { type: "boolean" },
+        },
+      },
+      totalRecords: {
+        type: "code",
+        displayName: "Total records server side",
+        validation: {
+          schema: {
+            type: "union",
+            schemas: [{ type: "string" }, { type: "number" }],
+          },
+        },
+      },
+      clientSidePagination: {
+        type: "toggle",
+        displayName: "Client-side pagination",
+        validation: {
+          schema: { type: "boolean" },
+        },
+      },
+      serverSideSearch: {
+        type: "toggle",
+        displayName: "Server-side search",
+        validation: {
+          schema: { type: "boolean" },
+        },
+      },
+      serverSideSort: {
+        type: "toggle",
+        displayName: "Server-side sort",
+        validation: {
+          schema: { type: "boolean" },
+        },
+      },
+      serverSideFilter: {
+        type: "toggle",
+        displayName: "Server-side filter",
+        validation: {
+          schema: { type: "boolean" },
+        },
+      },
+      actionButtonBackgroundColor: {
+        type: "color",
+        displayName: "Background color",
+        validation: {
+          schema: { type: "string" },
+        },
+      },
+      actionButtonTextColor: {
+        type: "color",
+        displayName: "Text color",
+        validation: {
+          schema: { type: "string" },
+        },
+      },
+      displaySearchBox: {
+        type: "toggle",
+        displayName: "Show search box",
+        validation: {
+          schema: { type: "boolean" },
+        },
+      },
+      showDownloadButton: {
+        type: "toggle",
+        displayName: "Show download button",
+        validation: {
+          schema: { type: "boolean" },
+        },
+      },
+      showFilterButton: {
+        type: "toggle",
+        displayName: "Show filter button",
+        validation: {
+          schema: { type: "boolean" },
+        },
+      },
+      showBulkUpdateActions: {
+        type: "toggle",
+        displayName: "Show update buttons",
+        validation: {
+          schema: { type: "boolean" },
+        },
+      },
+      showBulkSelector: {
+        type: "toggle",
+        displayName: "Bulk selection",
+        validation: {
+          schema: { type: "boolean" },
+        },
+      },
+      highlightSelectedRow: {
+        type: "toggle",
+        displayName: "Highlight selected row",
+        validation: {
+          schema: { type: "boolean" },
+        },
+      },
+    },
+    others: {
+      showOnDesktop: { type: "toggle", displayName: "Show on desktop " },
+      showOnMobile: { type: "toggle", displayName: "Show on mobile" },
+    },
+    defaultSize: {
+      width: 30,
+      height: 300,
+    },
+    events: {
+      onRowHovered: { displayName: "Row hovered" },
+      onRowClicked: { displayName: "Row clicked" },
+      onBulkUpdate: { displayName: "Save changes" },
+      onPageChanged: { displayName: "Page changed" },
+      onSearch: { displayName: "Search" },
+      onCancelChanges: { displayName: "Cancel changes" },
+      onSort: { displayName: "Sort applied" },
+      onCellValueChanged: { displayName: "Cell value changed" },
+      onFilterChanged: { displayName: "Filter changed" },
+    },
+    styles: {
+      textColor: {
+        type: "color",
+        displayName: "Text Color",
+        validation: {
+          schema: { type: "string" },
+        },
+      },
+      actionButtonRadius: {
+        type: "code",
+        displayName: "Action Button Radius",
+        validation: {
+          schema: {
+            type: "union",
+            schemas: [{ type: "string" }, { type: "boolean" }],
+          },
+        },
+      },
+      tableType: {
+        type: "select",
+        displayName: "Table type",
+        options: [
+          { name: "Bordered", value: "table-bordered" },
+          { name: "Borderless", value: "table-borderless" },
+          { name: "Classic", value: "table-classic" },
+          { name: "Striped", value: "table-striped" },
+          { name: "Striped & bordered", value: "table-striped table-bordered" },
+        ],
+        validation: {
+          schema: { type: "string" },
+        },
+      },
+      cellSize: {
+        type: "select",
+        displayName: "Cell size",
+        options: [
+          { name: "Compact", value: "compact" },
+          { name: "Spacious", value: "spacious" },
+        ],
+        validation: {
+          schema: { type: "string" },
+        },
+      },
+      borderRadius: {
+        type: "code",
+        displayName: "Border Radius",
+        validation: {
+          schema: {
+            type: "union",
+            schemas: [{ type: "string" }, { type: "number" }],
+          },
+        },
+      },
+      visibility: {
+        type: "toggle",
+        displayName: "Visibility",
+        validation: {
+          schema: { type: "boolean" },
+        },
+      },
+      disabledState: {
+        type: "toggle",
+        displayName: "Disable",
+        validation: {
+          schema: { type: "boolean" },
+        },
+      },
+    },
+    exposedVariables: {
+      selectedRow: {},
+      changeSet: {},
+      dataUpdates: [],
+      pageIndex: 1,
+      searchText: "",
+      selectedRows: [],
+      filters: [],
+    },
+    actions: [
+      {
+        handle: "setPage",
+        displayName: "Set page",
+        params: [
+          {
+            handle: "page",
+            displayName: "Page",
+            defaultValue: "{{1}}",
+          },
+        ],
+      },
+      {
+        handle: "selectRow",
+        displayName: "Select row",
+        params: [
+          { handle: "key", displayName: "Key" },
+          { handle: "value", displayName: "Value" },
+        ],
+      },
+      {
+        handle: "deselectRow",
+        displayName: "Deselect row",
+      },
+      {
+        handle: "discardChanges",
+        displayName: "Discard Changes",
+      },
+    ],
+    definition: {
+      others: {
+        showOnDesktop: { value: "{{true}}" },
+        showOnMobile: { value: "{{false}}" },
+      },
+      properties: {
+        title: { value: "Table" },
+        visible: { value: "{{true}}" },
+        loadingState: { value: "{{false}}" },
+        data: {
+          value:
+            "{{ [ \n\t\t{ ParameterName: 1, Value: 'Sarah', Unit: 'sarah@example.com'} \n] }}",
+        },
+        rowsPerPage: { value: "{{10}}" },
+        serverSidePagination: { value: "{{false}}" },
+        enableNextButton: { value: "{{true}}" },
+        enablePrevButton: { value: "{{true}}" },
+        totalRecords: { value: "" },
+        clientSidePagination: { value: "{{false}}" },
+        serverSideSort: { value: "{{false}}" },
+        serverSideFilter: { value: "{{false}}" },
+        displaySearchBox: { value: "{{true}}" },
+        showDownloadButton: { value: "{{true}}" },
+        showFilterButton: { value: "{{true}}" },
+        autogenerateColumns: { value: true },
+        columns: {
+          value: [
+            {
+              name: "ParameterName",
+              id: "e3ecbf7fa52c4d7210a93edb8f43776267a489bad52bd108be9588f790126737",
+              autogenerated: true,
+            },
+            {
+              name: "Value",
+              id: "5d2a3744a006388aadd012fcc15cc0dbcb5f9130e0fbb64c558561c97118754a",
+              autogenerated: true,
+            },
+            {
+              name: "Unit",
+              id: "afc9a5091750a1bd4760e38760de3b4be11a43452ae8ae07ce2eebc569fe9a7f",
+              autogenerated: true,
+            },
+          ],
+        },
+        showBulkUpdateActions: { value: "{{true}}" },
+        showBulkSelector: { value: "{{false}}" },
+        highlightSelectedRow: { value: "{{false}}" },
+        columnSizes: { value: "{{({})}}" },
+        actions: { value: [] },
+        enabledSort: { value: "{{false}}" },
+        hideColumnSelectorButton: { value: "{{false}}" },
+      },
+      events: [],
+      styles: {
+        textColor: { value: "#000" },
+        actionButtonRadius: { value: "0" },
+        visibility: { value: "{{true}}" },
+        disabledState: { value: "{{false}}" },
+        cellSize: { value: "spacious" },
+        borderRadius: { value: "0" },
+        tableType: { value: "borderless" },
+      },
+    },
+  },
+  //fourColumn
+  {
+    name: "FourColumn",
+    displayName: "Four Column",
+    description: "Display paginated tabular data",
+    component: "FourColumn",
+    properties: {
+      title: {
+        type: "string",
+        displayName: "Title",
+        validation: {
+          schema: { type: "string" },
+        },
+      },
+      data: {
+        type: "code",
+        displayName: "Table data",
+        validation: {
+          schema: {
+            type: "array",
+            element: { type: "object" },
+            optional: true,
+          },
+        },
+      },
+      loadingState: {
+        type: "toggle",
+        displayName: "Loading state",
+        validation: {
+          schema: { type: "boolean" },
+        },
+      },
+      columns: {
+        type: "array",
+        displayName: "Table Columns",
+        validation: {
+          schema: {
+            type: "array",
+            element: {
+              type: "union",
+              schemas: [
+                {
+                  type: "object",
+                  object: {
+                    columnType: { type: "string" },
+                    name: { type: "string" },
+                    textWrap: { type: "string" },
+                    key: {
+                      type: "union",
+                      schemas: [{ type: "string" }, { type: "number" }],
+                    },
+                    textColor: { type: "string" },
+                    regex: { type: "string" },
+                    minLength: {
+                      type: "union",
+                      schemas: [{ type: "string" }, { type: "number" }],
+                    },
+                    maxLength: {
+                      type: "union",
+                      schemas: [{ type: "string" }, { type: "number" }],
+                    },
+                    customRule: { type: "string" },
+                  },
+                },
+                {
+                  type: "object",
+                  object: {
+                    columnType: { type: "string" },
+                    name: { type: "string" },
+                    key: {
+                      type: "union",
+                      schemas: [{ type: "string" }, { type: "number" }],
+                    },
+                  },
+                  isEditable: { type: "boolean" },
+                },
+                {
+                  type: "object",
+                  object: {
+                    columnType: { type: "string" },
+                    name: { type: "string" },
+                    activeColor: { type: "string" },
+                    isEditable: { type: "boolean" },
+                  },
+                },
+                {
+                  type: "object",
+                  object: {
+                    columnType: { type: "string" },
+                    name: { type: "string" },
+                    key: {
+                      type: "union",
+                      schemas: [{ type: "string" }, { type: "number" }],
+                    },
+                    values: {
+                      type: "union",
+                      schemas: [
+                        { type: "array", element: { type: "string" } },
+                        { type: "array", element: { type: "number" } },
+                      ],
+                    },
+                    labels: {
+                      type: "union",
+                      schemas: [
+                        { type: "array", element: { type: "string" } },
+                        { type: "array", element: { type: "number" } },
+                      ],
+                    },
+                  },
+                  isEditable: { type: "boolean" },
+                },
+                {
+                  type: "object",
+                  object: {
+                    columnType: { type: "string" },
+                    name: { type: "string" },
+                    key: {
+                      type: "union",
+                      schemas: [{ type: "string" }, { type: "number" }],
+                    },
+                    values: {
+                      type: "union",
+                      schemas: [
+                        { type: "array", element: { type: "string" } },
+                        { type: "array", element: { type: "number" } },
+                      ],
+                    },
+                    labels: {
+                      type: "union",
+                      schemas: [
+                        { type: "array", element: { type: "string" } },
+                        { type: "array", element: { type: "number" } },
+                      ],
+                    },
+                  },
+                  isEditable: { type: "boolean" },
+                },
+                {
+                  type: "object",
+                  object: {
+                    columnType: { type: "string" },
+                    name: { type: "string" },
+                    key: {
+                      type: "union",
+                      schemas: [{ type: "string" }, { type: "number" }],
+                    },
+                    dateFormat: { type: "string" },
+                    parseDateFormat: { type: "string" },
+                    isTimeChecked: { type: "boolean" },
+                    isEditable: { type: "boolean" },
+                  },
+                },
+              ],
+            },
+          },
+        },
+      },
+      rowsPerPage: {
+        type: "code",
+        displayName: "Number of rows per page",
+        validation: {
+          schema: {
+            type: "union",
+            schemas: [{ type: "string" }, { type: "number" }],
+          },
+        },
+      },
+      serverSidePagination: {
+        type: "toggle",
+        displayName: "Server-side pagination",
+        validation: {
+          schema: { type: "boolean" },
+        },
+      },
+      enableNextButton: {
+        type: "toggle",
+        displayName: "Enable next page button",
+        validation: {
+          schema: { type: "boolean" },
+        },
+      },
+      enabledSort: {
+        type: "toggle",
+        displayName: "Enable sorting",
+        validation: {
+          schema: { type: "boolean" },
+        },
+      },
+      hideColumnSelectorButton: {
+        type: "toggle",
+        displayName: "Hide column selector button",
+        validation: {
+          schema: { type: "boolean" },
+        },
+      },
+      enablePrevButton: {
+        type: "toggle",
+        displayName: "Enable previous page button",
+        validation: {
+          schema: { type: "boolean" },
+        },
+      },
+      totalRecords: {
+        type: "code",
+        displayName: "Total records server side",
+        validation: {
+          schema: {
+            type: "union",
+            schemas: [{ type: "string" }, { type: "number" }],
+          },
+        },
+      },
+      clientSidePagination: {
+        type: "toggle",
+        displayName: "Client-side pagination",
+        validation: {
+          schema: { type: "boolean" },
+        },
+      },
+      serverSideSearch: {
+        type: "toggle",
+        displayName: "Server-side search",
+        validation: {
+          schema: { type: "boolean" },
+        },
+      },
+      serverSideSort: {
+        type: "toggle",
+        displayName: "Server-side sort",
+        validation: {
+          schema: { type: "boolean" },
+        },
+      },
+      serverSideFilter: {
+        type: "toggle",
+        displayName: "Server-side filter",
+        validation: {
+          schema: { type: "boolean" },
+        },
+      },
+      actionButtonBackgroundColor: {
+        type: "color",
+        displayName: "Background color",
+        validation: {
+          schema: { type: "string" },
+        },
+      },
+      actionButtonTextColor: {
+        type: "color",
+        displayName: "Text color",
+        validation: {
+          schema: { type: "string" },
+        },
+      },
+      displaySearchBox: {
+        type: "toggle",
+        displayName: "Show search box",
+        validation: {
+          schema: { type: "boolean" },
+        },
+      },
+      showDownloadButton: {
+        type: "toggle",
+        displayName: "Show download button",
+        validation: {
+          schema: { type: "boolean" },
+        },
+      },
+      showFilterButton: {
+        type: "toggle",
+        displayName: "Show filter button",
+        validation: {
+          schema: { type: "boolean" },
+        },
+      },
+      showBulkUpdateActions: {
+        type: "toggle",
+        displayName: "Show update buttons",
+        validation: {
+          schema: { type: "boolean" },
+        },
+      },
+      showBulkSelector: {
+        type: "toggle",
+        displayName: "Bulk selection",
+        validation: {
+          schema: { type: "boolean" },
+        },
+      },
+      highlightSelectedRow: {
+        type: "toggle",
+        displayName: "Highlight selected row",
+        validation: {
+          schema: { type: "boolean" },
+        },
+      },
+    },
+    others: {
+      showOnDesktop: { type: "toggle", displayName: "Show on desktop " },
+      showOnMobile: { type: "toggle", displayName: "Show on mobile" },
+    },
+    defaultSize: {
+      width: 41,
+      height: 300,
+    },
+    events: {
+      onRowHovered: { displayName: "Row hovered" },
+      onRowClicked: { displayName: "Row clicked" },
+      onBulkUpdate: { displayName: "Save changes" },
+      onPageChanged: { displayName: "Page changed" },
+      onSearch: { displayName: "Search" },
+      onCancelChanges: { displayName: "Cancel changes" },
+      onSort: { displayName: "Sort applied" },
+      onCellValueChanged: { displayName: "Cell value changed" },
+      onFilterChanged: { displayName: "Filter changed" },
+    },
+    styles: {
+      textColor: {
+        type: "color",
+        displayName: "Text Color",
+        validation: {
+          schema: { type: "string" },
+        },
+      },
+      actionButtonRadius: {
+        type: "code",
+        displayName: "Action Button Radius",
+        validation: {
+          schema: {
+            type: "union",
+            schemas: [{ type: "string" }, { type: "boolean" }],
+          },
+        },
+      },
+      tableType: {
+        type: "select",
+        displayName: "Table type",
+        options: [
+          { name: "Bordered", value: "table-bordered" },
+          { name: "Borderless", value: "table-borderless" },
+          { name: "Classic", value: "table-classic" },
+          { name: "Striped", value: "table-striped" },
+          { name: "Striped & bordered", value: "table-striped table-bordered" },
+        ],
+        validation: {
+          schema: { type: "string" },
+        },
+      },
+      cellSize: {
+        type: "select",
+        displayName: "Cell size",
+        options: [
+          { name: "Compact", value: "compact" },
+          { name: "Spacious", value: "spacious" },
+        ],
+        validation: {
+          schema: { type: "string" },
+        },
+      },
+      borderRadius: {
+        type: "code",
+        displayName: "Border Radius",
+        validation: {
+          schema: {
+            type: "union",
+            schemas: [{ type: "string" }, { type: "number" }],
+          },
+        },
+      },
+      visibility: {
+        type: "toggle",
+        displayName: "Visibility",
+        validation: {
+          schema: { type: "boolean" },
+        },
+      },
+      disabledState: {
+        type: "toggle",
+        displayName: "Disable",
+        validation: {
+          schema: { type: "boolean" },
+        },
+      },
+    },
+    exposedVariables: {
+      selectedRow: {},
+      changeSet: {},
+      dataUpdates: [],
+      pageIndex: 1,
+      searchText: "",
+      selectedRows: [],
+      filters: [],
+    },
+    actions: [
+      {
+        handle: "setPage",
+        displayName: "Set page",
+        params: [
+          {
+            handle: "page",
+            displayName: "Page",
+            defaultValue: "{{1}}",
+          },
+        ],
+      },
+      {
+        handle: "selectRow",
+        displayName: "Select row",
+        params: [
+          { handle: "key", displayName: "Key" },
+          { handle: "value", displayName: "Value" },
+        ],
+      },
+      {
+        handle: "deselectRow",
+        displayName: "Deselect row",
+      },
+      {
+        handle: "discardChanges",
+        displayName: "Discard Changes",
+      },
+    ],
+    definition: {
+      others: {
+        showOnDesktop: { value: "{{true}}" },
+        showOnMobile: { value: "{{false}}" },
+      },
+      properties: {
+        title: { value: "Table" },
+        visible: { value: "{{true}}" },
+        loadingState: { value: "{{false}}" },
+        data: {
+          value:
+            "{{ [ \n\t\t{ id: 1, name: 'Sarah', email: 'sarah@example.com' , NormalRange: '20-30'} \n] }}",
+        },
+        rowsPerPage: { value: "{{10}}" },
+        serverSidePagination: { value: "{{false}}" },
+        enableNextButton: { value: "{{true}}" },
+        enablePrevButton: { value: "{{true}}" },
+        totalRecords: { value: "" },
+        clientSidePagination: { value: "{{false}}" },
+        serverSideSort: { value: "{{false}}" },
+        serverSideFilter: { value: "{{false}}" },
+        displaySearchBox: { value: "{{true}}" },
+        showDownloadButton: { value: "{{true}}" },
+        showFilterButton: { value: "{{true}}" },
+        autogenerateColumns: { value: true },
+        columns: {
+          value: [
+            {
+              name: "id",
+              id: "e3ecbf7fa52c4d7210a93edb8f43776267a489bad52bd108be9588f790126737",
+              autogenerated: true,
+            },
+            {
+              name: "name",
+              id: "5d2a3744a006388aadd012fcc15cc0dbcb5f9130e0fbb64c558561c97118754a",
+              autogenerated: true,
+            },
+            {
+              name: "email",
+              id: "afc9a5091750a1bd4760e38760de3b4be11a43452ae8ae07ce2eebc569fe9a7f",
+              autogenerated: true,
+            },
+            {
+              name: "NormalRange",
+              id: "afc9a5091750a1bd4760e38760de3b4be11a43452ae8ae07ce2eebc569fe",
+              autogenerated: true,
+            },
+          ],
+        },
+        showBulkUpdateActions: { value: "{{true}}" },
+        showBulkSelector: { value: "{{false}}" },
+        highlightSelectedRow: { value: "{{false}}" },
+        columnSizes: { value: "{{({})}}" },
+        actions: { value: [] },
+        enabledSort: { value: "{{false}}" },
+        hideColumnSelectorButton: { value: "{{false}}" },
+      },
+      events: [],
+      styles: {
+        textColor: { value: "#000" },
+        actionButtonRadius: { value: "0" },
+        visibility: { value: "{{true}}" },
+        disabledState: { value: "{{false}}" },
+        cellSize: { value: "compact" },
+        borderRadius: { value: "0" },
+        tableType: { value: "table-bordered" },
+      },
+    },
+  },
+  //fivecolumn
+  {
+    name: "FiveColumn",
+    displayName: "Five Column",
+    description: "Display paginated tabular data",
+    component: "FiveColumn",
+    properties: {
+      title: {
+        type: "string",
+        displayName: "Title",
+        validation: {
+          schema: { type: "string" },
+        },
+      },
+      data: {
+        type: "code",
+        displayName: "Table data",
+        validation: {
+          schema: {
+            type: "array",
+            element: { type: "object" },
+            optional: true,
+          },
+        },
+      },
+      loadingState: {
+        type: "toggle",
+        displayName: "Loading state",
+        validation: {
+          schema: { type: "boolean" },
+        },
+      },
+      columns: {
+        type: "array",
+        displayName: "Table Columns",
+        validation: {
+          schema: {
+            type: "array",
+            element: {
+              type: "union",
+              schemas: [
+                {
+                  type: "object",
+                  object: {
+                    columnType: { type: "string" },
+                    name: { type: "string" },
+                    textWrap: { type: "string" },
+                    key: {
+                      type: "union",
+                      schemas: [{ type: "string" }, { type: "number" }],
+                    },
+                    textColor: { type: "string" },
+                    regex: { type: "string" },
+                    minLength: {
+                      type: "union",
+                      schemas: [{ type: "string" }, { type: "number" }],
+                    },
+                    maxLength: {
+                      type: "union",
+                      schemas: [{ type: "string" }, { type: "number" }],
+                    },
+                    customRule: { type: "string" },
+                  },
+                },
+                {
+                  type: "object",
+                  object: {
+                    columnType: { type: "string" },
+                    name: { type: "string" },
+                    key: {
+                      type: "union",
+                      schemas: [{ type: "string" }, { type: "number" }],
+                    },
+                  },
+                  isEditable: { type: "boolean" },
+                },
+                {
+                  type: "object",
+                  object: {
+                    columnType: { type: "string" },
+                    name: { type: "string" },
+                    activeColor: { type: "string" },
+                    isEditable: { type: "boolean" },
+                  },
+                },
+                {
+                  type: "object",
+                  object: {
+                    columnType: { type: "string" },
+                    name: { type: "string" },
+                    key: {
+                      type: "union",
+                      schemas: [{ type: "string" }, { type: "number" }],
+                    },
+                    values: {
+                      type: "union",
+                      schemas: [
+                        { type: "array", element: { type: "string" } },
+                        { type: "array", element: { type: "number" } },
+                      ],
+                    },
+                    labels: {
+                      type: "union",
+                      schemas: [
+                        { type: "array", element: { type: "string" } },
+                        { type: "array", element: { type: "number" } },
+                      ],
+                    },
+                  },
+                  isEditable: { type: "boolean" },
+                },
+                {
+                  type: "object",
+                  object: {
+                    columnType: { type: "string" },
+                    name: { type: "string" },
+                    key: {
+                      type: "union",
+                      schemas: [{ type: "string" }, { type: "number" }],
+                    },
+                    values: {
+                      type: "union",
+                      schemas: [
+                        { type: "array", element: { type: "string" } },
+                        { type: "array", element: { type: "number" } },
+                      ],
+                    },
+                    labels: {
+                      type: "union",
+                      schemas: [
+                        { type: "array", element: { type: "string" } },
+                        { type: "array", element: { type: "number" } },
+                      ],
+                    },
+                  },
+                  isEditable: { type: "boolean" },
+                },
+                {
+                  type: "object",
+                  object: {
+                    columnType: { type: "string" },
+                    name: { type: "string" },
+                    key: {
+                      type: "union",
+                      schemas: [{ type: "string" }, { type: "number" }],
+                    },
+                    dateFormat: { type: "string" },
+                    parseDateFormat: { type: "string" },
+                    isTimeChecked: { type: "boolean" },
+                    isEditable: { type: "boolean" },
+                  },
+                },
+              ],
+            },
+          },
+        },
+      },
+      rowsPerPage: {
+        type: "code",
+        displayName: "Number of rows per page",
+        validation: {
+          schema: {
+            type: "union",
+            schemas: [{ type: "string" }, { type: "number" }],
+          },
+        },
+      },
+      serverSidePagination: {
+        type: "toggle",
+        displayName: "Server-side pagination",
+        validation: {
+          schema: { type: "boolean" },
+        },
+      },
+      enableNextButton: {
+        type: "toggle",
+        displayName: "Enable next page button",
+        validation: {
+          schema: { type: "boolean" },
+        },
+      },
+      enabledSort: {
+        type: "toggle",
+        displayName: "Enable sorting",
+        validation: {
+          schema: { type: "boolean" },
+        },
+      },
+      hideColumnSelectorButton: {
+        type: "toggle",
+        displayName: "Hide column selector button",
+        validation: {
+          schema: { type: "boolean" },
+        },
+      },
+      enablePrevButton: {
+        type: "toggle",
+        displayName: "Enable previous page button",
+        validation: {
+          schema: { type: "boolean" },
+        },
+      },
+      totalRecords: {
+        type: "code",
+        displayName: "Total records server side",
+        validation: {
+          schema: {
+            type: "union",
+            schemas: [{ type: "string" }, { type: "number" }],
+          },
+        },
+      },
+      clientSidePagination: {
+        type: "toggle",
+        displayName: "Client-side pagination",
+        validation: {
+          schema: { type: "boolean" },
+        },
+      },
+      serverSideSearch: {
+        type: "toggle",
+        displayName: "Server-side search",
+        validation: {
+          schema: { type: "boolean" },
+        },
+      },
+      serverSideSort: {
+        type: "toggle",
+        displayName: "Server-side sort",
+        validation: {
+          schema: { type: "boolean" },
+        },
+      },
+      serverSideFilter: {
+        type: "toggle",
+        displayName: "Server-side filter",
+        validation: {
+          schema: { type: "boolean" },
+        },
+      },
+      actionButtonBackgroundColor: {
+        type: "color",
+        displayName: "Background color",
+        validation: {
+          schema: { type: "string" },
+        },
+      },
+      actionButtonTextColor: {
+        type: "color",
+        displayName: "Text color",
+        validation: {
+          schema: { type: "string" },
+        },
+      },
+      displaySearchBox: {
+        type: "toggle",
+        displayName: "Show search box",
+        validation: {
+          schema: { type: "boolean" },
+        },
+      },
+      showDownloadButton: {
+        type: "toggle",
+        displayName: "Show download button",
+        validation: {
+          schema: { type: "boolean" },
+        },
+      },
+      showFilterButton: {
+        type: "toggle",
+        displayName: "Show filter button",
+        validation: {
+          schema: { type: "boolean" },
+        },
+      },
+      showBulkUpdateActions: {
+        type: "toggle",
+        displayName: "Show update buttons",
+        validation: {
+          schema: { type: "boolean" },
+        },
+      },
+      showBulkSelector: {
+        type: "toggle",
+        displayName: "Bulk selection",
+        validation: {
+          schema: { type: "boolean" },
+        },
+      },
+      highlightSelectedRow: {
+        type: "toggle",
+        displayName: "Highlight selected row",
+        validation: {
+          schema: { type: "boolean" },
+        },
+      },
+    },
+    others: {
+      showOnDesktop: { type: "toggle", displayName: "Show on desktop " },
+      showOnMobile: { type: "toggle", displayName: "Show on mobile" },
+    },
+    defaultSize: {
+      width: 43,
+      height: 300,
+    },
+    events: {
+      onRowHovered: { displayName: "Row hovered" },
+      onRowClicked: { displayName: "Row clicked" },
+      onBulkUpdate: { displayName: "Save changes" },
+      onPageChanged: { displayName: "Page changed" },
+      onSearch: { displayName: "Search" },
+      onCancelChanges: { displayName: "Cancel changes" },
+      onSort: { displayName: "Sort applied" },
+      onCellValueChanged: { displayName: "Cell value changed" },
+      onFilterChanged: { displayName: "Filter changed" },
+    },
+    styles: {
+      textColor: {
+        type: "color",
+        displayName: "Text Color",
+        validation: {
+          schema: { type: "string" },
+        },
+      },
+      actionButtonRadius: {
+        type: "code",
+        displayName: "Action Button Radius",
+        validation: {
+          schema: {
+            type: "union",
+            schemas: [{ type: "string" }, { type: "boolean" }],
+          },
+        },
+      },
+      tableType: {
+        type: "select",
+        displayName: "Table type",
+        options: [
+          { name: "Bordered", value: "table-bordered" },
+          { name: "Borderless", value: "table-borderless" },
+          { name: "Classic", value: "table-classic" },
+          { name: "Striped", value: "table-striped" },
+          { name: "Striped & bordered", value: "table-striped table-bordered" },
+        ],
+        validation: {
+          schema: { type: "string" },
+        },
+      },
+      cellSize: {
+        type: "select",
+        displayName: "Cell size",
+        options: [
+          { name: "Compact", value: "compact" },
+          { name: "Spacious", value: "spacious" },
+        ],
+        validation: {
+          schema: { type: "string" },
+        },
+      },
+      borderRadius: {
+        type: "code",
+        displayName: "Border Radius",
+        validation: {
+          schema: {
+            type: "union",
+            schemas: [{ type: "string" }, { type: "number" }],
+          },
+        },
+      },
+      visibility: {
+        type: "toggle",
+        displayName: "Visibility",
+        validation: {
+          schema: { type: "boolean" },
+        },
+      },
+      disabledState: {
+        type: "toggle",
+        displayName: "Disable",
+        validation: {
+          schema: { type: "boolean" },
+        },
+      },
+    },
+    exposedVariables: {
+      selectedRow: {},
+      changeSet: {},
+      dataUpdates: [],
+      pageIndex: 1,
+      searchText: "",
+      selectedRows: [],
+      filters: [],
+    },
+    actions: [
+      {
+        handle: "setPage",
+        displayName: "Set page",
+        params: [
+          {
+            handle: "page",
+            displayName: "Page",
+            defaultValue: "{{1}}",
+          },
+        ],
+      },
+      {
+        handle: "selectRow",
+        displayName: "Select row",
+        params: [
+          { handle: "key", displayName: "Key" },
+          { handle: "value", displayName: "Value" },
+        ],
+      },
+      {
+        handle: "deselectRow",
+        displayName: "Deselect row",
+      },
+      {
+        handle: "discardChanges",
+        displayName: "Discard Changes",
+      },
+    ],
+    definition: {
+      others: {
+        showOnDesktop: { value: "{{true}}" },
+        showOnMobile: { value: "{{false}}" },
+      },
+      properties: {
+        title: { value: "Table" },
+        visible: { value: "{{true}}" },
+        loadingState: { value: "{{false}}" },
+        data: {
+          value:
+            "{{ [ \n\t\t{ ParameterName: 1, Value: 'Sarah', Unit: 'sarah@example.com' , NormalRange: '20-30',Graph:''} \n] }}",
+        },
+        rowsPerPage: { value: "{{10}}" },
+        serverSidePagination: { value: "{{false}}" },
+        enableNextButton: { value: "{{true}}" },
+        enablePrevButton: { value: "{{true}}" },
+        totalRecords: { value: "" },
+        clientSidePagination: { value: "{{false}}" },
+        serverSideSort: { value: "{{false}}" },
+        serverSideFilter: { value: "{{false}}" },
+        displaySearchBox: { value: "{{true}}" },
+        showDownloadButton: { value: "{{true}}" },
+        showFilterButton: { value: "{{true}}" },
+        autogenerateColumns: { value: true },
+        columns: {
+          value: [
+            {
+              name: "ParameterName",
+              id: "e3ecbf7fa52c4d7210a93edb8f43776267a489bad52bd108be9588f790126737",
+              autogenerated: true,
+            },
+            {
+              name: "Value",
+              id: "5d2a3744a006388aadd012fcc15cc0dbcb5f9130e0fbb64c558561c97118754a",
+              autogenerated: true,
+            },
+            {
+              name: "Unit",
+              id: "afc9a5091750a1bd4760e38760de3b4be11a43452ae8ae07ce2eebc569fe9a7f",
+              autogenerated: true,
+            },
+            {
+              name: "NormalRange",
+              id: "afc9a5091750a1bd4760e38760de3b4be11a43452ae8ae07ce2eebc569fe",
+              autogenerated: true,
+            },
+            {
+              name: "Graph",
+              id: "afc9a5091750a1bd4760e38760de3b4be11dasda43452ae8ae07ce2eebc569fe9a7f",
+              autogenerated: true,
+            },
+          ],
+        },
+        showBulkUpdateActions: { value: "{{true}}" },
+        showBulkSelector: { value: "{{false}}" },
+        highlightSelectedRow: { value: "{{false}}" },
+        columnSizes: { value: "{{({})}}" },
+        actions: { value: [] },
+        enabledSort: { value: "{{false}}" },
+        hideColumnSelectorButton: { value: "{{false}}" },
+      },
+      events: [],
+      styles: {
+        textColor: { value: "#000" },
+        actionButtonRadius: { value: "0" },
+        visibility: { value: "{{true}}" },
+        disabledState: { value: "{{false}}" },
+        cellSize: { value: "spacious" },
+        borderRadius: { value: "0" },
+        tableType: { value: "borderless" },
+      },
+    },
+  },
+
   {
     name: "Button",
     displayName: "Button",

@@ -5,6 +5,11 @@ import { Button } from "./Components/Button";
 import { Image } from "./Components/Image";
 import { Text } from "./Components/Text";
 import { Table } from "./Components/Table/Table";
+import { TwoColumn } from "./Components/TwoColumn/TwoColumn";
+import { ThreeColumn } from "./Components/ThreeColumn/ThreeColumn";
+import { FourColumn } from "./Components/FourColumn/FourColumn";
+import { FiveColumn } from "./Components/FiveColumn/FiveColumn";
+
 import { TextInput } from "./Components/TextInput";
 import { NumberInput } from "./Components/NumberInput";
 import { DropDown } from "./Components/DropDown";
@@ -41,6 +46,10 @@ const AllComponents = {
   NumberInput,
 
   Table,
+  TwoColumn,
+  ThreeColumn,
+  FourColumn,
+  FiveColumn,
   DropDown,
   Checkbox,
   Datepicker,
