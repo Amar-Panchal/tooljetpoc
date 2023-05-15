@@ -82,8 +82,8 @@ export function TwoColumn({
   setProperty,
   mode,
   exposedVariables,
+  testResultData,
 }) {
-  console.log("ccdcsd", component);
   const {
     color,
     serverSidePagination,
@@ -113,7 +113,7 @@ export function TwoColumn({
     enabledSort,
     hideColumnSelectorButton,
   } = loadPropertiesAndStyles(properties, styles, darkMode, component);
-
+  console.log("  testResultData", testResultData);
   const getItemStyle = ({ isDragging, isDropAnimating }, draggableStyle) => ({
     ...draggableStyle,
     userSelect: "none",
@@ -317,9 +317,16 @@ export function TwoColumn({
       currentState,
       []
     );
+    // tableData = [
+    //   {
+    //     Value: 2332,
+    //     ParameterName: "chinmay",
+    //   },
+    // ];
+
     if (!Array.isArray(tableData)) tableData = [];
   }
-
+  console.log("ffff", component.definition.properties.data.value);
   tableData = tableData || [];
 
   const tableRef = useRef();
@@ -491,7 +498,7 @@ export function TwoColumn({
     }
   );
   const currentColOrder = React.useRef();
-  console.log("ffff", page);
+
   const sortOptions = useMemo(() => {
     if (state?.sortBy?.length === 0) {
       return;
