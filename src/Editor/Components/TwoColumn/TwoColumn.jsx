@@ -312,11 +312,19 @@ export function TwoColumn({
 
   let tableData = [];
   if (currentState) {
-    tableData = resolveReferences(
-      component.definition.properties.data.value,
-      currentState,
-      []
-    );
+    // tableData = resolveReferences(
+    //   component.definition.properties.data.value,
+    //   currentState,
+    //   []
+    // );
+
+    testResultData?.map((result) => {
+      console.log("result", result);
+      tableData.push({
+        Value: result.paramValue,
+        ParameterName: result.testParamName,
+      });
+    });
     // tableData = [
     //   {
     //     Value: 2332,
@@ -326,7 +334,6 @@ export function TwoColumn({
 
     if (!Array.isArray(tableData)) tableData = [];
   }
-  console.log("ffff", component.definition.properties.data.value);
   tableData = tableData || [];
 
   const tableRef = useRef();
