@@ -147,9 +147,12 @@ class ViewerComponent extends React.Component {
   };
 
   loadApplicationByVersion = () => {
+    const id = this.props.location.state.reportTemplateDataMap?.reportTemplateId
+      ? this.props.location.state.reportTemplateDataMap?.reportTemplateId
+      : 41;
     axios
       .get(
-        `https://elabnextapi-dev.azurewebsites.net/api/ReportSetup/GetReportTemplate?ReportTemplateId=${this.props.location.state.reportTemplateDataMap.reportTemplateId}`
+        `https://elabnextapi-dev.azurewebsites.net/api/ReportSetup/GetReportTemplate?ReportTemplateId=${id}`
       )
       .then((response) => {
         const temp = {};
