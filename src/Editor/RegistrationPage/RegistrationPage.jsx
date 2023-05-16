@@ -178,7 +178,7 @@ class RegistrationPageLauncher extends React.Component {
   loadApplicationByVersion = async () => {
     return await axios
       .get(
-        `https://elabnextapi-dev.azurewebsites.net/api/ReportSetup/GetReportTemplate?ReportTemplateId=${ApiCallParams.id}`
+        `https://elabnextapi-dev.azurewebsites.net/api/ReportSetup/GetReportTemplate?ReportTemplateId=${43}`
       )
       .then(({ data }) => {
         const { reportValues: reportValuesString } =

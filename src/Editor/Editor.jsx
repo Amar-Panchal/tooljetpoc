@@ -51,7 +51,6 @@ import Skeleton from "react-loading-skeleton";
 import EmptyQueriesIllustration from "@assets/images/icons/no-queries-added.svg";
 import EditorHeader from "./Header";
 import axios from "axios";
-import StaticApiCall, { ApiCallParams } from "./StaticApiCall";
 
 setAutoFreeze(false);
 enablePatches();

@@ -6,7 +6,6 @@ import { GlobalSettings } from "./GlobalSettings";
 import { toast } from "react-hot-toast";
 import axios from "axios";
 import { Button, Input } from "@progress/kendo-react-all";
-import { ApiCallParams } from "../StaticApiCall";
 
 export default function EditorHeader({
   darkMode,
