@@ -44,6 +44,7 @@ export const DropDown = function DropDown({
     justifyContent,
   } = styles;
   const [currentValue, setCurrentValue] = useState(() => value);
+  const [searchQuery, setSearchQuery] = useState("");
   const { value: exposedValue } = exposedVariables;
 
   if (!_.isArray(values)) {
@@ -120,6 +121,7 @@ export const DropDown = function DropDown({
   }, [label]);
 
   const onSearchTextChange = (searchText, actionProps) => {
+    setSearchQuery(searchText);
     if (actionProps.action === "input-change") {
       setExposedVariable("searchText", searchText);
       fireEvent("onSearchTextChanged");
@@ -216,8 +218,9 @@ export const DropDown = function DropDown({
   //     .then(
   //       axios.spread(
   //         (response1, response2, response3, response4, response5) => {
+  //           let temp = [];
+
   //           if (component.name === "processingLocation") {
-  //             let temp = [];
   //             response1.data.resultData.processingLocationList.map(
   //               (procLoc) => {
   //                 temp.push({
@@ -226,30 +229,14 @@ export const DropDown = function DropDown({
   //                 });
   //               }
   //             );
-
-  //             setRemoteData(temp);
-  //           } else if (component.name === "collectionCenter") {
-  //             let temp = [];
-  //             response4.data.resultData.collectionPointList.map((procLoc) => {
-  //               temp.push({
-  //                 label: procLoc.collectionPointName,
-  //                 value: procLoc.collectionPointId,
-  //               });
-  //             });
-
-  //             setRemoteData(temp);
   //           } else if (component.name === "franchise") {
-  //             let temp = [];
   //             response2.data.resultData.franchiseList.map((procLoc) => {
   //               temp.push({
   //                 label: procLoc.franchiseName,
   //                 value: procLoc.franchiseId,
   //               });
   //             });
-
-  //             setRemoteData(temp);
   //           } else if (component.name === "doctor") {
-  //             let temp = [];
   //             response3.data.resultData.doctorList.map((procLoc) => {
   //               temp.push({
   //                 label:
@@ -261,20 +248,24 @@ export const DropDown = function DropDown({
   //                 value: procLoc.doctorId,
   //               });
   //             });
-
-  //             setRemoteData(temp);
+  //           } else if (component.name === "collectionCenter") {
+  //             response4.data.resultData.collectionPointList.map((procLoc) => {
+  //               temp.push({
+  //                 label: procLoc.collectionPointName,
+  //                 value: procLoc.collectionPointId,
+  //               });
+  //             });
   //           } else if (component.name === "client") {
   //             console.log("GetClient", response5.data.resultData.clientList);
-  //             let temp = [];
+
   //             response5.data.resultData.clientList.map((procLoc) => {
   //               temp.push({
   //                 label: procLoc.clientName,
   //                 value: procLoc.clientId,
   //               });
   //             });
-
-  //             setRemoteData(temp);
   //           }
+  //           setRemoteData(temp);
   //         }
   //       )
   //     )
@@ -282,67 +273,74 @@ export const DropDown = function DropDown({
   //       console.error("Error:", error);
   //     });
   // }, []);
-
   useEffect(() => {
-    const apiCalls = [
-      {
-        url: GetProcessingLocation,
-        name: "processingLocation",
-        mapFn: (procLoc) => ({
-          label: procLoc.processingLocationName,
-          value: procLoc.processingLocationId,
-        }),
-      },
-      {
-        url: GetFranchise,
-        name: "franchise",
-        mapFn: (procLoc) => ({
-          label: procLoc.franchiseName,
-          value: procLoc.franchiseId,
-        }),
-      },
-      {
-        url: GetDoctor,
-        name: "doctor",
-        mapFn: (procLoc) => ({
-          label: `${procLoc.title} ${procLoc.firstName} ${procLoc.lastName}`,
-          value: procLoc.doctorId,
-        }),
-      },
-      {
-        url: GetCollectionPoint,
-        name: "collectionCenter",
-        mapFn: (procLoc) => ({
-          label: procLoc.collectionPointName,
-          value: procLoc.collectionPointId,
-        }),
-      },
-      {
-        url: GetClient,
-        name: "client",
-        mapFn: (procLoc) => ({
-          label: procLoc.clientName,
-          value: procLoc.clientId,
-        }),
-      },
-    ];
+    const fetchData = async () => {
+      try {
+        const [response1, response2, response3, response4, response5] =
+          await axios.all([
+            axios.get(GetProcessingLocation),
+            axios.get(GetFranchise),
+            axios.get(GetDoctor),
+            axios.get(GetCollectionPoint),
+            axios.get(GetClient),
+          ]);
 
-    axios
-      .all(apiCalls.map((call) => axios.get(call.url)))
-      .then(
-        axios.spread((...responses) => {
-          responses.forEach((response, index) => {
-            const { data } = response;
-            const { name, mapFn } = apiCalls[index];
+        let temp = [];
 
-            const temp = data.resultData[name + "List"].map(mapFn);
-            setRemoteData(temp);
-          });
-        })
-      )
-      .catch((error) => {
+        switch (component.name) {
+          case "processingLocation":
+            response1.data.resultData.processingLocationList.forEach(
+              (procLoc) => {
+                temp.push({
+                  label: procLoc.processingLocationName,
+                  value: procLoc.processingLocationId,
+                });
+              }
+            );
+            break;
+          case "franchise":
+            response2.data.resultData.franchiseList.forEach((procLoc) => {
+              temp.push({
+                label: procLoc.franchiseName,
+                value: procLoc.franchiseId,
+              });
+            });
+            break;
+          case "doctor":
+            response3.data.resultData.doctorList.forEach((procLoc) => {
+              temp.push({
+                label: `${procLoc.title} ${procLoc.firstName} ${procLoc.lastName}`,
+                value: procLoc.doctorId,
+              });
+            });
+            break;
+          case "collectionCenter":
+            response4.data.resultData.collectionPointList.forEach((procLoc) => {
+              temp.push({
+                label: procLoc.collectionPointName,
+                value: procLoc.collectionPointId,
+              });
+            });
+            break;
+          case "client":
+            response5.data.resultData.clientList.forEach((procLoc) => {
+              temp.push({
+                label: procLoc.clientName,
+                value: procLoc.clientId,
+              });
+            });
+            break;
+          default:
+            break;
+        }
+
+        setRemoteData(temp);
+      } catch (error) {
         console.error("Error:", error);
-      });
+      }
+    };
+
+    fetchData();
   }, []);
 
   function renderDropdownWithRemoteData() {
@@ -391,6 +389,8 @@ export const DropDown = function DropDown({
             onInputChange={onSearchTextChange}
             onFocus={(event) => onComponentClick(event, component, id)}
             // menuPortalTarget={document.body}
+            menuIsOpen={searchQuery.length > 0 ? true : false}
+            defaultValue={{ label: "dsadasdsad", value: "dsd" }}
           />
         </div>
       </div>

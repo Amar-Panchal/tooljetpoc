@@ -225,6 +225,7 @@ export const Container = ({
     () => ({
       accept: [ItemTypes.BOX, ItemTypes.COMMENT],
       async drop(item, monitor) {
+        console.log("object", item);
         if (item.parent) {
           return;
         }

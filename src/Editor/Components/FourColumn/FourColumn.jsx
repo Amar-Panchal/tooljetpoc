@@ -82,8 +82,8 @@ export function FourColumn({
   setProperty,
   mode,
   exposedVariables,
+  testResultData,
 }) {
-  console.log("ccdcsd", component);
   const {
     color,
     serverSidePagination,
@@ -312,11 +312,20 @@ export function FourColumn({
 
   let tableData = [];
   if (currentState) {
-    tableData = resolveReferences(
-      component.definition.properties.data.value,
-      currentState,
-      []
-    );
+    // tableData = resolveReferences(
+    //   component.definition.properties.data.value,
+    //   currentState,
+    //   []
+    // );
+
+    testResultData?.map((result) => {
+      console.log("result", result);
+      tableData.push({
+        Value: result.paramValue,
+        ParameterName: result.testParamName,
+        Unit: result.unitName,
+      });
+    });
     if (!Array.isArray(tableData)) tableData = [];
   }
 
