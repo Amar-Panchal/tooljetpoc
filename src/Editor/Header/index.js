@@ -52,9 +52,15 @@ export default function EditorHeader({
       toast.error("Demographic field cannot be empty");
     else if (
       payload.templateType === 1 &&
-      !searchEmptyDemographicField(appDefinition, "reportresulttable")
+      !(
+        searchEmptyDemographicField(appDefinition, "reportresulttable") ||
+        searchEmptyDemographicField(appDefinition, "fivecolumn") ||
+        searchEmptyDemographicField(appDefinition, "fourcolumn") ||
+        searchEmptyDemographicField(appDefinition, "threecolumn") ||
+        searchEmptyDemographicField(appDefinition, "twocolumn")
+      )
     )
-      toast.error("Please Add Report Result Table Component");
+      toast.error("Please Add one Component for Report Body");
     else if (
       payload.templateType === 2 &&
       !searchEmptyDemographicField(appDefinition, "testlist")

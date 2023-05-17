@@ -312,11 +312,13 @@ export function ThreeColumn({
 
   let tableData = [];
   if (currentState) {
-    // tableData = resolveReferences(
-    //   component.definition.properties.data.value,
-    //   currentState,
-    //   []
-    // );
+    if (mode === "edit") {
+      tableData = resolveReferences(
+        component.definition.properties.data.value,
+        currentState,
+        []
+      );
+    }
 
     testResultData?.map((result) => {
       console.log("result", result);
