@@ -312,11 +312,11 @@ export function FourColumn({
 
   let tableData = [];
   if (currentState) {
-    // tableData = resolveReferences(
-    //   component.definition.properties.data.value,
-    //   currentState,
-    //   []
-    // );
+    tableData = resolveReferences(
+      component.definition.properties.data.value,
+      currentState,
+      []
+    );
 
     testResultData?.map((result) => {
       console.log("result", result);
@@ -324,6 +324,7 @@ export function FourColumn({
         Value: result.paramValue,
         ParameterName: result.testParamName,
         Unit: result.unitName,
+        NormalRange: "20-40",
       });
     });
     if (!Array.isArray(tableData)) tableData = [];
