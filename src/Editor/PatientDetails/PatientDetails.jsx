@@ -15,7 +15,7 @@ const initialDataState = {
       dir: "asc",
     },
   ],
-  take: 20,
+  take: 8,
   skip: 0,
 };
 
@@ -141,7 +141,7 @@ function PatientDetails() {
         }}
         onColumnReorder={handleColumnReorder}
         GridEvent={(event) => console.log("eve", event)}
-        style={{ minHeight: "100%" }}
+        style={{ height: "90vh" }}
       >
         {keysForGrid?.map((key) => {
           return fieldMasterList.map((field) => {
