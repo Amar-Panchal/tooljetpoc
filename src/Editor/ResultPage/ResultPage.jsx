@@ -264,7 +264,7 @@ function ResultPage() {
       })
       .then(() => {
         history.push({
-          pathname: "/preview",
+          pathname: "/test-result-report",
           state: { payload },
         });
       })

@@ -16,6 +16,7 @@ import PatientDetails from "../Editor/PatientDetails/PatientDetails";
 import ResultPage from "../Editor/ResultPage/ResultPage";
 import { Editor } from "../Editor/Editor";
 import TemplateHandler from "../Editor/TemplateHandler/TemplateHandler";
+import { TestResultReport } from "../Editor/TestResultReport/TestResultReport";
 
 class App extends React.Component {
   constructor(props) {
@@ -87,6 +88,13 @@ class App extends React.Component {
               exact
               path="/preview"
               component={Viewer}
+              switchDarkMode={this.switchDarkMode}
+              darkMode={darkMode}
+            />
+            <PrivateRoute
+              exact
+              path="/test-result-report"
+              component={TestResultReport}
               switchDarkMode={this.switchDarkMode}
               darkMode={darkMode}
             />
