@@ -105,6 +105,9 @@ function ResultPage() {
   const [values, setValues] = useState({});
   const [ResultDataWithRanges, setResultDataWithRanges] = useState([]);
   const [finalData, setFinalData] = useState([]);
+  const [disabledTests, setDisabledTests] = useState([]);
+  const [disabledAllTests, setDisabledAllTests] = useState(false);
+
   const history = useHistory();
 
   useEffect(() => {
@@ -270,6 +273,99 @@ function ResultPage() {
       });
   };
 
+  const handleDisableTest = (testIndex) => {
+    if (disabledTests.includes(testIndex)) {
+      // If test is already disabled, remove it from the disabledTests array
+      setDisabledTests(disabledTests.filter((index) => index !== testIndex));
+    } else {
+      // If test is not disabled, add it to the disabledTests array
+      setDisabledTests([...disabledTests, testIndex]);
+    }
+  };
+  const handleDisableAll = () => {
+    if (disabledTests.length === 0) {
+      // Disable all tests
+      setDisabledTests(
+        Array.from(
+          { length: selectedTestsWithParameters.length },
+          (_, index) => index
+        )
+      );
+    } else {
+      // Enable all tests
+      setDisabledTests([]);
+    }
+  };
+
+  // function MyComponent() {
+  //   const [disabledTests, setDisabledTests] = useState([]);
+
+  //   const handleDisableTest = (testIndex) => {
+  //     if (disabledTests.includes(testIndex)) {
+  //       // If test is already disabled, remove it from the disabledTests array
+  //       setDisabledTests(disabledTests.filter((index) => index !== testIndex));
+  //     } else {
+  //       // If test is not disabled, add it to the disabledTests array
+  //       setDisabledTests([...disabledTests, testIndex]);
+  //     }
+  //   };
+
+  //   const handleDisableAll = () => {
+  //     if (disabledTests.length === 0) {
+  //       // Disable all tests
+  //       setDisabledTests(
+  //         Array.from({ length: testList.length }, (_, index) => index)
+  //       );
+  //     } else {
+  //       // Enable all tests
+  //       setDisabledTests([]);
+  //     }
+  //   };
+
+  //   // Example test list with parameters
+  //   const testList = [
+  //     {
+  //       name: "Test 1",
+  //       parameters: ["Param 1", "Param 2", "Param 3"],
+  //     },
+  //     {
+  //       name: "Test 2",
+  //       parameters: ["Param 1", "Param 2"],
+  //     },
+  //     {
+  //       name: "Test 3",
+  //       parameters: ["Param 1", "Param 2", "Param 3", "Param 4"],
+  //     },
+  //   ];
+
+  //   return (
+  //     <div>
+  //       <button onClick={handleDisableAll}>
+  //         {disabledTests.length === testList.length
+  //           ? "Enable All"
+  //           : "Disable All"}
+  //       </button>
+  //       {testList.map((test, testIndex) => (
+  //         <div key={testIndex}>
+  //           <h3>{test.name}</h3>
+  //           {test.parameters.map((param, paramIndex) => (
+  //             <div key={paramIndex}>
+  //               <input
+  //                 type="text"
+  //                 value={param}
+  //                 disabled={disabledTests.includes(testIndex)}
+  //               />
+  //             </div>
+  //           ))}
+  //           <button onClick={() => handleDisableTest(testIndex)}>
+  //             {disabledTests.includes(testIndex) ? "Enable" : "Disable"}
+  //           </button>
+  //         </div>
+  //       ))}
+  //     </div>
+  //   );
+  // }
+
   return (
     <div style={{ width: "100%", height: "100%" }}>
       <div
@@ -377,63 +473,92 @@ function ResultPage() {
           </div>
         </div>
         <div>
-          <div
-            style={{
-              margin: "20px",
-            }}
-          >
+          {selectedTestsWithParameters.length > 0 && (
             <div
               style={{
-                width: "100%",
-                display: "flex",
-                flexDirection: "column",
-                padding: "20px",
-                border: "1px dotted gray",
-                borderRadius: "15px",
+                margin: "20px",
               }}
             >
-              <h1>Parameters</h1>
-              <div>
-                {selectedTestsWithParameters.map((test) => {
-                  return (
-                    <div
-                      style={{
-                        border: "1px dotted gray",
-                        padding: "15px",
-                        margin: "10px",
-                        borderRadius: "15px",
-                      }}
-                    >
-                      <h3>{test.testName}</h3>
-                      <TileLayout
-                        columns={6}
-                        rowHeight={50}
-                        gap={{
-                          rows: 10,
-                          columns: 10,
+              <div
+                style={{
+                  width: "100%",
+                  display: "flex",
+                  flexDirection: "column",
+                  padding: "20px",
+                  border: "1px dotted gray",
+                  borderRadius: "15px",
+                }}
+              >
+                <h1>Parameters</h1>
+                <div>
+                  {selectedTestsWithParameters.map((test, testIndex) => {
+                    return (
+                      <div
+                        style={{
+                          border: "5px dotted gray",
+                          padding: "15px",
+                          margin: "10px",
+                          borderRadius: "15px",
                         }}
-                        items={tiles}
-                      />
-                      {test.testParameters.map((parameter) => {
-                        if (parameter.testParamId === finalData.testParamId) {
-                          parameter.ranges = finalData.ranges;
-                        }
+                        key={testIndex}
+                      >
+                        <h3>{test.testName}</h3>
 
-                        return (
-                          <RenderParameterList
-                            parameterName={parameter}
-                            values={values}
-                            setValues={setValues}
-                            finalData={finalData}
-                          />
-                        );
-                      })}
-                    </div>
-                  );
-                })}
+                        <TileLayout
+                          columns={6}
+                          rowHeight={50}
+                          gap={{
+                            rows: 10,
+                            columns: 10,
+                          }}
+                          items={tiles}
+                        />
+                        {test.testParameters.map((parameter, paramIndex) => {
+                          if (parameter.testParamId === finalData.testParamId) {
+                            parameter.ranges = finalData.ranges;
+                          }
+
+                          return (
+                            <RenderParameterList
+                              parameterName={parameter}
+                              values={values}
+                              setValues={setValues}
+                              finalData={finalData}
+                              key={paramIndex}
+                              disabledTests={disabledTests}
+                              testIndex={testIndex}
+                              disabledAllTests={disabledAllTests}
+                            />
+                          );
+                        })}
+
+                        <Button
+                          style={{ backgroundColor: "yellow", color: "red" }}
+                          onClick={() => {
+                            toast.success("Authorized Successfully");
+                            handleDisableTest(testIndex);
+                          }}
+                        >
+                          {disabledTests.includes(testIndex)
+                            ? "Authorized"
+                            : "Authorize"}
+                        </Button>
+                      </div>
+                    );
+                  })}
+                </div>
+                <Button
+                  themeColor="primary"
+                  onClick={handleDisableAll}
+                  style={{ color: "yellow" }}
+                >
+                  {disabledTests.length === selectedTestsWithParameters.length
+                    ? "Edit All"
+                    : "Authorized All"}
+                </Button>
               </div>
             </div>
-          </div>
+          )}
           <div
             style={{
               border: "1px dotted gray",
@@ -445,13 +570,17 @@ function ResultPage() {
               justifyContent: "space-evenly",
             }}
           >
-            <Button themeColor="primary" onClick={handleSubmitResult}>
-              Submit
+            <Button
+              style={{ color: "white", backgroundColor: "blue" }}
+              onClick={handleSubmitResult}
+            >
+              Print
             </Button>
             <Button>Cancel</Button>
           </div>
         </div>
       </div>
+      {/* <MyComponent /> */}
     </div>
   );
 }

@@ -3,7 +3,15 @@
 import { Input, TileLayout } from "@progress/kendo-react-all";
 import React, { useCallback, useState } from "react";
 
-function RenderParameterList({ parameterName, values, setValues }) {
+function RenderParameterList({
+  parameterName,
+  values,
+  setValues,
+  key,
+  disabledTests,
+  testIndex,
+  disabledAllTests,
+}) {
   const styles = {
     fontSize: 14,
     textAlign: "center",
@@ -35,7 +43,8 @@ function RenderParameterList({ parameterName, values, setValues }) {
         colSpan: 1,
         rowSpan: 1,
       },
-
+      resizable: false,
+      reorderable: false,
       item: <span style={styles}>{parameterName.testParamName}</span>,
     },
     {
@@ -50,8 +59,15 @@ function RenderParameterList({ parameterName, values, setValues }) {
           <Input
             id={parameterName.testParamId}
             name={parameterName.testParamId}
-            style={{ width: "100%" }}
+            style={{
+              width: "100%",
+              border:
+                disabledTests.includes(testIndex) || disabledAllTests
+                  ? ""
+                  : "1px solid black",
+            }}
             onChange={handleChange}
+            disabled={disabledAllTests || disabledTests.includes(testIndex)}
           />
         </span>
       ),
@@ -99,6 +115,7 @@ function RenderParameterList({ parameterName, values, setValues }) {
   ];
   return (
     <TileLayout
+      key={key}
       columns={6}
       rowHeight={50}
       gap={{
