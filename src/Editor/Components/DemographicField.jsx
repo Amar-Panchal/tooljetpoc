@@ -105,10 +105,14 @@ export const DemographicField = function DemographicField({
 
     return str;
   }
-
+  let temp = reportTemplateDataMap;
   reportTemplateDataMap =
     reportTemplateDataMap?.payload?.resultValues?.patientDetails;
-
+  if (component.name === "testName")
+    console.log(
+      "rtemptemptemp",
+      temp.payload?.resultValues.selectedTestsWithParameters[0].testName
+    );
   return (
     <div
       data-disabled={disabledState}
@@ -116,12 +120,23 @@ export const DemographicField = function DemographicField({
       style={computedStyles}
       data-cy={dataCy}
     >
-      {!loadingState && (
-        <div
-          style={{ width: "100%", fontSize: textSize }}
-          dangerouslySetInnerHTML={{
-            __html: DOMPurify.sanitize(
-              `
+      {!loadingState &&
+        (component.name === "testName" ? (
+          <div
+            style={{ width: "100%", fontSize: textSize }}
+            dangerouslySetInnerHTML={{
+              __html: DOMPurify.sanitize(
+                temp.payload?.resultValues.selectedTestsWithParameters[0]
+                  .testName
+              ),
+            }}
+          />
+        ) : (
+          <div
+            style={{ width: "100%", fontSize: textSize }}
+            dangerouslySetInnerHTML={{
+              __html: DOMPurify.sanitize(
+                `
            
           
           ${text}  
@@ -137,10 +152,10 @@ export const DemographicField = function DemographicField({
           }
           
               `
-            ),
-          }}
-        />
-      )}
+              ),
+            }}
+          />
+        ))}
 
       {loadingState === true && (
         <div style={{ width: "100%" }}>
