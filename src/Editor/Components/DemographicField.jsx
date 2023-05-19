@@ -126,8 +126,17 @@ export const DemographicField = function DemographicField({
             style={{ width: "100%", fontSize: textSize }}
             dangerouslySetInnerHTML={{
               __html: DOMPurify.sanitize(
-                temp.payload?.resultValues.selectedTestsWithParameters[0]
-                  .testName
+                `
+           
+          
+                 
+                   ${
+                     temp.payload?.resultValues.selectedTestsWithParameters[0]
+                       .testName
+                       ? temp.payload?.resultValues
+                           .selectedTestsWithParameters[0].testName
+                       : text
+                   }`
               ),
             }}
           />
