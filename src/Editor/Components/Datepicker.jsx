@@ -39,11 +39,44 @@ export const Datepicker = function Datepicker({
       return moment(date).format("LT");
     }
   };
+  function calculateAge(date) {
+    const today = new Date();
+    const birthDate = new Date(date);
+
+    let ageYears = today.getFullYear() - birthDate.getFullYear();
+    let ageMonths = today.getMonth() - birthDate.getMonth();
+    let ageDays = today.getDate() - birthDate.getDate();
+
+    if (ageMonths < 0 || (ageMonths === 0 && ageDays < 0)) {
+      ageYears--;
+      ageMonths += 12;
+    }
+
+    if (ageDays < 0) {
+      const lastMonthDate = new Date(today.getFullYear(), today.getMonth(), 0);
+      ageDays += lastMonthDate.getDate();
+      ageMonths--;
+    }
+
+    if (ageYears < 1) {
+      ageYears = 0;
+    }
+
+    return {
+      years: ageYears,
+      months: ageMonths,
+      days: ageDays,
+    };
+  }
 
   const onDateChange = (date) => {
+    const tem = calculateAge(date);
+    console.log(tem);
+
     setPatientRegistrationFormData({
       ...PatientRegistrationFormData,
       [component.name]: date,
+      age: tem.years > 0 ? tem.years : undefined,
     });
     setDate(date);
     const dateString = computeDateString(date);
