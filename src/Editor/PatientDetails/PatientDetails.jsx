@@ -7,6 +7,7 @@ import { process } from "@progress/kendo-data-query";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
 import { toast } from "react-hot-toast";
+import { Checkbox } from "@progress/kendo-react-inputs";
 
 const initialDataState = {
   sort: [
@@ -24,8 +25,12 @@ function PatientDetails() {
   const [dataState, setDataState] = useState(initialDataState);
   const [keysForGrid, setKeysForGrid] = useState([]);
   const [fieldMasterList, setFieldMasterList] = useState([]);
+  const [selectedArray, setSelectedArray] = useState([]);
   const history = useHistory();
 
+  useEffect(() => {
+    setSelectedArray(keysForGrid);
+  }, [keysForGrid]);
   function getPatientDetailsList() {
     axios
       .get(
@@ -36,7 +41,6 @@ function PatientDetails() {
           response.data.resultData.patientList.map((patient) => {
             const temp = JSON.parse(patient.patientDescription);
             temp.patientId = patient?.patientId;
-
             return temp;
           })
         );
@@ -126,8 +130,69 @@ function PatientDetails() {
     console.log("event", event);
   };
 
+  const handleCheckboxChange = (event) => {
+    console.log("event", event);
+    const { name, value } = event.target;
+
+    if (value) {
+      setSelectedArray((prevArray) => {
+        const newArray = [...prevArray];
+        const index = newArray.indexOf(name);
+        if (index !== -1) {
+          newArray.splice(index, 1);
+        }
+        newArray.unshift(name);
+        return newArray;
+      });
+    } else {
+      setSelectedArray((prevArray) =>
+        prevArray.filter((element) => element !== name)
+      );
+    }
+
+    // if (value) {
+    //   setSelectedArray((prevArray) => [...prevArray, name]);
+    // } else {
+    //   setSelectedArray((prevArray) =>
+    //     prevArray.filter((element) => element !== name)
+    //   );
+    // }
+  };
+  const createRows = () => {
+    const rows = [];
+    for (let i = 0; i < keysForGrid.length; i += 4) {
+      const row = keysForGrid.slice(i, i + 4);
+      rows.push(
+        <tr key={i}>
+          {row.map((element, index) => (
+            <td key={index}>
+              <Checkbox
+                name={element}
+                value={element}
+                label={element
+                  .replace(/([A-Z])/g, " $1")
+                  .replace(/^./, (match) => match.toUpperCase())}
+                // checked={selectedArray.includes(element)}
+                onChange={handleCheckboxChange}
+                defaultChecked={true}
+              />
+            </td>
+          ))}
+        </tr>
+      );
+    }
+    return rows;
+  };
+
   return (
     <div>
+      <div>
+        <table
+          style={{ width: "90vw", border: "1px solid red", margin: "10px" }}
+        >
+          <tbody>{createRows()}</tbody>
+        </table>
+      </div>
       <Grid
         resizable={true}
         pageable={true}
@@ -143,7 +208,7 @@ function PatientDetails() {
         GridEvent={(event) => console.log("eve", event)}
         style={{ height: "90vh" }}
       >
-        {keysForGrid?.map((key) => {
+        {selectedArray?.map((key) => {
           return fieldMasterList.map((field) => {
             if (field.value === key) {
               return createGridColumn(field);
