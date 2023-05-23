@@ -23,7 +23,7 @@ function SelectTests({
   const [selectedTests, setSelectedTests] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [testListFiltered, setTestListFiltered] = useState([]);
-
+  console.log("searchQuery", searchQuery);
   const handleItemClick = (item) => {
     const { testId, testName } = item;
     const itemIndex = selectedTests.findIndex((test) => test.testId === testId);
@@ -65,9 +65,22 @@ function SelectTests({
   };
 
   useEffect(() => {
-    const filteredList = testList.filter((item) =>
-      item.testName.toLowerCase().includes(searchQuery.toLowerCase())
-    );
+    const filteredList = testList.filter((item) => {
+      console.log(
+        "object",
+
+        item.testName?.toLowerCase().split(" ").join(""),
+        searchQuery.toLowerCase().split(" ").join("")
+      );
+      return (
+        item.testName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        item.shortName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        item.department?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        item.displayName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        item.tags?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        item.lioncCode?.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    });
 
     setTestListFiltered(filteredList);
   }, [searchQuery]);
