@@ -25,11 +25,11 @@ function SelectTests({
   const [testListFiltered, setTestListFiltered] = useState([]);
   console.log("searchQuery", searchQuery);
   const handleItemClick = (item) => {
-    const { testId, testName } = item;
+    const { testId, testName, shortName } = item;
     const itemIndex = selectedTests.findIndex((test) => test.testId === testId);
 
     if (itemIndex === -1) {
-      setSelectedTests([...selectedTests, { testId, testName }]);
+      setSelectedTests([...selectedTests, { testId, testName, shortName }]);
     } else {
       const updatedItems = [...selectedTests];
       updatedItems.splice(itemIndex, 1);
@@ -66,12 +66,6 @@ function SelectTests({
 
   useEffect(() => {
     const filteredList = testList.filter((item) => {
-      console.log(
-        "object",
-
-        item.testName?.toLowerCase().split(" ").join(""),
-        searchQuery.toLowerCase().split(" ").join("")
-      );
       return (
         item.testName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
         item.shortName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -99,7 +93,12 @@ function SelectTests({
             <InputSeparator />
           </>
         )}
-        style={{ width: "50%", height: "20%" }}
+        style={{
+          width: "50%",
+          height: "20%",
+          backgroundColor: backgroundColor,
+          color: textColor,
+        }}
       />
       <div style={{ height: "90%", display: "flex" }}>
         <div style={{ width: "50%", height: "90%" }}>
@@ -116,6 +115,7 @@ function SelectTests({
                   onClick={() => handleItemClick(test)}
                   key={test.testId}
                   style={{
+                    cursor: "pointer",
                     color: textColor,
                     backgroundColor: backgroundColor,
                   }}
@@ -143,7 +143,27 @@ function SelectTests({
             }}
           >
             {selectedTests.map((test) => {
-              return <div>{test.testName}</div>;
+              console.log("testt", test);
+              return (
+                <div
+                  style={{
+                    cursor: "pointer",
+                    color: textColor,
+                    backgroundColor: backgroundColor,
+                  }}
+                  onMouseEnter={(event) => {
+                    event.target.style.backgroundColor = onHoverColor;
+                  }}
+                  onMouseLeave={(event) => {
+                    event.target.style.backgroundColor = backgroundColor;
+                  }}
+                  onClick={() => handleItemClick(test)}
+                >
+                  {` ${test.testName} (${
+                    test.shortName ? test.shortName : ""
+                  } ) `}
+                </div>
+              );
             })}
           </div>
         </div>
