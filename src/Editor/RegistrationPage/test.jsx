@@ -19,6 +19,7 @@ function SelectTests({
   onHoverColor,
   backgroundColor,
 }) {
+  console.log("PatientRegistrationFormData", PatientRegistrationFormData);
   const [testList, setTestList] = useState([]);
   const [selectedTests, setSelectedTests] = useState(
     PatientRegistrationFormData.selectedTests
