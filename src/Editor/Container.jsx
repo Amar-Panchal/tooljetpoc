@@ -102,6 +102,7 @@ export const Container = ({
         )
         .then(() => {
           setPatientRegistrationFormData({});
+          patientDetailsEditData = {};
           toast.success("Created Successfully");
         })
         .catch((err) => console.log("err saveRegistrationPageFormData", err));
