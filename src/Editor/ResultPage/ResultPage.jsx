@@ -492,70 +492,118 @@ function ResultPage() {
                 <h1>Parameters</h1>
                 <div>
                   {selectedTestsWithParameters.map((test, testIndex) => {
+                    console.log("dddd", test);
                     return (
                       <div
                         style={{
-                          border: "5px dotted gray",
+                          border: "1px dotted gray",
                           padding: "15px",
                           margin: "10px",
                           borderRadius: "15px",
                         }}
                         key={testIndex}
                       >
-                        <h3>{test.testName}</h3>
+                        {test.testParameters.length > 0 ? (
+                          <div>
+                            <h3>{test.testName}</h3>
 
-                        <TileLayout
-                          columns={6}
-                          rowHeight={50}
-                          gap={{
-                            rows: 10,
-                            columns: 10,
-                          }}
-                          items={tiles}
-                        />
-                        {test.testParameters.map((parameter, paramIndex) => {
-                          if (parameter.testParamId === finalData.testParamId) {
-                            parameter.ranges = finalData.ranges;
-                          }
-
-                          return (
-                            <RenderParameterList
-                              parameterName={parameter}
-                              values={values}
-                              setValues={setValues}
-                              finalData={finalData}
-                              key={paramIndex}
-                              disabledTests={disabledTests}
-                              testIndex={testIndex}
-                              disabledAllTests={disabledAllTests}
+                            <TileLayout
+                              columns={6}
+                              rowHeight={50}
+                              gap={{
+                                rows: 10,
+                                columns: 10,
+                              }}
+                              items={tiles}
                             />
-                          );
-                        })}
+                            {test.testParameters.map(
+                              (parameter, paramIndex) => {
+                                if (
+                                  parameter.testParamId ===
+                                  finalData.testParamId
+                                ) {
+                                  parameter.ranges = finalData.ranges;
+                                }
 
-                        <Button
-                          style={{ backgroundColor: "yellow", color: "red" }}
-                          onClick={() => {
-                            toast.success("Authorized Successfully");
-                            handleDisableTest(testIndex);
-                          }}
-                        >
-                          {disabledTests.includes(testIndex)
-                            ? "Authorized"
-                            : "Authorize"}
-                        </Button>
+                                return (
+                                  <RenderParameterList
+                                    parameterName={parameter}
+                                    values={values}
+                                    setValues={setValues}
+                                    finalData={finalData}
+                                    key={paramIndex}
+                                    disabledTests={disabledTests}
+                                    testIndex={testIndex}
+                                    disabledAllTests={disabledAllTests}
+                                  />
+                                );
+                              }
+                            )}
+
+                            <Button
+                              style={{
+                                color: disabledTests.includes(testIndex)
+                                  ? ""
+                                  : "white",
+                                backgroundColor: disabledTests.includes(
+                                  testIndex
+                                )
+                                  ? ""
+                                  : "blue",
+                              }}
+                              onClick={() => {
+                                toast.success("Authorized Successfully");
+                                handleDisableTest(testIndex);
+                              }}
+                            >
+                              {disabledTests.includes(testIndex)
+                                ? "Authorized"
+                                : "Authorize"}
+                            </Button>
+                          </div>
+                        ) : (
+                          <div
+                            style={{
+                              width: "100%",
+                              display: "flex",
+                              justifyContent: "center",
+                            }}
+                          >
+                            <h4>No Parameter Found</h4>
+                          </div>
+                        )}
                       </div>
                     );
                   })}
                 </div>
-                <Button
-                  themeColor="primary"
-                  onClick={handleDisableAll}
-                  style={{ color: "yellow" }}
+                <div
+                  style={{
+                    width: "100%",
+                    display: "flex",
+                    justifyContent: "space-around",
+                  }}
                 >
-                  {disabledTests.length === selectedTestsWithParameters.length
-                    ? "Edit All"
-                    : "Authorized All"}
-                </Button>
+                  <Button
+                    style={{
+                      color:
+                        disabledTests.length ===
+                        selectedTestsWithParameters.length
+                          ? ""
+                          : "white",
+                      backgroundColor:
+                        disabledTests.length ===
+                        selectedTestsWithParameters.length
+                          ? ""
+                          : "blue",
+                      width: "100px",
+                    }}
+                    onClick={handleDisableAll}
+                  >
+                    {disabledTests.length === selectedTestsWithParameters.length
+                      ? "Edit All"
+                      : "Authorized All"}
+                  </Button>
+                </div>
               </div>
             </div>
           )}

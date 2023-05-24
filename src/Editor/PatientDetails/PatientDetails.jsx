@@ -8,6 +8,9 @@ import axios from "axios";
 import { useHistory } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import { Checkbox } from "@progress/kendo-react-inputs";
+import { Confirm } from "../Viewer/Confirm";
+import { Button } from "react-bootstrap";
+import ConfigurationModal from "./ConfigurationModal";
 
 const initialDataState = {
   sort: [
@@ -26,6 +29,7 @@ function PatientDetails() {
   const [keysForGrid, setKeysForGrid] = useState([]);
   const [fieldMasterList, setFieldMasterList] = useState([]);
   const [selectedArray, setSelectedArray] = useState([]);
+  const [showConfiguration, setShowConfiguration] = useState(false);
   const history = useHistory();
 
   useEffect(() => {
@@ -126,12 +130,8 @@ function PatientDetails() {
         return <GridColumn field={field.value} title={field.label} />;
     }
   };
-  const handleColumnReorder = (event) => {
-    console.log("event", event);
-  };
 
   const handleCheckboxChange = (event) => {
-    console.log("event", event);
     const { name, value } = event.target;
 
     if (value) {
@@ -186,13 +186,8 @@ function PatientDetails() {
 
   return (
     <div>
-      <div>
-        <table
-          style={{ width: "90vw", border: "1px solid red", margin: "10px" }}
-        >
-          <tbody>{createRows()}</tbody>
-        </table>
-      </div>
+      <div></div>
+      <Button onClick={() => setShowConfiguration(true)}>Configure</Button>
       <Grid
         resizable={true}
         pageable={true}
@@ -204,7 +199,6 @@ function PatientDetails() {
         onDataStateChange={(e) => {
           setDataState(e.dataState);
         }}
-        onColumnReorder={handleColumnReorder}
         GridEvent={(event) => console.log("eve", event)}
         style={{ height: "90vh" }}
       >
@@ -220,7 +214,7 @@ function PatientDetails() {
           title="Actions"
           cell={(props) => {
             return (
-              <td>
+              <td style={{ display: "flex", gap: "10px" }}>
                 {/* <button
                     onClick={() =>
                       history.push({
@@ -239,21 +233,42 @@ function PatientDetails() {
                   >
                     <span class="k-icon k-i-edit"></span>
                   </button> */}
-                <button
-                  onClick={() =>
+
+                <span
+                  style={{ cursor: "pointer" }}
+                  onClick={() => {
                     history.push({
                       pathname: "/result",
                       state: props.dataItem,
-                    })
-                  }
-                >
-                  <span class="k-icon k-i-arrow-double-60-right"></span>
-                </button>
+                    });
+                  }}
+                  class="k-icon k-i-print"
+                ></span>
+                <span
+                  style={{ cursor: "pointer" }}
+                  onClick={() => {
+                    history.push({
+                      pathname: "/registration-page",
+                      state: props.dataItem,
+                    });
+                  }}
+                  class="k-icon k-i-edit"
+                ></span>
               </td>
             );
           }}
         />
       </Grid>
+      <ConfigurationModal
+        showModal={showConfiguration}
+        title="Configure Columns"
+        message="Select Which columns to display "
+        handleClose={() => setShowConfiguration(!showConfiguration)}
+        cancelButtonText="Cancel"
+        //  handleConfirm={}
+        confirmButtonText="Apply"
+        createRows={createRows}
+      />
     </div>
   );
 }

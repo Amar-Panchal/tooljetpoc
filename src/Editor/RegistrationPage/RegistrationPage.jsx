@@ -1,6 +1,6 @@
 /** @format */
 
-import React from "react";
+import React, { useEffect } from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { Container } from "../Container";
@@ -27,7 +27,7 @@ class RegistrationPageLauncher extends React.Component {
     const slug = this.props.match.params.slug;
     const appId = this.props.match.params.id;
     const versionId = this.props.match.params.versionId;
-
+    console.log("pppprrops", props);
     this.state = {
       slug,
       appId,
@@ -431,6 +431,7 @@ class RegistrationPageLauncher extends React.Component {
                           }
                           canvasWidth={this.getCanvasWidth()}
                           currentPageId={this.state.currentPageId}
+                          patientDetailsEditData={this.props.location.state}
                         />
                       )}
                     </>

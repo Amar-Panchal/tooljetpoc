@@ -59,6 +59,7 @@ export const Container = ({
   currentPageId,
   reportTemplateDataMap,
   customMode,
+  patientDetailsEditData,
 }) => {
   const styles = {
     width: currentLayout === "mobile" ? deviceWindowWidth : "100%",
@@ -70,7 +71,7 @@ export const Container = ({
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const components = appDefinition.pages[currentPageId]?.components ?? {};
-
+  console.log("patientDetailsEditData", patientDetailsEditData);
   const [boxes, setBoxes] = useState(components);
   const [isDragging, setIsDragging] = useState(false);
   const [isResizing, setIsResizing] = useState(false);
@@ -130,7 +131,10 @@ export const Container = ({
     },
     [isContainerFocused, appDefinition, focusedParentIdRef]
   );
-
+  useEffect(() => {
+    if (patientDetailsEditData)
+      setPatientRegistrationFormData(patientDetailsEditData);
+  }, [patientDetailsEditData]);
   useEffect(() => {
     setTestResultData(reportTemplateDataMap?.payload?.resultValues?.testResult);
   }, [reportTemplateDataMap]);
