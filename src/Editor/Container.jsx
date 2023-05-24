@@ -24,8 +24,6 @@ import { addComponents, addNewWidgetToTheEditor } from "@/_helpers/appUtils";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-hot-toast";
-import { SelectTests } from "./RegistrationPage/test";
-import { Grid, GridColumn } from "@progress/kendo-react-all";
 
 export const Container = ({
   canvasWidth,
@@ -71,7 +69,7 @@ export const Container = ({
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const components = appDefinition.pages[currentPageId]?.components ?? {};
-  console.log("patientDetailsEditData", patientDetailsEditData);
+
   const [boxes, setBoxes] = useState(components);
   const [isDragging, setIsDragging] = useState(false);
   const [isResizing, setIsResizing] = useState(false);

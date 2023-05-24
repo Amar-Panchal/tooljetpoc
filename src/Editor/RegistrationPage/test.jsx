@@ -20,10 +20,12 @@ function SelectTests({
   backgroundColor,
 }) {
   const [testList, setTestList] = useState([]);
-  const [selectedTests, setSelectedTests] = useState([]);
+  const [selectedTests, setSelectedTests] = useState(
+    PatientRegistrationFormData.selectedTests
+  );
   const [searchQuery, setSearchQuery] = useState("");
   const [testListFiltered, setTestListFiltered] = useState([]);
-  console.log("searchQuery", searchQuery);
+
   const handleItemClick = (item) => {
     const { testId, testName, shortName } = item;
     const itemIndex = selectedTests.findIndex((test) => test.testId === testId);
@@ -78,7 +80,7 @@ function SelectTests({
 
     setTestListFiltered(filteredList);
   }, [searchQuery]);
-
+  console.log("selectedTests", selectedTests);
   return (
     <div style={{ height: "100%", padding: "10px" }}>
       <TextBox
