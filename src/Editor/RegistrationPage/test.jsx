@@ -19,10 +19,9 @@ function SelectTests({
   onHoverColor,
   backgroundColor,
 }) {
-  console.log("PatientRegistrationFormData", PatientRegistrationFormData);
   const [testList, setTestList] = useState([]);
   const [selectedTests, setSelectedTests] = useState(
-    PatientRegistrationFormData.selectedTests
+    PatientRegistrationFormData.selectedTests || []
   );
   const [searchQuery, setSearchQuery] = useState("");
   const [testListFiltered, setTestListFiltered] = useState([]);
@@ -146,7 +145,6 @@ function SelectTests({
             }}
           >
             {selectedTests.map((test) => {
-              console.log("testt", test);
               return (
                 <div
                   style={{
