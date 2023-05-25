@@ -753,15 +753,7 @@ export const Container = ({
         >
           <center className="text-muted">
             You haven&apos;t added any components yet. Drag components from the
-            right sidebar and drop here. Check out our
-            <a
-              href="https://docs.tooljet.com/docs#the-very-quick-quickstart"
-              target="_blank"
-              rel="noreferrer"
-            >
-              guide
-            </a>
-            on adding widgets.
+            right sidebar and drop here.
           </center>
         </div>
       )}
