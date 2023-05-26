@@ -31,13 +31,12 @@ export const Datepicker = function Datepicker({
   const selectedDateFormat = enableTime ? `${format} LT` : format;
 
   const computeDateString = (date) => {
-    if (enableDate) {
+    console.log("datee in ci", date);
+    if (date && enableDate) {
       return moment(date).format(selectedDateFormat);
-    }
-
-    if (!enableDate && enableTime) {
+    } else if (date && !enableDate && enableTime) {
       return moment(date).format("LT");
-    }
+    } else return "Select Date";
   };
   function calculateAge(date) {
     const today = new Date();
@@ -118,7 +117,11 @@ export const Datepicker = function Datepicker({
     setExposedVariable("isValid", isValid);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isValid]);
-
+  console.log(
+    "PatientRegistrationFormData[component.name]",
+    PatientRegistrationFormData[component.name],
+    computeDateString(PatientRegistrationFormData[component.name])
+  );
   return (
     <div
       data-disabled={disabledState}
@@ -136,11 +139,7 @@ export const Datepicker = function Datepicker({
           darkMode ? "bg-dark color-white" : "bg-light"
         }`}
         selected={date}
-        value={
-          date !== null
-            ? computeDateString(PatientRegistrationFormData[component.name])
-            : "Select Date"
-        }
+        value={computeDateString(PatientRegistrationFormData[component.name])}
         onChange={(date) => onDateChange(date)}
         showTimeInput={enableTime ? true : false}
         showTimeSelectOnly={enableDate ? false : true}

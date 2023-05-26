@@ -31,7 +31,7 @@ function PatientDetails() {
   const [selectedArray, setSelectedArray] = useState([]);
   const [showConfiguration, setShowConfiguration] = useState(false);
   const history = useHistory();
-
+  // console.log("keysForGrid", keysForGrid);
   useEffect(() => {
     setSelectedArray(keysForGrid);
   }, [keysForGrid]);
@@ -63,7 +63,7 @@ function PatientDetails() {
         console.log("error -> getPatientDetailsList", error);
       });
   }
-
+  console.log("selectedArray", selectedArray);
   useEffect(() => {
     getPatientDetailsList();
   }, []);
@@ -83,6 +83,7 @@ function PatientDetails() {
   }, [PatientDetailsList]);
 
   const createGridColumn = (field) => {
+    console.log("ffff", field.componentType);
     switch (field.componentType) {
       case "TextInput":
         return <GridColumn field={field.value} title={field.label} />;
@@ -126,6 +127,7 @@ function PatientDetails() {
             }}
           />
         );
+
       default:
         return <GridColumn field={field.value} title={field.label} />;
     }
