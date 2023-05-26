@@ -41,7 +41,6 @@ export const Datepicker = function Datepicker({
   function calculateAge(date) {
     const today = new Date();
     const birthDate = new Date(date);
-
     let ageYears = today.getFullYear() - birthDate.getFullYear();
     let ageMonths = today.getMonth() - birthDate.getMonth();
     let ageDays = today.getDate() - birthDate.getDate();
