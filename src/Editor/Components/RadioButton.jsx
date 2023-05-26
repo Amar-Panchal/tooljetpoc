@@ -19,11 +19,15 @@ export const RadioButton = function RadioButton({
   PatientRegistrationFormData,
 }) {
   const { label, value, values, display_values } = properties;
+
   const { visibility, disabledState, activeColor } = styles;
   const textColor =
     darkMode && styles.textColor === "#000" ? "#fff" : styles.textColor;
   const [checkedValue, setValue] = useState(() => value);
-  useEffect(() => setValue(value), [value]);
+  useEffect(
+    () => setValue(PatientRegistrationFormData[component?.name]?.value),
+    [PatientRegistrationFormData]
+  );
 
   let selectOptions = [];
 
@@ -71,32 +75,34 @@ export const RadioButton = function RadioButton({
         {label}
       </span>
       <div className="col px-1 py-0 mt-0">
-        {selectOptions.map((option, index) => (
-          <label key={index} className="form-check form-check-inline">
-            <KendoRadioButton
-              style={{
-                marginTop: "1px",
-                backgroundColor:
-                  checkedValue === option.value ? `${activeColor}` : "white",
-              }}
-              className="form-check-input"
-              checked={checkedValue === option.value}
-              type="radio"
-              value={PatientRegistrationFormData[component?.name]?.value}
-              name={`${id}-${uuidv4()}`}
-              onChange={() => {
-                onSelect(option.value);
-                setPatientRegistrationFormData({
-                  ...PatientRegistrationFormData,
-                  [component.name]: option,
-                });
-              }}
-            />
-            <span className="form-check-label" style={{ color: textColor }}>
-              {option.name}
-            </span>
-          </label>
-        ))}
+        {selectOptions.map((option, index) => {
+          return (
+            <label key={index} className="form-check form-check-inline">
+              <KendoRadioButton
+                style={{
+                  marginTop: "1px",
+                  backgroundColor:
+                    checkedValue === option.value ? `${activeColor}` : "white",
+                }}
+                className="form-check-input"
+                checked={checkedValue === option.value}
+                type="radio"
+                value={PatientRegistrationFormData[component?.name]?.value}
+                name={`${id}-${uuidv4()}`}
+                onChange={() => {
+                  onSelect(option.value);
+                  setPatientRegistrationFormData({
+                    ...PatientRegistrationFormData,
+                    [component.name]: option,
+                  });
+                }}
+              />
+              <span className="form-check-label" style={{ color: textColor }}>
+                {option.name}
+              </span>
+            </label>
+          );
+        })}
       </div>
     </div>
   );

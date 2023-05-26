@@ -71,6 +71,7 @@ export const Container = ({
   const components = appDefinition.pages[currentPageId]?.components ?? {};
 
   const [boxes, setBoxes] = useState(components);
+
   const [isDragging, setIsDragging] = useState(false);
   const [isResizing, setIsResizing] = useState(false);
   const [commentsPreviewList, setCommentsPreviewList] = useState([]);
@@ -80,7 +81,7 @@ export const Container = ({
   const router = useRouter();
   const canvasRef = useRef(null);
   const focusedParentIdRef = useRef(undefined);
-
+  const history = useHistory();
   const [PatientRegistrationFormData, setPatientRegistrationFormData] =
     useState({});
   function onSubmitPatientRegistrationFormData() {
@@ -102,6 +103,8 @@ export const Container = ({
           setPatientRegistrationFormData({});
           patientDetailsEditData = {};
           toast.success("Created Successfully");
+          console.log("patientDetailsEditData", patientDetailsEditData);
+          if (patientDetailsEditData.length > 0) history.push("/");
         })
         .catch((err) => console.log("err saveRegistrationPageFormData", err));
     }
@@ -582,86 +585,82 @@ export const Container = ({
           resolveReferences(canShowInCurrentLayout, currentState)
         ) {
           return (
-            <div>
-              <DraggableBox
-                className={showComments && "pointer-events-none"}
-                canvasWidth={canvasWidth}
-                onComponentClick={
-                  config.COMMENT_FEATURE_ENABLE && showComments
-                    ? handleAddThreadOnComponent
-                    : onComponentClick
-                }
-                onEvent={onEvent}
-                onComponentOptionChanged={onComponentOptionChanged}
-                onComponentOptionsChanged={onComponentOptionsChanged}
-                key={key}
-                currentState={currentState}
-                onResizeStop={onResizeStop}
-                onDragStop={onDragStop}
-                paramUpdated={paramUpdated}
-                id={key}
-                {...boxes[key]}
-                mode={mode}
-                resizingStatusChanged={(status) => setIsResizing(status)}
-                draggingStatusChanged={(status) => setIsDragging(status)}
-                inCanvas={true}
-                zoomLevel={zoomLevel}
-                setSelectedComponent={setSelectedComponent}
-                removeComponent={removeComponent}
-                currentLayout={currentLayout}
-                deviceWindowWidth={deviceWindowWidth}
-                isSelectedComponent={
-                  mode === "edit"
-                    ? selectedComponents.find(
-                        (component) => component.id === key
-                      )
-                    : false
-                }
-                darkMode={darkMode}
-                onComponentHover={onComponentHover}
-                hoveredComponent={hoveredComponent}
-                sideBarDebugger={sideBarDebugger}
-                isMultipleComponentsSelected={
-                  selectedComponents?.length > 1 ? true : false
-                }
-                dataQueries={dataQueries}
-                childComponents={childComponents[key]}
-                containerProps={{
-                  mode,
-                  snapToGrid,
-                  onComponentClick,
-                  onEvent,
-                  appDefinition,
-                  appDefinitionChanged,
-                  currentState,
-                  onComponentOptionChanged,
-                  onComponentOptionsChanged,
-                  appLoading,
-                  zoomLevel,
-                  setSelectedComponent,
-                  removeComponent,
-                  currentLayout,
-                  deviceWindowWidth,
-                  selectedComponents,
-                  darkMode,
-                  onComponentHover,
-                  hoveredComponent,
-                  sideBarDebugger,
-                  dataQueries,
-                  addDefaultChildren,
-                  currentPageId,
-                  childComponents,
-                }}
-                reportTemplateDataMap={reportTemplateDataMap}
-                PatientRegistrationFormData={PatientRegistrationFormData}
-                setPatientRegistrationFormData={setPatientRegistrationFormData}
-                onSubmitPatientRegistrationFormData={
-                  onSubmitPatientRegistrationFormData
-                }
-                customMode={customMode}
-                testResultData={testResultData}
-              />
-            </div>
+            <DraggableBox
+              className={showComments && "pointer-events-none"}
+              canvasWidth={canvasWidth}
+              onComponentClick={
+                config.COMMENT_FEATURE_ENABLE && showComments
+                  ? handleAddThreadOnComponent
+                  : onComponentClick
+              }
+              onEvent={onEvent}
+              onComponentOptionChanged={onComponentOptionChanged}
+              onComponentOptionsChanged={onComponentOptionsChanged}
+              key={key}
+              currentState={currentState}
+              onResizeStop={onResizeStop}
+              onDragStop={onDragStop}
+              paramUpdated={paramUpdated}
+              id={key}
+              {...boxes[key]}
+              mode={mode}
+              resizingStatusChanged={(status) => setIsResizing(status)}
+              draggingStatusChanged={(status) => setIsDragging(status)}
+              inCanvas={true}
+              zoomLevel={zoomLevel}
+              setSelectedComponent={setSelectedComponent}
+              removeComponent={removeComponent}
+              currentLayout={currentLayout}
+              deviceWindowWidth={deviceWindowWidth}
+              isSelectedComponent={
+                mode === "edit"
+                  ? selectedComponents.find((component) => component.id === key)
+                  : false
+              }
+              darkMode={darkMode}
+              onComponentHover={onComponentHover}
+              hoveredComponent={hoveredComponent}
+              sideBarDebugger={sideBarDebugger}
+              isMultipleComponentsSelected={
+                selectedComponents?.length > 1 ? true : false
+              }
+              dataQueries={dataQueries}
+              childComponents={childComponents[key]}
+              containerProps={{
+                mode,
+                snapToGrid,
+                onComponentClick,
+                onEvent,
+                appDefinition,
+                appDefinitionChanged,
+                currentState,
+                onComponentOptionChanged,
+                onComponentOptionsChanged,
+                appLoading,
+                zoomLevel,
+                setSelectedComponent,
+                removeComponent,
+                currentLayout,
+                deviceWindowWidth,
+                selectedComponents,
+                darkMode,
+                onComponentHover,
+                hoveredComponent,
+                sideBarDebugger,
+                dataQueries,
+                addDefaultChildren,
+                currentPageId,
+                childComponents,
+              }}
+              reportTemplateDataMap={reportTemplateDataMap}
+              PatientRegistrationFormData={PatientRegistrationFormData}
+              setPatientRegistrationFormData={setPatientRegistrationFormData}
+              onSubmitPatientRegistrationFormData={
+                onSubmitPatientRegistrationFormData
+              }
+              customMode={customMode}
+              testResultData={testResultData}
+            />
           );
         }
       })}

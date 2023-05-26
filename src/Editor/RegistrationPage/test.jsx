@@ -80,7 +80,6 @@ function SelectTests({
 
     setTestListFiltered(filteredList);
   }, [searchQuery]);
-  console.log("selectedTests", selectedTests);
   return (
     <div style={{ height: "100%", padding: "10px" }}>
       <TextBox

@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { useEffect } from "react";
+import React from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { Container } from "../Container";
@@ -27,7 +27,6 @@ class RegistrationPageLauncher extends React.Component {
     const slug = this.props.match.params.slug;
     const appId = this.props.match.params.id;
     const versionId = this.props.match.params.versionId;
-    console.log("pppprrops", props);
     this.state = {
       slug,
       appId,
@@ -183,6 +182,7 @@ class RegistrationPageLauncher extends React.Component {
       .then(({ data }) => {
         const { reportValues: reportValuesString } =
           data?.resultData?.[0] ?? {};
+        console.log("reporttt data JSOnn", JSON.parse(reportValuesString));
         this.setStateForApp({
           definition: JSON.parse(reportValuesString ?? "{}"),
         });
@@ -370,7 +370,7 @@ class RegistrationPageLauncher extends React.Component {
                 style={{
                   backgroundColor: this.computeCanvasBackgroundColor(),
                   position: "fixed",
-                  top: "50px",
+
                   height: "-webkit-fill-available",
                 }}
               >
