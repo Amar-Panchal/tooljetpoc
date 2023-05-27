@@ -92,13 +92,14 @@ export const Container = ({
 
     if (mode === "view") {
       const payload = {
-        patientId: history.location.state.patientId
+        patientId: history.location.state?.patientId
           ? history.location.state.patientId
           : undefined,
         patientDescription: PatientRegistrationFormData,
       };
-      if (history.location.state.patientId) {
+      if (history.location.state?.patientId) {
         console.log("edit called", payload);
+
         axios
           .post(
             "https://elabnextapi-dev.azurewebsites.net/api/PatientRegistration/UpdatePatientRegistration",
@@ -111,6 +112,7 @@ export const Container = ({
               pathname: "/registration-page",
               state: {},
             });
+            window.location.reload();
           })
           .catch((err) =>
             console.log("error saveRegistrationPageFormData", err)
@@ -129,6 +131,7 @@ export const Container = ({
               pathname: "/registration-page",
               state: {},
             });
+            window.location.reload();
           })
           .catch((err) =>
             console.log("error saveRegistrationPageFormData", err)
