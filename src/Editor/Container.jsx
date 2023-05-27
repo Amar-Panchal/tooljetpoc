@@ -92,22 +92,48 @@ export const Container = ({
 
     if (mode === "view") {
       const payload = {
+        patientId: history.location.state.patientId
+          ? history.location.state.patientId
+          : undefined,
         patientDescription: PatientRegistrationFormData,
       };
-      axios
-        .post(
-          "https://elabnextapi-dev.azurewebsites.net/api/PatientRegistration/SavePatientRegistration",
-          payload
-        )
-        .then(() => {
-          setPatientRegistrationFormData({});
-          toast.success("Created Successfully");
-          history.push({
-            pathname: "/registration-page",
-            state: {},
-          });
-        })
-        .catch((err) => console.log("error saveRegistrationPageFormData", err));
+      if (history.location.state.patientId) {
+        console.log("edit called", payload);
+        axios
+          .post(
+            "https://elabnextapi-dev.azurewebsites.net/api/PatientRegistration/UpdatePatientRegistration",
+            payload
+          )
+          .then(() => {
+            setPatientRegistrationFormData({});
+            toast.success("Updated Successfully");
+            history.push({
+              pathname: "/registration-page",
+              state: {},
+            });
+          })
+          .catch((err) =>
+            console.log("error saveRegistrationPageFormData", err)
+          );
+      } else {
+        console.log("create called", payload);
+        axios
+          .post(
+            "https://elabnextapi-dev.azurewebsites.net/api/PatientRegistration/SavePatientRegistration",
+            payload
+          )
+          .then(() => {
+            setPatientRegistrationFormData({});
+            toast.success("Created Successfully");
+            history.push({
+              pathname: "/registration-page",
+              state: {},
+            });
+          })
+          .catch((err) =>
+            console.log("error saveRegistrationPageFormData", err)
+          );
+      }
     }
   }
 

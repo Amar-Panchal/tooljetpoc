@@ -21,7 +21,7 @@ export const Checkbox = function Checkbox({
     defaultValueFromProperties
   );
   const [checked, setChecked] = React.useState(
-    PatientRegistrationFormData[component.name].length > 0 ? true : false
+    PatientRegistrationFormData[component.name]?.length > 0 ? true : false
   );
   const { label } = properties;
   const { visibility, disabledState, checkboxColor } = styles;
@@ -30,7 +30,7 @@ export const Checkbox = function Checkbox({
 
   useEffect(() => {
     setChecked(
-      PatientRegistrationFormData[component.name].length > 0 ? true : false
+      PatientRegistrationFormData[component.name]?.length > 0 ? true : false
     );
   }, [PatientRegistrationFormData]);
   function toggleValue(e) {
