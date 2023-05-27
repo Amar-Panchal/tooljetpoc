@@ -31,7 +31,6 @@ export const Datepicker = function Datepicker({
   const selectedDateFormat = enableTime ? `${format} LT` : format;
 
   const computeDateString = (date) => {
-    console.log("datee in ci", date);
     if (date && enableDate) {
       return moment(date).format(selectedDateFormat);
     } else if (date && !enableDate && enableTime) {
@@ -116,11 +115,6 @@ export const Datepicker = function Datepicker({
     setExposedVariable("isValid", isValid);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isValid]);
-  console.log(
-    "PatientRegistrationFormData[component.name]",
-    PatientRegistrationFormData[component.name],
-    computeDateString(PatientRegistrationFormData[component.name])
-  );
   return (
     <div
       data-disabled={disabledState}

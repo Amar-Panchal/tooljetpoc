@@ -20,12 +20,19 @@ export const Checkbox = function Checkbox({
   const [defaultValue, setDefaultvalue] = React.useState(
     defaultValueFromProperties
   );
-  const [checked, setChecked] = React.useState(defaultValueFromProperties);
+  const [checked, setChecked] = React.useState(
+    PatientRegistrationFormData[component.name].length > 0 ? true : false
+  );
   const { label } = properties;
   const { visibility, disabledState, checkboxColor } = styles;
   const textColor =
     darkMode && styles.textColor === "#000" ? "#fff" : styles.textColor;
 
+  useEffect(() => {
+    setChecked(
+      PatientRegistrationFormData[component.name].length > 0 ? true : false
+    );
+  }, [PatientRegistrationFormData]);
   function toggleValue(e) {
     const isChecked = e.target.checked;
 

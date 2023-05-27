@@ -101,12 +101,13 @@ export const Container = ({
         )
         .then(() => {
           setPatientRegistrationFormData({});
-          patientDetailsEditData = {};
           toast.success("Created Successfully");
-          console.log("patientDetailsEditData", patientDetailsEditData);
-          if (patientDetailsEditData.length > 0) history.push("/");
+          history.push({
+            pathname: "/registration-page",
+            state: {},
+          });
         })
-        .catch((err) => console.log("err saveRegistrationPageFormData", err));
+        .catch((err) => console.log("error saveRegistrationPageFormData", err));
     }
   }
 
