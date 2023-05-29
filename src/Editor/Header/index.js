@@ -7,6 +7,8 @@ import { toast } from "react-hot-toast";
 import axios from "axios";
 import { Button, Input } from "@progress/kendo-react-all";
 
+import { useHistory } from "react-router-dom";
+
 export default function EditorHeader({
   darkMode,
   currentState,
@@ -20,6 +22,7 @@ export default function EditorHeader({
   updateTemplatePayload,
 }) {
   const { is_maintenance_on } = app;
+  const history = useHistory();
   const payload = {
     reportTemplateId: updateTemplatePayload.templateId,
     reportTemplateName: templateName,
@@ -80,6 +83,48 @@ export default function EditorHeader({
         });
     }
   };
+  const updateReportTemplateAndPreview = () => {
+    if (searchEmptyDemographicField(appDefinition, "demographicfield"))
+      toast.error("Demographic field cannot be empty");
+    else if (
+      payload.templateType === 1 &&
+      !(
+        searchEmptyDemographicField(appDefinition, "reportresulttable") ||
+        searchEmptyDemographicField(appDefinition, "fivecolumn") ||
+        searchEmptyDemographicField(appDefinition, "fourcolumn") ||
+        searchEmptyDemographicField(appDefinition, "threecolumn") ||
+        searchEmptyDemographicField(appDefinition, "twocolumn")
+      )
+    )
+      toast.error("Please Add one Component for Report Body");
+    else if (
+      payload.templateType === 2 &&
+      !searchEmptyDemographicField(appDefinition, "testlist")
+    )
+      toast.error("Please Add Test List Component");
+    else {
+      axios
+        .put(
+          "https://elabnextapi-dev.azurewebsites.net/api/ReportSetup/UpdateReportTemplate",
+          payload
+        )
+        .then((response) => {
+          toast.success("Saved Successfully");
+        })
+        .then(() => {
+          history.push({
+            pathname: "/preview",
+            state: {
+              reportTemplateDataMap: reportTemplateDataMap,
+              mode: "preview",
+            },
+          });
+        })
+        .catch((error) => {
+          console.log("sss", error);
+        });
+    }
+  };
 
   return (
     <div
@@ -116,13 +161,14 @@ export default function EditorHeader({
           title="Preview"
           rel="noreferrer"
           data-cy="preview-link-button"
-          to={{
-            pathname: "/preview",
-            state: {
-              reportTemplateDataMap: reportTemplateDataMap,
-              mode: "preview",
-            },
-          }}
+          // to={{
+          //   pathname: "/preview",
+          //   state: {
+          //     reportTemplateDataMap: reportTemplateDataMap,
+          //     mode: "preview",
+          //   },
+          // }}
+          onClick={updateReportTemplateAndPreview}
         >
           <svg
             className="icon cursor-pointer w-100 h-100"

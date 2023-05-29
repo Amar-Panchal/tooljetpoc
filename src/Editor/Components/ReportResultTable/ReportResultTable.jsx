@@ -3,8 +3,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { isEqual } from "lodash";
 
-import { SelectTests } from "../../RegistrationPage/test";
-
 export const ReportResultTable = (props) => {
   const {
     height,

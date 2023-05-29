@@ -3431,8 +3431,8 @@ export const widgets = [
     description: "Renders a list of tests available in database",
     component: "TestList",
     defaultSize: {
-      width: 20,
-      height: 100,
+      width: 40,
+      height: 300,
     },
     others: {
       showOnDesktop: { type: "toggle", displayName: "Show on desktop" },
