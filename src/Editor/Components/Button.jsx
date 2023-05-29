@@ -110,8 +110,11 @@ export const Button = function Button(props) {
   const handleClick = () => {
     if (props.component.name === "submit" && customMode !== "preview")
       props.onSubmitPatientRegistrationFormData();
-    if (props.component.name === "cancel" && customMode !== "preview")
+    if (props.component.name === "cancel" && customMode !== "preview") {
       props.setPatientRegistrationFormData({});
+      window.location.reload();
+    }
+
     const event1 = new CustomEvent("submitForm", {
       detail: { buttonComponentId: id },
     });
