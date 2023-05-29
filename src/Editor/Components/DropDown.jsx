@@ -4,6 +4,7 @@ import _ from "lodash";
 import React, { useState, useEffect } from "react";
 import Select from "react-select";
 import axios from "axios";
+import { NamePrefixes } from "../AConstantData/ConstantData";
 
 export const DropDown = function DropDown({
   height,
@@ -62,6 +63,20 @@ export const DropDown = function DropDown({
   } catch (err) {
     console.log(err);
   }
+
+  useEffect(() => {
+    if (component.name === "namePrefixes") {
+      const valuesAge = NamePrefixes.map((ele) => ele.value);
+      const labelsAge = NamePrefixes.map((ele) => ele.label);
+
+      component.definition.properties.display_values.value = `{{${JSON.stringify(
+        labelsAge
+      )}}}`;
+      component.definition.properties.values.value = `{{${JSON.stringify(
+        valuesAge
+      )}}}`;
+    }
+  }, [component.name]);
 
   function selectOption(value) {
     if (values.includes(value)) {
@@ -330,6 +345,7 @@ export const DropDown = function DropDown({
               });
             });
             break;
+
           default:
             break;
         }
