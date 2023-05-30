@@ -59,7 +59,7 @@ function ConfigurationModal({
         </button>
         <button
           className="btn btn-danger"
-          onClick={handleConfirm}
+          onClick={handleClose}
           data-cy={"modal-confirm-button"}
         >
           {confirmButtonText === ""

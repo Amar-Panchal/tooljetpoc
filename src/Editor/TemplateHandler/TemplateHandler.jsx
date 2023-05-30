@@ -4,6 +4,8 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { useHistory } from "react-router-dom";
+import Spinner from "@/_ui/Spinner";
+import CustomSpinningLoader from "../../_ui/Loader/Loader";
 
 const emptyJSON = {
   showViewerNavigation: true,
@@ -33,7 +35,9 @@ function TemplateHandler(props) {
     templateName: "",
     templateType: 0,
   });
+  const [loading, setLoading] = useState(false);
   const getReportTemplate = async () => {
+    setLoading(true);
     await axios
       .get(
         `https://elabnextapi-dev.azurewebsites.net/api/ReportSetup/GetReportTemplate`
@@ -46,11 +50,15 @@ function TemplateHandler(props) {
         setTemplateList(
           response.data.resultData.filter((item) => item.templateType)
         );
+        setLoading(false);
 
         // this.fetchApp();
       })
 
-      .catch((error) => console.log("error", error));
+      .catch((error) => {
+        setLoading(false);
+      })
+      .finally(() => setLoading(false));
   };
   useEffect(() => {
     getReportTemplate();
@@ -62,7 +70,6 @@ function TemplateHandler(props) {
     else if (createTemplateData.templateType === 0)
       toast.error("template type cannot be blank");
     else {
-      console.log("object", createTemplateData);
       const payload = {
         reportTemplateName: createTemplateData.templateName,
         templateType: createTemplateData.templateType,
@@ -75,7 +82,10 @@ function TemplateHandler(props) {
           payload
         )
         .then((response) => {
-          console.log("response handleCreateTemplate", response);
+          history.push({
+            pathname: "/editor",
+            state: response.data.resultData.reportMasterData,
+          });
           getReportTemplate();
         })
         .catch((error) => console.log("error handleCreateTemplate", error));
@@ -93,18 +103,23 @@ function TemplateHandler(props) {
         height: "100vh",
       }}
     >
-      <div>
-        <h1>create template</h1>
-        <input
-          placeholder="template Name"
-          onChange={(e) =>
-            setCreateTemplateData({
-              ...createTemplateData,
-              templateName: e.target.value,
-            })
-          }
-        />
-        {/* <input
+      {loading ? (
+        <CustomSpinningLoader />
+      ) : (
+        <>
+          {" "}
+          <div>
+            <h1>create template</h1>
+            <input
+              placeholder="template Name"
+              onChange={(e) =>
+                setCreateTemplateData({
+                  ...createTemplateData,
+                  templateName: e.target.value,
+                })
+              }
+            />
+            {/* <input
           placeholder="template id"
           onChange={(e) =>
             setCreateTemplateData({
@@ -113,81 +128,87 @@ function TemplateHandler(props) {
             })
           }
         /> */}
-        <select
-          id="dropdown"
-          onChange={(e) =>
-            setCreateTemplateData({
-              ...createTemplateData,
-              templateType: e.target.value,
-            })
-          }
-        >
-          <option value="null">Select ...</option>
-          <option value="1">report</option>
-          <option value="2">registration</option>
-        </select>
+            <select
+              id="dropdown"
+              onChange={(e) =>
+                setCreateTemplateData({
+                  ...createTemplateData,
+                  templateType: e.target.value,
+                })
+              }
+            >
+              <option value="null">Select ...</option>
+              <option value="1">report</option>
+              <option value="2">registration</option>
+            </select>
 
-        <button onClick={handleCreateTemplate}>create template</button>
-      </div>
-      <div>
-        <h3>Report template List</h3>
-        <div style={{ height: "500px", overflow: "scroll", width: "300px" }}>
-          {templateList.map((template) => {
-            return template.templateType === 1 ? (
-              <li
-                style={{
-                  border: "1px dotted gray",
-                  padding: "20px",
-                  margin: "10px",
-                  cursor: "pointer",
-                }}
-                onClick={() =>
-                  history.push({
-                    pathname: "/editor",
-                    state: template,
-                  })
-                }
-              >
-                name : {template.name}
-                <br /> id: {template.reportTemplateId}
-                <br /> templateType : {template.templateType}
-                <br /> templateTypeName :{" "}
-                {template.templateType == 1 ? "report" : "registration"}
-              </li>
-            ) : null;
-          })}
-        </div>
-      </div>
-      <div>
-        <h3>registration template List</h3>
-        <div style={{ height: "500px", overflow: "scroll", width: "300px" }}>
-          {" "}
-          {templateList.map((template) => {
-            return template.templateType === 2 ? (
-              <li
-                style={{
-                  border: "1px dotted gray",
-                  padding: "20px",
-                  margin: "10px",
-                  cursor: "pointer",
-                }}
-                onClick={() =>
-                  history.push({
-                    pathname: "/editor",
-                    state: template,
-                  })
-                }
-              >
-                name : {template.name}
-                <br /> id: {template.reportTemplateId}
-                <br /> templateType : {template.templateType}
-                <br /> templateTypeName :{" "}
-                {template.templateType == 1 ? "report" : "registration"}
-              </li>
-            ) : null;
-          })}
-        </div>
-      </div>
+            <button onClick={handleCreateTemplate}>create template</button>
+          </div>
+          <div>
+            <h3>Report template List</h3>
+            <div
+              style={{ height: "500px", overflow: "scroll", width: "300px" }}
+            >
+              {templateList.map((template) => {
+                return template.templateType === 1 ? (
+                  <li
+                    style={{
+                      border: "1px dotted gray",
+                      padding: "20px",
+                      margin: "10px",
+                      cursor: "pointer",
+                    }}
+                    onClick={() =>
+                      history.push({
+                        pathname: "/editor",
+                        state: template,
+                      })
+                    }
+                  >
+                    name : {template.name}
+                    <br /> id: {template.reportTemplateId}
+                    <br /> templateType : {template.templateType}
+                    <br /> templateTypeName :{" "}
+                    {template.templateType == 1 ? "report" : "registration"}
+                  </li>
+                ) : null;
+              })}
+            </div>
+          </div>
+          <div>
+            <h3>registration template List</h3>
+            <div
+              style={{ height: "500px", overflow: "scroll", width: "300px" }}
+            >
+              {" "}
+              {templateList.map((template) => {
+                return template.templateType === 2 ? (
+                  <li
+                    style={{
+                      border: "1px dotted gray",
+                      padding: "20px",
+                      margin: "10px",
+                      cursor: "pointer",
+                    }}
+                    onClick={() =>
+                      history.push({
+                        pathname: "/editor",
+                        state: template,
+                      })
+                    }
+                  >
+                    name : {template.name}
+                    <br /> id: {template.reportTemplateId}
+                    <br /> templateType : {template.templateType}
+                    <br /> templateTypeName :{" "}
+                    {template.templateType == 1 ? "report" : "registration"}
+                  </li>
+                ) : null;
+              })}
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 }

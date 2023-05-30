@@ -17,6 +17,7 @@ import {
   ExcelExportColumn,
   ExcelExportColumnGroup,
 } from "@progress/kendo-react-excel-export";
+import CustomSpinningLoader from "../../_ui/Loader/Loader";
 const columnWidth = "100px";
 const initialDataState = {
   sort: [
@@ -36,6 +37,7 @@ function PatientDetails() {
   const [fieldMasterList, setFieldMasterList] = useState([]);
   const [selectedArray, setSelectedArray] = useState(["notes"]);
   const [showConfiguration, setShowConfiguration] = useState(false);
+  const [loading, setLoading] = useState(false);
   const history = useHistory();
   const _export = React.useRef(null);
   const _grid = React.useRef();
@@ -43,8 +45,9 @@ function PatientDetails() {
   useEffect(() => {
     setSelectedArray(keysForGrid);
   }, [keysForGrid]);
-  function getPatientDetailsList() {
-    axios
+  async function getPatientDetailsList() {
+    setLoading(true);
+    await axios
       .get(
         "https://elabnextapi-dev.azurewebsites.net/api/PatientRegistration/GetPatientRegistration"
       )
@@ -56,19 +59,24 @@ function PatientDetails() {
             return temp;
           })
         );
+        setLoading(false);
       })
       .catch((error) => {
         console.log("error -> getPatientDetailsList", error);
+        setLoading(false);
       });
-    axios
+    setLoading(true);
+    await axios
       .get(
         "https://elabnextapi-dev.azurewebsites.net/api/ReportSetup/GetFieldMaster        "
       )
       .then((response) => {
         setFieldMasterList(response.data.resultData.fieldMaster);
+        setLoading(false);
       })
       .catch((error) => {
         console.log("error -> getPatientDetailsList", error);
+        setLoading(false);
       });
   }
 
@@ -250,96 +258,105 @@ function PatientDetails() {
       _export.current.save();
     }
   };
-  console.log("gkooo", selectedArray);
-  let temp = "patientId";
-  return (
-    <div>
-      <Button onClick={() => setShowConfiguration(true)}>Configure</Button>
-      <ExcelExport data={PatientDetailsList} ref={_export}>
-        {selectedArray.map((column) => {
-          return <ExcelExportColumn field={column} title={column} width={50} />;
-        })}
-        <ExcelExportColumn field={"actions"} title={"actions"} width={50} />
-      </ExcelExport>
 
-      <Grid
-        resizable={true}
-        pageable={true}
-        sortable={true}
-        filterable={true}
-        reorderable={true}
-        data={process(PatientDetailsList, dataState)}
-        {...dataState}
-        onDataStateChange={(e) => {
-          setDataState(e.dataState);
-        }}
-        style={{ height: "90vh" }}
-        rowRender={rowRender}
-        ref={_grid}
-      >
-        <GridToolbar>
-          <button
-            title="Export Excel"
-            className="k-button k-button-md k-rounded-md k-button-solid k-button-solid-primary"
-            onClick={excelExport}
-            style={{ backgroundColor: "#4D72FA", border: "none" }}
+  return (
+    <div style={{ height: "100vh" }}>
+      {loading ? (
+        <CustomSpinningLoader />
+      ) : (
+        <div style={{ padding: "30px" }}>
+          <ExcelExport data={PatientDetailsList} ref={_export}>
+            {selectedArray.map((column) => {
+              return (
+                <ExcelExportColumn field={column} title={column} width={50} />
+              );
+            })}
+            <ExcelExportColumn field={"actions"} title={"actions"} width={50} />
+          </ExcelExport>
+
+          <Grid
+            resizable={true}
+            pageable={true}
+            sortable={true}
+            filterable={true}
+            reorderable={true}
+            data={process(PatientDetailsList, dataState)}
+            {...dataState}
+            onDataStateChange={(e) => {
+              setDataState(e.dataState);
+            }}
+            style={{ height: "90vh" }}
+            // rowRender={rowRender}
+            ref={_grid}
           >
-            Export to Excel
-          </button>
-        </GridToolbar>
-        {selectedArray?.map((key) => {
-          return fieldMasterList.map((field) => {
-            if (field.value === key) {
-              return createGridColumn(field);
-            }
-          });
-        })}
-        <GridColumn
-          width={columnWidth}
-          field="dd"
-          title="Actions"
-          cell={(props) => {
-            return (
-              <td style={{ display: "flex", gap: "10px" }}>
-                <span
-                  style={{ cursor: "pointer" }}
-                  onClick={() => {
-                    history.push({
-                      pathname: "/result",
-                      state: props.dataItem,
-                    });
-                  }}
-                  class="k-icon k-i-print"
-                ></span>
-                <span
-                  style={{ cursor: "pointer" }}
-                  onClick={() => {
-                    history.push({
-                      pathname: "/registration-page",
-                      state: props.dataItem,
-                    });
-                  }}
-                  class="k-icon k-i-edit"
-                ></span>
-                {/* <span
+            <GridToolbar>
+              <Button onClick={() => setShowConfiguration(true)}>
+                Configure
+              </Button>
+              <Button
+                title="Export Excel"
+                className="k-button k-button-md k-rounded-md k-button-solid k-button-solid-primary"
+                onClick={excelExport}
+                style={{ backgroundColor: "#4D72FA", border: "none" }}
+              >
+                Export to Excel
+              </Button>
+            </GridToolbar>
+            {selectedArray?.map((key) => {
+              return fieldMasterList.map((field) => {
+                if (field.value === key) {
+                  return createGridColumn(field);
+                }
+              });
+            })}
+            <GridColumn
+              width={columnWidth}
+              field="dd"
+              title="Actions"
+              cell={(props) => {
+                return (
+                  <td style={{ display: "flex", gap: "10px" }}>
+                    <span
+                      style={{ cursor: "pointer" }}
+                      onClick={() => {
+                        history.push({
+                          pathname: "/result",
+                          state: props.dataItem,
+                        });
+                      }}
+                      class="k-icon k-i-print"
+                    ></span>
+                    <span
+                      style={{ cursor: "pointer" }}
+                      onClick={() => {
+                        history.push({
+                          pathname: "/registration-page",
+                          state: props.dataItem,
+                        });
+                      }}
+                      class="k-icon k-i-edit"
+                    ></span>
+                    {/* <span
                   style={{ cursor: "pointer" }}
                   class="k-icon k-i-table-properties"
                 ></span> */}
-              </td>
-            );
-          }}
-        />
-      </Grid>
-      <ConfigurationModal
-        showModal={showConfiguration}
-        title="Configure Columns"
-        message="Select Which columns to display "
-        handleClose={() => setShowConfiguration(!showConfiguration)}
-        cancelButtonText="Cancel"
-        //  handleConfirm={}
-        confirmButtonText="Apply"
-        createRows={createRows}
-      />
+                  </td>
+                );
+              }}
+            />
+          </Grid>
+          <ConfigurationModal
+            showModal={showConfiguration}
+            title="Configure Columns"
+            message="Select Which columns to display "
+            handleClose={() => setShowConfiguration(!showConfiguration)}
+            cancelButtonText="Cancel"
+            //  handleConfirm={}
+            confirmButtonText="Apply"
+            createRows={createRows}
+          />
+        </div>
+      )}
     </div>
   );
 }
