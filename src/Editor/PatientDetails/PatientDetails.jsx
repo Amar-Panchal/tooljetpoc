@@ -227,22 +227,23 @@ function PatientDetails() {
       trElement.props.children
     );
   };
-  useEffect(() => {
-    // Define your function to be called every 10 seconds
-    const myFunction = () => {
-      // Your code here
-      console.log("Function called!", showConfiguration);
-      getPatientDetailsList();
-    };
+  // useEffect(() => {
+  //   // Define your function to be called every 10 seconds
+  //   const myFunction = () => {
+  //     // Your code here
+  //     console.log("Function called!", showConfiguration);
+  //     getPatientDetailsList();
+  //   };
 
-    // Set up an interval to call the function every 10 seconds
-    const intervalId = setInterval(myFunction, 60000);
+  //   // Set up an interval to call the function every 10 seconds
+  //   const intervalId = setInterval(myFunction, 60000);
 
-    // Clean up the interval on component unmount
-    return () => {
-      clearInterval(intervalId);
-    };
-  }, []);
+  //   // Clean up the interval on component unmount
+  //   return () => {
+  //     clearInterval(intervalId);
+  //   };
+  // }, []);
+
   const excelExport = () => {
     if (_export.current !== null) {
       // pass the products, instead the paginated data in the state.
@@ -300,25 +301,6 @@ function PatientDetails() {
           cell={(props) => {
             return (
               <td style={{ display: "flex", gap: "10px" }}>
-                {/* <button
-                    onClick={() =>
-                      history.push({
-                        pathname: "/",
-                        state: props.dataItem,
-                        target: "blank",
-                      })
-                    }
-                  >
-                    <span class="k-icon k-i-print"></span>
-                  </button>
-                  <button
-                    onClick={() => {
-                      toast.error("Hang on until we developed this");
-                    }}
-                  >
-                    <span class="k-icon k-i-edit"></span>
-                  </button> */}
-
                 <span
                   style={{ cursor: "pointer" }}
                   onClick={() => {
@@ -339,10 +321,10 @@ function PatientDetails() {
                   }}
                   class="k-icon k-i-edit"
                 ></span>
-                <span
+                {/* <span
                   style={{ cursor: "pointer" }}
                   class="k-icon k-i-table-properties"
-                ></span>
+                ></span> */}
               </td>
             );
           }}
