@@ -146,11 +146,15 @@ class ViewerComponent extends React.Component {
     );
   };
 
-  loadApplicationByVersion = () => {
+  loadApplicationByVersion = async () => {
+    this.setState({
+      isLoading: true,
+    });
     const id = this.props.location.state.reportTemplateDataMap?.reportTemplateId
       ? this.props.location.state.reportTemplateDataMap?.reportTemplateId
       : 41;
-    axios
+
+    await axios
       .get(
         `https://elabnextapi-dev.azurewebsites.net/api/ReportSetup/GetReportTemplate?ReportTemplateId=${id}`
       )
@@ -162,6 +166,9 @@ class ViewerComponent extends React.Component {
 
         this.setStateForApp(temp);
         this.setStateForContainer(temp);
+        this.setState({
+          isLoading: false,
+        });
       })
       .catch((error) => {
         console.log(error);

@@ -58,7 +58,7 @@ enablePatches();
 class EditorComponent extends React.Component {
   constructor(props) {
     super(props);
-    console.log("pops niss editor", props);
+
     const appId = this.props.match.params.id;
 
     const pageHandle = this.props.match.params.pageHandle;
@@ -1904,6 +1904,9 @@ class EditorComponent extends React.Component {
   };
 
   getReportTemplate = async () => {
+    this.setState({
+      isLoading: true,
+    });
     await axios
       .get(
         `https://elabnextapi-dev.azurewebsites.net/api/ReportSetup/GetReportTemplate?ReportTemplateId=${this.props.location.state.reportTemplateId}`
@@ -1924,6 +1927,9 @@ class EditorComponent extends React.Component {
         // );
 
         // this.fetchApp();
+        this.setState({
+          isLoading: false,
+        });
       })
 
       .catch((error) => console.log("error", error));
@@ -2113,7 +2119,7 @@ class EditorComponent extends React.Component {
                         editingPageId={this.state.currentPageId}
                       />
                     )} */}
-                    {/* {isLoading && (
+                    {isLoading && (
                       <div className="apploader">
                         <div className="col col-* editor-center-wrapper">
                           <div className="editor-center">
@@ -2150,7 +2156,7 @@ class EditorComponent extends React.Component {
                           </div>
                         </div>
                       </div>
-                    )} */}
+                    )}
 
                     <div style={{ border: "5 px solid red" }}>
                       <Container

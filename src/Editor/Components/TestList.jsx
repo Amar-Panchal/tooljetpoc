@@ -10,6 +10,7 @@ import {
   InputSuffix,
   TextBox,
 } from "@progress/kendo-react-inputs";
+import Spinner from "@/_ui/Spinner";
 
 export const TestList = (props) => {
   const {
@@ -26,6 +27,7 @@ export const TestList = (props) => {
   );
   const [searchQuery, setSearchQuery] = useState("");
   const [testListFiltered, setTestListFiltered] = useState([]);
+  const [loading, setLoading] = useState(false);
   console.log("fff", props);
   const handleItemClick = (item) => {
     const { testId, testName, shortName } = item;
@@ -40,11 +42,13 @@ export const TestList = (props) => {
     }
   };
 
-  function getTestList() {
-    axios
+  async function getTestList() {
+    setLoading(true);
+    await axios
       .get("https://elabnextapi-dev.azurewebsites.net/api/TestMaster/GetTest")
       .then((response) => {
         setTestList(response.data.resultData.testList);
+        setLoading(false);
       });
   }
 
@@ -91,105 +95,109 @@ export const TestList = (props) => {
         borderRadius: `${borderRadius}px`,
       }}
     >
-      <div style={{ height: props.height }}>
-        <TextBox
-          value={searchQuery}
-          onChange={handleSearchQuery}
-          placeholder="Search Test Name"
-          prefix={() => (
-            <>
-              <InputPrefix>
-                <span className="k-icon k-i-zoom"></span>
-              </InputPrefix>
-              <InputSeparator />
-            </>
-          )}
-          style={{
-            width: "50%",
-            height: "30px",
-            backgroundColor: backgroundColor,
-            color: textColor,
-          }}
-        />
-        <div
-          style={{
-            height: props.height - 40,
-
-            display: "flex",
-          }}
-        >
-          <div
+      {loading ? (
+        <Spinner />
+      ) : (
+        <div style={{ height: props.height }}>
+          <TextBox
+            value={searchQuery}
+            onChange={handleSearchQuery}
+            placeholder="Search Test Name"
+            prefix={() => (
+              <>
+                <InputPrefix>
+                  <span className="k-icon k-i-zoom"></span>
+                </InputPrefix>
+                <InputSeparator />
+              </>
+            )}
             style={{
               width: "50%",
-              height: props.height - 30,
+              height: "30px",
+              backgroundColor: backgroundColor,
+              color: textColor,
+            }}
+          />
+          <div
+            style={{
+              height: props.height - 40,
+
+              display: "flex",
             }}
           >
-            <h3 style={{ color: textColor }}>Test List</h3>
             <div
               style={{
-                height: props.height - 65,
-                overflow: "scroll",
+                width: "50%",
+                height: props.height - 30,
               }}
             >
-              {testListFiltered.map((test) => {
-                return (
-                  <div
-                    onClick={() => handleItemClick(test)}
-                    key={test.testId}
-                    style={{
-                      cursor: "pointer",
-                      color: textColor,
-                      backgroundColor: backgroundColor,
-                    }}
-                    onMouseEnter={(event) => {
-                      event.target.style.backgroundColor = onHoverColor;
-                    }}
-                    onMouseLeave={(event) => {
-                      event.target.style.backgroundColor = backgroundColor;
-                    }}
-                  >
-                    {` ${test.testName} (${
-                      test.shortName ? test.shortName : ""
-                    } ) `}
-                  </div>
-                );
-              })}
+              <h3 style={{ color: textColor }}>Test List</h3>
+              <div
+                style={{
+                  height: props.height - 65,
+                  overflow: "scroll",
+                }}
+              >
+                {testListFiltered.map((test) => {
+                  return (
+                    <div
+                      onClick={() => handleItemClick(test)}
+                      key={test.testId}
+                      style={{
+                        cursor: "pointer",
+                        color: textColor,
+                        backgroundColor: backgroundColor,
+                      }}
+                      onMouseEnter={(event) => {
+                        event.target.style.backgroundColor = onHoverColor;
+                      }}
+                      onMouseLeave={(event) => {
+                        event.target.style.backgroundColor = backgroundColor;
+                      }}
+                    >
+                      {` ${test.testName} (${
+                        test.shortName ? test.shortName : ""
+                      } ) `}
+                    </div>
+                  );
+                })}
+              </div>
             </div>
-          </div>
-          <div style={{ width: "50%", height: props.height - 30 }}>
-            <h3 style={{ color: textColor }}>Selected Test List</h3>
-            <div
-              style={{
-                overflow: "scroll",
-                height: props.height - 65,
-              }}
-            >
-              {selectedTests.map((test) => {
-                return (
-                  <div
-                    style={{
-                      cursor: "pointer",
-                      color: textColor,
-                      backgroundColor: backgroundColor,
-                    }}
-                    onMouseEnter={(event) => {
-                      event.target.style.backgroundColor = onHoverColor;
-                    }}
-                    onMouseLeave={(event) => {
-                      event.target.style.backgroundColor = backgroundColor;
-                    }}
-                    onClick={() => handleItemClick(test)}
-                  >
-                    {` ${test.testName} (${
-                      test.shortName ? test.shortName : ""
-                    } ) `}
-                  </div>
-                );
-              })}
+            <div style={{ width: "50%", height: props.height - 30 }}>
+              <h3 style={{ color: textColor }}>Selected Test List</h3>
+              <div
+                style={{
+                  overflow: "scroll",
+                  height: props.height - 65,
+                }}
+              >
+                {selectedTests.map((test) => {
+                  return (
+                    <div
+                      style={{
+                        cursor: "pointer",
+                        color: textColor,
+                        backgroundColor: backgroundColor,
+                      }}
+                      onMouseEnter={(event) => {
+                        event.target.style.backgroundColor = onHoverColor;
+                      }}
+                      onMouseLeave={(event) => {
+                        event.target.style.backgroundColor = backgroundColor;
+                      }}
+                      onClick={() => handleItemClick(test)}
+                    >
+                      {` ${test.testName} (${
+                        test.shortName ? test.shortName : ""
+                      } ) `}
+                    </div>
+                  );
+                })}
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };
