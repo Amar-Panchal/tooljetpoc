@@ -151,7 +151,25 @@ function PatientDetails() {
             }}
           />
         );
-
+      case "NumberInput":
+        return (
+          <GridColumn
+            width={columnWidth}
+            field={field.value}
+            title={field.label}
+            cell={(props) => {
+              return (
+                <td>
+                  {props.dataItem[field.value]?.value
+                    ? props.dataItem[field.value]?.value +
+                      " " +
+                      props.dataItem[field.value]?.ageType
+                    : ""}
+                </td>
+              );
+            }}
+          />
+        );
       default:
         return (
           <GridColumn
