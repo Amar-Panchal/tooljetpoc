@@ -28,7 +28,7 @@ export const TestList = (props) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [testListFiltered, setTestListFiltered] = useState([]);
   const [loading, setLoading] = useState(false);
-  console.log("fff", props);
+
   const handleItemClick = (item) => {
     const { testId, testName, shortName } = item;
     const itemIndex = selectedTests.findIndex((test) => test.testId === testId);

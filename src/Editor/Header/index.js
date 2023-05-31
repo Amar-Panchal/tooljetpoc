@@ -69,7 +69,10 @@ export default function EditorHeader({
       !searchEmptyDemographicField(appDefinition, "testlist")
     )
       toast.error("Please Add Test List Component");
-    else {
+    else if (payload.reportTemplateName === "") {
+      toast.error("Template Name cannot be empty");
+    } else {
+      console.log("payloadpayload", payload);
       axios
         .put(
           "https://elabnextapi-dev.azurewebsites.net/api/ReportSetup/UpdateReportTemplate",
@@ -102,7 +105,9 @@ export default function EditorHeader({
       !searchEmptyDemographicField(appDefinition, "testlist")
     )
       toast.error("Please Add Test List Component");
-    else {
+    else if (payload.reportTemplateName === "") {
+      toast.error("Template Name cannot be empty");
+    } else {
       axios
         .put(
           "https://elabnextapi-dev.azurewebsites.net/api/ReportSetup/UpdateReportTemplate",

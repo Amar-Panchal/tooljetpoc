@@ -109,7 +109,6 @@ export const Button = function Button(props) {
   }
 
   const handleClick = () => {
-    console.log("ffffmode", customMode, mode);
     if (
       props.component.name === "submit" &&
       customMode !== "preview" &&
@@ -122,7 +121,10 @@ export const Button = function Button(props) {
       mode !== "edit"
     ) {
       props.setPatientRegistrationFormData({});
-      window.location.reload();
+      history.push({
+        pathname: "/registration-page",
+        state: {},
+      });
     }
 
     const event1 = new CustomEvent("submitForm", {

@@ -6,6 +6,7 @@ import { toast } from "react-hot-toast";
 import { useHistory } from "react-router-dom";
 import Spinner from "@/_ui/Spinner";
 import CustomSpinningLoader from "../../_ui/Loader/Loader";
+import { Button } from "@progress/kendo-react-all";
 
 const emptyJSON = {
   showViewerNavigation: true,
@@ -64,32 +65,32 @@ function TemplateHandler(props) {
     getReportTemplate();
   }, []);
 
-  const handleCreateTemplate = () => {
-    if (createTemplateData.templateName === "")
-      toast.error("template name cannot be blank");
-    else if (createTemplateData.templateType === 0)
-      toast.error("template type cannot be blank");
-    else {
-      const payload = {
-        reportTemplateName: createTemplateData.templateName,
-        templateType: createTemplateData.templateType,
-        reportValues: emptyJSON,
-        // templateId: 0,
-      };
-      axios
-        .post(
-          `https://elabnextapi-dev.azurewebsites.net/api/ReportSetup/SaveReportTemplate`,
-          payload
-        )
-        .then((response) => {
-          history.push({
-            pathname: "/editor",
-            state: response.data.resultData.reportMasterData,
-          });
-          getReportTemplate();
-        })
-        .catch((error) => console.log("error handleCreateTemplate", error));
-    }
+  const handleCreateTemplate = (type) => {
+    // if (createTemplateData.templateName === "")
+    //   toast.error("template name cannot be blank");
+    // else if (createTemplateData.templateType === 0)
+    //   toast.error("template type cannot be blank");
+    // else {
+    const payload = {
+      reportTemplateName: "",
+      templateType: type,
+      reportValues: emptyJSON,
+      // templateId: 0,
+    };
+    axios
+      .post(
+        `https://elabnextapi-dev.azurewebsites.net/api/ReportSetup/SaveReportTemplate`,
+        payload
+      )
+      .then((response) => {
+        history.push({
+          pathname: "/editor",
+          state: response.data.resultData.reportMasterData,
+        });
+        getReportTemplate();
+      })
+      .catch((error) => console.log("error handleCreateTemplate", error));
+    // }
   };
 
   return (
@@ -107,42 +108,15 @@ function TemplateHandler(props) {
         <CustomSpinningLoader />
       ) : (
         <>
-          {" "}
-          <div>
-            <h1>create template</h1>
-            <input
-              placeholder="template Name"
-              onChange={(e) =>
-                setCreateTemplateData({
-                  ...createTemplateData,
-                  templateName: e.target.value,
-                })
-              }
-            />
-            {/* <input
-          placeholder="template id"
-          onChange={(e) =>
-            setCreateTemplateData({
-              ...createTemplateData,
-              templateType: e.target.value,
-            })
-          }
-        /> */}
-            <select
-              id="dropdown"
-              onChange={(e) =>
-                setCreateTemplateData({
-                  ...createTemplateData,
-                  templateType: e.target.value,
-                })
-              }
-            >
-              <option value="null">Select ...</option>
-              <option value="1">report</option>
-              <option value="2">registration</option>
-            </select>
-
-            <button onClick={handleCreateTemplate}>create template</button>
+          <div
+            style={{ display: "flex", flexDirection: "column", gap: "20px" }}
+          >
+            <Button onClick={() => handleCreateTemplate(1)}>
+              Create Report Template
+            </Button>
+            <Button onClick={() => handleCreateTemplate(2)}>
+              Create Registration Template
+            </Button>
           </div>
           <div>
             <h3>Report template List</h3>
