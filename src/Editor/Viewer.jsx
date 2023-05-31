@@ -20,6 +20,8 @@ import { withTranslation } from "react-i18next";
 import _ from "lodash";
 import Spinner from "@/_ui/Spinner";
 import axios from "axios";
+import { Button } from "react-bootstrap";
+import { useHistory } from "react-router-dom";
 
 class ViewerComponent extends React.Component {
   constructor(props) {
@@ -146,11 +148,15 @@ class ViewerComponent extends React.Component {
     );
   };
 
-  loadApplicationByVersion = () => {
+  loadApplicationByVersion = async () => {
+    this.setState({
+      isLoading: true,
+    });
     const id = this.props.location.state.reportTemplateDataMap?.reportTemplateId
       ? this.props.location.state.reportTemplateDataMap?.reportTemplateId
       : 41;
-    axios
+
+    await axios
       .get(
         `https://elabnextapi-dev.azurewebsites.net/api/ReportSetup/GetReportTemplate?ReportTemplateId=${id}`
       )
@@ -162,6 +168,9 @@ class ViewerComponent extends React.Component {
 
         this.setStateForApp(temp);
         this.setStateForContainer(temp);
+        this.setState({
+          isLoading: false,
+        });
       })
       .catch((error) => {
         console.log(error);
@@ -403,6 +412,16 @@ class ViewerComponent extends React.Component {
               // queryConfirmationData={queryConfirmationList[0]}
               // key={queryConfirmationList[0]?.queryName}
             /> */}
+            <div style={{ display: "flex", gap: "10px", margin: "5px" }}>
+              <Button
+                onClick={() => {
+                  this.props.history.push("/");
+                }}
+              >
+                <span class="k-icon k-i-arrow-chevron-left" />
+              </Button>
+            </div>
+
             <DndProvider backend={HTML5Backend}>
               <ViewerNavigation.Header
                 // showHeader={!appDefinition.globalSettings?.hideHeader && isAppLoaded}

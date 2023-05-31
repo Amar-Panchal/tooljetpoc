@@ -109,7 +109,7 @@ function ResultPage() {
   const [disabledAllTests, setDisabledAllTests] = useState(false);
 
   const history = useHistory();
-
+  console.log("patientDetails", patientDetails);
   useEffect(() => {
     setPatientDetails(history.location.state);
   }, [history]);
@@ -174,8 +174,8 @@ function ResultPage() {
           testParamId: parameter.testParamId,
           ranges: parameter.ranges.filter(
             (range) =>
-              range.rangeMaster.ageFrom < patientDetails.age &&
-              range.rangeMaster.ageTo > patientDetails.age
+              range.rangeMaster.ageFrom < patientDetails.age.value &&
+              range.rangeMaster.ageTo > patientDetails.age.value
           ),
           testName: testWithParameters.testName,
           testId: testWithParameters.testId,
@@ -421,7 +421,10 @@ function ResultPage() {
                   <b> Patient Name :</b> {patientDetails?.patientName}
                 </div>
                 <div>
-                  <b>Age:</b> {patientDetails?.age}
+                  <b>Age:</b>{" "}
+                  {patientDetails?.age?.value +
+                    " " +
+                    patientDetails?.age?.ageType}
                 </div>
                 <div>
                   <b>Gender :</b> {patientDetails?.gender?.name}

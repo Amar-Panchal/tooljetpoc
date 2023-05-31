@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import "./PatientDetails.css";
-import { Grid, GridColumn } from "@progress/kendo-react-all";
+import { Grid, GridColumn, GridToolbar } from "@progress/kendo-react-all";
 import { process } from "@progress/kendo-data-query";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
@@ -11,7 +11,14 @@ import { Checkbox } from "@progress/kendo-react-inputs";
 import { Confirm } from "../Viewer/Confirm";
 import { Button } from "react-bootstrap";
 import ConfigurationModal from "./ConfigurationModal";
-
+import { debounce } from "lodash";
+import {
+  ExcelExport,
+  ExcelExportColumn,
+  ExcelExportColumnGroup,
+} from "@progress/kendo-react-excel-export";
+import CustomSpinningLoader from "../../_ui/Loader/Loader";
+const columnWidth = "100px";
 const initialDataState = {
   sort: [
     {
@@ -19,7 +26,7 @@ const initialDataState = {
       dir: "asc",
     },
   ],
-  take: 8,
+  take: 10,
   skip: 0,
 };
 
@@ -28,15 +35,19 @@ function PatientDetails() {
   const [dataState, setDataState] = useState(initialDataState);
   const [keysForGrid, setKeysForGrid] = useState([]);
   const [fieldMasterList, setFieldMasterList] = useState([]);
-  const [selectedArray, setSelectedArray] = useState([]);
+  const [selectedArray, setSelectedArray] = useState(["notes"]);
   const [showConfiguration, setShowConfiguration] = useState(false);
+  const [loading, setLoading] = useState(false);
   const history = useHistory();
+  const _export = React.useRef(null);
+  const _grid = React.useRef();
   // console.log("keysForGrid", keysForGrid);
   useEffect(() => {
     setSelectedArray(keysForGrid);
   }, [keysForGrid]);
-  function getPatientDetailsList() {
-    axios
+  async function getPatientDetailsList() {
+    setLoading(true);
+    await axios
       .get(
         "https://elabnextapi-dev.azurewebsites.net/api/PatientRegistration/GetPatientRegistration"
       )
@@ -48,22 +59,27 @@ function PatientDetails() {
             return temp;
           })
         );
+        setLoading(false);
       })
       .catch((error) => {
         console.log("error -> getPatientDetailsList", error);
+        setLoading(false);
       });
-    axios
+    setLoading(true);
+    await axios
       .get(
         "https://elabnextapi-dev.azurewebsites.net/api/ReportSetup/GetFieldMaster        "
       )
       .then((response) => {
         setFieldMasterList(response.data.resultData.fieldMaster);
+        setLoading(false);
       })
       .catch((error) => {
         console.log("error -> getPatientDetailsList", error);
+        setLoading(false);
       });
   }
-  console.log("selectedArray", selectedArray);
+
   useEffect(() => {
     getPatientDetailsList();
   }, []);
@@ -83,13 +99,19 @@ function PatientDetails() {
   }, [PatientDetailsList]);
 
   const createGridColumn = (field) => {
-    console.log("ffff", field.componentType);
     switch (field.componentType) {
       case "TextInput":
-        return <GridColumn field={field.value} title={field.label} />;
+        return (
+          <GridColumn
+            width={columnWidth}
+            field={field.value}
+            title={field.label}
+          />
+        );
       case "Datepicker":
         return (
           <GridColumn
+            width={columnWidth}
             field={field.value}
             title={field.label}
             cell={(props) => {
@@ -110,6 +132,7 @@ function PatientDetails() {
       case "DropDown":
         return (
           <GridColumn
+            width={columnWidth}
             field={field.value}
             title={field.label}
             cell={(props) => {
@@ -120,6 +143,7 @@ function PatientDetails() {
       case "RadioButton":
         return (
           <GridColumn
+            width={columnWidth}
             field={field.value}
             title={field.label}
             cell={(props) => {
@@ -127,9 +151,33 @@ function PatientDetails() {
             }}
           />
         );
-
+      case "NumberInput":
+        return (
+          <GridColumn
+            width={columnWidth}
+            field={field.value}
+            title={field.label}
+            cell={(props) => {
+              return (
+                <td>
+                  {props.dataItem[field.value]?.value
+                    ? props.dataItem[field.value]?.value +
+                      " " +
+                      props.dataItem[field.value]?.ageType
+                    : ""}
+                </td>
+              );
+            }}
+          />
+        );
       default:
-        return <GridColumn field={field.value} title={field.label} />;
+        return (
+          <GridColumn
+            width={columnWidth}
+            field={field.value}
+            title={field.label}
+          />
+        );
     }
   };
 
@@ -185,92 +233,148 @@ function PatientDetails() {
     }
     return rows;
   };
+  const rowRender = (trElement, props) => {
+    const available =
+      props.dataItem.patientId > Math.floor(Math.random() * 90) + 10;
+    const green = {
+      backgroundColor: "rgb(55, 180, 0,0.32)",
+    };
+    const red = {
+      backgroundColor: "rgb(243, 23, 0, 0.32)",
+    };
+    const trProps = {
+      style: available ? green : red,
+    };
+    return React.cloneElement(
+      trElement,
+      {
+        ...trProps,
+      },
+      trElement.props.children
+    );
+  };
+  // useEffect(() => {
+  //   // Define your function to be called every 10 seconds
+  //   const myFunction = () => {
+  //     // Your code here
+  //     console.log("Function called!", showConfiguration);
+  //     getPatientDetailsList();
+  //   };
+
+  //   // Set up an interval to call the function every 10 seconds
+  //   const intervalId = setInterval(myFunction, 60000);
+
+  //   // Clean up the interval on component unmount
+  //   return () => {
+  //     clearInterval(intervalId);
+  //   };
+  // }, []);
+
+  const excelExport = () => {
+    if (_export.current !== null) {
+      // pass the products, instead the paginated data in the state.
+      _export.current.save();
+    }
+  };
 
   return (
-    <div>
-      <div></div>
-      <Button onClick={() => setShowConfiguration(true)}>Configure</Button>
-      <Grid
-        resizable={true}
-        pageable={true}
-        sortable={true}
-        filterable={true}
-        reorderable={true}
-        data={process(PatientDetailsList, dataState)}
-        {...dataState}
-        onDataStateChange={(e) => {
-          setDataState(e.dataState);
-        }}
-        GridEvent={(event) => console.log("eve", event)}
-        style={{ height: "90vh" }}
-      >
-        {selectedArray?.map((key) => {
-          return fieldMasterList.map((field) => {
-            if (field.value === key) {
-              return createGridColumn(field);
-            }
-          });
-        })}
-        <GridColumn
-          field="dd"
-          title="Actions"
-          cell={(props) => {
-            return (
-              <td style={{ display: "flex", gap: "10px" }}>
-                {/* <button
-                    onClick={() =>
-                      history.push({
-                        pathname: "/",
-                        state: props.dataItem,
-                        target: "blank",
-                      })
-                    }
-                  >
-                    <span class="k-icon k-i-print"></span>
-                  </button>
-                  <button
-                    onClick={() => {
-                      toast.error("Hang on until we developed this");
-                    }}
-                  >
-                    <span class="k-icon k-i-edit"></span>
-                  </button> */}
+    <div style={{ height: "100vh" }}>
+      {loading ? (
+        <CustomSpinningLoader />
+      ) : (
+        <div style={{ padding: "30px" }}>
+          <ExcelExport data={PatientDetailsList} ref={_export}>
+            {selectedArray.map((column) => {
+              return (
+                <ExcelExportColumn field={column} title={column} width={50} />
+              );
+            })}
+            <ExcelExportColumn field={"actions"} title={"actions"} width={50} />
+          </ExcelExport>
 
-                <span
+          <Grid
+            resizable={true}
+            pageable={true}
+            sortable={true}
+            filterable={true}
+            reorderable={true}
+            data={process(PatientDetailsList, dataState)}
+            {...dataState}
+            onDataStateChange={(e) => {
+              setDataState(e.dataState);
+            }}
+            style={{ height: "90vh" }}
+            // rowRender={rowRender}
+            ref={_grid}
+          >
+            <GridToolbar>
+              <Button onClick={() => setShowConfiguration(true)}>
+                Configure
+              </Button>
+              <Button
+                title="Export Excel"
+                className="k-button k-button-md k-rounded-md k-button-solid k-button-solid-primary"
+                onClick={excelExport}
+                style={{ backgroundColor: "#4D72FA", border: "none" }}
+              >
+                Export to Excel
+              </Button>
+            </GridToolbar>
+            {selectedArray?.map((key) => {
+              return fieldMasterList.map((field) => {
+                if (field.value === key) {
+                  return createGridColumn(field);
+                }
+              });
+            })}
+            <GridColumn
+              width={columnWidth}
+              field="dd"
+              title="Actions"
+              cell={(props) => {
+                return (
+                  <td style={{ display: "flex", gap: "10px" }}>
+                    <span
+                      style={{ cursor: "pointer" }}
+                      onClick={() => {
+                        history.push({
+                          pathname: "/result",
+                          state: props.dataItem,
+                        });
+                      }}
+                      class="k-icon k-i-print"
+                    ></span>
+                    <span
+                      style={{ cursor: "pointer" }}
+                      onClick={() => {
+                        history.push({
+                          pathname: "/registration-page",
+                          state: props.dataItem,
+                        });
+                      }}
+                      class="k-icon k-i-edit"
+                    ></span>
+                    {/* <span
                   style={{ cursor: "pointer" }}
-                  onClick={() => {
-                    history.push({
-                      pathname: "/result",
-                      state: props.dataItem,
-                    });
-                  }}
-                  class="k-icon k-i-print"
-                ></span>
-                <span
-                  style={{ cursor: "pointer" }}
-                  onClick={() => {
-                    history.push({
-                      pathname: "/registration-page",
-                      state: props.dataItem,
-                    });
-                  }}
-                  class="k-icon k-i-edit"
-                ></span>
-              </td>
-            );
-          }}
-        />
-      </Grid>
-      <ConfigurationModal
-        showModal={showConfiguration}
-        title="Configure Columns"
-        message="Select Which columns to display "
-        handleClose={() => setShowConfiguration(!showConfiguration)}
-        cancelButtonText="Cancel"
-        //  handleConfirm={}
-        confirmButtonText="Apply"
-        createRows={createRows}
-      />
+                  class="k-icon k-i-table-properties"
+                ></span> */}
+                  </td>
+                );
+              }}
+            />
+          </Grid>
+          <ConfigurationModal
+            showModal={showConfiguration}
+            title="Configure Columns"
+            message="Select Which columns to display "
+            handleClose={() => setShowConfiguration(!showConfiguration)}
+            cancelButtonText="Cancel"
+            //  handleConfirm={}
+            confirmButtonText="Apply"
+            createRows={createRows}
+          />
+        </div>
+      )}
     </div>
   );
 }

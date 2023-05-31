@@ -4,6 +4,9 @@ import _ from "lodash";
 import React, { useState, useEffect } from "react";
 import Select from "react-select";
 import axios from "axios";
+import { NamePrefixes } from "../AConstantData/ConstantData";
+import CustomSpinningLoader from "../../_ui/Loader/Loader";
+import Spinner from "@/_ui/Spinner";
 
 export const DropDown = function DropDown({
   height,
@@ -45,6 +48,7 @@ export const DropDown = function DropDown({
   } = styles;
   const [currentValue, setCurrentValue] = useState(() => value);
   const [searchQuery, setSearchQuery] = useState("");
+  const [loading, setLoading] = useState(false);
   const { value: exposedValue } = exposedVariables;
 
   if (!_.isArray(values)) {
@@ -62,6 +66,20 @@ export const DropDown = function DropDown({
   } catch (err) {
     console.log(err);
   }
+
+  useEffect(() => {
+    if (component.name === "namePrefixes") {
+      const valuesAge = NamePrefixes.map((ele) => ele.value);
+      const labelsAge = NamePrefixes.map((ele) => ele.label);
+
+      component.definition.properties.display_values.value = `{{${JSON.stringify(
+        labelsAge
+      )}}}`;
+      component.definition.properties.values.value = `{{${JSON.stringify(
+        valuesAge
+      )}}}`;
+    }
+  }, [component.name]);
 
   function selectOption(value) {
     if (values.includes(value)) {
@@ -275,6 +293,7 @@ export const DropDown = function DropDown({
   // }, []);
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       try {
         const [response1, response2, response3, response4, response5] =
           await axios.all([
@@ -297,6 +316,7 @@ export const DropDown = function DropDown({
                 });
               }
             );
+            setLoading(false);
             break;
           case "franchise":
             response2.data.resultData.franchiseList.forEach((procLoc) => {
@@ -305,6 +325,7 @@ export const DropDown = function DropDown({
                 value: procLoc.franchiseId,
               });
             });
+            setLoading(false);
             break;
           case "doctor":
             response3.data.resultData.doctorList.forEach((procLoc) => {
@@ -313,6 +334,7 @@ export const DropDown = function DropDown({
                 value: procLoc.doctorId,
               });
             });
+            setLoading(false);
             break;
           case "collectionCenter":
             response4.data.resultData.collectionPointList.forEach((procLoc) => {
@@ -321,6 +343,7 @@ export const DropDown = function DropDown({
                 value: procLoc.collectionPointId,
               });
             });
+            setLoading(false);
             break;
           case "client":
             response5.data.resultData.clientList.forEach((procLoc) => {
@@ -329,14 +352,18 @@ export const DropDown = function DropDown({
                 value: procLoc.clientId,
               });
             });
+            setLoading(false);
             break;
+
           default:
+            setLoading(false);
             break;
         }
 
         setRemoteData(temp);
       } catch (error) {
         console.error("Error:", error);
+        setLoading(false);
       }
     };
 
@@ -399,69 +426,75 @@ export const DropDown = function DropDown({
 
   return (
     <>
-      {component.name === "collectionCenter" ||
-      component.name === "franchise" ||
-      component.name === "processingLocation" ||
-      component.name === "client" ||
-      component.name === "doctor" ? (
-        renderDropdownWithRemoteData()
+      {loading ? (
+        <Spinner />
       ) : (
-        <div
-          className="dropdown-widget row g-0"
-          style={{ height, display: visibility ? "" : "none" }}
-          onMouseDown={(event) => {
-            onComponentClick(id, component, event);
-          }}
-          data-cy={dataCy}
-        >
-          <div className="col-auto my-auto">
-            <label
-              style={{ marginRight: label !== "" ? "1rem" : "0.001rem" }}
-              className="form-label py-0 my-0"
-            >
-              {label}
-            </label>
-          </div>
-          <div className="col px-0 h-100">
-            <Select
-              isDisabled={disabledState}
-              value={
-                selectOptions.filter(
-                  (option) =>
-                    option.value ===
-                    PatientRegistrationFormData[component?.name]?.value
-                )[0] ?? { label: "", value: undefined }
-              }
-              onChange={(selectedOption, actionProps) => {
-                if (actionProps.action === "select-option") {
-                  setPatientRegistrationFormData({
-                    ...PatientRegistrationFormData,
-                    [component.name]: selectedOption,
-                  });
-                  setCurrentValue(selectedOption.value);
-                  setExposedVariable("value", selectedOption.value).then(() =>
-                    fireEvent("onSelect")
-                  );
-                }
+        <>
+          {component.name === "collectionCenter" ||
+          component.name === "franchise" ||
+          component.name === "processingLocation" ||
+          component.name === "client" ||
+          component.name === "doctor" ? (
+            renderDropdownWithRemoteData()
+          ) : (
+            <div
+              className="dropdown-widget row g-0"
+              style={{ height, display: visibility ? "" : "none" }}
+              onMouseDown={(event) => {
+                onComponentClick(id, component, event);
               }}
-              options={selectOptions}
-              styles={customStyles}
-              isLoading={properties.loadingState}
-              onInputChange={onSearchTextChange}
-              onFocus={(event) => onComponentClick(event, component, id)}
-              // menuPortalTarget={document.body}
-            />
-          </div>
-        </div>
-      )}
+              data-cy={dataCy}
+            >
+              <div className="col-auto my-auto">
+                <label
+                  style={{ marginRight: label !== "" ? "1rem" : "0.001rem" }}
+                  className="form-label py-0 my-0"
+                >
+                  {label}
+                </label>
+              </div>
+              <div className="col px-0 h-100">
+                <Select
+                  isDisabled={disabledState}
+                  value={
+                    selectOptions.filter(
+                      (option) =>
+                        option.value ===
+                        PatientRegistrationFormData[component?.name]?.value
+                    )[0] ?? { label: "", value: undefined }
+                  }
+                  onChange={(selectedOption, actionProps) => {
+                    if (actionProps.action === "select-option") {
+                      setPatientRegistrationFormData({
+                        ...PatientRegistrationFormData,
+                        [component.name]: selectedOption,
+                      });
+                      setCurrentValue(selectedOption.value);
+                      setExposedVariable("value", selectedOption.value).then(
+                        () => fireEvent("onSelect")
+                      );
+                    }
+                  }}
+                  options={selectOptions}
+                  styles={customStyles}
+                  isLoading={properties.loadingState}
+                  onInputChange={onSearchTextChange}
+                  onFocus={(event) => onComponentClick(event, component, id)}
+                  // menuPortalTarget={document.body}
+                />
+              </div>
+            </div>
+          )}
 
-      <div
-        className={`invalid-feedback ${
-          isValid ? "" : visibility ? "d-flex" : "none"
-        }`}
-      >
-        {validationError}
-      </div>
+          <div
+            className={`invalid-feedback ${
+              isValid ? "" : visibility ? "d-flex" : "none"
+            }`}
+          >
+            {validationError}
+          </div>
+        </>
+      )}
     </>
   );
 };
