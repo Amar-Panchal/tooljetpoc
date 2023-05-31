@@ -51,6 +51,10 @@ export default function EditorHeader({
   }
 
   const updateReportTemplate = () => {
+    console.log(
+      "gett",
+      searchEmptyDemographicField(appDefinition, "textinput")
+    );
     if (searchEmptyDemographicField(appDefinition, "demographicfield"))
       toast.error("Demographic field cannot be empty");
     else if (
@@ -71,7 +75,17 @@ export default function EditorHeader({
       toast.error("Please Add Test List Component");
     else if (payload.reportTemplateName === "") {
       toast.error("Template Name cannot be empty");
-    } else {
+    } else if (
+      payload.templateType === 2 &&
+      (searchEmptyDemographicField(appDefinition, "datepicker") ||
+        searchEmptyDemographicField(appDefinition, "textinput") ||
+        searchEmptyDemographicField(appDefinition, "numberinput") ||
+        searchEmptyDemographicField(appDefinition, "button") ||
+        searchEmptyDemographicField(appDefinition, "checkbox") ||
+        searchEmptyDemographicField(appDefinition, "radiobutton"))
+    )
+      toast.error("Please  check for empty input box id ");
+    else {
       console.log("payloadpayload", payload);
       axios
         .put(
