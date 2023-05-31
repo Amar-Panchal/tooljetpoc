@@ -1888,7 +1888,7 @@ export const widgets = [
 
         data: {
           value:
-            "{{ [ \n\t\t{ ParameterName: 'Example Parameter Name', Value: 3434 , Unit: 'gl/mdl', NormalRange: '20-30(static)'} \n] }}",
+            "{{ [ \n\t\t{ ParameterName: 'Example Parameter Name', Value: 3434 , Unit: 'gl/mdl', NormalRange: '20-30'} \n] }}",
         },
         rowsPerPage: { value: "{{10}}" },
         serverSidePagination: { value: "{{false}}" },
@@ -2379,7 +2379,7 @@ export const widgets = [
         loadingState: { value: "{{false}}" },
         data: {
           value:
-            "{{ [ \n\t\t{ ParameterName: 'Example Parameter Name', Value: 3434 , Unit: 'gl/mdl', NormalRange: '20-30(static)',Graph:''} \n] }}",
+            "{{ [ \n\t\t{ ParameterName: 'Example Parameter Name', Value: 3434 , Unit: 'gl/mdl', NormalRange: '20-30',Graph:''} \n] }}",
         },
         rowsPerPage: { value: "{{10}}" },
         serverSidePagination: { value: "{{false}}" },

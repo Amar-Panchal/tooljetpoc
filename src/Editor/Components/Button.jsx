@@ -15,6 +15,7 @@ export const Button = function Button(props) {
     id,
     dataCy,
     customMode,
+    mode,
   } = props;
   const {
     backgroundColor,
@@ -108,9 +109,18 @@ export const Button = function Button(props) {
   }
 
   const handleClick = () => {
-    if (props.component.name === "submit" && customMode !== "preview")
+    console.log("ffffmode", customMode, mode);
+    if (
+      props.component.name === "submit" &&
+      customMode !== "preview" &&
+      mode !== "edit"
+    )
       props.onSubmitPatientRegistrationFormData();
-    if (props.component.name === "cancel" && customMode !== "preview") {
+    if (
+      props.component.name === "cancel" &&
+      customMode !== "preview" &&
+      mode !== "edit"
+    ) {
       props.setPatientRegistrationFormData({});
       window.location.reload();
     }

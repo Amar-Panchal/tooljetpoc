@@ -149,7 +149,7 @@ class TestResultReportComponent extends React.Component {
   loadApplicationByVersion = () => {
     const id = this.props.location.state.reportTemplateDataMap?.reportTemplateId
       ? this.props.location.state.reportTemplateDataMap?.reportTemplateId
-      : 41;
+      : 45;
     axios
       .get(
         `https://elabnextapi-dev.azurewebsites.net/api/ReportSetup/GetReportTemplate?ReportTemplateId=${id}`
