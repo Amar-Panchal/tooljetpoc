@@ -487,13 +487,13 @@ export const Inspector = ({
           rel="noreferrer"
           data-cy="widget-documentation-link"
         >
-          <small>
+          {/* <small>
             {t(
               "widget.common.documentation",
               "{{componentMeta}} documentation",
               { componentMeta: componentMeta.name }
             )}
-          </small>
+          </small> */}
         </a>
       </div>
     </div>

@@ -7,7 +7,8 @@ import axios from "axios";
 import { toast } from "react-hot-toast";
 import RenderParameterList from "./RenderParameterList";
 import { UnitData } from "./StaticData";
-import { Button, TileLayout } from "@progress/kendo-react-all";
+import { TileLayout } from "@progress/kendo-react-all";
+import { Button } from "@progress/kendo-react-buttons";
 const styles = {
   fontSize: 14,
   textAlign: "center",
@@ -365,7 +366,10 @@ function ResultPage() {
   //     </div>
   //   );
   // }
-
+  console.log(
+    "disabledTests.length === selectedTestsWithParameters.length",
+    disabledTests.length === selectedTestsWithParameters.length
+  );
   return (
     <div style={{ width: "100%", height: "100%" }}>
       <div
@@ -624,9 +628,13 @@ function ResultPage() {
             <Button
               style={{ color: "white", backgroundColor: "blue" }}
               onClick={handleSubmitResult}
+              disabled={
+                !(disabledTests.length === selectedTestsWithParameters.length)
+              }
             >
               Print
             </Button>
+
             <Button>Cancel</Button>
           </div>
         </div>
