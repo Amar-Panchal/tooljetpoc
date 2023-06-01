@@ -50,134 +50,86 @@ export default function EditorHeader({
     return false;
   }
 
-  // const updateReportTemplate = () => {
-
-  //   if (searchEmptyDemographicField(appDefinition, "demographicfield"))
-  //     toast.error("Demographic field cannot be empty");
-  //   else if (searchEmptyDemographicField(appDefinition, "textinput"))
-  //     toast.error("Text Input field cannot be empty");
-  //   else if (searchEmptyDemographicField(appDefinition, "numberinput"))
-  //     toast.error("Number Input field cannot be empty");
-  //   else if (searchEmptyDemographicField(appDefinition, "datepicker"))
-  //     toast.error("Date Input field cannot be empty");
-  //   else if (searchEmptyDemographicField(appDefinition, "radiobutton"))
-  //     toast.error("RadioButton Input field cannot be empty");
-  //   else if (searchEmptyDemographicField(appDefinition, "dropdown"))
-  //     toast.error("Dropdown Input field cannot be empty");
-  //   else if (searchEmptyDemographicField(appDefinition, "button"))
-  //     toast.error("Button Input field cannot be empty");
-  //   else if (
-  //     payload.templateType === 1 &&
-  //     !(
-  //       searchEmptyDemographicField(appDefinition, "reportresulttable") ||
-  //       searchEmptyDemographicField(appDefinition, "fivecolumn") ||
-  //       searchEmptyDemographicField(appDefinition, "fourcolumn") ||
-  //       searchEmptyDemographicField(appDefinition, "threecolumn") ||
-  //       searchEmptyDemographicField(appDefinition, "twocolumn")
-  //     )
-  //   )
-  //     toast.error("Please Add one Component for Report Body");
-  //   else if (
-  //     payload.templateType === 2 &&
-  //     !searchEmptyDemographicField(appDefinition, "testlist")
-  //   )
-  //     toast.error("Please Add Test List Component");
-  //   else {
-  //     axios
-  //       .put(
-  //         "https://elabnextapi-dev.azurewebsites.net/api/ReportSetup/UpdateReportTemplate",
-  //         payload
-  //       )
-  //       .then((response) => {
-  //         toast.success("Saved Successfully");
-  //       })
-  //       .catch((error) => {
-  //         console.log("sss", error);
-  //       });
-  //   }
-  // };
   const updateReportTemplate = (type) => {
-    console.log("typetype", type);
-    const requiredFields = [
-      {
-        type: "demographicfield",
-        errorMessage: "Demographic field cannot be empty",
-      },
-      { type: "textinput", errorMessage: "Text Input field cannot be empty" },
-      {
-        type: "numberinput",
-        errorMessage: "Number Input field cannot be empty",
-      },
-      { type: "datepicker", errorMessage: "Date Input field cannot be empty" },
-      {
-        type: "radiobutton",
-        errorMessage: "RadioButton Input field cannot be empty",
-      },
-      {
-        type: "dropdown",
-        errorMessage: "Dropdown Input field cannot be empty",
-      },
-      { type: "button", errorMessage: "Button Input field cannot be empty" },
-      {
-        type: "checkbox",
-        errorMessage: "Checkbox Input field cannot be empty",
-      },
-    ];
-
-    const requiredComponents = {
-      1: [
-        "reportresulttable",
-        "fivecolumn",
-        "fourcolumn",
-        "threecolumn",
-        "twocolumn",
-      ],
-      2: ["testlist"],
-    };
-
-    for (const field of requiredFields) {
-      if (searchEmptyDemographicField(appDefinition, field.type)) {
-        toast.error(field.errorMessage);
-        return;
-      }
-    }
-
-    const components = requiredComponents[payload.templateType];
     if (
-      components &&
-      components.some(
-        (component) => !searchEmptyDemographicField(appDefinition, component)
+      payload.templateType === 2 &&
+      !searchEmptyDemographicField(appDefinition, "testlist")
+    )
+      toast.error("Please Add Test List Component");
+    else if (
+      payload.templateType === 2 &&
+      searchEmptyDemographicField(appDefinition, "textinput")
+    )
+      toast.error("Text Input field cannot be empty");
+    else if (
+      payload.templateType === 2 &&
+      searchEmptyDemographicField(appDefinition, "numberinput")
+    )
+      toast.error("Number Input field cannot be empty");
+    else if (
+      payload.templateType === 2 &&
+      searchEmptyDemographicField(appDefinition, "datepicker")
+    )
+      toast.error("Date Input field cannot be empty");
+    else if (
+      payload.templateType === 2 &&
+      searchEmptyDemographicField(appDefinition, "radiobutton")
+    )
+      toast.error("RadioButton Input field cannot be empty");
+    else if (
+      payload.templateType === 2 &&
+      searchEmptyDemographicField(appDefinition, "dropdown")
+    )
+      toast.error("Dropdown Input field cannot be empty");
+    else if (
+      payload.templateType === 2 &&
+      searchEmptyDemographicField(appDefinition, "button")
+    )
+      toast.error("Button Input field cannot be empty");
+    else if (
+      payload.templateType === 2 &&
+      searchEmptyDemographicField(appDefinition, "checkbox")
+    )
+      toast.error("Checkbox Input field cannot be empty");
+    else if (
+      payload.templateType === 1 &&
+      !(
+        searchEmptyDemographicField(appDefinition, "reportresulttable") ||
+        searchEmptyDemographicField(appDefinition, "fivecolumn") ||
+        searchEmptyDemographicField(appDefinition, "fourcolumn") ||
+        searchEmptyDemographicField(appDefinition, "threecolumn") ||
+        searchEmptyDemographicField(appDefinition, "twocolumn")
       )
-    ) {
-      toast.error(
-        payload.templateType === 1
-          ? "Please Add one Component for Report Body"
-          : "Please Add Test List Component"
-      );
-      return;
+    )
+      toast.error("Please Add one Component for Report Body");
+    else if (
+      payload.templateType === 1 &&
+      searchEmptyDemographicField(appDefinition, "demographicfield")
+    )
+      toast.error("Demographic field cannot be empty");
+    else if (payload.reportTemplateName === "") {
+      toast.error("Template Name cannot be empty");
+    } else {
+      axios
+        .put(
+          "https://elabnextapi-dev.azurewebsites.net/api/ReportSetup/UpdateReportTemplate",
+          payload
+        )
+        .then((response) => {
+          toast.success("Saved Successfully");
+          if (type === "preview")
+            history.push({
+              pathname: "/preview",
+              state: {
+                reportTemplateDataMap: reportTemplateDataMap,
+                mode: "preview",
+              },
+            });
+        })
+        .catch((error) => {
+          console.log("sss", error);
+        });
     }
-
-    axios
-      .put(
-        "https://elabnextapi-dev.azurewebsites.net/api/ReportSetup/UpdateReportTemplate",
-        payload
-      )
-      .then((response) => {
-        toast.success("Saved Successfully");
-      })
-      .then(() => {
-        if (type === "preview")
-          history.push({
-            pathname: "/preview",
-            state: {
-              reportTemplateDataMap: reportTemplateDataMap,
-              mode: "preview",
-            },
-          });
-      })
-      .catch((error) => {
-        console.log("sss", error);
-      });
   };
 
   return (

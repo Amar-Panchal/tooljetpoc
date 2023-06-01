@@ -156,6 +156,8 @@ export const DemographicField = function DemographicField({
             reportTemplateDataMap[component?.name]
               ? component?.name === "gender"
                 ? reportTemplateDataMap[component?.name].name
+                : component?.name === "age"
+                ? reportTemplateDataMap[component?.name].value
                 : reportTemplateDataMap[component?.name]
               : ""
           }

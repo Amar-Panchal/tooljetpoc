@@ -2124,7 +2124,14 @@ class EditorComponent extends React.Component {
                         <div className="col col-* editor-center-wrapper">
                           <div className="editor-center">
                             <div className="canvas">
-                              <div className="mt-5 d-flex flex-column">
+                              <div
+                                className="w-100 d-flex flex-column"
+                                style={{
+                                  justifyContent: "center",
+                                  alignItems: "center",
+                                  height: "100%",
+                                }}
+                              >
                                 <div className="mb-1">
                                   <Skeleton
                                     width={"150px"}
@@ -2132,7 +2139,7 @@ class EditorComponent extends React.Component {
                                     className="skeleton"
                                   />
                                 </div>
-                                {Array.from(Array(4)).map((_item, index) => (
+                                {Array.from(Array(5)).map((_item, index) => (
                                   <Skeleton
                                     key={index}
                                     width={"300px"}
@@ -2140,7 +2147,7 @@ class EditorComponent extends React.Component {
                                     className="skeleton"
                                   />
                                 ))}
-                                <div className="align-self-end">
+                                {/* <div className="align-self-end">
                                   <Skeleton
                                     width={"100px"}
                                     className="skeleton"
@@ -2150,7 +2157,7 @@ class EditorComponent extends React.Component {
                                 <Skeleton
                                   height={"150px"}
                                   className="skeleton mt-2"
-                                />
+                                /> */}
                               </div>
                             </div>
                           </div>
