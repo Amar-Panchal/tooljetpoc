@@ -110,7 +110,7 @@ function ResultPage() {
   const [disabledAllTests, setDisabledAllTests] = useState(false);
 
   const history = useHistory();
-  console.log("patientDetails", patientDetails);
+
   useEffect(() => {
     setPatientDetails(history.location.state);
   }, [history]);
@@ -168,15 +168,13 @@ function ResultPage() {
   function mapRangesWithParameters() {
     const temp = [];
     selectedTestsWithParameters.map((testWithParameters) => {
-      console.log("testWithParameters", testWithParameters);
-
       testWithParameters.testParameters.map((parameter) => {
         const obj = {
           testParamId: parameter.testParamId,
           ranges: parameter.ranges.filter(
             (range) =>
-              range.rangeMaster.ageFrom < patientDetails.age.value &&
-              range.rangeMaster.ageTo > patientDetails.age.value
+              range.rangeMaster.ageFrom < patientDetails.age?.value &&
+              range.rangeMaster.ageTo > patientDetails.age?.value
           ),
           testName: testWithParameters.testName,
           testId: testWithParameters.testId,
@@ -266,7 +264,10 @@ function ResultPage() {
       .then(() => {
         history.push({
           pathname: "/test-result-report",
-          state: { payload },
+          state: {
+            payload,
+            reportrenderidd: patientDetails.patientId === 228 ? 124 : 45,
+          },
         });
       })
       .catch((error) => {
@@ -635,7 +636,16 @@ function ResultPage() {
               Print
             </Button>
 
-            <Button>Cancel</Button>
+            <Button
+              onClick={() => {
+                history.push({
+                  pathname: "/",
+                  state: {},
+                });
+              }}
+            >
+              Cancel
+            </Button>
           </div>
         </div>
       </div>

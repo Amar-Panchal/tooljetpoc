@@ -131,6 +131,7 @@ export const Button = function Button(props) {
         pathname: "/registration-page",
         state: {},
       });
+      window.location.reload();
     }
     if (
       props.component.name === "button4" &&

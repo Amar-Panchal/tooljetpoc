@@ -23,7 +23,7 @@ import axios from "axios";
 
 class TestResultReportComponent extends React.Component {
   constructor(props) {
-    console.log("props in viewer", props);
+    console.log("props in TestResultReportComponent", props);
     super(props);
     const deviceWindowWidth = window.screen.width - 5;
     const isMobileDevice = deviceWindowWidth < 600;
@@ -149,7 +149,10 @@ class TestResultReportComponent extends React.Component {
   loadApplicationByVersion = () => {
     const id = this.props.location.state.reportTemplateDataMap?.reportTemplateId
       ? this.props.location.state.reportTemplateDataMap?.reportTemplateId
+      : this.props.location.state.reportrenderidd
+      ? this.props.location.state.reportrenderidd
       : 45;
+
     axios
       .get(
         `https://elabnextapi-dev.azurewebsites.net/api/ReportSetup/GetReportTemplate?ReportTemplateId=${id}`
