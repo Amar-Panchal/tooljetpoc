@@ -147,7 +147,7 @@ function TemplateHandler(props) {
             </Button>
           </div>
           <div>
-            <h3>Report template List</h3>
+            <h3>Report Template List</h3>
             <div
               style={{ height: "500px", overflow: "scroll", width: "300px" }}
             >
@@ -178,7 +178,7 @@ function TemplateHandler(props) {
             </div>
           </div>
           <div>
-            <h3>registration template List</h3>
+            <h3>Registration Template List</h3>
             <div
               style={{ height: "500px", overflow: "scroll", width: "300px" }}
             >

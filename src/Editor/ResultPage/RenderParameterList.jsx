@@ -20,7 +20,7 @@ function RenderParameterList({
   };
   // if (parameterName.testParamId === finalData.testParamId) {
   // }
-  const randomNumb = Math.floor(Math.random() * 90) + 10;
+  const randomNumb = 10;
 
   const handleChange = (e) => {
     const { unitId, unitName, testParamId, testParamName } = parameterName;
@@ -88,11 +88,7 @@ function RenderParameterList({
       },
       resizable: false,
       reorderable: false,
-      item: (
-        <span style={styles}>{`${randomNumb} - ${
-          randomNumb + Math.floor(Math.random() * 90) + 10
-        }`}</span>
-      ),
+      item: <span style={styles}>{`${randomNumb} - ${randomNumb + 30}`}</span>,
     },
     {
       defaultPosition: {
@@ -101,7 +97,7 @@ function RenderParameterList({
       },
       resizable: false,
       reorderable: false,
-      item: <span style={styles}>{Math.floor(Math.random() * 90)}</span>,
+      item: <span style={styles}>{90}</span>,
     },
     {
       defaultPosition: {
@@ -110,7 +106,7 @@ function RenderParameterList({
       },
       resizable: false,
       reorderable: false,
-      item: <span style={styles}>{Math.floor(Math.random() * 90)}</span>,
+      item: <span style={styles}>{10}</span>,
     },
   ];
   return (
