@@ -420,6 +420,16 @@ class ViewerComponent extends React.Component {
               >
                 <span class="k-icon k-i-arrow-chevron-left" />
               </Button>
+              <Button
+                onClick={() => {
+                  this.props.history.push({
+                    pathname: "/custom-report",
+                    state: {},
+                  });
+                }}
+              >
+                Reports
+              </Button>
             </div>
 
             <DndProvider backend={HTML5Backend}>

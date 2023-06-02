@@ -127,6 +127,17 @@ export default function EditorHeader({
         }}
       >
         <Button onClick={() => updateReportTemplate("save")}>Save </Button>
+        <Button
+          onClick={() => {
+            history.push({
+              pathname: "/custom-report",
+              state: {},
+            });
+          }}
+        >
+          Reports
+        </Button>
+
         <Link
           title="Preview"
           rel="noreferrer"
