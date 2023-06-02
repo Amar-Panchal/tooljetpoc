@@ -4,7 +4,7 @@ import {
   DropDownList,
   NumericTextBox as KendoNumericTextBox,
 } from "@progress/kendo-react-all";
-import React from "react";
+import React, { useEffect } from "react";
 
 export const NumberInput = function NumberInput({
   height,
@@ -17,10 +17,10 @@ export const NumberInput = function NumberInput({
   PatientRegistrationFormData,
   component,
 }) {
-  console.log("PatientRegistrationFormData", PatientRegistrationFormData);
   const defaultAgeType = ["Year", "Month", "Day"];
   const { visibility, borderRadius, borderColor, backgroundColor } = styles;
   const [ageType, setAgeType] = React.useState("Year");
+
   const handleChangeAgeType = (event) => {
     setPatientRegistrationFormData({
       ...PatientRegistrationFormData,
@@ -32,6 +32,11 @@ export const NumberInput = function NumberInput({
     });
     setAgeType(event.target.value);
   };
+
+  useEffect(() => {
+    if (PatientRegistrationFormData.age)
+      setAgeType(PatientRegistrationFormData.age.ageType);
+  }, [PatientRegistrationFormData.age]);
   const textColor =
     darkMode && ["#232e3c", "#000000ff"].includes(styles.textColor)
       ? "#fff"

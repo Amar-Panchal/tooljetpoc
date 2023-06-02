@@ -138,7 +138,7 @@ export const Button = function Button(props) {
       mode !== "edit"
     ) {
       history.push({
-        pathname: "/patient-details",
+        pathname: "/",
         state: {},
       });
     }

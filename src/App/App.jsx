@@ -81,7 +81,7 @@ class App extends React.Component {
               switchDarkMode={this.switchDarkMode}
               darkMode={darkMode}
             />
-            <Route path="/patient-details" component={PatientDetails} />
+            {/* <Route path="/patient-details" component={PatientDetails} /> */}
             <Route path="/custom-report" component={TemplateHandler} />
             <Route path="/result" component={ResultPage} />
 

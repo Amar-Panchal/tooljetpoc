@@ -77,7 +77,7 @@ export const Datepicker = function Datepicker({
         tem.years > 0
           ? {
               value: tem.years,
-              label: "Year",
+              ageType: "Year",
             }
           : PatientRegistrationFormData.age,
     });
