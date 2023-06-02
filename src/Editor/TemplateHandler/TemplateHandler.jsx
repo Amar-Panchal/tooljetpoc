@@ -111,11 +111,39 @@ function TemplateHandler(props) {
           <div
             style={{ display: "flex", flexDirection: "column", gap: "20px" }}
           >
-            <Button onClick={() => handleCreateTemplate(1)}>
+            <Button
+              className="k-button k-button-md k-rounded-md k-button-solid k-button-solid-primary"
+              onClick={() => handleCreateTemplate(1)}
+              style={{ backgroundColor: "#4D72FA", border: "none" }}
+            >
               Create Report Template
             </Button>
-            <Button onClick={() => handleCreateTemplate(2)}>
+            <Button
+              className="k-button k-button-md k-rounded-md k-button-solid k-button-solid-primary"
+              onClick={() => handleCreateTemplate(2)}
+              style={{ backgroundColor: "#4D72FA", border: "none" }}
+            >
               Create Registration Template
+            </Button>
+            <Button
+              title="Registration Page"
+              className="k-button k-button-md k-rounded-md k-button-solid k-button-solid-primary"
+              onClick={() => {
+                history.push("/registration-page");
+              }}
+              style={{ backgroundColor: "#4D72FA", border: "none" }}
+            >
+              Registration Page
+            </Button>
+            <Button
+              title="Custom Reports"
+              className="k-button k-button-md k-rounded-md k-button-solid k-button-solid-primary"
+              onClick={() => {
+                history.push("/");
+              }}
+              style={{ backgroundColor: "#4D72FA", border: "none" }}
+            >
+              Patient List
             </Button>
           </div>
           <div>

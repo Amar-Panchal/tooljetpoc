@@ -164,7 +164,9 @@ function PatientDetails() {
                     ? props.dataItem[field.value]?.value +
                       " " +
                       props.dataItem[field.value]?.ageType
-                    : ""}
+                    : props.dataItem[field.value] +
+                      " " +
+                      props.dataItem[field.value]?.ageType}
                 </td>
               );
             }}
@@ -320,7 +322,7 @@ function PatientDetails() {
                 Export to Excel
               </Button>
               <Button
-                title="Export Excel"
+                title="Registration Page"
                 className="k-button k-button-md k-rounded-md k-button-solid k-button-solid-primary"
                 onClick={() => {
                   history.push("/registration-page");
@@ -330,10 +332,10 @@ function PatientDetails() {
                 Registration Page
               </Button>
               <Button
-                title="Export Excel"
+                title="Custom Reports"
                 className="k-button k-button-md k-rounded-md k-button-solid k-button-solid-primary"
                 onClick={() => {
-                  history.push("/");
+                  history.push("/custom-report");
                 }}
                 style={{ backgroundColor: "#4D72FA", border: "none" }}
               >

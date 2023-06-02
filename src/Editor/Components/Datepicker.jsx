@@ -73,7 +73,13 @@ export const Datepicker = function Datepicker({
     setPatientRegistrationFormData({
       ...PatientRegistrationFormData,
       [component.name]: date,
-      age: tem.years > 0 ? tem.years : PatientRegistrationFormData.age,
+      age:
+        tem.years > 0
+          ? {
+              value: tem.years,
+              label: "Year",
+            }
+          : PatientRegistrationFormData.age,
     });
     setDate(date);
     const dateString = computeDateString(date);

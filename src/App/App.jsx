@@ -71,7 +71,7 @@ class App extends React.Component {
             <PrivateRoute
               exact
               path="/"
-              component={TemplateHandler}
+              component={PatientDetails}
               switchDarkMode={this.switchDarkMode}
               darkMode={darkMode}
             />
@@ -82,6 +82,7 @@ class App extends React.Component {
               darkMode={darkMode}
             />
             <Route path="/patient-details" component={PatientDetails} />
+            <Route path="/custom-report" component={TemplateHandler} />
             <Route path="/result" component={ResultPage} />
 
             <PrivateRoute

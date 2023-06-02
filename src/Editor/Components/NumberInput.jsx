@@ -17,10 +17,19 @@ export const NumberInput = function NumberInput({
   PatientRegistrationFormData,
   component,
 }) {
+  console.log("PatientRegistrationFormData", PatientRegistrationFormData);
   const defaultAgeType = ["Year", "Month", "Day"];
   const { visibility, borderRadius, borderColor, backgroundColor } = styles;
   const [ageType, setAgeType] = React.useState("Year");
   const handleChangeAgeType = (event) => {
+    setPatientRegistrationFormData({
+      ...PatientRegistrationFormData,
+
+      [component.name]: {
+        value: PatientRegistrationFormData.age.value,
+        ageType: event.target.value,
+      },
+    });
     setAgeType(event.target.value);
   };
   const textColor =
@@ -66,7 +75,11 @@ export const NumberInput = function NumberInput({
         onChange={handleChange}
         placeholder={properties.placeholder}
         style={computedStyles}
-        value={PatientRegistrationFormData[component.name]?.value}
+        value={
+          PatientRegistrationFormData[component.name]?.value
+            ? PatientRegistrationFormData[component.name]?.value
+            : PatientRegistrationFormData[component.name]
+        }
         data-cy={dataCy}
       />
 
