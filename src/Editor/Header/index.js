@@ -51,65 +51,30 @@ export default function EditorHeader({
   }
 
   const updateReportTemplate = (type) => {
-    if (
+    if (payload.reportTemplateName === "") {
+      toast.error("Please enter template Name");
+    } else if (
       payload.templateType === 2 &&
-      !searchEmptyDemographicField(appDefinition, "testlist")
-    )
-      toast.error("Please Add Test List Component");
-    else if (
-      payload.templateType === 2 &&
-      searchEmptyDemographicField(appDefinition, "textinput")
-    )
-      toast.error("Text Input field cannot be empty");
-    else if (
-      payload.templateType === 2 &&
-      searchEmptyDemographicField(appDefinition, "numberinput")
-    )
-      toast.error("Number Input field cannot be empty");
-    else if (
-      payload.templateType === 2 &&
-      searchEmptyDemographicField(appDefinition, "datepicker")
-    )
-      toast.error("Date Input field cannot be empty");
-    else if (
-      payload.templateType === 2 &&
-      searchEmptyDemographicField(appDefinition, "radiobutton")
-    )
-      toast.error("RadioButton Input field cannot be empty");
-    else if (
-      payload.templateType === 2 &&
-      searchEmptyDemographicField(appDefinition, "dropdown")
-    )
-      toast.error("Dropdown Input field cannot be empty");
-    else if (
-      payload.templateType === 2 &&
-      searchEmptyDemographicField(appDefinition, "button")
-    )
-      toast.error("Button Input field cannot be empty");
-    else if (
-      payload.templateType === 2 &&
-      searchEmptyDemographicField(appDefinition, "checkbox")
-    )
-      toast.error("Checkbox Input field cannot be empty");
-    else if (
+      !searchEmptyDemographicField(payload.reportValues, "testlist")
+    ) {
+      toast.error("Please Add TestList Component");
+    } else if (
       payload.templateType === 1 &&
       !(
-        searchEmptyDemographicField(appDefinition, "reportresulttable") ||
-        searchEmptyDemographicField(appDefinition, "fivecolumn") ||
-        searchEmptyDemographicField(appDefinition, "fourcolumn") ||
-        searchEmptyDemographicField(appDefinition, "threecolumn") ||
-        searchEmptyDemographicField(appDefinition, "twocolumn")
+        searchEmptyDemographicField(payload.reportValues, "twocolumn") ||
+        searchEmptyDemographicField(payload.reportValues, "threecolumn") ||
+        searchEmptyDemographicField(payload.reportValues, "fourcolumn") ||
+        searchEmptyDemographicField(payload.reportValues, "fivecolumn") ||
+        searchEmptyDemographicField(payload.reportValues, "reportresulttable")
       )
-    )
-      toast.error("Please Add one Component for Report Body");
-    else if (
+    ) {
+      toast.error("Please Add Result Table Component");
+    } else if (
       payload.templateType === 1 &&
-      searchEmptyDemographicField(appDefinition, "demographicfield")
-    )
+      searchEmptyDemographicField(payload.reportValues, "demographicfield")
+    ) {
       toast.error("Demographic field cannot be empty");
-    else if (payload.reportTemplateName === "") {
-      toast.error("Template Name cannot be empty");
-    } else {
+    } else
       axios
         .put(
           "https://elabnextapi-dev.azurewebsites.net/api/ReportSetup/UpdateReportTemplate",
@@ -129,7 +94,6 @@ export default function EditorHeader({
         .catch((error) => {
           console.log("sss", error);
         });
-    }
   };
 
   return (

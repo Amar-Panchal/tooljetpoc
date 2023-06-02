@@ -53,9 +53,6 @@ export const NumberInput = function NumberInput({
         : backgroundColor,
   };
 
-  if (component.name.includes("numberinput")) console.log("number input");
-  if (component.name.includes("age")) console.log("age input");
-
   return (
     <div
       style={{

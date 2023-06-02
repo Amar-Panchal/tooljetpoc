@@ -3,6 +3,12 @@
 import React, { useEffect, useState } from "react";
 import cx from "classnames";
 import { Button as KendoButton } from "@progress/kendo-react-all";
+import {
+  useParams,
+  useLocation,
+  useHistory,
+  useRouteMatch,
+} from "react-router-dom";
 var tinycolor = require("tinycolor2");
 
 export const Button = function Button(props) {
@@ -29,7 +35,7 @@ export const Button = function Button(props) {
   const [disable, setDisable] = useState(disabledState);
   const [visibility, setVisibility] = useState(styles.visibility);
   const [loading, setLoading] = useState(properties.loadingState);
-
+  const history = useHistory();
   useEffect(() => setLabel(properties.text), [properties.text]);
 
   useEffect(() => {
@@ -126,14 +132,23 @@ export const Button = function Button(props) {
         state: {},
       });
     }
-
+    if (
+      props.component.name === "button4" &&
+      customMode !== "preview" &&
+      mode !== "edit"
+    ) {
+      history.push({
+        pathname: "/patient-details",
+        state: {},
+      });
+    }
     const event1 = new CustomEvent("submitForm", {
       detail: { buttonComponentId: id },
     });
     document.dispatchEvent(event1);
     fireEvent("onClick");
   };
-
+  console.log("props in button", props.component);
   return (
     <div className="widget-button">
       <KendoButton

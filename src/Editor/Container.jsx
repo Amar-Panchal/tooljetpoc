@@ -780,10 +780,18 @@ export const Container = ({
           className="mx-auto w-50 p-5 bg-light no-components-box"
           style={{ marginTop: "10%" }}
         >
-          <center className="text-muted">
-            You haven&apos;t added any components yet. Drag components from the
-            right sidebar and drop here.
-          </center>
+          {mode === "view" ? (
+            <div class="load">
+              <div class="one"></div>
+              <div class="two"></div>
+              <div class="three"></div>
+            </div>
+          ) : (
+            <center className="text-muted">
+              You haven&apos;t added any components yet. Drag components from
+              the right sidebar and drop here.
+            </center>
+          )}
         </div>
       )}
     </div>

@@ -319,6 +319,26 @@ function PatientDetails() {
               >
                 Export to Excel
               </Button>
+              <Button
+                title="Export Excel"
+                className="k-button k-button-md k-rounded-md k-button-solid k-button-solid-primary"
+                onClick={() => {
+                  history.push("/registration-page");
+                }}
+                style={{ backgroundColor: "#4D72FA", border: "none" }}
+              >
+                Registration Page
+              </Button>
+              <Button
+                title="Export Excel"
+                className="k-button k-button-md k-rounded-md k-button-solid k-button-solid-primary"
+                onClick={() => {
+                  history.push("/");
+                }}
+                style={{ backgroundColor: "#4D72FA", border: "none" }}
+              >
+                Custom Reports
+              </Button>
             </GridToolbar>
             {selectedArray?.map((key) => {
               return fieldMasterList.map((field) => {
