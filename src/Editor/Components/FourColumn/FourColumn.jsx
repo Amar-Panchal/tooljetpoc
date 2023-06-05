@@ -84,6 +84,7 @@ export function FourColumn({
   exposedVariables,
   testResultData,
 }) {
+  console.log("rrrree", testResultData);
   const {
     color,
     serverSidePagination,
@@ -325,7 +326,7 @@ export function FourColumn({
         Value: result.paramValue,
         ParameterName: result.testParamName,
         Unit: result.unitName,
-        NormalRange: "20-40",
+        NormalRange: result.ranges.normalRange,
       });
     });
     if (!Array.isArray(tableData)) tableData = [];

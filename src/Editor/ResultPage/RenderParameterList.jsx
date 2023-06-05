@@ -10,7 +10,8 @@ function RenderParameterList({
   key,
   disabledTests,
   testIndex,
-  disabledAllTests,
+
+  ranges,
 }) {
   const styles = {
     fontSize: 14,
@@ -20,7 +21,6 @@ function RenderParameterList({
   };
   // if (parameterName.testParamId === finalData.testParamId) {
   // }
-  const randomNumb = 10;
 
   const handleChange = (e) => {
     const { unitId, unitName, testParamId, testParamName } = parameterName;
@@ -33,6 +33,7 @@ function RenderParameterList({
         testParamId,
         testParamName,
         paramValue: e.value,
+        ranges,
       },
     });
   };
@@ -62,12 +63,12 @@ function RenderParameterList({
             style={{
               width: "100%",
               border:
-                disabledTests.includes(testIndex) || disabledAllTests
+                disabledTests.includes(testIndex) || false
                   ? ""
                   : "1px solid black",
             }}
             onChange={handleChange}
-            disabled={disabledAllTests || disabledTests.includes(testIndex)}
+            disabled={false || disabledTests.includes(testIndex)}
           />
         </span>
       ),
@@ -88,7 +89,11 @@ function RenderParameterList({
       },
       resizable: false,
       reorderable: false,
-      item: <span style={styles}>{`${randomNumb} - ${randomNumb + 30}`}</span>,
+      item: (
+        <span style={styles}>
+          {ranges.normalRange ? ranges.normalRange : ""}
+        </span>
+      ),
     },
     {
       defaultPosition: {
@@ -97,7 +102,7 @@ function RenderParameterList({
       },
       resizable: false,
       reorderable: false,
-      item: <span style={styles}>{90}</span>,
+      item: <span style={styles}>{ranges.criticalHigh}</span>,
     },
     {
       defaultPosition: {
@@ -106,7 +111,7 @@ function RenderParameterList({
       },
       resizable: false,
       reorderable: false,
-      item: <span style={styles}>{10}</span>,
+      item: <span style={styles}>{ranges.criticalLow}</span>,
     },
   ];
   return (

@@ -100,17 +100,35 @@ function ResultPage() {
   const [patientDetails, setPatientDetails] = useState([]);
   const [selectedTestsWithParameters, setSelectedTestsWithParameters] =
     useState([]);
-
   const [testResult, setTestResult] = useState([]);
   const [unitData, setUnitData] = useState([]);
   const [values, setValues] = useState({});
-  const [ResultDataWithRanges, setResultDataWithRanges] = useState([]);
-  const [finalData, setFinalData] = useState([]);
   const [disabledTests, setDisabledTests] = useState([]);
-  const [disabledAllTests, setDisabledAllTests] = useState(false);
 
   const history = useHistory();
 
+  function convertAgeToDays(age, type) {
+    if (type === "Year") {
+      return age * 365;
+    } else if (type === "Month") {
+      return age * 30;
+    } else if (type === "Day") {
+      return age;
+    } else {
+      return -1; // Invalid age type
+    }
+  }
+  function convertGenderToValue(gender) {
+    if (gender === "Male") {
+      return 2;
+    } else if (gender === "Female") {
+      return 1;
+    } else if (gender === "Both") {
+      return 3;
+    } else {
+      return -1; // Invalid gender
+    }
+  }
   useEffect(() => {
     setPatientDetails(history.location.state);
   }, [history]);
@@ -119,10 +137,19 @@ function ResultPage() {
     const itemIndex = selectedTestsWithParameters.findIndex(
       (test) => test.testId === testId
     );
+
+    const ageInDays = convertAgeToDays(
+      patientDetails.age.value,
+      patientDetails.age.ageType
+    );
+    const genderVal = convertGenderToValue(patientDetails.gender.name);
+
+    console.log("ageInDays", genderVal);
+    console.log("Patient DEtals", patientDetails);
     if (itemIndex === -1) {
       axios
         .get(
-          `https://elabnextapi-dev.azurewebsites.net/api/Test/GetTestWithParameter?TestId=${testId}`
+          `https://elabnextapi-dev.azurewebsites.net/api/Test/GetTestWithParameter?TestId=${testId}&Gender=${genderVal}&Age=${ageInDays}`
         )
         .then((response) => {
           const { testId, testName, testParameters } =
@@ -165,51 +192,29 @@ function ResultPage() {
       });
   }, []);
 
-  function mapRangesWithParameters() {
-    const temp = [];
-    selectedTestsWithParameters.map((testWithParameters) => {
-      testWithParameters.testParameters.map((parameter) => {
-        const obj = {
-          testParamId: parameter.testParamId,
-          ranges: parameter.ranges.filter(
-            (range) =>
-              range.rangeMaster.ageFrom < patientDetails.age?.value &&
-              range.rangeMaster.ageTo > patientDetails.age?.value
-          ),
-          testName: testWithParameters.testName,
-          testId: testWithParameters.testId,
-        };
-
-        temp.push(obj);
-      });
-    });
-
-    setResultDataWithRanges(temp);
-  }
-
-  useEffect(() => {
-    mapRangesWithParameters();
-  }, [selectedTestsWithParameters]);
+  // useEffect(() => {
+  //   mapRangesWithParameters();
+  // }, [selectedTestsWithParameters]);
 
   // console.log("aaaa", ResultDataWithRanges);
   // console.log("resultt", testResult);
 
-  useEffect(() => {
-    const temp = [];
-    testResult.map((testresult) => {
-      ResultDataWithRanges.map((resultData) => {
-        // console.log("testresult", testresult);
-        if (testresult.testParamId === resultData.testParamId) {
-          temp.push({
-            ...testresult,
-            ...resultData,
-          });
-        }
-      });
-    });
+  // useEffect(() => {
+  //   const temp = [];
+  //   testResult.map((testresult) => {
+  //     ResultDataWithRanges.map((resultData) => {
+  //       // console.log("testresult", testresult);
+  //       if (testresult.testParamId === resultData.testParamId) {
+  //         temp.push({
+  //           ...testresult,
+  //           ...resultData,
+  //         });
+  //       }
+  //     });
+  //   });
 
-    setFinalData(temp);
-  }, [testResult]);
+  //   setFinalData(temp);
+  // }, [testResult]);
 
   //save
   // const handleSubmitResult = () => {
@@ -250,7 +255,6 @@ function ResultPage() {
         patientDetails,
         selectedTestsWithParameters,
         testResult,
-        finalData,
       },
     };
     axios
@@ -367,10 +371,7 @@ function ResultPage() {
   //     </div>
   //   );
   // }
-  console.log(
-    "disabledTests.length === selectedTestsWithParameters.length",
-    disabledTests.length === selectedTestsWithParameters.length
-  );
+
   return (
     <div style={{ width: "100%", height: "100%" }}>
       <div
@@ -500,7 +501,6 @@ function ResultPage() {
                 <h1>Parameters</h1>
                 <div>
                   {selectedTestsWithParameters.map((test, testIndex) => {
-                    console.log("dddd", test);
                     return (
                       <div
                         style={{
@@ -526,23 +526,19 @@ function ResultPage() {
                             />
                             {test.testParameters.map(
                               (parameter, paramIndex) => {
-                                if (
-                                  parameter.testParamId ===
-                                  finalData.testParamId
-                                ) {
-                                  parameter.ranges = finalData.ranges;
-                                }
-
                                 return (
                                   <RenderParameterList
                                     parameterName={parameter}
                                     values={values}
                                     setValues={setValues}
-                                    finalData={finalData}
                                     key={paramIndex}
                                     disabledTests={disabledTests}
                                     testIndex={testIndex}
-                                    disabledAllTests={disabledAllTests}
+                                    ranges={
+                                      parameter?.ranges[0]?.rangeMaster
+                                        ? parameter?.ranges[0]?.rangeMaster
+                                        : {}
+                                    }
                                   />
                                 );
                               }
