@@ -84,7 +84,6 @@ export function FourColumn({
   exposedVariables,
   testResultData,
 }) {
-  console.log("rrrree", testResultData);
   const {
     color,
     serverSidePagination,

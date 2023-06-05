@@ -2442,7 +2442,7 @@ export const widgets = [
       },
     },
   },
-
+  //button
   {
     name: "Button",
     displayName: "Button",
@@ -2520,6 +2520,7 @@ export const widgets = [
       },
     },
   },
+  //textinput
   {
     name: "TextInput",
     displayName: "Text Input",
@@ -2594,6 +2595,9 @@ export const widgets = [
       },
     },
   },
+
+  //numberinput
+
   {
     name: "NumberInput",
     displayName: "Number Input",
@@ -2665,6 +2669,7 @@ export const widgets = [
       },
     },
   },
+  //Datepicker
   {
     name: "Datepicker",
     displayName: "Date Picker",
@@ -2775,6 +2780,7 @@ export const widgets = [
       },
     },
   },
+  //checkbox
   {
     name: "Checkbox",
     displayName: "Checkbox",
@@ -2825,6 +2831,7 @@ export const widgets = [
       },
     },
   },
+  //"Radio-button
   {
     name: "Radio-button",
     displayName: "Radio Button",
@@ -2905,6 +2912,7 @@ export const widgets = [
       },
     },
   },
+  //text
   {
     name: "Text",
     displayName: "Text",
@@ -3045,6 +3053,7 @@ export const widgets = [
       },
     },
   },
+  //image
   {
     name: "Image",
     displayName: "Image",
@@ -3182,6 +3191,7 @@ export const widgets = [
       },
     },
   },
+  //dropdonw
   {
     name: "Dropdown",
     displayName: "Dropdown",
@@ -3298,6 +3308,7 @@ export const widgets = [
       },
     },
   },
+  //divider
   {
     name: "Divider",
     displayName: "Divider",
@@ -3337,6 +3348,7 @@ export const widgets = [
       },
     },
   },
+  // vertical divider
   {
     name: "VerticalDivider",
     displayName: "Vertical Divider",
@@ -3376,7 +3388,7 @@ export const widgets = [
       },
     },
   },
-
+  //ReportResultTable
   {
     name: "ReportResultTable",
     displayName: "Report Result Table",
@@ -3424,7 +3436,7 @@ export const widgets = [
       },
     },
   },
-
+  //testlist
   {
     name: "TestList",
     displayName: "Test List",
@@ -3490,6 +3502,7 @@ export const widgets = [
       },
     },
   },
+  //demographics field
   {
     name: "DemographicField",
     displayName: "Demographic Field",
@@ -3500,6 +3513,20 @@ export const widgets = [
       showOnMobile: { type: "toggle", displayName: "Show on mobile" },
     },
     properties: {
+      FieldName: {
+        type: "select",
+        displayName: "FieldName",
+        options: [
+          {
+            label: "test Name",
+            value: "testName",
+            componentType: "TextInput",
+          },
+          // { name: "bold", value: "bold" },
+          // { name: "lighter", value: "lighter" },
+          // { name: "bolder", value: "bolder" },
+        ],
+      },
       text: {
         type: "code",
         displayName: "Text",
