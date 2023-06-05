@@ -129,9 +129,11 @@ function ResultPage() {
       return -1; // Invalid gender
     }
   }
+  console.log("values", values);
   useEffect(() => {
     setPatientDetails(history.location.state);
   }, [history]);
+
   const onTestChange = (event) => {
     const { testId } = JSON.parse(event.target.name);
     const itemIndex = selectedTestsWithParameters.findIndex(
@@ -144,8 +146,6 @@ function ResultPage() {
     );
     const genderVal = convertGenderToValue(patientDetails.gender.name);
 
-    console.log("ageInDays", genderVal);
-    console.log("Patient DEtals", patientDetails);
     if (itemIndex === -1) {
       axios
         .get(
@@ -249,7 +249,6 @@ function ResultPage() {
   //update
   const handleSubmitResult = () => {
     const payload = {
-      id: 11,
       patientId: patientDetails.patientId,
       resultValues: {
         patientDetails,
@@ -258,8 +257,8 @@ function ResultPage() {
       },
     };
     axios
-      .put(
-        "https://elabnextapi-dev.azurewebsites.net/api/Result/UpdateResult",
+      .post(
+        "https://elabnextapi-dev.azurewebsites.net/api/Result/SaveResult",
         payload
       )
       .then((response) => {
