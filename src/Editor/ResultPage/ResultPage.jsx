@@ -6,9 +6,9 @@ import { Checkbox } from "@progress/kendo-react-inputs";
 import axios from "axios";
 import { toast } from "react-hot-toast";
 import RenderParameterList from "./RenderParameterList";
-import { UnitData } from "./StaticData";
 import { TileLayout } from "@progress/kendo-react-all";
 import { Button } from "@progress/kendo-react-buttons";
+
 const styles = {
   fontSize: 14,
   textAlign: "center",
@@ -22,7 +22,8 @@ const tiles = [
       colSpan: 1,
       rowSpan: 1,
     },
-
+    resizable: false,
+    reorderable: false,
     item: (
       <span style={styles}>
         <b>Parameter Name</b>
@@ -115,7 +116,7 @@ function ResultPage() {
     } else if (type === "Day") {
       return age;
     } else {
-      return -1; // Invalid age type
+      return -1;
     }
   }
   function convertGenderToValue(gender) {
@@ -126,10 +127,10 @@ function ResultPage() {
     } else if (gender === "Both") {
       return 3;
     } else {
-      return -1; // Invalid gender
+      return -1;
     }
   }
-  console.log("values", values);
+
   useEffect(() => {
     setPatientDetails(history.location.state);
   }, [history]);
@@ -176,7 +177,30 @@ function ResultPage() {
       updatedItems.splice(itemIndex, 1);
       setSelectedTestsWithParameters(updatedItems);
     }
+
+    axios
+      .get(
+        `https://elabnextapi-dev.azurewebsites.net/api/Result/GetResult?PatientId=${patientDetails.patientId}`
+      )
+      .then((response) => {
+        const maxIdObject = response.data.resultData.resultList.reduce(
+          (maxObject, currentObject) => {
+            return currentObject.id > maxObject.id ? currentObject : maxObject;
+          },
+          response.data.resultData.resultList[0]
+        );
+
+        let temp = JSON.parse(maxIdObject.resultValues);
+        const obj = temp.testResult.reduce((result, item) => {
+          result[item.testParamId] = item;
+          return result;
+        }, {});
+        setValues(obj);
+        console.log("eeee", obj);
+      })
+      .catch((error) => console.log("errror ->GetResult", error));
   };
+
   useEffect(() => {
     const arr = Object.entries(values).map(([key, value]) => value);
 
@@ -289,7 +313,6 @@ function ResultPage() {
   };
   const handleDisableAll = () => {
     if (disabledTests.length === 0) {
-      // Disable all tests
       setDisabledTests(
         Array.from(
           { length: selectedTestsWithParameters.length },

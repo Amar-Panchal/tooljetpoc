@@ -10,7 +10,6 @@ function RenderParameterList({
   key,
   disabledTests,
   testIndex,
-
   ranges,
 }) {
   const styles = {
@@ -37,7 +36,7 @@ function RenderParameterList({
       },
     });
   };
-
+  console.log("ggg", values[parameterName.testParamId]?.paramValue);
   const tiles = [
     {
       defaultPosition: {
@@ -69,6 +68,7 @@ function RenderParameterList({
             }}
             onChange={handleChange}
             disabled={false || disabledTests.includes(testIndex)}
+            value={values[parameterName.testParamId]?.paramValue}
           />
         </span>
       ),
