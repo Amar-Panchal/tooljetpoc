@@ -182,6 +182,7 @@ class EditorComponent extends React.Component {
       },
     });
     this.getReportTemplate();
+    this.getInputMaster();
   }
 
   /**
@@ -1934,7 +1935,35 @@ class EditorComponent extends React.Component {
 
       .catch((error) => console.log("error", error));
   };
-
+  getInputMaster = async () => {
+    let tempppp = [
+      {
+        label: "test Name " + Math.random(),
+        value: "testName" + Math.random(),
+        componentType: "TextInput" + Math.random(),
+        id: 1,
+      },
+      {
+        label: "test Name " + Math.random(),
+        value: "testName" + Math.random(),
+        componentType: "TextInput" + Math.random(),
+        id: 1,
+      },
+      {
+        label: "test Name " + Math.random(),
+        value: "testName" + Math.random(),
+        componentType: "TextInput" + Math.random(),
+        id: 1,
+      },
+    ];
+    console.log(
+      "this.state)",
+      this.state.allComponentTypes[18].properties.FieldName.options
+    );
+    this.state.allComponentTypes[18].properties.FieldName.options.push(
+      ...tempppp
+    );
+  };
   onChangeTemplateName = (e) => {
     this.setState({
       templateName: e.value,
