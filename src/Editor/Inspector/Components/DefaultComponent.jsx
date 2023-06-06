@@ -21,7 +21,6 @@ export const DefaultComponent = ({ componentMeta, darkMode, ...restProps }) => {
     components,
     pages,
     InputFieldDropdown,
-
     newComponentName,
     setNewComponentName,
   } = restProps;
@@ -47,15 +46,15 @@ export const DefaultComponent = ({ componentMeta, darkMode, ...restProps }) => {
   );
 
   const handleTypeSelect = (e) => {
-    console.log("eeeee", e);
     setNewComponentName(e.value);
   };
+
   return (
     <div>
       <AccordionItem
         open={true}
-        key={12}
-        index={12}
+        // key={12}
+        // index={12}
         title="Mandatory Fields"
         children={
           <div>
