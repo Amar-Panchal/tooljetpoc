@@ -615,6 +615,8 @@ export const Container = ({
           !box.parent &&
           resolveReferences(canShowInCurrentLayout, currentState)
         ) {
+          if (box.component.component === "DemographicField")
+            console.log(" {...boxes[key]}", box, box.component.component);
           return (
             <DraggableBox
               className={showComments && "pointer-events-none"}

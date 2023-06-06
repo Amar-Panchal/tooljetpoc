@@ -3521,6 +3521,7 @@ export const widgets = [
             label: "test Name",
             value: "testName",
             componentType: "TextInput",
+            id: 1,
           },
           // { name: "bold", value: "bold" },
           // { name: "lighter", value: "lighter" },
