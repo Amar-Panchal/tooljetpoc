@@ -1,9 +1,13 @@
-import React from 'react';
-import Accordion from '@/_ui/Accordion';
-import { EventManager } from '../EventManager';
-import { renderElement } from '../Utils';
+/** @format */
+
+import React from "react";
+import Accordion from "@/_ui/Accordion";
+import { EventManager } from "../EventManager";
+import { renderElement } from "../Utils";
+import Select from "react-select";
 // eslint-disable-next-line import/no-unresolved
-import i18next from 'i18next';
+import i18next from "i18next";
+import AccordionItem from "../../../_ui/Accordion/AccordionItem";
 
 export const DefaultComponent = ({ componentMeta, darkMode, ...restProps }) => {
   const {
@@ -16,12 +20,15 @@ export const DefaultComponent = ({ componentMeta, darkMode, ...restProps }) => {
     apps,
     components,
     pages,
+    InputFieldDropdown,
+
+    newComponentName,
+    setNewComponentName,
   } = restProps;
 
   const properties = Object.keys(componentMeta.properties);
   const events = Object.keys(componentMeta.events);
   const validations = Object.keys(componentMeta.validation || {});
-
   const accordionItems = baseComponentProperties(
     properties,
     events,
@@ -39,7 +46,36 @@ export const DefaultComponent = ({ componentMeta, darkMode, ...restProps }) => {
     pages
   );
 
-  return <Accordion items={accordionItems} />;
+  const handleTypeSelect = (e) => {
+    console.log("eeeee", e);
+    setNewComponentName(e.value);
+  };
+  return (
+    <div>
+      <AccordionItem
+        open={true}
+        key={12}
+        index={12}
+        title="Mandatory Fields"
+        children={
+          <div>
+            <div className="mb-2 field form-label">Component Name</div>
+            <Select
+              options={InputFieldDropdown}
+              onChange={handleTypeSelect}
+              value={InputFieldDropdown.filter(function (option) {
+                return option.value === newComponentName;
+              })}
+              label="Single select"
+              required
+              style={{ border: "1px solid red" }}
+            />
+          </div>
+        }
+      />
+      <Accordion items={accordionItems} />
+    </div>
+  );
 };
 
 export const baseComponentProperties = (
@@ -63,13 +99,13 @@ export const baseComponentProperties = (
     Properties: [],
     Events: [],
     Validation: [],
-    General: ['Modal'],
+    General: ["Modal"],
     Layout: [],
   };
   let items = [];
   if (properties.length > 0) {
     items.push({
-      title: `${i18next.t('widget.common.properties', 'Properties')}`,
+      title: `${i18next.t("widget.common.properties", "Properties")}`,
       children: properties.map((property) =>
         renderElement(
           component,
@@ -77,7 +113,7 @@ export const baseComponentProperties = (
           paramUpdated,
           dataQueries,
           property,
-          'properties',
+          "properties",
           currentState,
           allComponents,
           darkMode
@@ -88,7 +124,7 @@ export const baseComponentProperties = (
 
   if (events.length > 0) {
     items.push({
-      title: `${i18next.t('widget.common.events', 'Events')}`,
+      title: `${i18next.t("widget.common.events", "Events")}`,
       isOpen: true,
       children: (
         <EventManager
@@ -108,7 +144,7 @@ export const baseComponentProperties = (
 
   if (validations.length > 0) {
     items.push({
-      title: `${i18next.t('widget.common.validation', 'Validation')}`,
+      title: `${i18next.t("widget.common.validation", "Validation")}`,
       children: validations.map((property) =>
         renderElement(
           component,
@@ -116,7 +152,7 @@ export const baseComponentProperties = (
           paramUpdated,
           dataQueries,
           property,
-          'validation',
+          "validation",
           currentState,
           allComponents,
           darkMode
@@ -126,7 +162,7 @@ export const baseComponentProperties = (
   }
 
   items.push({
-    title: `${i18next.t('widget.common.general', 'General')}`,
+    title: `${i18next.t("widget.common.general", "General")}`,
     isOpen: true,
     children: (
       <>
@@ -135,8 +171,8 @@ export const baseComponentProperties = (
           componentMeta,
           layoutPropertyChanged,
           dataQueries,
-          'tooltip',
-          'general',
+          "tooltip",
+          "general",
           currentState,
           allComponents
         )}
@@ -145,7 +181,7 @@ export const baseComponentProperties = (
   });
 
   items.push({
-    title: `${i18next.t('widget.common.layout', 'Layout')}`,
+    title: `${i18next.t("widget.common.layout", "Layout")}`,
     isOpen: true,
     children: (
       <>
@@ -154,8 +190,8 @@ export const baseComponentProperties = (
           componentMeta,
           layoutPropertyChanged,
           dataQueries,
-          'showOnDesktop',
-          'others',
+          "showOnDesktop",
+          "others",
           currentState,
           allComponents
         )}
@@ -164,8 +200,8 @@ export const baseComponentProperties = (
           componentMeta,
           layoutPropertyChanged,
           dataQueries,
-          'showOnMobile',
-          'others',
+          "showOnMobile",
+          "others",
           currentState,
           allComponents
         )}
@@ -174,6 +210,10 @@ export const baseComponentProperties = (
   });
 
   return items.filter(
-    (item) => !(item.title in accordionFilters && accordionFilters[item.title].includes(componentMeta.component))
+    (item) =>
+      !(
+        item.title in accordionFilters &&
+        accordionFilters[item.title].includes(componentMeta.component)
+      )
   );
 };

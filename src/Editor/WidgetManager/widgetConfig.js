@@ -3513,21 +3513,6 @@ export const widgets = [
       showOnMobile: { type: "toggle", displayName: "Show on mobile" },
     },
     properties: {
-      FieldName: {
-        type: "select",
-        displayName: "FieldName",
-        options: [
-          {
-            label: "Select...",
-            value: "",
-            componentType: "",
-            id: -1,
-          },
-          // { name: "bold", value: "bold" },
-          // { name: "lighter", value: "lighter" },
-          // { name: "bolder", value: "bolder" },
-        ],
-      },
       text: {
         type: "code",
         displayName: "Text",

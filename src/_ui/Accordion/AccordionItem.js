@@ -1,13 +1,19 @@
-import React from 'react';
-import cx from 'classnames';
+/** @format */
+
+import React from "react";
+import cx from "classnames";
 
 const AccordionItem = ({ open = true, index, title, children }) => {
   const [show, setShow] = React.useState(open);
   return (
     <div className="accordion-item">
-      <h2 onClick={() => setShow(!show)} className="accordion-header" id={`heading-${index}`}>
+      <h2
+        onClick={() => setShow(!show)}
+        className="accordion-header"
+        id={`heading-${index}`}
+      >
         <button
-          className={cx('accordion-button', { collapsed: !show })}
+          className={cx("accordion-button", { collapsed: !show })}
           type="button"
           data-bs-toggle="collapse"
           data-bs-target={`collapse-${index}`}
@@ -19,7 +25,7 @@ const AccordionItem = ({ open = true, index, title, children }) => {
       </h2>
       <div
         id={`collapse-${index}`}
-        className={cx('accordion-collapse collapse', { show })}
+        className={cx("accordion-collapse collapse", { show })}
         data-bs-parent="#accordion-example"
       >
         <div className="accordion-body">{children}</div>
