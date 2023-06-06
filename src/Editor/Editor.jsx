@@ -1936,6 +1936,32 @@ class EditorComponent extends React.Component {
       .catch((error) => console.log("error", error));
   };
   getInputMaster = async () => {
+    await axios
+      .get(
+        "https://elabnextapi-dev.azurewebsites.net/api/ReportSetup/GetFieldMaster"
+      )
+      .then((response) => {
+        let temp = [];
+        // response?.data?.resultData?.fieldMaster?.map((element) => {
+        //   if (component.component.component === "DemographicField") {
+        //     temp = response?.data?.resultData?.fieldMaster;
+        //   } else if (component.component.component === element.componentType)
+        //     temp.push({
+        //       value: element.value,
+        //       label: element.label,
+        //       componentType: element.componentType,
+        //     });
+        // });
+        console.log(
+          "response?.data?.resultData?.fieldMaster",
+          response?.data?.resultData?.fieldMaster
+        );
+
+        this.state.allComponentTypes[18].properties.FieldName.options =
+          response?.data?.resultData?.fieldMaster;
+        // setInputFieldDropdown(temp);
+      })
+      .catch((error) => console.log("err", error));
     let tempppp = [
       {
         label: "test Name " + Math.random(),
@@ -1956,13 +1982,11 @@ class EditorComponent extends React.Component {
         id: 1,
       },
     ];
-    console.log(
-      "this.state)",
-      this.state.allComponentTypes[18].properties.FieldName.options
-    );
-    this.state.allComponentTypes[18].properties.FieldName.options.push(
-      ...tempppp
-    );
+
+    // console.log(
+    //   "this.state)",
+    //   this.state.allComponentTypes[18].properties.FieldName.options
+    // );
   };
   onChangeTemplateName = (e) => {
     this.setState({
