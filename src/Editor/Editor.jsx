@@ -1942,6 +1942,17 @@ class EditorComponent extends React.Component {
     });
   };
 
+  setAppLoadingTrue = () => {
+    this.setState({
+      isLoading: true,
+    });
+  };
+  setAppLoadingFalse = () => {
+    this.setState({
+      isLoading: false,
+    });
+  };
+
   render() {
     const {
       currentSidebarTab,
@@ -2015,6 +2026,8 @@ class EditorComponent extends React.Component {
         />
         <EditorContextWrapper>
           <EditorHeader
+            setAppLoadingTrue={this.setAppLoadingTrue}
+            setAppLoadingFalse={this.setAppLoadingFalse}
             darkMode={this.props.darkMode}
             currentState={currentState}
             currentLayout={this.state.currentLayout}

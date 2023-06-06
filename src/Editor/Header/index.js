@@ -20,6 +20,8 @@ export default function EditorHeader({
   onChangeTemplateName,
   templateName,
   updateTemplatePayload,
+  setAppLoadingTrue,
+  setAppLoadingFalse,
 }) {
   const { is_maintenance_on } = app;
   const history = useHistory();
@@ -50,7 +52,7 @@ export default function EditorHeader({
     return false;
   }
 
-  const updateReportTemplate = (type) => {
+  const updateReportTemplate = async (type) => {
     if (payload.reportTemplateName === "") {
       toast.error("Please enter template Name");
     } else if (
@@ -74,26 +76,31 @@ export default function EditorHeader({
       searchEmptyDemographicField(payload.reportValues, "demographicfield")
     ) {
       toast.error("Demographic field cannot be empty");
-    } else
-      axios
-        .put(
-          "https://elabnextapi-dev.azurewebsites.net/api/ReportSetup/UpdateReportTemplate",
-          payload
-        )
-        .then((response) => {
-          toast.success("Saved Successfully");
-          if (type === "preview")
-            history.push({
-              pathname: "/preview",
-              state: {
-                reportTemplateDataMap: reportTemplateDataMap,
-                mode: "preview",
-              },
-            });
-        })
-        .catch((error) => {
-          console.log("sss", error);
-        });
+    } else setAppLoadingTrue();
+
+    await axios
+      .put(
+        "https://elabnextapi-dev.azurewebsites.net/api/ReportSetup/UpdateReportTemplate",
+        payload
+      )
+      .then((response) => {
+        toast.success("Saved Successfully");
+        if (type === "preview")
+          history.push({
+            pathname: "/preview",
+            state: {
+              reportTemplateDataMap: reportTemplateDataMap,
+              mode: "preview",
+            },
+          });
+
+        setAppLoadingFalse();
+      })
+      .catch((error) => {
+        console.log("sss", error);
+
+        setAppLoadingFalse();
+      });
   };
 
   return (
