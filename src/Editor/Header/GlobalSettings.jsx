@@ -1,6 +1,6 @@
 /** @format */
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import cx from "classnames";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Popover from "react-bootstrap/Popover";
@@ -35,8 +35,10 @@ export const GlobalSettings = ({
   const [forceCodeBox, setForceCodeBox] = React.useState(true);
   const [realState, setRealState] = React.useState(currentState);
   const [showConfirmation, setConfirmationShow] = React.useState(false);
+  const [selectedFont, setSelectedFont] = useState("");
   const [show, setShow] = React.useState("");
 
+  console.log("globalSettings", globalSettings);
   const coverStyles = {
     position: "fixed",
     top: "0px",
@@ -58,7 +60,13 @@ export const GlobalSettings = ({
       );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [JSON.stringify(resolveReferences(backgroundFxQuery, realState))]);
-
+  const handleFontChange = (event) => {
+    setSelectedFont(event.target.value);
+    globalSettingsChanged("globalFontVariant", event.target.value);
+  };
+  useEffect(() => {
+    setSelectedFont(globalSettings.globalFontVariant);
+  }, [globalSettings.globalFontVariant]);
   const popoverContent = (
     <Popover
       id="global-settings-popover"
@@ -263,6 +271,36 @@ export const GlobalSettings = ({
                   </div>
                 </div>
               </div>
+            </div>
+            <div
+              className="d-flex mb-3 align-items-center"
+              style={{ marginTop: "10px" }}
+            >
+              <span className="w-full">Global Font</span>
+              <div className="input-with-icon">
+                <select
+                  style={{
+                    border: "1px solid #dadcde",
+                    width: "150px",
+                    height: "30px",
+                  }}
+                  value={selectedFont}
+                  onChange={handleFontChange}
+                >
+                  <option value="Arial">Arial</option>
+                  <option value="Verdana">Verdana</option>
+                  <option value="Georgia">Georgia</option>
+                  <option value="Times New Roman">Times New Roman</option>
+                  <option value="Courier New">Courier New</option>
+                </select>
+              </div>
+              {/* <select>
+                <option value="Arial">Arial</option>
+                <option value="Verdana">Verdana</option>
+                <option value="Georgia">Georgia</option>
+                <option value="Times New Roman">Times New Roman</option>
+                <option value="Courier New">Courier New</option>
+              </select> */}
             </div>
           </div>
         </div>

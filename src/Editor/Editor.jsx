@@ -90,6 +90,7 @@ class EditorComponent extends React.Component {
         canvasMaxHeight: 2400,
         canvasBackgroundColor: props.darkMode ? "#2f3c4c" : "#edeff5",
         backgroundFxQuery: "",
+        globalFontVariant: "",
       },
     };
 
