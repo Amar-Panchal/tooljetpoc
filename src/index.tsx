@@ -3,8 +3,6 @@
 import React from "react";
 import { render } from "react-dom";
 import * as Sentry from "@sentry/react";
-import { Integrations } from "@sentry/tracing";
-import { createBrowserHistory } from "history";
 import { App } from "./App";
 // eslint-disable-next-line import/no-unresolved
 import i18n from "i18next";

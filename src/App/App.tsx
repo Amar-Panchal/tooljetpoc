@@ -2,13 +2,11 @@
 
 import React, { Suspense } from "react";
 // eslint-disable-next-line no-unused-vars
-import config from "config";
 import { BrowserRouter, Route } from "react-router-dom";
-import { history } from "@/_helpers";
-import { PrivateRoute } from "@/_components";
-import { Viewer } from "@/Editor";
-import { lt } from "semver";
-import Toast from "@/_ui/Toast";
+import { history } from "../_helpers";
+import { PrivateRoute } from "../_components";
+import { Viewer } from "../Editor";
+import Toast from "../_ui/Toast";
 import "@/_styles/theme.scss";
 import "emoji-mart/css/emoji-mart.css";
 import { RegistrationPage } from "../Editor/RegistrationPage/RegistrationPage";
