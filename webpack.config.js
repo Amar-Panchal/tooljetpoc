@@ -62,6 +62,8 @@ module.exports = {
       ".jpeg",
       ".gif",
       ".json",
+      ".ts",
+      ".tsx",
     ],
     alias: {
       "@": path.resolve(__dirname, "src/"),
@@ -125,6 +127,29 @@ module.exports = {
         ],
       },
       {
+        test: /\.(ts|tsx|)$/,
+        exclude: /node_modules/,
+        resolve: {
+          extensions: [".ts", ".tsx"],
+        },
+        use: {
+          loader: "babel-loader",
+          options: {
+            plugins: [
+              [
+                "import",
+                {
+                  libraryName: "lodash",
+                  libraryDirectory: "",
+                  camel2DashComponentName: false,
+                },
+                "lodash",
+              ],
+            ],
+          },
+        },
+      },
+      {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
         resolve: {
@@ -147,6 +172,7 @@ module.exports = {
           },
         },
       },
+
       {
         test: /\.html$/,
         loader: "html-loader",
