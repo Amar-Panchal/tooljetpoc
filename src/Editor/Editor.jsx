@@ -1916,10 +1916,13 @@ class EditorComponent extends React.Component {
         const tempPageId = JSON.parse(
           response?.data?.resultData[0]?.reportValues
         );
-
+        console.log(
+          "response.data.resultData[0].reportValues",
+          response.data.resultData[0].reportValues
+        );
         this.setState({
           appDefinition: JSON.parse(response.data.resultData[0].reportValues),
-          currentPageId: Object.keys(tempPageId?.pages)[0],
+          currentPageId: Object?.keys(tempPageId?.pages)[0],
           templateName: response?.data?.resultData[0]?.name,
         });
 
@@ -2215,6 +2218,7 @@ class EditorComponent extends React.Component {
                         dataQueries={dataQueries}
                         currentPageId={this.state.currentPageId}
                         reportTemplateDataMap={this.props.location.state}
+                        globalSettings={this.state.globalSettings}
                       />
                       <CustomDragLayer
                         snapToGrid={true}

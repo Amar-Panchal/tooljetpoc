@@ -11,6 +11,7 @@ export const Text = function Text({
   registerAction,
   setExposedVariable,
   dataCy,
+  containerProps,
 }) {
   let {
     textSize,
@@ -89,6 +90,7 @@ export const Text = function Text({
     letterSpacing: `${letterSpacing}px` ?? "0px",
     wordSpacing: `${wordSpacing}px` ?? "0px",
     minWidth: "200px",
+    fontFamily: containerProps.appDefinition.globalSettings.globalFontVariant,
   };
 
   function sanitizeString(str) {

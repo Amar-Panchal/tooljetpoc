@@ -13,6 +13,7 @@ export const DemographicField = function DemographicField({
   dataCy,
   reportTemplateDataMap,
   component,
+  containerProps,
 }) {
   let {
     textSize,
@@ -38,7 +39,10 @@ export const DemographicField = function DemographicField({
       ? "#fff"
       : "#000"
     : textColor;
-
+  console.log(
+    "containerProps",
+    containerProps.appDefinition.globalSettings.globalFontVariant
+  );
   useEffect(() => {
     if (visibility !== styles.visibility) setVisibility(styles.visibility);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -86,11 +90,12 @@ export const DemographicField = function DemographicField({
     textDecoration: decoration ?? "none",
     textTransform: transformation ?? "none",
     fontStyle: fontStyle ?? "none",
-    fontVariant: fontVariant ?? "normal",
+    fontVariant: "Monospace",
     textIndent: `${textIndent}px` ?? "0px",
     letterSpacing: `${letterSpacing}px` ?? "0px",
     wordSpacing: `${wordSpacing}px` ?? "0px",
     minWidth: "200px",
+    fontFamily: containerProps.appDefinition.globalSettings.globalFontVariant,
   };
 
   function sanitizeString(str) {
@@ -108,11 +113,7 @@ export const DemographicField = function DemographicField({
   let temp = reportTemplateDataMap;
   reportTemplateDataMap =
     reportTemplateDataMap?.payload?.resultValues?.patientDetails;
-  if (component.name === "testName")
-    console.log(
-      "rtemptemptemp",
-      temp.payload?.resultValues.selectedTestsWithParameters[0].testName
-    );
+
   return (
     <div
       data-disabled={disabledState}

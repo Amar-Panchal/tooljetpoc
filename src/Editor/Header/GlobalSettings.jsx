@@ -14,6 +14,58 @@ import { resolveReferences } from "@/_helpers/utils";
 import { useTranslation } from "react-i18next";
 import _ from "lodash";
 
+const GlobalFonts = [
+  "Arial",
+  "Verdana",
+  "Helvetica",
+  "Times New Roman",
+  "Courier New",
+  "Georgia",
+  "Palatino",
+  "Garamond",
+  "Bookman",
+  "Comic Sans MS",
+  "Trebuchet MS",
+  "Arial Black",
+  "Impact",
+  "Lucida Sans Unicode",
+  "Verdana Bold",
+  "Helvetica Neue",
+  "Century Gothic",
+  "Arial Narrow",
+  "Franklin Gothic Medium",
+  "Arial Rounded MT Bold",
+  "Gill Sans",
+  "Lucida Console",
+  "Cambria",
+  "Calibri",
+  "Candara",
+  "Rockwell",
+  "Optima",
+  "Baskerville",
+  "Verdana Italic",
+  "Helvetica Bold",
+  "Times",
+  "Courier",
+  "Geneva",
+  "Monaco",
+  "Brush Script MT",
+  "Futura",
+  "Segoe UI",
+  "Arial Unicode MS",
+  "Tahoma",
+  "Franklin Gothic Book",
+  "Lucida Grande",
+  "Arial Italic",
+  "Helvetica Italic",
+  "Times Italic",
+  "Courier Italic",
+  "Verdana Bold Italic",
+  "Helvetica Neue Bold",
+  "Century Gothic Italic",
+  // Add more font options here
+];
+
 export const GlobalSettings = ({
   globalSettings,
   globalSettingsChanged,
@@ -38,7 +90,6 @@ export const GlobalSettings = ({
   const [selectedFont, setSelectedFont] = useState("");
   const [show, setShow] = React.useState("");
 
-  console.log("globalSettings", globalSettings);
   const coverStyles = {
     position: "fixed",
     top: "0px",
@@ -287,11 +338,17 @@ export const GlobalSettings = ({
                   value={selectedFont}
                   onChange={handleFontChange}
                 >
-                  <option value="Arial">Arial</option>
+                  {GlobalFonts.map((font) => (
+                    <option key={font} value={font}>
+                      {font}
+                    </option>
+                  ))}
+
+                  {/* <option value="Arial">Arial</option>
                   <option value="Verdana">Verdana</option>
                   <option value="Georgia">Georgia</option>
                   <option value="Times New Roman">Times New Roman</option>
-                  <option value="Courier New">Courier New</option>
+                  <option value="Courier New">Courier New</option> */}
                 </select>
               </div>
               {/* <select>
