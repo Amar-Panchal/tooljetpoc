@@ -8,6 +8,7 @@ import { toast } from "react-hot-toast";
 import RenderParameterList from "./RenderParameterList";
 import { TileLayout } from "@progress/kendo-react-all";
 import { Button } from "@progress/kendo-react-buttons";
+import CustomSpinningLoader from "../../_ui/Loader/Loader";
 
 const styles = {
   fontSize: 14,
@@ -105,6 +106,7 @@ function ResultPage() {
   const [unitData, setUnitData] = useState([]);
   const [values, setValues] = useState({});
   const [disabledTests, setDisabledTests] = useState([]);
+  const [isLoading, setIsloading] = useState(false);
 
   const history = useHistory();
 
@@ -135,7 +137,8 @@ function ResultPage() {
     setPatientDetails(history.location.state);
   }, [history]);
 
-  const onTestChange = (event) => {
+  const onTestChange = async (event) => {
+    setIsloading(true);
     const { testId } = JSON.parse(event.target.name);
     const itemIndex = selectedTestsWithParameters.findIndex(
       (test) => test.testId === testId
@@ -148,7 +151,7 @@ function ResultPage() {
     const genderVal = convertGenderToValue(patientDetails.gender.name);
 
     if (itemIndex === -1) {
-      axios
+      await axios
         .get(
           `https://elabnextapi-dev.azurewebsites.net/api/Test/GetTestWithParameter?TestId=${testId}&Gender=${genderVal}&Age=${ageInDays}`
         )
@@ -168,9 +171,11 @@ function ResultPage() {
             ...selectedTestsWithParameters,
             { testId, testName, testParameters },
           ]);
+          setIsloading(false);
         })
         .catch((error) => {
           console.log("error onTestChange ", error);
+          setIsloading(false);
         });
     } else {
       const updatedItems = [...selectedTestsWithParameters];
@@ -178,7 +183,7 @@ function ResultPage() {
       setSelectedTestsWithParameters(updatedItems);
     }
 
-    axios
+    await axios
       .get(
         `https://elabnextapi-dev.azurewebsites.net/api/Result/GetResult?PatientId=${patientDetails.patientId}`
       )
@@ -197,8 +202,12 @@ function ResultPage() {
         }, {});
         setValues(obj);
         console.log("eeee", obj);
+        setIsloading(false);
       })
-      .catch((error) => console.log("errror ->GetResult", error));
+      .catch((error) => {
+        setIsloading(false);
+        console.log("errror ->GetResult", error);
+      });
   };
 
   useEffect(() => {
@@ -271,7 +280,8 @@ function ResultPage() {
   // };
 
   //update
-  const handleSubmitResult = () => {
+  const handleSubmitResult = async () => {
+    setIsloading(true);
     const payload = {
       patientId: patientDetails.patientId,
       resultValues: {
@@ -280,12 +290,13 @@ function ResultPage() {
         testResult,
       },
     };
-    axios
+    await axios
       .post(
         "https://elabnextapi-dev.azurewebsites.net/api/Result/SaveResult",
         payload
       )
       .then((response) => {
+        setIsloading(false);
         toast.success("Saved Successfully");
       })
       .then(() => {
@@ -504,167 +515,176 @@ function ResultPage() {
           </div>
         </div>
         <div>
-          {selectedTestsWithParameters.length > 0 && (
-            <div
-              style={{
-                margin: "20px",
-              }}
-            >
+          {isLoading ? (
+            <CustomSpinningLoader />
+          ) : (
+            selectedTestsWithParameters.length > 0 && (
               <div
                 style={{
-                  width: "100%",
-                  display: "flex",
-                  flexDirection: "column",
-                  padding: "20px",
-                  border: "1px dotted gray",
-                  borderRadius: "15px",
+                  margin: "20px",
                 }}
               >
-                <h1>Parameters</h1>
-                <div>
-                  {selectedTestsWithParameters.map((test, testIndex) => {
-                    return (
-                      <div
-                        style={{
-                          border: "1px dotted gray",
-                          padding: "15px",
-                          margin: "10px",
-                          borderRadius: "15px",
-                        }}
-                        key={testIndex}
-                      >
-                        {test.testParameters.length > 0 ? (
-                          <div>
-                            <h3>{test.testName}</h3>
-
-                            <TileLayout
-                              columns={6}
-                              rowHeight={50}
-                              gap={{
-                                rows: 10,
-                                columns: 10,
-                              }}
-                              items={tiles}
-                            />
-                            {test.testParameters.map(
-                              (parameter, paramIndex) => {
-                                return (
-                                  <RenderParameterList
-                                    parameterName={parameter}
-                                    values={values}
-                                    setValues={setValues}
-                                    key={paramIndex}
-                                    disabledTests={disabledTests}
-                                    testIndex={testIndex}
-                                    ranges={
-                                      parameter?.ranges[0]?.rangeMaster
-                                        ? parameter?.ranges[0]?.rangeMaster
-                                        : {}
-                                    }
-                                  />
-                                );
-                              }
-                            )}
-
-                            <Button
-                              style={{
-                                color: disabledTests.includes(testIndex)
-                                  ? ""
-                                  : "white",
-                                backgroundColor: disabledTests.includes(
-                                  testIndex
-                                )
-                                  ? ""
-                                  : "blue",
-                              }}
-                              onClick={() => {
-                                toast.success("Authorized Successfully");
-                                handleDisableTest(testIndex);
-                              }}
-                            >
-                              {disabledTests.includes(testIndex)
-                                ? "Authorized"
-                                : "Authorize"}
-                            </Button>
-                          </div>
-                        ) : (
-                          <div
-                            style={{
-                              width: "100%",
-                              display: "flex",
-                              justifyContent: "center",
-                            }}
-                          >
-                            <h4>No Parameter Found</h4>
-                          </div>
-                        )}
-                      </div>
-                    );
-                  })}
-                </div>
                 <div
                   style={{
                     width: "100%",
                     display: "flex",
-                    justifyContent: "space-around",
+                    flexDirection: "column",
+                    padding: "20px",
+                    border: "1px dotted gray",
+                    borderRadius: "15px",
                   }}
                 >
-                  <Button
-                    style={{
-                      color:
-                        disabledTests.length ===
+                  <h1>Parameters</h1>
+                  <div>
+                    {selectedTestsWithParameters.map((test, testIndex) => {
+                      return (
+                        <div
+                          style={{
+                            border: "1px dotted gray",
+                            padding: "15px",
+                            margin: "10px",
+                            borderRadius: "15px",
+                          }}
+                          key={testIndex}
+                        >
+                          {test.testParameters.length > 0 ? (
+                            <div>
+                              <h3>{test.testName}</h3>
+
+                              <TileLayout
+                                columns={6}
+                                rowHeight={50}
+                                gap={{
+                                  rows: 10,
+                                  columns: 10,
+                                }}
+                                items={tiles}
+                              />
+                              {test.testParameters.map(
+                                (parameter, paramIndex) => {
+                                  return (
+                                    <RenderParameterList
+                                      parameterName={parameter}
+                                      values={values}
+                                      setValues={setValues}
+                                      key={paramIndex}
+                                      disabledTests={disabledTests}
+                                      testIndex={testIndex}
+                                      ranges={
+                                        parameter?.ranges[0]?.rangeMaster
+                                          ? parameter?.ranges[0]?.rangeMaster
+                                          : {}
+                                      }
+                                    />
+                                  );
+                                }
+                              )}
+
+                              <Button
+                                style={{
+                                  color: disabledTests.includes(testIndex)
+                                    ? ""
+                                    : "white",
+                                  backgroundColor: disabledTests.includes(
+                                    testIndex
+                                  )
+                                    ? ""
+                                    : "blue",
+                                }}
+                                onClick={() => {
+                                  toast.success("Authorized Successfully");
+                                  handleDisableTest(testIndex);
+                                }}
+                              >
+                                {disabledTests.includes(testIndex)
+                                  ? "Authorized"
+                                  : "Authorize"}
+                              </Button>
+                            </div>
+                          ) : (
+                            <div
+                              style={{
+                                width: "100%",
+                                display: "flex",
+                                justifyContent: "center",
+                              }}
+                            >
+                              <h4>No Parameter Found</h4>
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                  {selectedTestsWithParameters.length > 0 && (
+                    <div
+                      style={{
+                        width: "100%",
+                        display: "flex",
+                        justifyContent: "space-around",
+                      }}
+                    >
+                      <Button
+                        style={{
+                          color:
+                            disabledTests.length ===
+                            selectedTestsWithParameters.length
+                              ? ""
+                              : "white",
+                          backgroundColor:
+                            disabledTests.length ===
+                            selectedTestsWithParameters.length
+                              ? ""
+                              : "blue",
+                          width: "100px",
+                        }}
+                        onClick={handleDisableAll}
+                      >
+                        {disabledTests.length ===
                         selectedTestsWithParameters.length
-                          ? ""
-                          : "white",
-                      backgroundColor:
-                        disabledTests.length ===
-                        selectedTestsWithParameters.length
-                          ? ""
-                          : "blue",
-                      width: "100px",
-                    }}
-                    onClick={handleDisableAll}
-                  >
-                    {disabledTests.length === selectedTestsWithParameters.length
-                      ? "Edit All"
-                      : "Authorized All"}
-                  </Button>
+                          ? "Edit All"
+                          : "Authorized All"}
+                      </Button>
+                    </div>
+                  )}
                 </div>
               </div>
-            </div>
+            )
           )}
-          <div
-            style={{
-              border: "1px dotted gray",
-              padding: "15px",
-              margin: "20px",
-              display: "flex",
+          {selectedTestsWithParameters.length > 0 && (
+            <div
+              style={{
+                border: "1px dotted gray",
+                padding: "15px",
+                margin: "20px",
+                display: "flex",
 
-              borderRadius: "15px",
-              justifyContent: "space-evenly",
-            }}
-          >
-            <Button
-              style={{ color: "white", backgroundColor: "blue" }}
-              onClick={handleSubmitResult}
-              disabled={
-                !(disabledTests.length === selectedTestsWithParameters.length)
-              }
-            >
-              Print
-            </Button>
-
-            <Button
-              onClick={() => {
-                history.push({
-                  pathname: "/",
-                  state: {},
-                });
+                borderRadius: "15px",
+                justifyContent: "space-evenly",
               }}
             >
-              Cancel
-            </Button>
-          </div>
+              <Button
+                style={{ color: "white", backgroundColor: "blue" }}
+                onClick={handleSubmitResult}
+                disabled={
+                  !(disabledTests.length === selectedTestsWithParameters.length)
+                }
+              >
+                Print
+              </Button>
+
+              <Button
+                onClick={() => {
+                  history.push({
+                    pathname: "/",
+                    state: {},
+                  });
+                }}
+              >
+                Cancel
+              </Button>
+            </div>
+          )}
         </div>
       </div>
       {/* <MyComponent /> */}
