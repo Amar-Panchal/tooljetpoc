@@ -1,6 +1,6 @@
 /** @format */
 
-import { Input, TileLayout } from "@progress/kendo-react-all";
+import { Button, Input, TileLayout } from "@progress/kendo-react-all";
 import React, { useCallback, useState } from "react";
 
 function RenderParameterList({
@@ -12,6 +12,9 @@ function RenderParameterList({
   testIndex,
   ranges,
 }) {
+  const [isItalic, setIsItalic] = useState(false);
+  const [isUnderline, setIsUnderline] = useState(false);
+  const [isBold, setIsBold] = useState(false);
   const styles = {
     fontSize: 14,
     textAlign: "center",
@@ -20,7 +23,15 @@ function RenderParameterList({
   };
   // if (parameterName.testParamId === finalData.testParamId) {
   // }
+  const [isInputHovered, setIsInputHovered] = useState(false);
 
+  const handleInputMouseEnter = () => {
+    setIsInputHovered(true);
+  };
+
+  const handleInputMouseLeave = () => {
+    setIsInputHovered(false);
+  };
   const handleChange = (e) => {
     const { unitId, unitName, testParamId, testParamName } = parameterName;
 
@@ -36,7 +47,7 @@ function RenderParameterList({
       },
     });
   };
-  console.log("ggg", values[parameterName.testParamId]?.paramValue);
+
   const tiles = [
     {
       defaultPosition: {
@@ -55,11 +66,18 @@ function RenderParameterList({
       resizable: false,
       reorderable: false,
       item: (
-        <span style={styles}>
+        <span
+          onMouseEnter={handleInputMouseEnter}
+          onMouseLeave={handleInputMouseLeave}
+          style={styles}
+        >
           <Input
             id={parameterName.testParamId}
             name={parameterName.testParamId}
             style={{
+              fontWeight: isBold ? "bold" : "",
+              fontStyle: isItalic ? "italic" : "",
+              textDecoration: isUnderline ? "underline" : "",
               width: "100%",
               border:
                 disabledTests.includes(testIndex) || false
@@ -70,6 +88,28 @@ function RenderParameterList({
             disabled={false || disabledTests.includes(testIndex)}
             value={values[parameterName.testParamId]?.paramValue}
           />
+          {isInputHovered && (
+            <div style={{ display: "flex", gap: "5px", marginTop: "5px" }}>
+              <Button
+                fillMode={isBold ? "solid" : "outline"}
+                onClick={() => setIsBold(!isBold)}
+              >
+                B
+              </Button>
+              <Button
+                fillMode={isItalic ? "solid" : "outline"}
+                onClick={() => setIsItalic(!isItalic)}
+              >
+                I
+              </Button>
+              <Button
+                fillMode={isUnderline ? "solid" : "outline"}
+                onClick={() => setIsUnderline(!isUnderline)}
+              >
+                U
+              </Button>
+            </div>
+          )}
         </span>
       ),
     },
@@ -118,7 +158,7 @@ function RenderParameterList({
     <TileLayout
       key={key}
       columns={6}
-      rowHeight={50}
+      rowHeight={100}
       gap={{
         rows: 10,
         columns: 10,

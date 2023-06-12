@@ -12,6 +12,7 @@ import { Confirm } from "../Viewer/Confirm";
 import { Button } from "react-bootstrap";
 import ConfigurationModal from "./ConfigurationModal";
 import { debounce } from "lodash";
+import { Menu, MenuItem } from "@progress/kendo-react-layout";
 import {
   ExcelExport,
   ExcelExportColumn,
@@ -182,7 +183,13 @@ function PatientDetails() {
         );
     }
   };
-
+  const onSelect = (event) => {
+    // history.push(event.item.data.route);
+    history.push({
+      pathname: event.item.data.route,
+      state: event.item.data.state,
+    });
+  };
   const handleCheckboxChange = (event) => {
     const { name, value } = event.target;
 
@@ -278,13 +285,19 @@ function PatientDetails() {
       _export.current.save();
     }
   };
-
+  const itemRender = (props) =>
+    `itemId: ${props.itemId}, text: ${props.item.text}`;
   return (
     <div style={{ height: "100vh" }}>
       {loading ? (
         <CustomSpinningLoader />
       ) : (
         <div style={{ padding: "30px" }}>
+          <div style={{ display: "flex", gap: "20px" }}>
+            {/* <Button>Print</Button>
+            <Button>Payment History</Button>
+            <Button>Bill Receipts</Button> */}
+          </div>
           <ExcelExport data={PatientDetailsList} ref={_export}>
             {selectedArray.map((column) => {
               return (
@@ -310,7 +323,8 @@ function PatientDetails() {
             ref={_grid}
           >
             <GridToolbar>
-              <Button onClick={() => setShowConfiguration(true)}>
+              <Button themeColor={"base"}>Advanced Filters</Button>
+              <Button onClick={() => setShowConfiguration(true)} color="gray">
                 Configure
               </Button>
               <Button
@@ -356,7 +370,7 @@ function PatientDetails() {
               cell={(props) => {
                 return (
                   <td style={{ display: "flex", gap: "10px" }}>
-                    <span
+                    {/* <span
                       style={{ cursor: "pointer" }}
                       onClick={() => {
                         history.push({
@@ -375,11 +389,42 @@ function PatientDetails() {
                         });
                       }}
                       class="k-icon k-i-edit"
-                    ></span>
+                    ></span> */}
+
                     {/* <span
                   style={{ cursor: "pointer" }}
                   class="k-icon k-i-table-properties"
                 ></span> */}
+                    <Menu onSelect={onSelect}>
+                      <MenuItem text="more">
+                        <MenuItem
+                          text="Print"
+                          data={{
+                            route: "/result",
+                            state: props.dataItem,
+                          }}
+                        />
+                        <MenuItem
+                          text="Edit Registration"
+                          data={{
+                            route: "/registration-page",
+                            state: props.dataItem,
+                          }}
+                        />
+                        <MenuItem
+                          text="Payment History"
+                          data={{
+                            route: "/about/team",
+                          }}
+                        />
+                        <MenuItem
+                          text="Bill Receipts"
+                          data={{
+                            route: "/about/team",
+                          }}
+                        />
+                      </MenuItem>
+                    </Menu>
                   </td>
                 );
               }}
