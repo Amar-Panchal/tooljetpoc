@@ -1,7 +1,7 @@
 /** @format */
 
 import { Button, Input, TileLayout } from "@progress/kendo-react-all";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 
 function RenderParameterList({
   parameterName,
@@ -12,9 +12,15 @@ function RenderParameterList({
   testIndex,
   ranges,
 }) {
-  const [isItalic, setIsItalic] = useState(false);
-  const [isUnderline, setIsUnderline] = useState(false);
-  const [isBold, setIsBold] = useState(false);
+  const [isItalic, setIsItalic] = useState(
+    values[parameterName.testParamId]?.isItalic
+  );
+  const [isUnderline, setIsUnderline] = useState(
+    values[parameterName.testParamId]?.isUnderline
+  );
+  const [isBold, setIsBold] = useState(
+    values[parameterName.testParamId]?.isBold
+  );
   const styles = {
     fontSize: 14,
     textAlign: "center",
@@ -38,6 +44,7 @@ function RenderParameterList({
     setValues({
       ...values,
       [testParamId]: {
+        ...values[testParamId],
         unitId,
         unitName,
         testParamId,
@@ -75,9 +82,15 @@ function RenderParameterList({
             id={parameterName.testParamId}
             name={parameterName.testParamId}
             style={{
-              fontWeight: isBold ? "bold" : "",
-              fontStyle: isItalic ? "italic" : "",
-              textDecoration: isUnderline ? "underline" : "",
+              fontWeight: values[parameterName.testParamId]?.isBold
+                ? "bold"
+                : "",
+              fontStyle: values[parameterName.testParamId]?.isItalic
+                ? "italic"
+                : "",
+              textDecoration: values[parameterName.testParamId]?.isUnderline
+                ? "underline"
+                : "",
               width: "100%",
               border:
                 disabledTests.includes(testIndex) || false
@@ -91,19 +104,31 @@ function RenderParameterList({
           {isInputHovered && (
             <div style={{ display: "flex", gap: "5px", marginTop: "5px" }}>
               <Button
-                fillMode={isBold ? "solid" : "outline"}
+                fillMode={
+                  values[parameterName.testParamId]?.isBold
+                    ? "solid"
+                    : "outline"
+                }
                 onClick={() => setIsBold(!isBold)}
               >
                 B
               </Button>
               <Button
-                fillMode={isItalic ? "solid" : "outline"}
+                fillMode={
+                  values[parameterName.testParamId]?.isItalic
+                    ? "solid"
+                    : "outline"
+                }
                 onClick={() => setIsItalic(!isItalic)}
               >
                 I
               </Button>
               <Button
-                fillMode={isUnderline ? "solid" : "outline"}
+                fillMode={
+                  values[parameterName.testParamId]?.isUnderline
+                    ? "solid"
+                    : "outline"
+                }
                 onClick={() => setIsUnderline(!isUnderline)}
               >
                 U
@@ -154,6 +179,24 @@ function RenderParameterList({
       item: <span style={styles}>{ranges.criticalLow}</span>,
     },
   ];
+  useEffect(() => {
+    const { unitId, unitName, testParamId, testParamName } = parameterName;
+
+    setValues({
+      ...values,
+      [testParamId]: {
+        ...values[testParamId],
+        isItalic,
+        isUnderline,
+        isBold,
+      },
+    });
+  }, [isItalic, isUnderline, isBold]);
+  const { testParamId } = parameterName;
+  // useEffect(() => {
+  //   setIsBold(values[parameterName.testParamId]?.isBold);
+  // }, [values[parameterName.testParamId]]);
+  console.log("values[testParamId]", values[parameterName.testParamId]?.isBold);
   return (
     <TileLayout
       key={key}
