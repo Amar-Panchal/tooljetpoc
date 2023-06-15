@@ -76,31 +76,33 @@ export default function EditorHeader({
       searchEmptyDemographicField(payload.reportValues, "demographicfield")
     ) {
       toast.error("Demographic field cannot be empty");
-    } else setAppLoadingTrue();
+    } else {
+      setAppLoadingTrue();
 
-    await axios
-      .put(
-        "https://elabnextapi-dev.azurewebsites.net/api/ReportSetup/UpdateReportTemplate",
-        payload
-      )
-      .then((response) => {
-        toast.success("Saved Successfully");
-        if (type === "preview")
-          history.push({
-            pathname: "/preview",
-            state: {
-              reportTemplateDataMap: reportTemplateDataMap,
-              mode: "preview",
-            },
-          });
+      await axios
+        .put(
+          "https://elabnextapi-dev.azurewebsites.net/api/ReportSetup/UpdateReportTemplate",
+          payload
+        )
+        .then((response) => {
+          toast.success("Saved Successfully");
+          if (type === "preview")
+            history.push({
+              pathname: "/preview",
+              state: {
+                reportTemplateDataMap: reportTemplateDataMap,
+                mode: "preview",
+              },
+            });
 
-        setAppLoadingFalse();
-      })
-      .catch((error) => {
-        console.log("sss", error);
+          setAppLoadingFalse();
+        })
+        .catch((error) => {
+          console.log("sss", error);
 
-        setAppLoadingFalse();
-      });
+          setAppLoadingFalse();
+        });
+    }
   };
 
   return (

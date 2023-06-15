@@ -396,7 +396,7 @@ function PatientDetails() {
                   class="k-icon k-i-table-properties"
                 ></span> */}
                     <Menu onSelect={onSelect}>
-                      <MenuItem text="more">
+                      <MenuItem cssStyle={{ color: "black" }} text="more">
                         <MenuItem
                           text="Print"
                           data={{
