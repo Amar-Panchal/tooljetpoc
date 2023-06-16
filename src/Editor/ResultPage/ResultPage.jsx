@@ -200,8 +200,9 @@ function ResultPage() {
           result[item.testParamId] = item;
           return result;
         }, {});
+
         setValues(obj);
-        console.log("eeee", obj);
+
         setIsloading(false);
       })
       .catch((error) => {
@@ -290,6 +291,7 @@ function ResultPage() {
         testResult,
       },
     };
+
     await axios
       .post(
         "https://elabnextapi-dev.azurewebsites.net/api/Result/SaveResult",
@@ -658,7 +660,6 @@ function ResultPage() {
                 padding: "15px",
                 margin: "20px",
                 display: "flex",
-
                 borderRadius: "15px",
                 justifyContent: "space-evenly",
               }}
@@ -671,6 +672,15 @@ function ResultPage() {
                 }
               >
                 Print
+              </Button>
+              <Button
+                style={{ color: "white", backgroundColor: "blue" }}
+                onClick={handleSubmitResult}
+                disabled={
+                  !(disabledTests.length === selectedTestsWithParameters.length)
+                }
+              >
+                Preview
               </Button>
 
               <Button

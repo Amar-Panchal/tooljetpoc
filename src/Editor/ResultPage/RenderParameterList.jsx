@@ -179,16 +179,16 @@ function RenderParameterList({
   ];
   useEffect(() => {
     const { unitId, unitName, testParamId, testParamName } = parameterName;
-
-    setValues({
-      ...values,
-      [testParamId]: {
-        ...values[testParamId],
-        isItalic,
-        isUnderline,
-        isBold,
-      },
-    });
+    if (testParamId)
+      setValues({
+        ...values,
+        [testParamId]: {
+          ...values[testParamId],
+          isItalic,
+          isUnderline,
+          isBold,
+        },
+      });
   }, [isItalic, isUnderline, isBold]);
   const { testParamId } = parameterName;
   // useEffect(() => {

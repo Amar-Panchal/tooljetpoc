@@ -321,11 +321,13 @@ export function ThreeColumn({
     }
 
     testResultData?.map((result) => {
-      console.log("result", result);
       tableData.push({
         Value: result.paramValue,
         ParameterName: result.testParamName,
         Unit: result.unitName,
+        isBold: result?.isBold,
+        isItalic: result?.isItalic,
+        isUnderline: result?.isUnderline,
       });
     });
     if (!Array.isArray(tableData)) tableData = [];

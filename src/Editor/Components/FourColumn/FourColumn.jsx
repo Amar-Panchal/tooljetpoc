@@ -325,7 +325,7 @@ export function FourColumn({
         Value: result.paramValue,
         ParameterName: result.testParamName,
         Unit: result.unitName,
-        NormalRange: result.ranges.normalRange,
+        NormalRange: result.ranges?.normalRange,
         isBold: result?.isBold,
         isItalic: result?.isItalic,
         isUnderline: result?.isUnderline,

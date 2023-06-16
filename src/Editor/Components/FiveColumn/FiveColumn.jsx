@@ -83,7 +83,6 @@ export function FiveColumn({
   mode,
   exposedVariables,
 }) {
-  console.log("ccdcsd", component);
   const {
     color,
     serverSidePagination,

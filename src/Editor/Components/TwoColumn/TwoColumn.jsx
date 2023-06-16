@@ -325,6 +325,9 @@ export function TwoColumn({
       tableData.push({
         Value: result.paramValue,
         ParameterName: result.testParamName,
+        isBold: result?.isBold,
+        isItalic: result?.isItalic,
+        isUnderline: result?.isUnderline,
       });
     });
     // tableData = [
