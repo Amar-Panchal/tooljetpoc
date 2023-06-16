@@ -6,7 +6,7 @@ import { Checkbox } from "@progress/kendo-react-inputs";
 import axios from "axios";
 import { toast } from "react-hot-toast";
 import RenderParameterList from "./RenderParameterList";
-import { TileLayout } from "@progress/kendo-react-all";
+import { Menu, MenuItem, TileLayout } from "@progress/kendo-react-all";
 import { Button } from "@progress/kendo-react-buttons";
 import CustomSpinningLoader from "../../_ui/Loader/Loader";
 
@@ -407,6 +407,168 @@ function ResultPage() {
   //   );
   // }
 
+  const TagsComponent = () => {
+    const [colors, setColors] = useState([
+      { text: "Red", color: "#FF0000" },
+      { text: "Orange", color: "#FFA500" },
+      { text: "Yellow", color: "#FFFF00" },
+      { text: "Green", color: "#008000" },
+      { text: "Blue", color: "#0000FF" },
+      { text: "Indigo", color: "#4B0082" },
+      { text: "Violet", color: "#EE82EE" },
+    ]);
+    const [searchValue, setSearchValue] = useState("");
+    const [newColor, setNewColor] = useState("");
+    const [isHover, setIsHover] = useState(-10);
+
+    const handleSearchChange = (e) => {
+      setSearchValue(e.target.value);
+    };
+
+    const handleAddColor = () => {
+      if (searchValue && newColor) {
+        setColors([...colors, { text: searchValue, color: newColor }]);
+        setNewColor("");
+        setSearchValue("");
+      }
+    };
+
+    return (
+      <div
+        style={{
+          maxWidth: "150px",
+          margin: "0 auto",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          padding: "10px",
+          border: "1px solid #ccc",
+          borderRadius: "4px",
+          boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+        }}
+      >
+        <input
+          type="text"
+          value={searchValue}
+          onChange={handleSearchChange}
+          placeholder="Search tag..."
+          style={{
+            width: "100%",
+            marginBottom: "10px",
+            padding: "10px",
+            fontSize: "12px",
+            border: "1px solid #ccc",
+            borderRadius: "4px",
+          }}
+        />
+
+        <ul
+          style={{
+            listStyle: "none",
+            padding: "0",
+            width: "100%",
+            margin: "0",
+          }}
+        >
+          {colors
+            .filter((color) =>
+              color.text.toLowerCase().includes(searchValue.toLowerCase())
+            )
+            .map((color, index) => (
+              <li
+                key={index}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  padding: "5px",
+                  borderBottom: "1px solid #ccc",
+                  cursor: "pointer",
+                  transition: "background-color 0.3s ease, transform 0.3s ease",
+                  backgroundColor: isHover === index ? "#E6F3FF" : "",
+                  transform: isHover === index ? "scale(1.1)" : "",
+                }}
+                onMouseEnter={() => setIsHover(index)}
+                onMouseLeave={() => setIsHover("")}
+              >
+                <div
+                  style={{
+                    display: "inline-block",
+                    width: "20px",
+                    height: "20px",
+                    marginRight: "10px",
+                    backgroundColor: color.color,
+                    borderRadius: "25px",
+                  }}
+                ></div>
+                <span>{color.text}</span>
+              </li>
+            ))}
+        </ul>
+
+        {searchValue &&
+          !colors.some(
+            (color) => color.text.toLowerCase() === searchValue.toLowerCase()
+          ) && (
+            <>
+              {" "}
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  marginBottom: "10px",
+                  marginTop: "10px",
+                  transition: "background-color 0.3s ease, transform 0.3s ease",
+                  backgroundColor: isHover === -1 ? "#E6F3FF" : "",
+                  transform: isHover === -1 ? "scale(1.1)" : "",
+                }}
+                onMouseEnter={() => setIsHover(-1)}
+                onMouseLeave={() => setIsHover("")}
+              >
+                <input
+                  type="color"
+                  value={newColor}
+                  onChange={(e) => setNewColor(e.target.value)}
+                  style={{
+                    marginRight: "10px",
+                    width: "20px",
+                    height: "20px",
+                    border: "none",
+                    borderRadius: "50%",
+                    padding: "0",
+                    cursor: "pointer",
+                  }}
+                />
+                <button
+                  onClick={handleAddColor}
+                  style={{
+                    border: "none",
+                    padding: "5px 10px",
+                    fontSize: "12px",
+                    borderRadius: "4px",
+                    backgroundColor: "#007bff",
+                    color: "#fff",
+                    cursor: "pointer",
+                  }}
+                >
+                  Add {searchValue}
+                </button>
+              </div>
+              <span
+                style={{
+                  fontSize: "10px",
+                  marginTop: "0px",
+                  fontStyle: "italic",
+                  color: "#007bff",
+                }}
+              >
+                Add Text & color
+              </span>
+            </>
+          )}
+      </div>
+    );
+  };
+
   return (
     <div style={{ width: "100%", height: "100%" }}>
       <div
@@ -448,8 +610,26 @@ function ResultPage() {
                 flexDirection: "column",
               }}
             >
-              <div style={{ padding: "10px" }}>
+              <div
+                style={{
+                  padding: "10px",
+                  display: "flex",
+                  justifyContent: "space-between",
+                }}
+              >
                 <h1>Patient Details</h1>
+
+                <Menu>
+                  <MenuItem
+                    cssStyle={{
+                      color: "black",
+                      margin: "20px",
+                      cursor: "pointer",
+                    }}
+                    text="Tags"
+                    contentRender={TagsComponent}
+                  ></MenuItem>
+                </Menu>
               </div>
               <div
                 style={{
