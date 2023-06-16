@@ -1,6 +1,8 @@
-import React, { useEffect, useRef } from 'react';
-import _ from 'lodash';
-import { validateWidget } from '@/_helpers/utils';
+/** @format */
+
+import React, { useEffect, useRef } from "react";
+import _ from "lodash";
+import { validateWidget } from "@/_helpers/utils";
 
 export default function GenerateEachCellValue({
   cellValue,
@@ -16,11 +18,19 @@ export default function GenerateEachCellValue({
   currentState,
 }) {
   const updateCellValue = useRef();
-  const [showHighlightedCells, setHighlighterCells] = React.useState(globalFilter ? true : false);
-  const columnTypeAllowToRenderMarkElement = ['text', 'string', 'default', 'number', undefined];
+  const [showHighlightedCells, setHighlighterCells] = React.useState(
+    globalFilter ? true : false
+  );
+  const columnTypeAllowToRenderMarkElement = [
+    "text",
+    "string",
+    "default",
+    "number",
+    undefined,
+  ];
   let validationData = {};
   if (cell.column.isEditable && showHighlightedCells) {
-    if (cell.column.columnType === 'number') {
+    if (cell.column.columnType === "number") {
       validationData = {
         ...validateWidget({
           validationObject: {
@@ -37,7 +47,9 @@ export default function GenerateEachCellValue({
         }),
       };
     }
-    if (['string', undefined, 'default', 'text'].includes(cell.column.columnType)) {
+    if (
+      ["string", undefined, "default", "text"].includes(cell.column.columnType)
+    ) {
       validationData = {
         ...validateWidget({
           validationObject: {
@@ -69,52 +81,81 @@ export default function GenerateEachCellValue({
   }, [rowData, rowChangeSet]);
 
   let htmlElement = cellValue;
-  if (cellValue?.toString()?.toLowerCase().includes(globalFilter?.toLowerCase())) {
+  if (
+    cellValue?.toString()?.toLowerCase().includes(globalFilter?.toLowerCase())
+  ) {
     if (globalFilter) {
       var normReq = globalFilter
         .toLowerCase()
-        .replace(/\s+/g, ' ')
+        .replace(/\s+/g, " ")
         .trim()
-        .split(' ')
+        .split(" ")
         .sort((a, b) => b.length - a.length);
       htmlElement = cellValue
         .toString()
-        .replace(new RegExp(`(${normReq.join('|')})`, 'gi'), (match) => `<mark>${match}</mark>`);
+        .replace(
+          new RegExp(`(${normReq.join("|")})`, "gi"),
+          (match) => `<mark>${match}</mark>`
+        );
     }
   }
+  const { isBold, isItalic, isUnderline } = cell.row.original;
+  console.log("htmlElement", htmlElement);
   return (
     <div
       onClick={(e) => {
         e.persist();
-        if (isEditable && columnTypeAllowToRenderMarkElement.includes(columnType)) {
+        if (
+          isEditable &&
+          columnTypeAllowToRenderMarkElement.includes(columnType)
+        ) {
           setHighlighterCells(false);
         }
       }}
       onBlur={(e) => {
         e.persist();
         updateCellValue.current = e.target.value;
-        if (!showHighlightedCells && updateCellValue.current === cellValue && _.isEmpty(rowChangeSet)) {
+        if (
+          !showHighlightedCells &&
+          updateCellValue.current === cellValue &&
+          _.isEmpty(rowChangeSet)
+        ) {
           updateCellValue.current = null;
           setHighlighterCells(true);
         }
       }}
       className="w-100 h-100"
     >
-      {!isColumnTypeAction && columnTypeAllowToRenderMarkElement.includes(columnType) && showHighlightedCells ? (
+      {!isColumnTypeAction &&
+      columnTypeAllowToRenderMarkElement.includes(columnType) &&
+      showHighlightedCells ? (
         <div className="d-flex justify-content-center flex-column w-100 h-100">
           <div
-            style={{ color: cellTextColor }}
+            style={{
+              color: cellTextColor,
+              fontWeight:
+                isBold && cell.column.Header === "Value" ? "bold" : "",
+              fontStyle:
+                isItalic && cell.column.Header === "Value" ? "italic" : "",
+              textDecoration:
+                isUnderline && cell.column.Header === "Value"
+                  ? "underline"
+                  : "",
+            }}
             dangerouslySetInnerHTML={{
               __html: htmlElement,
             }}
           ></div>
           <div
             style={{
-              display: cell.column.isEditable && validationData.validationError ? 'block' : 'none',
-              width: '100%',
-              marginTop: ' 0.25rem',
-              fontSize: ' 85.7142857%',
-              color: '#d63939',
+              display:
+                cell.column.isEditable && validationData.validationError
+                  ? "block"
+                  : "none",
+              width: "100%",
+              marginTop: " 0.25rem",
+              fontSize: " 85.7142857%",
+              color: "#d63939",
             }}
           >
             {validationData.validationError}

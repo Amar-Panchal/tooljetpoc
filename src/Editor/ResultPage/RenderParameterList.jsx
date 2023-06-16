@@ -30,7 +30,11 @@ function RenderParameterList({
   // if (parameterName.testParamId === finalData.testParamId) {
   // }
   const [isInputHovered, setIsInputHovered] = useState(false);
-
+  useEffect(() => {
+    setIsItalic(values[parameterName.testParamId]?.isItalic);
+    setIsBold(values[parameterName.testParamId]?.isBold);
+    setIsUnderline(values[parameterName.testParamId]?.isUnderline);
+  }, [values]);
   const handleInputMouseEnter = () => {
     setIsInputHovered(true);
   };
@@ -82,15 +86,9 @@ function RenderParameterList({
             id={parameterName.testParamId}
             name={parameterName.testParamId}
             style={{
-              fontWeight: values[parameterName.testParamId]?.isBold
-                ? "bold"
-                : "",
-              fontStyle: values[parameterName.testParamId]?.isItalic
-                ? "italic"
-                : "",
-              textDecoration: values[parameterName.testParamId]?.isUnderline
-                ? "underline"
-                : "",
+              fontWeight: isBold ? "bold" : "",
+              fontStyle: isItalic ? "italic" : "",
+              textDecoration: isUnderline ? "underline" : "",
               width: "100%",
               border:
                 disabledTests.includes(testIndex) || false
@@ -196,7 +194,6 @@ function RenderParameterList({
   // useEffect(() => {
   //   setIsBold(values[parameterName.testParamId]?.isBold);
   // }, [values[parameterName.testParamId]]);
-  console.log("values[testParamId]", values[parameterName.testParamId]?.isBold);
   return (
     <TileLayout
       key={key}

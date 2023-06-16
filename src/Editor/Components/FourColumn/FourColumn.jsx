@@ -326,6 +326,9 @@ export function FourColumn({
         ParameterName: result.testParamName,
         Unit: result.unitName,
         NormalRange: result.ranges.normalRange,
+        isBold: result?.isBold,
+        isItalic: result?.isItalic,
+        isUnderline: result?.isUnderline,
       });
     });
     if (!Array.isArray(tableData)) tableData = [];
