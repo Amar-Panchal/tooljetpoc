@@ -11,6 +11,7 @@ function RenderParameterList({
   disabledTests,
   testIndex,
   ranges,
+  testDetails,
 }) {
   const [isItalic, setIsItalic] = useState(
     values[parameterName.testParamId]?.isItalic
@@ -42,19 +43,45 @@ function RenderParameterList({
   const handleInputMouseLeave = () => {
     setIsInputHovered(false);
   };
+  console.log(
+    "values",
+    values[testDetails.testId]?.parameterDetails[parameterName?.testParamId]
+      ?.paramValue
+  );
   const handleChange = (e) => {
     const { unitId, unitName, testParamId, testParamName } = parameterName;
 
+    // setValues({
+    //   ...values,
+    //   [testParamId]: {
+    //     ...values[testParamId],
+    //     unitId,
+    //     unitName,
+    //     testParamId,
+    //     testParamName,
+    //     paramValue: e.value,
+    //     ranges,
+    //   },
+    // });
+    const { testId, testName } = testDetails;
     setValues({
       ...values,
-      [testParamId]: {
-        ...values[testParamId],
-        unitId,
-        unitName,
-        testParamId,
-        testParamName,
-        paramValue: e.value,
-        ranges,
+      [testId]: {
+        ...(values[testId] || {}), // Retrieve existing test details or create an empty object
+        testName,
+        testId,
+        parameterDetails: {
+          ...(values[testId]?.parameterDetails || {}), // Retrieve existing parameter details or create an empty object
+          [testParamId]: {
+            unitId,
+            unitName,
+            testParamId,
+            testParamName,
+            paramValue: e.value,
+            ranges,
+            testDetails,
+          },
+        },
       },
     });
   };
@@ -97,7 +124,11 @@ function RenderParameterList({
             }}
             onChange={handleChange}
             disabled={false || disabledTests.includes(testIndex)}
-            value={values[parameterName.testParamId]?.paramValue}
+            value={
+              values[testDetails.testId]?.parameterDetails[
+                parameterName?.testParamId
+              ]?.paramValue
+            }
           />
           {isInputHovered && (
             <div style={{ display: "flex", gap: "5px", marginTop: "5px" }}>
@@ -177,20 +208,20 @@ function RenderParameterList({
       item: <span style={styles}>{ranges.criticalLow}</span>,
     },
   ];
-  useEffect(() => {
-    const { unitId, unitName, testParamId, testParamName } = parameterName;
-    if (testParamId)
-      setValues({
-        ...values,
-        [testParamId]: {
-          ...values[testParamId],
-          isItalic,
-          isUnderline,
-          isBold,
-        },
-      });
-  }, [isItalic, isUnderline, isBold]);
-  const { testParamId } = parameterName;
+  // useEffect(() => {
+  //   const { unitId, unitName, testParamId, testParamName } = parameterName;
+  //   if (testParamId)
+  //     setValues({
+  //       ...values,
+  //       [testParamId]: {
+  //         ...values[testParamId],
+  //         isItalic,
+  //         isUnderline,
+  //         isBold,
+  //       },
+  //     });
+  // }, [isItalic, isUnderline, isBold]);
+  // const { testParamId } = parameterName;
   // useEffect(() => {
   //   setIsBold(values[parameterName.testParamId]?.isBold);
   // }, [values[parameterName.testParamId]]);

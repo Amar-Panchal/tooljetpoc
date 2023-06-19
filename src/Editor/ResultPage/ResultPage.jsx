@@ -196,8 +196,9 @@ function ResultPage() {
         );
 
         let temp = JSON.parse(maxIdObject.resultValues);
+        console.log("object", temp);
         const obj = temp.testResult.reduce((result, item) => {
-          result[item.testParamId] = item;
+          result[item.testId] = item;
           return result;
         }, {});
 
@@ -757,6 +758,7 @@ function ResultPage() {
                                           ? parameter?.ranges[0]?.rangeMaster
                                           : {}
                                       }
+                                      testDetails={test}
                                     />
                                   );
                                 }
