@@ -83,6 +83,7 @@ export function TwoColumn({
   mode,
   exposedVariables,
   testResultData,
+  containerProps,
 }) {
   const {
     color,
@@ -113,7 +114,7 @@ export function TwoColumn({
     enabledSort,
     hideColumnSelectorButton,
   } = loadPropertiesAndStyles(properties, styles, darkMode, component);
-
+  const { globalFontVariant } = containerProps.appDefinition.globalSettings;
   const getItemStyle = ({ isDragging, isDropAnimating }, draggableStyle) => ({
     ...draggableStyle,
     userSelect: "none",
@@ -809,6 +810,7 @@ export function TwoColumn({
                                       snapshot,
                                       provided.draggableProps.style
                                     ),
+                                    fontFamily: globalFontVariant,
                                   }}
                                 >
                                   {column.render("Header")}
@@ -995,6 +997,7 @@ export function TwoColumn({
                               cellTextColor={cellTextColor}
                               cell={cell}
                               currentState={currentState}
+                              containerProps={containerProps}
                             />
                           </div>
                         </td>

@@ -82,8 +82,8 @@ export function Table({
   setProperty,
   mode,
   exposedVariables,
+  containerProps,
 }) {
-  console.log("ccdcsd", component);
   const {
     color,
     serverSidePagination,
@@ -113,7 +113,7 @@ export function Table({
     enabledSort,
     hideColumnSelectorButton,
   } = loadPropertiesAndStyles(properties, styles, darkMode, component);
-
+  const { globalFontVariant } = containerProps.appDefinition.globalSettings;
   const getItemStyle = ({ isDragging, isDropAnimating }, draggableStyle) => ({
     ...draggableStyle,
     userSelect: "none",
@@ -790,6 +790,7 @@ export function Table({
                                       snapshot,
                                       provided.draggableProps.style
                                     ),
+                                    fontFamily: globalFontVariant,
                                   }}
                                 >
                                   {column.render("Header")}
@@ -976,6 +977,7 @@ export function Table({
                               cellTextColor={cellTextColor}
                               cell={cell}
                               currentState={currentState}
+                              containerProps={containerProps}
                             />
                           </div>
                         </td>

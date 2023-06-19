@@ -83,6 +83,7 @@ export function FourColumn({
   mode,
   exposedVariables,
   testResultData,
+  containerProps,
 }) {
   const {
     color,
@@ -113,7 +114,7 @@ export function FourColumn({
     enabledSort,
     hideColumnSelectorButton,
   } = loadPropertiesAndStyles(properties, styles, darkMode, component);
-
+  const { globalFontVariant } = containerProps.appDefinition.globalSettings;
   const getItemStyle = ({ isDragging, isDropAnimating }, draggableStyle) => ({
     ...draggableStyle,
     userSelect: "none",
@@ -804,6 +805,7 @@ export function FourColumn({
                                       snapshot,
                                       provided.draggableProps.style
                                     ),
+                                    fontFamily: globalFontVariant,
                                   }}
                                 >
                                   {column.render("Header")}
@@ -990,6 +992,7 @@ export function FourColumn({
                               cellTextColor={cellTextColor}
                               cell={cell}
                               currentState={currentState}
+                              containerProps={containerProps}
                             />
                           </div>
                         </td>

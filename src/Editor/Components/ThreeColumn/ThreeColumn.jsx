@@ -83,6 +83,7 @@ export function ThreeColumn({
   mode,
   exposedVariables,
   testResultData,
+  containerProps,
 }) {
   const {
     color,
@@ -113,7 +114,7 @@ export function ThreeColumn({
     enabledSort,
     hideColumnSelectorButton,
   } = loadPropertiesAndStyles(properties, styles, darkMode, component);
-
+  const { globalFontVariant } = containerProps.appDefinition.globalSettings;
   const getItemStyle = ({ isDragging, isDropAnimating }, draggableStyle) => ({
     ...draggableStyle,
     userSelect: "none",
@@ -803,6 +804,7 @@ export function ThreeColumn({
                                       snapshot,
                                       provided.draggableProps.style
                                     ),
+                                    fontFamily: globalFontVariant,
                                   }}
                                 >
                                   {column.render("Header")}
@@ -989,6 +991,7 @@ export function ThreeColumn({
                               cellTextColor={cellTextColor}
                               cell={cell}
                               currentState={currentState}
+                              containerProps={containerProps}
                             />
                           </div>
                         </td>

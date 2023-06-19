@@ -82,6 +82,7 @@ export function FiveColumn({
   setProperty,
   mode,
   exposedVariables,
+  containerProps,
 }) {
   const {
     color,
@@ -112,7 +113,7 @@ export function FiveColumn({
     enabledSort,
     hideColumnSelectorButton,
   } = loadPropertiesAndStyles(properties, styles, darkMode, component);
-
+  const { globalFontVariant } = containerProps.appDefinition.globalSettings;
   const getItemStyle = ({ isDragging, isDropAnimating }, draggableStyle) => ({
     ...draggableStyle,
     userSelect: "none",
@@ -789,6 +790,7 @@ export function FiveColumn({
                                       snapshot,
                                       provided.draggableProps.style
                                     ),
+                                    fontFamily: globalFontVariant,
                                   }}
                                 >
                                   {column.render("Header")}
@@ -975,6 +977,7 @@ export function FiveColumn({
                               cellTextColor={cellTextColor}
                               cell={cell}
                               currentState={currentState}
+                              containerProps={containerProps}
                             />
                           </div>
                         </td>

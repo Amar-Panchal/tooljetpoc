@@ -16,7 +16,9 @@ export default function GenerateEachCellValue({
   cellTextColor,
   cell,
   currentState,
+  containerProps,
 }) {
+  const { globalFontVariant } = containerProps.appDefinition.globalSettings;
   const updateCellValue = useRef();
   const [showHighlightedCells, setHighlighterCells] = React.useState(
     globalFilter ? true : false
@@ -132,6 +134,7 @@ export default function GenerateEachCellValue({
         <div className="d-flex justify-content-center flex-column w-100 h-100">
           <div
             style={{
+              fontFamily: globalFontVariant,
               color: cellTextColor,
               fontWeight:
                 isBold && cell.column.Header === "Value" ? "bold" : "",
