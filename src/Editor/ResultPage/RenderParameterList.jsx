@@ -1,7 +1,7 @@
 /** @format */
 
 import { Button, Input, TileLayout } from "@progress/kendo-react-all";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 function RenderParameterList({
   parameterName,
@@ -32,9 +32,18 @@ function RenderParameterList({
   // }
   const [isInputHovered, setIsInputHovered] = useState(false);
   useEffect(() => {
-    setIsItalic(values[parameterName.testParamId]?.isItalic);
-    setIsBold(values[parameterName.testParamId]?.isBold);
-    setIsUnderline(values[parameterName.testParamId]?.isUnderline);
+    setIsItalic(
+      values[testDetails.testId]?.parameterDetails[parameterName.testParamId]
+        ?.isItalic
+    );
+    setIsBold(
+      values[testDetails.testId]?.parameterDetails[parameterName.testParamId]
+        ?.isBold
+    );
+    setIsUnderline(
+      values[testDetails.testId]?.parameterDetails[parameterName.testParamId]
+        ?.isUnderline
+    );
   }, [values]);
   const handleInputMouseEnter = () => {
     setIsInputHovered(true);
@@ -43,11 +52,7 @@ function RenderParameterList({
   const handleInputMouseLeave = () => {
     setIsInputHovered(false);
   };
-  console.log(
-    "values",
-    values[testDetails.testId]?.parameterDetails[parameterName?.testParamId]
-      ?.paramValue
-  );
+
   const handleChange = (e) => {
     const { unitId, unitName, testParamId, testParamName } = parameterName;
 
@@ -64,26 +69,28 @@ function RenderParameterList({
     //   },
     // });
     const { testId, testName } = testDetails;
-    setValues({
-      ...values,
-      [testId]: {
-        ...(values[testId] || {}), // Retrieve existing test details or create an empty object
-        testName,
-        testId,
-        parameterDetails: {
-          ...(values[testId]?.parameterDetails || {}), // Retrieve existing parameter details or create an empty object
-          [testParamId]: {
-            unitId,
-            unitName,
-            testParamId,
-            testParamName,
-            paramValue: e.value,
-            ranges,
-            testDetails,
+    if (testId) {
+      setValues({
+        ...values,
+        [testId]: {
+          ...(values[testId] || {}), // Retrieve existing test details or create an empty object
+          testName,
+          testId,
+          parameterDetails: {
+            ...(values[testId]?.parameterDetails || {}), // Retrieve existing parameter details or create an empty object
+            [testParamId]: {
+              unitId,
+              unitName,
+              testParamId,
+              testParamName,
+              paramValue: e.value,
+              ranges,
+              testDetails,
+            },
           },
         },
-      },
-    });
+      });
+    }
   };
 
   const tiles = [
@@ -131,10 +138,30 @@ function RenderParameterList({
             }
           />
           {isInputHovered && (
-            <div style={{ display: "flex", gap: "5px", marginTop: "5px" }}>
+            <div
+              style={{
+                display: "flex",
+                gap: "5px",
+                marginTop: "5px",
+              }}
+            >
               <Button
+                style={{
+                  color: values[testDetails.testId]?.parameterDetails[
+                    parameterName.testParamId
+                  ]?.isBold
+                    ? "white"
+                    : "",
+                  backgroundColor: values[testDetails.testId]?.parameterDetails[
+                    parameterName.testParamId
+                  ]?.isBold
+                    ? "blue"
+                    : "",
+                }}
                 fillMode={
-                  values[parameterName.testParamId]?.isBold
+                  values[testDetails.testId]?.parameterDetails[
+                    parameterName.testParamId
+                  ]?.isBold
                     ? "solid"
                     : "outline"
                 }
@@ -143,8 +170,22 @@ function RenderParameterList({
                 B
               </Button>
               <Button
+                style={{
+                  color: values[testDetails.testId]?.parameterDetails[
+                    parameterName.testParamId
+                  ]?.isItalic
+                    ? "white"
+                    : "",
+                  backgroundColor: values[testDetails.testId]?.parameterDetails[
+                    parameterName.testParamId
+                  ]?.isItalic
+                    ? "blue"
+                    : "",
+                }}
                 fillMode={
-                  values[parameterName.testParamId]?.isItalic
+                  values[testDetails.testId]?.parameterDetails[
+                    parameterName.testParamId
+                  ]?.isItalic
                     ? "solid"
                     : "outline"
                 }
@@ -153,8 +194,22 @@ function RenderParameterList({
                 I
               </Button>
               <Button
+                style={{
+                  color: values[testDetails.testId]?.parameterDetails[
+                    parameterName.testParamId
+                  ]?.isUnderline
+                    ? "white"
+                    : "",
+                  backgroundColor: values[testDetails.testId]?.parameterDetails[
+                    parameterName.testParamId
+                  ]?.isUnderline
+                    ? "blue"
+                    : "",
+                }}
                 fillMode={
-                  values[parameterName.testParamId]?.isUnderline
+                  values[testDetails.testId]?.parameterDetails[
+                    parameterName.testParamId
+                  ]?.isUnderline
                     ? "solid"
                     : "outline"
                 }
@@ -208,20 +263,43 @@ function RenderParameterList({
       item: <span style={styles}>{ranges.criticalLow}</span>,
     },
   ];
-  // useEffect(() => {
-  //   const { unitId, unitName, testParamId, testParamName } = parameterName;
-  //   if (testParamId)
-  //     setValues({
-  //       ...values,
-  //       [testParamId]: {
-  //         ...values[testParamId],
-  //         isItalic,
-  //         isUnderline,
-  //         isBold,
-  //       },
-  //     });
-  // }, [isItalic, isUnderline, isBold]);
-  // const { testParamId } = parameterName;
+  useEffect(() => {
+    // const { unitId, unitName, testParamId, testParamName, paramValue } =
+    //   parameterName;
+    // const { testId, testName } = testDetails;
+    // if (testParamId)
+    //   setValues({
+    //     ...values,
+    //     [testParamId]: {
+    //       ...values[testParamId],
+    //       isItalic,
+    //       isUnderline,
+    //       isBold,
+    //     },
+    //   });
+    const { testId, testName } = testDetails;
+    const { unitId, unitName, testParamId, testParamName, paramValue } =
+      parameterName;
+
+    setValues({
+      ...values,
+      [testId]: {
+        ...(values[testId] || {}), // Retrieve existing test details or create an empty object
+        testName,
+        testId,
+        parameterDetails: {
+          ...(values[testId]?.parameterDetails || {}), // Retrieve existing parameter details or create an empty object
+          [testParamId]: {
+            ...values[testId]?.parameterDetails[testParamId],
+            isItalic,
+            isUnderline,
+            isBold,
+          },
+        },
+      },
+    });
+  }, [isItalic, isUnderline, isBold]);
+  console.log("...cccc", values);
   // useEffect(() => {
   //   setIsBold(values[parameterName.testParamId]?.isBold);
   // }, [values[parameterName.testParamId]]);
