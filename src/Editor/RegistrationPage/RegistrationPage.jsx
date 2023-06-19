@@ -17,6 +17,7 @@ import { withTranslation } from "react-i18next";
 import _ from "lodash";
 import axios from "axios";
 import { ApiCallParams } from "../StaticApiCall";
+import { Form } from "@progress/kendo-react-all";
 
 class RegistrationPageLauncher extends React.Component {
   constructor(props) {

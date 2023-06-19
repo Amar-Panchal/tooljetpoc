@@ -149,7 +149,7 @@ export const Button = function Button(props) {
     document.dispatchEvent(event1);
     fireEvent("onClick");
   };
-  console.log("props in button", props.component);
+
   return (
     <div className="widget-button">
       <KendoButton

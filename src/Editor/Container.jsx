@@ -24,6 +24,7 @@ import { addComponents, addNewWidgetToTheEditor } from "@/_helpers/appUtils";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-hot-toast";
+import { Form } from "@progress/kendo-react-all";
 
 export const Container = ({
   canvasWidth,
@@ -695,86 +696,6 @@ export const Container = ({
           );
         }
       })}
-
-      {/* {mode !== "view" && (
-        <div style={{ position: "relative", top: "500px" }}>
-          <SelectTests
-            setPatientRegistrationFormData={setPatientRegistrationFormData}
-            PatientRegistrationFormData={PatientRegistrationFormData}
-          />
-        </div>
-      )} */}
-
-      {/* {mode == "view" && testResultData && (
-        <div
-          style={{
-            height: "100%",
-            position: "relative",
-            top: "420px",
-            margin: "30px",
-          }}
-        >
-          <table className="fixed_headers" style={{ width: "100%" }}>
-            <tbody style={{ width: "100%" }}>
-              <tr
-                style={{
-                  height: "40px",
-                }}
-              >
-                <td
-                  style={{
-                    width: "40%",
-                  }}
-                >
-                  <h3> Parameter Name</h3>
-                </td>
-                <td
-                  style={{
-                    width: "20%",
-                  }}
-                >
-                  <h3> Value</h3>
-                </td>
-                <td style={{ width: "20%" }}>
-                  <h3>Unit Name</h3>
-                </td>
-                <td style={{ width: "20%" }}>
-                  <h3>demo Col</h3>
-                </td>
-              </tr>
-              {testResultData?.map((testResult) => {
-                return (
-                  <tr
-                    style={{
-                      marginTop: "20px",
-
-                      padding: "10px",
-                      height: "40px",
-                    }}
-                  >
-                    <td
-                      style={{
-                        width: "40%",
-                      }}
-                    >
-                      {testResult.testParamName}
-                    </td>
-                    <td
-                      style={{
-                        width: "20%",
-                      }}
-                    >
-                      {testResult.paramValue}
-                    </td>
-                    <td style={{ width: "20%" }}>{testResult.unitName}</td>
-                    <td style={{ width: "20%" }}> -</td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
-      )} */}
 
       {Object.keys(boxes).length === 0 && !appLoading && !isDragging && (
         <div

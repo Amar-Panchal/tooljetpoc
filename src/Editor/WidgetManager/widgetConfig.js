@@ -2543,6 +2543,13 @@ export const widgets = [
         },
       },
     },
+    validation: {
+      regex: { type: "code", displayName: "Regex" },
+      minLength: { type: "code", displayName: "Min length" },
+      maxLength: { type: "code", displayName: "Max length" },
+      customRule: { type: "code", displayName: "Custom validation" },
+      isrequired: { type: "toggle", displayName: "isrequired" },
+    },
 
     styles: {
       textColor: {
@@ -2583,6 +2590,9 @@ export const widgets = [
       },
       properties: {
         placeholder: { value: "Enter your input" },
+      },
+      validation: {
+        isrequired: { value: "{{true}}" },
       },
       events: [],
       styles: {

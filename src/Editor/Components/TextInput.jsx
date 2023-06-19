@@ -18,12 +18,12 @@ export const TextInput = function TextInput({
   PatientRegistrationFormData,
 }) {
   const textInputRef = useRef();
-
+  console.log("properties textinput", component);
   const [disable, setDisable] = useState(styles.disabledState);
   const [value, setValue] = useState(properties.value);
   const [visibility, setVisibility] = useState(styles.visibility);
   const { isValid, validationError } = validate(value);
-
+  console.log("isValid, validationError", isValid, validationError);
   const computedStyles = {
     height,
     borderRadius: `${styles.borderRadius}px`,
