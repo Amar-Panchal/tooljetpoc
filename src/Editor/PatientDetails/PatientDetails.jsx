@@ -369,7 +369,7 @@ function PatientDetails() {
               title="Actions"
               cell={(props) => {
                 return (
-                  <td style={{ display: "flex", gap: "10px" }}>
+                  <td>
                     {/* <span
                       style={{ cursor: "pointer" }}
                       onClick={() => {
