@@ -169,7 +169,6 @@ export const Container = ({
       setPatientRegistrationFormData(patientDetailsEditData);
   }, [patientDetailsEditData]);
   useEffect(() => {
-    console.log("reportTemplateDataMap", reportTemplateDataMap);
     setTestResultData(reportTemplateDataMap?.payload?.resultValues?.testResult);
   }, [reportTemplateDataMap]);
 

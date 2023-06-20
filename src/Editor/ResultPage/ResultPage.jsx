@@ -102,12 +102,13 @@ function ResultPage() {
   const [patientDetails, setPatientDetails] = useState([]);
   const [selectedTestsWithParameters, setSelectedTestsWithParameters] =
     useState([]);
-  const [testResult, setTestResult] = useState([]);
+
   const [unitData, setUnitData] = useState([]);
   const [values, setValues] = useState({});
+  const [valuesAPI, setValuesAPI] = useState({});
   const [disabledTests, setDisabledTests] = useState([]);
   const [isLoading, setIsloading] = useState(false);
-
+  console.log("valuedddds", values);
   const history = useHistory();
 
   function convertAgeToDays(age, type) {
@@ -196,13 +197,9 @@ function ResultPage() {
         );
 
         let temp = JSON.parse(maxIdObject.resultValues);
-        console.log("object", temp);
-        const obj = temp.testResult.reduce((result, item) => {
-          result[item.testId] = item;
-          return result;
-        }, {});
 
-        setValues(obj);
+        setValues(temp.testResult);
+        setValuesAPI(temp.testResult);
 
         setIsloading(false);
       })
@@ -211,12 +208,6 @@ function ResultPage() {
         console.log("errror ->GetResult", error);
       });
   };
-
-  useEffect(() => {
-    const arr = Object.entries(values).map(([key, value]) => value);
-
-    setTestResult(arr);
-  }, [values]);
 
   useEffect(() => {
     axios
@@ -284,15 +275,16 @@ function ResultPage() {
   //update
   const handleSubmitResult = async () => {
     setIsloading(true);
+
     const payload = {
       patientId: patientDetails.patientId,
       resultValues: {
         patientDetails,
         selectedTestsWithParameters,
-        testResult,
+        testResult: values,
       },
     };
-
+    console.log("payload", payload);
     await axios
       .post(
         "https://elabnextapi-dev.azurewebsites.net/api/Result/SaveResult",
@@ -750,6 +742,7 @@ function ResultPage() {
                                       parameterName={parameter}
                                       values={values}
                                       setValues={setValues}
+                                      valuesAPI={valuesAPI}
                                       key={paramIndex}
                                       disabledTests={disabledTests}
                                       testIndex={testIndex}

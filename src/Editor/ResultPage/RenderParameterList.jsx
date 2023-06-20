@@ -12,39 +12,35 @@ function RenderParameterList({
   testIndex,
   ranges,
   testDetails,
+  valuesAPI,
 }) {
-  const [isItalic, setIsItalic] = useState(
-    values[parameterName.testParamId]?.isItalic
-  );
-  const [isUnderline, setIsUnderline] = useState(
-    values[parameterName.testParamId]?.isUnderline
-  );
-  const [isBold, setIsBold] = useState(
-    values[parameterName.testParamId]?.isBold
-  );
+  const [isItalic, setIsItalic] = useState(false);
+  const [isUnderline, setIsUnderline] = useState(false);
+  const [isBold, setIsBold] = useState(false);
   const styles = {
     fontSize: 14,
     textAlign: "center",
     margin: "auto",
     userSelect: "none",
   };
-  // if (parameterName.testParamId === finalData.testParamId) {
-  // }
+
   const [isInputHovered, setIsInputHovered] = useState(false);
+
   useEffect(() => {
     setIsItalic(
-      values[testDetails.testId]?.parameterDetails[parameterName.testParamId]
+      valuesAPI[testDetails.testId]?.parameterDetails[parameterName.testParamId]
         ?.isItalic
     );
     setIsBold(
-      values[testDetails.testId]?.parameterDetails[parameterName.testParamId]
+      valuesAPI[testDetails.testId]?.parameterDetails[parameterName.testParamId]
         ?.isBold
     );
     setIsUnderline(
-      values[testDetails.testId]?.parameterDetails[parameterName.testParamId]
+      valuesAPI[testDetails.testId]?.parameterDetails[parameterName.testParamId]
         ?.isUnderline
     );
-  }, [values]);
+  }, [valuesAPI]);
+
   const handleInputMouseEnter = () => {
     setIsInputHovered(true);
   };
@@ -85,7 +81,6 @@ function RenderParameterList({
               testParamName,
               paramValue: e.value,
               ranges,
-              testDetails,
             },
           },
         },
@@ -147,72 +142,30 @@ function RenderParameterList({
             >
               <Button
                 style={{
-                  color: values[testDetails.testId]?.parameterDetails[
-                    parameterName.testParamId
-                  ]?.isBold
-                    ? "white"
-                    : "",
-                  backgroundColor: values[testDetails.testId]?.parameterDetails[
-                    parameterName.testParamId
-                  ]?.isBold
-                    ? "blue"
-                    : "",
+                  color: isBold ? "white" : "",
+                  backgroundColor: isBold ? "blue" : "",
                 }}
-                fillMode={
-                  values[testDetails.testId]?.parameterDetails[
-                    parameterName.testParamId
-                  ]?.isBold
-                    ? "solid"
-                    : "outline"
-                }
+                fillMode={isBold ? "solid" : "outline"}
                 onClick={() => setIsBold(!isBold)}
               >
                 B
               </Button>
               <Button
                 style={{
-                  color: values[testDetails.testId]?.parameterDetails[
-                    parameterName.testParamId
-                  ]?.isItalic
-                    ? "white"
-                    : "",
-                  backgroundColor: values[testDetails.testId]?.parameterDetails[
-                    parameterName.testParamId
-                  ]?.isItalic
-                    ? "blue"
-                    : "",
+                  color: isItalic ? "white" : "",
+                  backgroundColor: isItalic ? "blue" : "",
                 }}
-                fillMode={
-                  values[testDetails.testId]?.parameterDetails[
-                    parameterName.testParamId
-                  ]?.isItalic
-                    ? "solid"
-                    : "outline"
-                }
+                fillMode={isItalic ? "solid" : "outline"}
                 onClick={() => setIsItalic(!isItalic)}
               >
                 I
               </Button>
               <Button
                 style={{
-                  color: values[testDetails.testId]?.parameterDetails[
-                    parameterName.testParamId
-                  ]?.isUnderline
-                    ? "white"
-                    : "",
-                  backgroundColor: values[testDetails.testId]?.parameterDetails[
-                    parameterName.testParamId
-                  ]?.isUnderline
-                    ? "blue"
-                    : "",
+                  color: isUnderline ? "white" : "",
+                  backgroundColor: isUnderline ? "blue" : "",
                 }}
-                fillMode={
-                  values[testDetails.testId]?.parameterDetails[
-                    parameterName.testParamId
-                  ]?.isUnderline
-                    ? "solid"
-                    : "outline"
-                }
+                fillMode={isUnderline ? "solid" : "outline"}
                 onClick={() => setIsUnderline(!isUnderline)}
               >
                 U
@@ -264,45 +217,31 @@ function RenderParameterList({
     },
   ];
   useEffect(() => {
-    // const { unitId, unitName, testParamId, testParamName, paramValue } =
-    //   parameterName;
-    // const { testId, testName } = testDetails;
-    // if (testParamId)
-    //   setValues({
-    //     ...values,
-    //     [testParamId]: {
-    //       ...values[testParamId],
-    //       isItalic,
-    //       isUnderline,
-    //       isBold,
-    //     },
-    //   });
     const { testId, testName } = testDetails;
     const { unitId, unitName, testParamId, testParamName, paramValue } =
       parameterName;
 
-    setValues({
-      ...values,
-      [testId]: {
-        ...(values[testId] || {}), // Retrieve existing test details or create an empty object
-        testName,
-        testId,
-        parameterDetails: {
-          ...(values[testId]?.parameterDetails || {}), // Retrieve existing parameter details or create an empty object
-          [testParamId]: {
-            ...values[testId]?.parameterDetails[testParamId],
-            isItalic,
-            isUnderline,
-            isBold,
+    setValues((prevValues) => {
+      return {
+        ...prevValues,
+        [testId]: {
+          ...(prevValues[testId] || {}),
+          testName,
+          testId,
+          parameterDetails: {
+            ...(prevValues[testId]?.parameterDetails || {}),
+            [testParamId]: {
+              ...prevValues[testId]?.parameterDetails[testParamId],
+              isItalic,
+              isUnderline,
+              isBold,
+            },
           },
         },
-      },
+      };
     });
   }, [isItalic, isUnderline, isBold]);
-  console.log("...cccc", values);
-  // useEffect(() => {
-  //   setIsBold(values[parameterName.testParamId]?.isBold);
-  // }, [values[parameterName.testParamId]]);
+
   return (
     <TileLayout
       key={key}
