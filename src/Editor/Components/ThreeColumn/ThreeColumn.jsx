@@ -303,6 +303,12 @@ export function ThreeColumn({
 
   const changeSet = tableDetails?.changeSet ?? {};
 
+  function convertDataToArray(data) {
+    return Object.values(data).map(({ parameterDetails, ...rest }) => ({
+      ...rest,
+      parameterDetails: Object.values(parameterDetails),
+    }));
+  }
   const computeFontColor = useCallback(() => {
     if (color !== undefined) {
       return color;
@@ -321,6 +327,9 @@ export function ThreeColumn({
       );
     }
 
+    testResultData = convertDataToArray(testResultData);
+
+    console.log("dataArray", testResultData);
     testResultData?.map((result) => {
       tableData.push({
         Value: result.paramValue,
