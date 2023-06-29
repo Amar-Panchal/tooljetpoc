@@ -9,44 +9,12 @@ const TerserPlugin = require("terser-webpack-plugin");
 const environment =
   process.env.NODE_ENV === "production" ? "production" : "development";
 
-const API_URL = {
-  production:
-    process.env.TOOLJET_SERVER_URL ||
-    (process.env.SERVE_CLIENT !== "false" ? "__REPLACE_SUB_PATH__" : ""),
-  development: `http://localhost:${process.env.TOOLJET_SERVER_PORT || 3000}`,
-};
-
 const ASSET_PATH = process.env.ASSET_PATH || "";
-
-function stripTrailingSlash(str) {
-  return str.replace(/[/]+$/, "");
-}
 
 module.exports = {
   mode: environment,
-  optimization: {
-    minimize: environment === "production",
-    usedExports: true,
-    runtimeChunk: "single",
-    minimizer: [
-      new TerserPlugin({
-        minify: TerserPlugin.esbuildMinify,
-        terserOptions: {
-          ...(environment === "production" && { drop: ["debugger"] }),
-        },
-        parallel: environment === "production",
-      }),
-    ],
-    splitChunks: {
-      cacheGroups: {
-        vendors: {
-          test: /[\\/]node_modules[\\/]/,
-          name: "vendor",
-          chunks: "all",
-        },
-      },
-    },
-  },
+  entry: "./src/index.js",
+
   target: "web",
   resolve: {
     extensions: [
@@ -167,29 +135,23 @@ module.exports = {
       "process.env.ASSET_PATH": JSON.stringify(ASSET_PATH),
       "process.env.SERVE_CLIENT": JSON.stringify(process.env.SERVE_CLIENT),
     }),
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.ProvidePlugin({
+      process: "process/browser.js",
+    }),
   ],
   devServer: {
-    historyApiFallback: { index: ASSET_PATH },
+    open: true,
+    historyApiFallback: true,
+    port: "8082",
+
     static: {
       directory: path.resolve(__dirname, "assets"),
       publicPath: "/assets/",
     },
   },
   output: {
-    publicPath: ASSET_PATH,
+    publicPath: "/",
     path: path.resolve(__dirname, "build"),
-  },
-  externals: {
-    // global app config object
-    config: JSON.stringify({
-      apiUrl: `${stripTrailingSlash(API_URL[environment]) || ""}/api`,
-      SERVER_IP: process.env.SERVER_IP,
-      COMMENT_FEATURE_ENABLE: process.env.COMMENT_FEATURE_ENABLE ?? true,
-      ENABLE_TOOLJET_DB: process.env.ENABLE_TOOLJET_DB ?? true,
-      ENABLE_MULTIPLAYER_EDITING: true,
-      TOOLJET_MARKETPLACE_URL:
-        process.env.TOOLJET_MARKETPLACE_URL ||
-        "https://tooljet-plugins-production.s3.us-east-2.amazonaws.com",
-    }),
   },
 };
