@@ -311,6 +311,13 @@ export function TwoColumn({
     }
   }, [color, darkMode]);
 
+  function convertJSONToArray(jsonObj) {
+    console.log("hhhhhh", jsonObj);
+    const array = Object.keys(jsonObj).map((key) => jsonObj[key]);
+    console.log("Array:", JSON.stringify(array));
+    return array;
+  }
+
   let tableData = [];
   if (currentState) {
     if (mode === "edit") {
@@ -320,25 +327,23 @@ export function TwoColumn({
         []
       );
     }
-
-    testResultData?.map((result) => {
-      console.log("result", result);
-      tableData.push({
-        Value: result.paramValue,
-        ParameterName: result.testParamName,
-        isBold: result?.isBold,
-        isItalic: result?.isItalic,
-        isUnderline: result?.isUnderline,
+    const array = convertJSONToArray(testResultData);
+    if (array) {
+      const parameterDetails = Object.keys(array[0].parameterDetails).map(
+        (key) => array[0].parameterDetails[key]
+      );
+      parameterDetails?.map((result) => {
+        tableData.push({
+          Value: result.paramValue,
+          ParameterName: result.testParamName,
+          isBold: result?.isBold,
+          isItalic: result?.isItalic,
+          isUnderline: result?.isUnderline,
+        });
       });
-    });
-    // tableData = [
-    //   {
-    //     Value: 2332,
-    //     ParameterName: "chinmay",
-    //   },
-    // ];
 
-    if (!Array.isArray(tableData)) tableData = [];
+      if (!Array.isArray(tableData)) tableData = [];
+    }
   }
   tableData = tableData || [];
 

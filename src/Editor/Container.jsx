@@ -59,6 +59,7 @@ export const Container = ({
   reportTemplateDataMap,
   customMode,
   patientDetailsEditData,
+  testResultData2,
 }) => {
   const styles = {
     width: currentLayout === "mobile" ? deviceWindowWidth : "100%",
@@ -78,13 +79,13 @@ export const Container = ({
   const [commentsPreviewList, setCommentsPreviewList] = useState([]);
   const [newThread, addNewThread] = useState({});
   const [isContainerFocused, setContainerFocus] = useState(false);
-  const [testResultData, setTestResultData] = useState([]);
   const router = useRouter();
   const canvasRef = useRef(null);
   const focusedParentIdRef = useRef(undefined);
   const history = useHistory();
   const [PatientRegistrationFormData, setPatientRegistrationFormData] =
     useState({});
+
   function onSubmitPatientRegistrationFormData() {
     console.log(
       "onSubmitPatientRegistrationFormData",
@@ -168,9 +169,6 @@ export const Container = ({
     if (patientDetailsEditData)
       setPatientRegistrationFormData(patientDetailsEditData);
   }, [patientDetailsEditData]);
-  useEffect(() => {
-    setTestResultData(reportTemplateDataMap?.payload?.resultValues?.testResult);
-  }, [reportTemplateDataMap]);
 
   useEffect(() => {
     const handleClick = (e) => {
@@ -690,7 +688,7 @@ export const Container = ({
                 onSubmitPatientRegistrationFormData
               }
               customMode={customMode}
-              testResultData={testResultData}
+              testResultData={testResultData2}
             />
           );
         }

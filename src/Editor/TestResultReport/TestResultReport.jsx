@@ -53,6 +53,7 @@ class TestResultReportComponent extends React.Component {
       errorVersionId: null,
       errorDetails: null,
       pages: {},
+      testResultData: {},
     };
   }
 
@@ -147,14 +148,9 @@ class TestResultReportComponent extends React.Component {
     );
   };
 
-  loadApplicationByVersion = () => {
-    const id = this.props.location.state.reportTemplateDataMap?.reportTemplateId
-      ? this.props.location.state.reportTemplateDataMap?.reportTemplateId
-      : this.props.location.state.reportrenderidd
-      ? this.props.location.state.reportrenderidd
-      : 45;
-
-    axios
+  loadApplicationByVersion = async () => {
+    const id = 45;
+    await axios
       .get(
         `https://elabnextapi-dev.azurewebsites.net/api/ReportSetup/GetReportTemplate?ReportTemplateId=${id}`
       )
@@ -213,10 +209,39 @@ class TestResultReportComponent extends React.Component {
   //     return <Redirect to={"/"} />;
   //   }
   // };
+  getPatientResultData() {
+    const patientId = this.props.location.state.patientId;
+    if (patientId) {
+      console.log("componentDidMount", patientId);
+      axios
+        .get(
+          `https://elabnextapi-dev.azurewebsites.net/api/Result/GetResult?PatientId=${patientId}`
+        )
+        .then((response) => {
+          const maxIdObject = response.data.resultData.resultList.reduce(
+            (maxObject, currentObject) => {
+              return currentObject.id > maxObject.id
+                ? currentObject
+                : maxObject;
+            },
+            response.data.resultData.resultList[0]
+          );
 
+          let temp = JSON.parse(maxIdObject.resultValues);
+
+          console.log("getPatientResultData", temp.testResult);
+          this.setState({
+            testResultData: temp.testResult,
+          });
+        })
+        .catch((error) => {
+          console.log("errror ->GetResult", error);
+        });
+    }
+  }
   componentDidMount() {
     this.setState({ isLoading: false });
-
+    this.getPatientResultData();
     this.loadApplicationByVersion();
   }
 
@@ -396,7 +421,6 @@ class TestResultReportComponent extends React.Component {
         // if (errorDetails) {
         //   this.handleError(errorDetails, errorAppId, errorVersionId);
         // }
-
         return (
           <div className="viewer wrapper">
             {/* <Confirm
@@ -537,9 +561,10 @@ class TestResultReportComponent extends React.Component {
                                 // dataQueries={dataQueries}
                                 currentPageId={this.state.currentPageId}
                                 reportTemplateDataMap={
-                                  this.props.location.state
+                                  this.props.location.state ////amarrrrr --->>> replace this with array we are receving from BE for test result
                                 }
                                 customMode={this.props.location.state.mode}
+                                testResultData2={this.state.testResultData}
                               />
                             )}
                           </>

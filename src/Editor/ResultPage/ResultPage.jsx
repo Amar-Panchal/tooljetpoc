@@ -298,8 +298,7 @@ function ResultPage() {
         history.push({
           pathname: "/test-result-report",
           state: {
-            payload,
-            reportrenderidd: patientDetails.patientId === 228 ? 124 : 45,
+            patientId: patientDetails.patientId,
           },
         });
       })

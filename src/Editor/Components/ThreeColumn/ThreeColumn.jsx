@@ -317,6 +317,13 @@ export function ThreeColumn({
     }
   }, [color, darkMode]);
 
+  function convertJSONToArray(jsonObj) {
+    console.log("hhhhhh", jsonObj);
+    const array = Object.keys(jsonObj).map((key) => jsonObj[key]);
+    console.log("Array:", JSON.stringify(array));
+    return array;
+  }
+
   let tableData = [];
   if (currentState) {
     if (mode === "edit") {
@@ -326,21 +333,25 @@ export function ThreeColumn({
         []
       );
     }
-
-    testResultData = convertDataToArray(testResultData);
-
-    console.log("dataArray", testResultData);
-    testResultData?.map((result) => {
-      tableData.push({
-        Value: result.paramValue,
-        ParameterName: result.testParamName,
-        Unit: result.unitName,
-        isBold: result?.isBold,
-        isItalic: result?.isItalic,
-        isUnderline: result?.isUnderline,
+    const array = convertJSONToArray(testResultData);
+    console.log("parameterDetails", array);
+    if (array) {
+      const parameterDetails = Object.keys(array[0].parameterDetails).map(
+        (key) => array[0].parameterDetails[key]
+      );
+      console.log("parameterDetails", parameterDetails);
+      parameterDetails?.map((result) => {
+        tableData.push({
+          Value: result.paramValue,
+          ParameterName: result.testParamName,
+          Unit: result.unitName,
+          isBold: result?.isBold,
+          isItalic: result?.isItalic,
+          isUnderline: result?.isUnderline,
+        });
       });
-    });
-    if (!Array.isArray(tableData)) tableData = [];
+      if (!Array.isArray(tableData)) tableData = [];
+    }
   }
 
   tableData = tableData || [];
