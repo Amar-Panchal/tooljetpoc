@@ -431,7 +431,10 @@ class TestResultReportComponent extends React.Component {
               // queryConfirmationData={queryConfirmationList[0]}
               // key={queryConfirmationList[0]?.queryName}
             /> */}
-            <div style={{ display: "flex", gap: "10px", margin: "5px" }}>
+            <div
+              style={{ display: "flex", gap: "10px", margin: "5px" }}
+              className=" d-print-none"
+            >
               <Button
                 onClick={() => {
                   this.props.history.push("/");

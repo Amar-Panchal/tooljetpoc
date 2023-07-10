@@ -328,9 +328,9 @@ export function TwoColumn({
       );
     }
     const array = convertJSONToArray(testResultData);
-    if (array) {
-      const parameterDetails = Object.keys(array[0].parameterDetails).map(
-        (key) => array[0].parameterDetails[key]
+    if (array?.length > 0) {
+      const parameterDetails = Object.keys(array[0]?.parameterDetails)?.map(
+        (key) => array[0]?.parameterDetails[key]
       );
       parameterDetails?.map((result) => {
         tableData.push({

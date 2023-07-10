@@ -553,6 +553,21 @@ export const Container = ({
     return componentWithChildren;
   }, [components]);
 
+  const Print = () => {
+    let printContents = document.getElementById("real-canvas").innerHTML;
+    let originalContents = document.body.innerHTML;
+
+    let bodyStyles = window.getComputedStyle(document.body);
+    let backgroundColor = bodyStyles.getPropertyValue("background-color");
+    let backgroundImage = bodyStyles.getPropertyValue("background-image");
+
+    document.body.innerHTML = printContents;
+    document.body.style.backgroundColor = backgroundColor;
+    document.body.style.backgroundImage = backgroundImage;
+
+    window.print();
+  };
+
   return (
     <div
       {...(config.COMMENT_FEATURE_ENABLE &&
@@ -713,6 +728,7 @@ export const Container = ({
           )}
         </div>
       )}
+      <button onClick={Print}>Print</button>
     </div>
   );
 };

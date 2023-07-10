@@ -334,12 +334,10 @@ export function ThreeColumn({
       );
     }
     const array = convertJSONToArray(testResultData);
-    console.log("parameterDetails", array);
-    if (array) {
-      const parameterDetails = Object.keys(array[0].parameterDetails).map(
-        (key) => array[0].parameterDetails[key]
+    if (array?.length > 0) {
+      const parameterDetails = Object.keys(array[0]?.parameterDetails)?.map(
+        (key) => array[0]?.parameterDetails[key]
       );
-      console.log("parameterDetails", parameterDetails);
       parameterDetails?.map((result) => {
         tableData.push({
           Value: result.paramValue,
