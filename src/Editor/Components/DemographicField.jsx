@@ -14,6 +14,7 @@ export const DemographicField = function DemographicField({
   reportTemplateDataMap,
   component,
   containerProps,
+  patientData,
 }) {
   let {
     textSize,
@@ -110,9 +111,8 @@ export const DemographicField = function DemographicField({
 
     return str;
   }
-  let temp = reportTemplateDataMap;
-  reportTemplateDataMap =
-    reportTemplateDataMap?.payload?.resultValues?.patientDetails;
+  let temp = patientData;
+  console.log("component1111", patientData);
 
   return (
     <div
@@ -152,14 +152,12 @@ export const DemographicField = function DemographicField({
           ${text}  
           
           ${
-            reportTemplateDataMap &&
-            component &&
-            reportTemplateDataMap[component?.name]
+            patientData && component && patientData[component?.name]
               ? component?.name === "gender"
-                ? reportTemplateDataMap[component?.name].name
+                ? patientData[component?.name].name
                 : component?.name === "age"
-                ? reportTemplateDataMap[component?.name].value
-                : reportTemplateDataMap[component?.name]
+                ? patientData[component?.name].value
+                : patientData[component?.name]
               : ""
           }
           

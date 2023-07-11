@@ -110,6 +110,7 @@ export const DraggableBox = function DraggableBox({
   onSubmitPatientRegistrationFormData,
   customMode,
   testResultData,
+  patientData,
 }) {
   const [isResizing, setResizing] = useState(false);
   const [isDragging2, setDragging] = useState(false);
@@ -211,6 +212,7 @@ export const DraggableBox = function DraggableBox({
       currentState
     )?.value === false;
 
+  console.log("patientData11", patientData);
   return (
     <div
       className={
@@ -338,6 +340,7 @@ export const DraggableBox = function DraggableBox({
                   }
                   customMode={customMode}
                   testResultData={testResultData}
+                  patientData={patientData}
                 />
               </ErrorBoundary>
             </div>

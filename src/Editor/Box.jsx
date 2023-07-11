@@ -95,6 +95,7 @@ export const Box = function Box({
   onSubmitPatientRegistrationFormData,
   customMode,
   testResultData,
+  patientData,
 }) {
   const { t } = useTranslation();
   const backgroundColor = yellow ? "yellow" : "";
@@ -202,7 +203,6 @@ export const Box = function Box({
   }, [
     JSON.stringify({ propertyErrors, styleErrors, generalPropertiesErrors }),
   ]);
-
   useEffect(() => {
     setRenderCount(renderCount + 1);
     if (renderCount > 10) {
@@ -376,6 +376,7 @@ export const Box = function Box({
               }
               customMode={customMode}
               testResultData={testResultData}
+              patientData={patientData}
             ></ComponentToRender>
           ) : (
             <></>

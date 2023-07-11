@@ -133,7 +133,7 @@ function ResultPage() {
       return -1;
     }
   }
-  console.log("valuesAPI", valuesAPI);
+  console.log("valuesAPI", history);
   useEffect(() => {
     setPatientDetails(history.location.state);
   }, [history]);

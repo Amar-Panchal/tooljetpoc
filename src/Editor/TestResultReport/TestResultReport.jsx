@@ -54,6 +54,7 @@ class TestResultReportComponent extends React.Component {
       errorDetails: null,
       pages: {},
       testResultData: {},
+      patientData: {},
     };
   }
 
@@ -229,8 +230,8 @@ class TestResultReportComponent extends React.Component {
 
           let temp = JSON.parse(maxIdObject.resultValues);
 
-          console.log("getPatientResultData", temp.testResult);
           this.setState({
+            patientData: temp.patientDetails,
             testResultData: temp.testResult,
           });
         })
@@ -371,7 +372,7 @@ class TestResultReportComponent extends React.Component {
     return computedCanvasMaxWidth;
   };
 
-  Print = () => {
+  handlePrint = () => {
     let printContents = document.getElementById("real-canvas").innerHTML;
     let originalContents = document.body.innerHTML;
 
@@ -468,7 +469,7 @@ class TestResultReportComponent extends React.Component {
               >
                 Reports
               </Button>
-              <Button onClick={this.Print}>Print</Button>
+              <Button onClick={this.handlePrint}>Print</Button>
             </div>
             <DndProvider backend={HTML5Backend}>
               <ViewerNavigation.Header
@@ -585,6 +586,8 @@ class TestResultReportComponent extends React.Component {
                                 }
                                 customMode={this.props.location.state.mode}
                                 testResultData2={this.state.testResultData}
+                                patientData={this.state.patientData}
+                                handlePrint={this.handlePrint}
                               />
                             )}
                           </>

@@ -60,6 +60,8 @@ export const Container = ({
   customMode,
   patientDetailsEditData,
   testResultData2,
+  patientData,
+  handlePrint,
 }) => {
   const styles = {
     width: currentLayout === "mobile" ? deviceWindowWidth : "100%",
@@ -85,6 +87,14 @@ export const Container = ({
   const history = useHistory();
   const [PatientRegistrationFormData, setPatientRegistrationFormData] =
     useState({});
+
+  useEffect(() => {
+    document.addEventListener("keydown", function (event) {
+      if (event.ctrlKey && event.key === "p") {
+        handlePrint();
+      }
+    });
+  }, []);
 
   function onSubmitPatientRegistrationFormData() {
     console.log(
@@ -689,6 +699,7 @@ export const Container = ({
               }
               customMode={customMode}
               testResultData={testResultData2}
+              patientData={patientData}
             />
           );
         }
