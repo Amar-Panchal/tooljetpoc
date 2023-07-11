@@ -371,6 +371,24 @@ class TestResultReportComponent extends React.Component {
     return computedCanvasMaxWidth;
   };
 
+  Print = () => {
+    let printContents = document.getElementById("real-canvas").innerHTML;
+    let originalContents = document.body.innerHTML;
+
+    let bodyStyles = window.getComputedStyle(document.body);
+    let backgroundColor = bodyStyles.getPropertyValue("background-color");
+    let backgroundImage = bodyStyles.getPropertyValue("background-image");
+
+    document.body.innerHTML = printContents;
+    document.body.style.backgroundColor = backgroundColor;
+    document.body.style.backgroundImage = backgroundImage;
+
+    window.print();
+
+    document.body.innerHTML = originalContents;
+    location.reload(true);
+  };
+
   render() {
     const {
       appDefinition,
@@ -421,6 +439,7 @@ class TestResultReportComponent extends React.Component {
         // if (errorDetails) {
         //   this.handleError(errorDetails, errorAppId, errorVersionId);
         // }
+
         return (
           <div className="viewer wrapper">
             {/* <Confirm
@@ -431,10 +450,7 @@ class TestResultReportComponent extends React.Component {
               // queryConfirmationData={queryConfirmationList[0]}
               // key={queryConfirmationList[0]?.queryName}
             /> */}
-            <div
-              style={{ display: "flex", gap: "10px", margin: "5px" }}
-              className=" d-print-none"
-            >
+            <div style={{ display: "flex", gap: "10px", margin: "5px" }}>
               <Button
                 onClick={() => {
                   this.props.history.push("/");
@@ -452,6 +468,7 @@ class TestResultReportComponent extends React.Component {
               >
                 Reports
               </Button>
+              <Button onClick={this.Print}>Print</Button>
             </div>
             <DndProvider backend={HTML5Backend}>
               <ViewerNavigation.Header
