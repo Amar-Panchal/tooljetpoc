@@ -1,42 +1,42 @@
 /** @format */
 
-import React, { useEffect, useState, useRef, useContext } from 'react';
-import { useSpring, config, animated } from 'react-spring';
-import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
-import Tooltip from 'react-bootstrap/Tooltip';
-import CodeMirror from '@uiw/react-codemirror';
-import 'codemirror/mode/handlebars/handlebars';
-import 'codemirror/mode/javascript/javascript';
-import 'codemirror/mode/sql/sql';
-import 'codemirror/addon/hint/show-hint';
-import 'codemirror/addon/display/placeholder';
-import 'codemirror/addon/search/match-highlighter';
-import 'codemirror/addon/hint/show-hint.css';
-import 'codemirror/theme/base16-light.css';
-import 'codemirror/theme/duotone-light.css';
-import 'codemirror/theme/monokai.css';
-import { onBeforeChange, handleChange } from './utils';
+import React, { useEffect, useState, useRef, useContext } from "react";
+import { useSpring, config, animated } from "react-spring";
+import OverlayTrigger from "react-bootstrap/OverlayTrigger";
+import Tooltip from "react-bootstrap/Tooltip";
+import CodeMirror from "@uiw/react-codemirror";
+import "codemirror/mode/handlebars/handlebars";
+import "codemirror/mode/javascript/javascript";
+import "codemirror/mode/sql/sql";
+import "codemirror/addon/hint/show-hint";
+import "codemirror/addon/display/placeholder";
+import "codemirror/addon/search/match-highlighter";
+import "codemirror/addon/hint/show-hint.css";
+import "codemirror/theme/base16-light.css";
+import "codemirror/theme/duotone-light.css";
+import "codemirror/theme/monokai.css";
+import { onBeforeChange, handleChange } from "./utils";
 import {
   resolveReferences,
   hasCircularDependency,
   handleCircularStructureToJSON,
-} from '@/_helpers/utils';
-import useHeight from '@/_hooks/use-height-transition';
-import usePortal from '@/_hooks/use-portal';
-import { Color } from './Elements/Color';
-import { Json } from './Elements/Json';
-import { Select } from './Elements/Select';
-import { Toggle } from './Elements/Toggle';
-import { AlignButtons } from './Elements/AlignButtons';
-import { TypeMapping } from './TypeMapping';
-import { Number } from './Elements/Number';
-import { BoxShadow } from './Elements/BoxShadow';
-import FxButton from './Elements/FxButton';
-import { ToolTip } from '../Inspector/Elements/Components/ToolTip';
-import { toast } from 'react-hot-toast';
-import { EditorContext } from '@/Editor/Context/EditorContextWrapper';
-import { camelCase } from 'lodash';
-import { useTranslation } from 'react-i18next';
+} from "@/_helpers/utils";
+import useHeight from "@/_hooks/use-height-transition";
+import usePortal from "@/_hooks/use-portal";
+import { Color } from "./Elements/Color";
+import { Json } from "./Elements/Json";
+import { Select } from "./Elements/Select";
+import { Toggle } from "./Elements/Toggle";
+import { AlignButtons } from "./Elements/AlignButtons";
+import { TypeMapping } from "./TypeMapping";
+import { Number } from "./Elements/Number";
+import { BoxShadow } from "./Elements/BoxShadow";
+import FxButton from "./Elements/FxButton";
+import { ToolTip } from "../Inspector/Elements/Components/ToolTip";
+import { toast } from "react-hot-toast";
+import { EditorContext } from "@/Editor/Context/EditorContextWrapper";
+import { camelCase } from "lodash";
+import { useTranslation } from "react-i18next";
 
 const AllElements = {
   Color,
@@ -64,7 +64,7 @@ export function CodeHinter({
   componentName = null,
   usePortalEditor = true,
   className,
-  width = '',
+  width = "",
   paramName,
   paramLabel,
   type,
@@ -73,16 +73,16 @@ export function CodeHinter({
   fxActive,
   component,
   popOverCallback,
-  cyLabel = '',
+  cyLabel = "",
 }) {
-  const darkMode = localStorage.getItem('darkMode') === 'true';
+  const darkMode = localStorage.getItem("darkMode") === "true";
   const options = {
     lineNumbers: lineNumbers ?? false,
     lineWrapping: lineWrapping ?? true,
     singleLine: true,
-    mode: mode || 'handlebars',
+    mode: mode || "handlebars",
     tabSize: 2,
-    theme: theme ? theme : darkMode ? 'monokai' : 'default',
+    theme: theme ? theme : darkMode ? "monokai" : "default",
     readOnly: false,
     highlightSelectionMatches: true,
     placeholder,
@@ -132,9 +132,9 @@ export function CodeHinter({
       } else if (!isFocused && prevCountRef.current)
         prevCountRef.current = false;
     };
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [
     wrapperRef,
@@ -155,9 +155,9 @@ export function CodeHinter({
   const getPreviewContent = (content, type) => {
     try {
       switch (type) {
-        case 'object':
+        case "object":
           return JSON.stringify(content);
-        case 'boolean':
+        case "boolean":
           return content.toString();
         default:
           return content;
@@ -172,12 +172,12 @@ export function CodeHinter({
 
   const copyToClipboard = (text) => {
     navigator.clipboard.writeText(text);
-    toast.success('Copied to clipboard');
+    toast.success("Copied to clipboard");
   };
 
   const getCustomResolvables = () => {
     if (variablesExposedForPreview.hasOwnProperty(component?.id)) {
-      if (component?.component?.component === 'Table' && fieldMeta?.name) {
+      if (component?.component?.component === "Table" && fieldMeta?.name) {
         return {
           ...variablesExposedForPreview[component?.id],
           cellValue:
@@ -202,24 +202,24 @@ export function CodeHinter({
       customResolvables,
       true
     );
-    const themeCls = darkMode ? 'bg-dark  py-1' : 'bg-light  py-1';
+    const themeCls = darkMode ? "bg-dark  py-1" : "bg-light  py-1";
 
     if (error) {
       const err = String(error);
-      const errorMessage = err.includes('.run()')
-        ? `${err} in ${componentName.split('::')[0]}'s field`
+      const errorMessage = err.includes(".run()")
+        ? `${err} in ${componentName.split("::")[0]}'s field`
         : err;
       return (
         <animated.div
           className={isOpen ? themeCls : null}
-          style={{ ...slideInStyles, overflow: 'hidden' }}
+          style={{ ...slideInStyles, overflow: "hidden" }}
         >
           <div
             ref={heightRef}
-            className='dynamic-variable-preview bg-red-lt px-1 py-1'
+            className="dynamic-variable-preview bg-red-lt px-1 py-1"
           >
             <div>
-              <div className='heading my-1'>
+              <div className="heading my-1">
                 <span>Error</span>
               </div>
               {errorMessage}
@@ -241,28 +241,28 @@ export function CodeHinter({
     return (
       <animated.div
         className={isOpen ? themeCls : null}
-        style={{ ...slideInStyles, overflow: 'hidden' }}
+        style={{ ...slideInStyles, overflow: "hidden" }}
         onMouseEnter={() => focusPreview()}
         onMouseLeave={() => unFocusPreview()}
       >
         <div
           ref={heightRef}
-          className='dynamic-variable-preview bg-green-lt px-1 py-1'
+          className="dynamic-variable-preview bg-green-lt px-1 py-1"
         >
           <div>
-            <div className='d-flex my-1'>
+            <div className="d-flex my-1">
               <div
-                className='flex-grow-1'
-                style={{ fontWeight: 700, textTransform: 'capitalize' }}
+                className="flex-grow-1"
+                style={{ fontWeight: 700, textTransform: "capitalize" }}
               >
                 {previewType}
               </div>
               {isFocused && (
-                <div className='preview-icons'>
+                <div className="preview-icons">
                   <CodeHinter.PopupIcon
                     callback={() => copyToClipboard(content)}
-                    icon='copy'
-                    tip='Copy to clipboard'
+                    icon="copy"
+                    tip="Copy to clipboard"
                   />
                 </div>
               )}
@@ -280,7 +280,7 @@ export function CodeHinter({
   const handleToggle = () => {
     const changeOpen = (newOpen) => {
       setIsOpen(newOpen);
-      if (typeof popOverCallback === 'function') popOverCallback(newOpen);
+      if (typeof popOverCallback === "function") popOverCallback(newOpen);
     };
 
     if (!isOpen) {
@@ -288,7 +288,7 @@ export function CodeHinter({
     }
 
     return new Promise((resolve) => {
-      const element = document.getElementsByClassName('portal-container');
+      const element = document.getElementsByClassName("portal-container");
       if (element) {
         const checkPortalExits = element[0]?.classList.contains(componentName);
 
@@ -308,23 +308,23 @@ export function CodeHinter({
   const [, forceUpdate] = React.useReducer((x) => x + 1, 0);
 
   const defaultClassName =
-    className === 'query-hinter' ||
-    className === 'custom-component' ||
+    className === "query-hinter" ||
+    className === "custom-component" ||
     undefined
-      ? ''
-      : 'code-hinter';
+      ? ""
+      : "code-hinter";
 
   const ElementToRender = AllElements[TypeMapping[type]];
 
   const [forceCodeBox, setForceCodeBox] = useState(fxActive);
-  const codeShow = (type ?? 'code') === 'code' || forceCodeBox;
+  const codeShow = (type ?? "code") === "code" || forceCodeBox;
   cyLabel = paramLabel
-    ? paramLabel.toLowerCase().trim().replace(/\s+/g, '-')
+    ? paramLabel.toLowerCase().trim().replace(/\s+/g, "-")
     : cyLabel;
 
   return (
     <div ref={wrapperRef}>
-      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
         {paramLabel && (
           <div
             className={`mb-2 field ${options.className}`}
@@ -336,18 +336,18 @@ export function CodeHinter({
                 paramLabel
               )}
               meta={fieldMeta}
-              labelClass={`form-label ${darkMode && 'color-whitish-darkmode'}`}
+              labelClass={`form-label ${darkMode && "color-whitish-darkmode"}`}
             />
           </div>
         )}
         <div
-          className={`col-auto ${(type ?? 'code') === 'code' ? 'd-none' : ''} `}
+          className={`col-auto ${(type ?? "code") === "code" ? "d-none" : ""} `}
         >
           <div
             style={{
               width: width,
-              display: codeShow ? 'flex' : 'none',
-              marginTop: '-1px',
+              display: codeShow ? "flex" : "none",
+              marginTop: "-1px",
             }}
           >
             <FxButton
@@ -363,37 +363,37 @@ export function CodeHinter({
       </div>
       <div
         className={`row${
-          height === '150px' || height === '300px' ? ' tablr-gutter-x-0' : ''
+          height === "150px" || height === "300px" ? " tablr-gutter-x-0" : ""
         }`}
-        style={{ width: width, display: codeShow ? 'flex' : 'none' }}
+        style={{ width: width, display: codeShow ? "flex" : "none" }}
       >
         <div
           className={`col code-hinter-col`}
-          style={{ marginBottom: '0.5rem' }}
+          style={{ marginBottom: "0.5rem" }}
         >
           <div
-            className='code-hinter-wrapper'
-            style={{ width: '100%', backgroundColor: darkMode && '#272822' }}
+            className="code-hinter-wrapper"
+            style={{ width: "100%", backgroundColor: darkMode && "#272822" }}
           >
             <div
               className={`${defaultClassName} ${
-                className || 'codehinter-default-input'
+                className || "codehinter-default-input"
               }`}
               key={componentName}
               style={{
-                height: height || 'auto',
+                height: height || "auto",
                 minHeight,
-                maxHeight: '320px',
-                overflow: 'auto',
-                fontSize: ' .875rem',
+                maxHeight: "320px",
+                overflow: "auto",
+                fontSize: " .875rem",
               }}
               data-cy={`${cyLabel}-input-field`}
             >
               {usePortalEditor && (
                 <CodeHinter.PopupIcon
                   callback={handleToggle}
-                  icon='portal-open'
-                  tip='Pop out code editor into a new window'
+                  icon="portal-open"
+                  tip="Pop out code editor into a new window"
                 />
               )}
               <CodeHinter.Portal
@@ -405,14 +405,14 @@ export function CodeHinter({
                 forceUpdate={forceUpdate}
                 optionalProps={{ styles: { height: 300 }, cls: className }}
                 darkMode={darkMode}
-                selectors={{ className: 'preview-block-portal' }}
+                selectors={{ className: "preview-block-portal" }}
                 dragResizePortal={true}
               >
                 <CodeMirror
-                  value={typeof initialValue === 'string' ? initialValue : ''}
+                  value={typeof initialValue === "string" ? initialValue : ""}
                   realState={realState}
                   scrollbarStyle={null}
-                  height={'100%'}
+                  height={"100%"}
                   onFocus={() => setFocused(true)}
                   onBlur={(editor, e) => {
                     e.stopPropagation();
@@ -438,7 +438,7 @@ export function CodeHinter({
         </div>
       </div>
       {!codeShow && (
-        <div style={{ display: !codeShow ? 'block' : 'none' }}>
+        <div style={{ display: !codeShow ? "block" : "none" }}>
           <ElementToRender
             value={resolveReferences(initialValue, realState)}
             onChange={(value) => {
@@ -465,20 +465,20 @@ export function CodeHinter({
 const PopupIcon = ({ callback, icon, tip }) => {
   return (
     <div
-      className='d-flex justify-content-end'
-      style={{ position: 'relative' }}
+      className="d-flex justify-content-end"
+      style={{ position: "relative" }}
     >
       <OverlayTrigger
-        trigger={['hover', 'focus']}
-        placement='top'
+        trigger={["hover", "focus"]}
+        placement="top"
         delay={{ show: 800, hide: 100 }}
-        overlay={<Tooltip id='button-tooltip'>{tip}</Tooltip>}
+        overlay={<Tooltip id="button-tooltip">{tip}</Tooltip>}
       >
         <img
-          className='svg-icon m-2 popup-btn'
+          className="svg-icon m-2 popup-btn"
           src={`assets/images/icons/${icon}.svg`}
-          width='12'
-          height='12'
+          width="12"
+          height="12"
           onClick={(e) => {
             e.stopPropagation();
             callback();
