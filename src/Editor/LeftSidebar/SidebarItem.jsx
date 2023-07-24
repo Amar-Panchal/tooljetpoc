@@ -23,7 +23,7 @@ export const LeftSidebarItem = ({
   const Icon = require("@assets/images/icons/editor/left-sidebar/" +
     displayIcon +
     ".svg");
-
+  console.log("onClick", onClick);
   const content = (
     <div {...rest} className={className} onClick={onClick && onClick}>
       {icon && (

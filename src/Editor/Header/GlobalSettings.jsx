@@ -390,7 +390,7 @@ export const GlobalSettings = ({
         containerPadding={50}
       >
         <LeftSidebarItem
-          selectedSidebarItem={show}
+          // selectedSidebarItem={show}
           icon="settings"
           className={cx(`cursor-pointer sidebar-global-settings`)}
           tip="Settings"

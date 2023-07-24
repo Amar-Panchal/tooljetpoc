@@ -116,6 +116,7 @@ export const DraggableBox = function DraggableBox({
   const [isDragging2, setDragging] = useState(false);
   const [canDrag, setCanDrag] = useState(true);
   const [mouseOver, setMouseOver] = useState(false);
+  console.log("isMultipleComponentsSelected 44", isMultipleComponentsSelected);
 
   useEffect(() => {
     setMouseOver(hoveredComponent === id);

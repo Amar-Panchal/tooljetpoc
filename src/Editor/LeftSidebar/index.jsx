@@ -74,6 +74,8 @@ export const LeftSidebar = forwardRef((props, ref) => {
   }));
 
   const handleSelectedSidebarItem = (item) => {
+    console.log("onClick nee", item, selectedSidebarItem);
+
     if (item === selectedSidebarItem) {
       setSelectedSidebarItem(null);
     } else {
