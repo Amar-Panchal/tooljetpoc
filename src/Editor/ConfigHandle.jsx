@@ -1,4 +1,6 @@
-import React from 'react';
+/** @format */
+
+import React from "react";
 
 export const ConfigHandle = function ConfigHandle({
   id,
@@ -10,25 +12,30 @@ export const ConfigHandle = function ConfigHandle({
   widgetHeight,
   isMultipleComponentsSelected = false,
   setSelectedComponent = () => null, //! Only Modal widget passes this uses props down. All other widgets use selecto lib
-  customClassName = '',
+  customClassName = "",
   configWidgetHandlerForModalComponent = false,
 }) {
+  console.log(
+    "configWidgetHandlerForModalComponent",
+    configWidgetHandlerForModalComponent
+  );
+
   return (
     <div
       className={`config-handle ${customClassName}`}
       ref={dragRef}
       style={{
-        top: position === 'top' ? '-22px' : widgetTop + widgetHeight - 10,
+        top: position === "top" ? "-22px" : widgetTop + widgetHeight - 10,
       }}
     >
       <span
         style={{
-          background: configWidgetHandlerForModalComponent && '#c6cad0',
+          background: configWidgetHandlerForModalComponent && "#c6cad0",
         }}
         className="badge handle-content"
       >
         <div
-          style={{ display: 'flex', alignItems: 'center' }}
+          style={{ display: "flex", alignItems: "center" }}
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();
@@ -38,7 +45,11 @@ export const ConfigHandle = function ConfigHandle({
           data-cy={`${component.name.toLowerCase()}-config-handle`}
         >
           <img
-            style={{ cursor: 'pointer', marginRight: '5px', verticalAlign: 'middle' }}
+            style={{
+              cursor: "pointer",
+              marginRight: "5px",
+              verticalAlign: "middle",
+            }}
             src="assets/images/icons/settings.svg"
             width="12"
             height="12"
@@ -49,7 +60,7 @@ export const ConfigHandle = function ConfigHandle({
         {!isMultipleComponentsSelected && (
           <div className="delete-part">
             <img
-              style={{ cursor: 'pointer', marginLeft: '5px' }}
+              style={{ cursor: "pointer", marginLeft: "5px" }}
               src="assets/images/icons/trash-light.svg"
               width="12"
               role="button"
