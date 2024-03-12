@@ -858,9 +858,9 @@ const temp = {
     globalSettings: {
       hideHeader: false,
       appInMaintenance: false,
-      canvasMaxWidth: 1292,
+      canvasMaxWidth: 794,
       canvasMaxWidthType: 'px',
-      canvasMaxHeight: 2400,
+      canvasMaxHeight: 1135,
       canvasBackgroundColor: '#edeff5',
       backgroundFxQuery: '',
     },
@@ -1740,9 +1740,9 @@ const temp = {
         globalSettings: {
           hideHeader: false,
           appInMaintenance: false,
-          canvasMaxWidth: 1292,
+          canvasMaxWidth: 794,
           canvasMaxWidthType: 'px',
-          canvasMaxHeight: 2400,
+          canvasMaxHeight: 1135,
           canvasBackgroundColor: '#edeff5',
           backgroundFxQuery: '',
         },

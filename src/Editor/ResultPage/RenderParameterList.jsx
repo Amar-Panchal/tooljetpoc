@@ -25,6 +25,7 @@ function RenderParameterList({
   };
 
   const [isInputHovered, setIsInputHovered] = useState(false);
+  console.log("arrr", values);
 
   useEffect(() => {
     setIsItalic(
@@ -51,7 +52,7 @@ function RenderParameterList({
 
   const handleChange = (e) => {
     const { unitId, unitName, testParamId, testParamName } = parameterName;
-
+    console.log("parameterName", parameterName);
     // setValues({
     //   ...values,
     //   [testParamId]: {

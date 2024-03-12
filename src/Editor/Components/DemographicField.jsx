@@ -112,7 +112,7 @@ export const DemographicField = function DemographicField({
     return str;
   }
   let temp = patientData;
-  console.log("component1111", patientData);
+  console.log("component1111dfssadfdf", patientData.testName);
 
   return (
     <div
@@ -131,13 +131,7 @@ export const DemographicField = function DemographicField({
            
           
                  
-                   ${
-                     temp.payload?.resultValues.selectedTestsWithParameters[0]
-                       .testName
-                       ? temp.payload?.resultValues
-                           .selectedTestsWithParameters[0].testName
-                       : text
-                   }`
+                   ${patientData.testName ? patientData[0].testName : text}`
               ),
             }}
           />

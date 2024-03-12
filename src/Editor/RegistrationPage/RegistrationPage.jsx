@@ -1,26 +1,27 @@
 /** @format */
 
-import React from "react";
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
-import { Container } from "../Container";
+import React from 'react';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
+import { Container } from '../Container';
 import {
   onComponentOptionChanged,
   onComponentOptionsChanged,
   onComponentClick,
   onEvent,
   computeComponentState,
-} from "@/_helpers/appUtils";
-import queryString from "query-string";
-import { resolveReferences, stripTrailingSlash } from "@/_helpers/utils";
-import { withTranslation } from "react-i18next";
-import _ from "lodash";
-import axios from "axios";
-import { ApiCallParams } from "../StaticApiCall";
-import { Form } from "@progress/kendo-react-all";
+} from '@/_helpers/appUtils';
+import queryString from 'query-string';
+import { resolveReferences, stripTrailingSlash } from '@/_helpers/utils';
+import { withTranslation } from 'react-i18next';
+import _ from 'lodash';
+import axios from 'axios';
+import { ApiCallParams } from '../StaticApiCall';
+import { Form } from '@progress/kendo-react-all';
 
 class RegistrationPageLauncher extends React.Component {
   constructor(props) {
+    console.log('propsprops', props);
     super(props);
     const deviceWindowWidth = window.screen.width - 5;
     const isMobileDevice = deviceWindowWidth < 600;
@@ -33,7 +34,7 @@ class RegistrationPageLauncher extends React.Component {
       appId,
       versionId,
       deviceWindowWidth,
-      currentLayout: isMobileDevice ? "mobile" : "desktop",
+      currentLayout: isMobileDevice ? 'mobile' : 'desktop',
       isLoading: true,
       users: null,
       appDefinition: { pages: {} },
@@ -42,7 +43,7 @@ class RegistrationPageLauncher extends React.Component {
         components: {},
         globals: {
           currentUser: {},
-          theme: { name: props.darkMode ? "dark" : "light" },
+          theme: { name: props.darkMode ? 'dark' : 'light' },
           urlparams: {},
           environment_variables: {},
           page: {
@@ -82,12 +83,12 @@ class RegistrationPageLauncher extends React.Component {
 
     let mobileLayoutHasWidgets = false;
 
-    if (this.state.currentLayout === "mobile") {
+    if (this.state.currentLayout === 'mobile') {
       const currentComponents =
         data.definition.pages[data.definition.homePageId].components;
       mobileLayoutHasWidgets =
         Object.keys(currentComponents).filter(
-          (componentId) => currentComponents[componentId]["layouts"]["mobile"]
+          (componentId) => currentComponents[componentId]['layouts']['mobile']
         ).length > 0;
     }
 
@@ -106,20 +107,20 @@ class RegistrationPageLauncher extends React.Component {
     this.setState(
       {
         currentSidebarTab: 2,
-        currentLayout: mobileLayoutHasWidgets ? "mobile" : "desktop",
+        currentLayout: mobileLayoutHasWidgets ? 'mobile' : 'desktop',
         canvasWidth:
-          this.state.currentLayout === "desktop"
-            ? "100%"
+          this.state.currentLayout === 'desktop'
+            ? '100%'
             : mobileLayoutHasWidgets
             ? `${this.state.deviceWindowWidth}px`
-            : "1292px",
+            : '1292px',
         selectedComponent: null,
         currentState: {
           queries: queryState,
           components: {},
           globals: {
             currentUser: userVars,
-            theme: { name: this.props.darkMode ? "dark" : "light" },
+            theme: { name: this.props.darkMode ? 'dark' : 'light' },
             urlparams: JSON.parse(
               JSON.stringify(queryString.parse(this.props.location.search))
             ),
@@ -183,12 +184,12 @@ class RegistrationPageLauncher extends React.Component {
       .then(({ data }) => {
         const { reportValues: reportValuesString } =
           data?.resultData?.[0] ?? {};
-        console.log("reporttt data JSOnn", JSON.parse(reportValuesString));
+        console.log('reporttt data JSOnn', JSON.parse(reportValuesString));
         this.setStateForApp({
-          definition: JSON.parse(reportValuesString ?? "{}"),
+          definition: JSON.parse(reportValuesString ?? '{}'),
         });
         this.setStateForContainer({
-          definition: JSON.parse(reportValuesString ?? "{}"),
+          definition: JSON.parse(reportValuesString ?? '{}'),
         });
       })
       .catch(console.error);
@@ -282,26 +283,26 @@ class RegistrationPageLauncher extends React.Component {
 
   getCanvasWidth = () => {
     const canvasBoundingRect = document
-      .getElementsByClassName("canvas-area")[0]
+      .getElementsByClassName('canvas-area')[0]
       .getBoundingClientRect();
     return canvasBoundingRect?.width;
   };
 
   setWindowTitle(name) {
-    document.title = name ?? "Untitled App";
+    document.title = name ?? 'Untitled App';
   }
 
   computeCanvasBackgroundColor = () => {
     const bgColor =
       (this.state.appDefinition.globalSettings?.backgroundFxQuery ||
         this.state.appDefinition.globalSettings?.canvasBackgroundColor) ??
-      "#edeff5";
+      '#edeff5';
     const resolvedBackgroundColor = resolveReferences(
       bgColor,
       this.state.currentState
     );
-    if (["#2f3c4c", "#edeff5"].includes(resolvedBackgroundColor)) {
-      return this.props.darkMode ? "#2f3c4c" : "#edeff5";
+    if (['#2f3c4c', '#edeff5'].includes(resolvedBackgroundColor)) {
+      return this.props.darkMode ? '#2f3c4c' : '#edeff5';
     }
 
     return resolvedBackgroundColor;
@@ -313,7 +314,7 @@ class RegistrationPageLauncher extends React.Component {
         ...this.state.currentState,
         globals: {
           ...this.state.currentState.globals,
-          theme: { name: newMode ? "dark" : "light" },
+          theme: { name: newMode ? 'dark' : 'light' },
         },
       },
       showQuerySearchField: false,
@@ -328,7 +329,7 @@ class RegistrationPageLauncher extends React.Component {
 
     const queryParamsString = queryParams
       .map(([key, value]) => `${key}=${value}`)
-      .join("&");
+      .join('&');
 
     if (this.state.slug)
       this.props.history.push(
@@ -341,19 +342,19 @@ class RegistrationPageLauncher extends React.Component {
   };
 
   handleEvent = (eventName, options) =>
-    onEvent(this, eventName, options, "view");
+    onEvent(this, eventName, options, 'view');
 
   computeCanvasMaxWidth = () => {
     const { appDefinition } = this.state;
-    let computedCanvasMaxWidth = 1292;
+    let computedCanvasMaxWidth = 794;
 
-    if (appDefinition.globalSettings?.canvasMaxWidthType === "px")
+    if (appDefinition.globalSettings?.canvasMaxWidthType === 'px')
       computedCanvasMaxWidth =
-        (+appDefinition.globalSettings?.canvasMaxWidth || 1292) -
+        (+appDefinition.globalSettings?.canvasMaxWidth || 794) -
         (appDefinition?.showViewerNavigation ? 200 : 0);
-    else if (appDefinition.globalSettings?.canvasMaxWidthType === "%")
+    else if (appDefinition.globalSettings?.canvasMaxWidthType === '%')
       computedCanvasMaxWidth =
-        +appDefinition.globalSettings?.canvasMaxWidth + "%";
+        +appDefinition.globalSettings?.canvasMaxWidth + '%';
 
     return computedCanvasMaxWidth;
   };
@@ -362,36 +363,36 @@ class RegistrationPageLauncher extends React.Component {
     const { appDefinition, isLoading, currentLayout } = this.state;
 
     return (
-      <div className="viewer wrapper">
+      <div className='viewer wrapper'>
         <DndProvider backend={HTML5Backend}>
-          <div className="sub-section">
-            <div className="main">
+          <div className='sub-section'>
+            <div className='main'>
               <div
-                className="canvas-container align-items-center"
+                className='canvas-container align-items-center'
                 style={{
                   backgroundColor: this.computeCanvasBackgroundColor(),
-                  position: "fixed",
+                  position: 'fixed',
 
-                  height: "-webkit-fill-available",
+                  height: '-webkit-fill-available',
                 }}
               >
-                <div className="areas d-flex flex-rows justify-content-center">
+                <div className='areas d-flex flex-rows justify-content-center'>
                   <div
-                    className="canvas-area"
+                    className='canvas-area'
                     style={{
-                      minHeight: "100%",
-                      maxWidth: "100%",
-                      maxHeight: "100%",
+                      minHeight: '100%',
+                      maxWidth: '100%',
+                      maxHeight: '100%',
                       backgroundColor: this.computeCanvasBackgroundColor(),
                     }}
                   >
                     <>
                       {isLoading ? (
-                        <div className="mx-auto mt-5 w-50 p-5">
+                        <div className='mx-auto mt-5 w-50 p-5'>
                           <center>
                             <div
-                              className="spinner-border text-azure"
-                              role="status"
+                              className='spinner-border text-azure'
+                              role='status'
                             ></div>
                           </center>
                         </div>
@@ -403,9 +404,9 @@ class RegistrationPageLauncher extends React.Component {
                           appLoading={isLoading}
                           darkMode={this.props.darkMode}
                           onEvent={(eventName, options) =>
-                            onEvent(this, eventName, options, "view")
+                            onEvent(this, eventName, options, 'view')
                           }
-                          mode="view"
+                          mode='view'
                           currentLayout={currentLayout}
                           currentState={this.state.currentState}
                           selectedComponent={this.state.selectedComponent}
@@ -413,7 +414,7 @@ class RegistrationPageLauncher extends React.Component {
                             this.setState({
                               selectedComponent: { id, component },
                             });
-                            onComponentClick(this, id, component, "view");
+                            onComponentClick(this, id, component, 'view');
                           }}
                           onComponentOptionChanged={(
                             component,

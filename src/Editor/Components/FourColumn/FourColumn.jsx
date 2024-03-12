@@ -13,7 +13,7 @@ import React, {
   useContext,
   useReducer,
   useRef,
-} from "react";
+} from 'react';
 import {
   useTable,
   useFilters,
@@ -25,37 +25,37 @@ import {
   useResizeColumns,
   useRowSelect,
   useColumnOrder,
-} from "react-table";
-import cx from "classnames";
-import { resolveReferences, validateWidget } from "@/_helpers/utils";
-import { useExportData } from "react-table-plugins";
-import Papa from "papaparse";
-import { Pagination } from "./Pagination";
-import { Filter } from "./Filter";
-import { GlobalFilter } from "./GlobalFilter";
-var _ = require("lodash");
-import loadPropertiesAndStyles from "./load-properties-and-styles";
-import { reducer, reducerActions, initialState } from "./reducer";
-import customFilter from "./custom-filter";
-import generateColumnsData from "./columns";
-import generateActionsData from "./columns/actions";
-import autogenerateColumns from "./columns/autogenerateColumns";
-import IndeterminateCheckbox from "./IndeterminateCheckbox";
-import { useTranslation } from "react-i18next";
+} from 'react-table';
+import cx from 'classnames';
+import { resolveReferences, validateWidget } from '@/_helpers/utils';
+import { useExportData } from 'react-table-plugins';
+import Papa from 'papaparse';
+import { Pagination } from './Pagination';
+import { Filter } from './Filter';
+import { GlobalFilter } from './GlobalFilter';
+var _ = require('lodash');
+import loadPropertiesAndStyles from './load-properties-and-styles';
+import { reducer, reducerActions, initialState } from './reducer';
+import customFilter from './custom-filter';
+import generateColumnsData from './columns';
+import generateActionsData from './columns/actions';
+import autogenerateColumns from './columns/autogenerateColumns';
+import IndeterminateCheckbox from './IndeterminateCheckbox';
+import { useTranslation } from 'react-i18next';
 // eslint-disable-next-line import/no-unresolved
-import JsPDF from "jspdf";
+import JsPDF from 'jspdf';
 // eslint-disable-next-line import/no-unresolved
-import "jspdf-autotable";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import 'jspdf-autotable';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 // eslint-disable-next-line import/no-unresolved
-import { IconEyeOff } from "@tabler/icons";
-import * as XLSX from "xlsx/xlsx.mjs";
-import OverlayTrigger from "react-bootstrap/OverlayTrigger";
-import Popover from "react-bootstrap/Popover";
-import { useMounted } from "@/_hooks/use-mount";
-import GenerateEachCellValue from "./GenerateEachCellValue";
+import { IconEyeOff } from '@tabler/icons';
+import * as XLSX from 'xlsx/xlsx.mjs';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import Popover from 'react-bootstrap/Popover';
+import { useMounted } from '@/_hooks/use-mount';
+import GenerateEachCellValue from './GenerateEachCellValue';
 // eslint-disable-next-line import/no-unresolved
-import { toast } from "react-hot-toast";
+import { toast } from 'react-hot-toast';
 
 export function FourColumn({
   id,
@@ -83,6 +83,7 @@ export function FourColumn({
   mode,
   exposedVariables,
   testResultData,
+  parameterDetails,
   containerProps,
 }) {
   const {
@@ -117,19 +118,19 @@ export function FourColumn({
   const { globalFontVariant } = containerProps.appDefinition.globalSettings;
   const getItemStyle = ({ isDragging, isDropAnimating }, draggableStyle) => ({
     ...draggableStyle,
-    userSelect: "none",
-    background: isDragging ? "rgba(77, 114, 250, 0.2)" : "",
-    top: "auto",
-    borderRadius: "4px",
+    userSelect: 'none',
+    background: isDragging ? 'rgba(77, 114, 250, 0.2)' : '',
+    top: 'auto',
+    borderRadius: '4px',
     ...(isDragging && {
-      marginLeft: "-120px",
-      display: "flex",
-      alignItems: "center",
-      paddingLeft: "10px",
-      height: "30px",
+      marginLeft: '-120px',
+      display: 'flex',
+      alignItems: 'center',
+      paddingLeft: '10px',
+      height: '30px',
     }),
-    ...(!isDragging && { transform: "translate(0,0)", width: "100%" }),
-    ...(isDropAnimating && { transitionDuration: "0.001s" }),
+    ...(!isDragging && { transform: 'translate(0,0)', width: '100%' }),
+    ...(isDropAnimating && { transitionDuration: '0.001s' }),
   });
   const { t } = useTranslation();
 
@@ -143,7 +144,7 @@ export function FourColumn({
 
   useEffect(() => {
     setExposedVariable(
-      "filters",
+      'filters',
       tableDetails.filterDetails.filters.map((filter) => filter.value)
     );
   }, [JSON.stringify(tableDetails.filterDetails.filters)]);
@@ -158,7 +159,7 @@ export function FourColumn({
 
   useEffect(() => {
     const hoverEvent = component?.definition?.events?.find((event) => {
-      return event?.eventId == "onRowHovered";
+      return event?.eventId == 'onRowHovered';
     });
     if (hoverEvent?.eventId) {
       setHoverAdded(true);
@@ -215,7 +216,7 @@ export function FourColumn({
     };
     mergeToTableDetails(changesToBeSavedAndExposed);
 
-    fireEvent("onCellValueChanged");
+    fireEvent('onCellValueChanged');
     return setExposedVariables({
       ...changesToBeSavedAndExposed,
       updatedData: clonedTableData,
@@ -242,10 +243,10 @@ export function FourColumn({
       }, {});
     });
     headers = headers.map((header) => header.exportValue.toUpperCase());
-    if (fileType === "csv") {
+    if (fileType === 'csv') {
       const csvString = Papa.unparse({ fields: headers, data });
-      return new Blob([csvString], { type: "text/csv" });
-    } else if (fileType === "pdf") {
+      return new Blob([csvString], { type: 'text/csv' });
+    } else if (fileType === 'pdf') {
       const pdfData = data.map((obj) => Object.values(obj));
       const doc = new JsPDF();
       doc.autoTable({
@@ -255,17 +256,17 @@ export function FourColumn({
           minCellHeight: 9,
           minCellWidth: 20,
           fontSize: 11,
-          color: "black",
+          color: 'black',
         },
-        theme: "grid",
+        theme: 'grid',
       });
       doc.save(`${fileName}.pdf`);
-    } else if (fileType === "xlsx") {
+    } else if (fileType === 'xlsx') {
       let wb = XLSX.utils.book_new();
       let ws1 = XLSX.utils.json_to_sheet(data, {
         headers,
       });
-      XLSX.utils.book_append_sheet(wb, ws1, "React Table Data");
+      XLSX.utils.book_append_sheet(wb, ws1, 'React Table Data');
       XLSX.writeFile(wb, `${fileName}.xlsx`);
       // Returning false as downloading of file is already taken care of
       return false;
@@ -273,8 +274,8 @@ export function FourColumn({
   }
 
   function onPageIndexChanged(page) {
-    onComponentOptionChanged(component, "pageIndex", page).then(() => {
-      onEvent("onPageChanged", { component, data: {} });
+    onComponentOptionChanged(component, 'pageIndex', page).then(() => {
+      onEvent('onPageChanged', { component, data: {} });
     });
   }
 
@@ -297,7 +298,7 @@ export function FourColumn({
       dataUpdates: [],
     }).then(() => {
       mergeToTableDetails({ dataUpdates: {}, changeSet: {} });
-      fireEvent("onCancelChanges");
+      fireEvent('onCancelChanges');
     });
   }
 
@@ -307,45 +308,48 @@ export function FourColumn({
     if (color !== undefined) {
       return color;
     } else {
-      return darkMode ? "#ffffff" : "#000000";
+      return darkMode ? '#ffffff' : '#000000';
     }
   }, [color, darkMode]);
 
   function convertJSONToArray(jsonObj) {
-    console.log("hhhhhh", jsonObj);
+    console.log('hhhhhh', jsonObj);
     const array = Object.keys(jsonObj).map((key) => jsonObj[key]);
-    console.log("Array:", JSON.stringify(array));
+    console.log('Array:', JSON.stringify(array));
     return array;
   }
 
   let tableData = [];
   if (currentState) {
-    if (mode === "edit") {
+    if (mode === 'edit') {
       tableData = resolveReferences(
         component.definition.properties.data.value,
         currentState,
         []
       );
     }
-    const array = convertJSONToArray(testResultData);
-    console.log("parameterDetails", array);
-    if (array?.length > 0) {
-      const parameterDetails = Object.keys(array[0]?.parameterDetails)?.map(
-        (key) => array[0]?.parameterDetails[key]
-      );
-      console.log("parameterDetails", parameterDetails);
-      parameterDetails?.map((result) => {
-        tableData.push({
-          Value: result.paramValue,
-          ParameterName: result.testParamName,
-          Unit: result.unitName,
-          NormalRange: result.ranges?.normalRange,
-          isBold: result?.isBold,
-          isItalic: result?.isItalic,
-          isUnderline: result?.isUnderline,
-        });
+    if (parameterDetails) {
+      console.log('parameterDetailsparameterDetails', parameterDetails);
+
+      Object.values(parameterDetails)?.forEach((result) => {
+        if (result?.testParamId !== undefined && result?.testParamId !== null) {
+          console.log('parameterDetailsjjj2222', result);
+          tableData.push({
+            Value: result.paramValue,
+            ParameterName: result.testParamName,
+            Unit: result.unitName,
+            NormalRange: result.ranges?.normalRange,
+            isBold: result?.isBold,
+            isItalic: result?.isItalic,
+            isUnderline: result?.isUnderline,
+          });
+        }
       });
-      if (!Array.isArray(tableData)) tableData = [];
+    }
+    console.log('parameterDetails tableData', tableData);
+
+    if (!Array.isArray(tableData)) {
+      tableData = [];
     }
   }
 
@@ -427,7 +431,7 @@ export function FourColumn({
     if (
       tableData.length != 0 &&
       component.definition.properties.autogenerateColumns?.value &&
-      mode === "edit"
+      mode === 'edit'
     ) {
       autogenerateColumns(
         tableData,
@@ -499,21 +503,21 @@ export function FourColumn({
       showBulkSelector &&
         hooks.visibleColumns.push((columns) => [
           {
-            id: "selection",
+            id: 'selection',
             Header: ({ getToggleAllPageRowsSelectedProps }) => (
-              <div className="d-flex flex-column align-items-center">
+              <div className='d-flex flex-column align-items-center'>
                 <IndeterminateCheckbox
                   {...getToggleAllPageRowsSelectedProps()}
                 />
               </div>
             ),
             Cell: ({ row }) => (
-              <div className="d-flex flex-column align-items-center">
+              <div className='d-flex flex-column align-items-center'>
                 <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />
               </div>
             ),
             width: 1,
-            columnType: "selector",
+            columnType: 'selector',
           },
           ...columns,
         ]);
@@ -533,33 +537,33 @@ export function FourColumn({
     return [
       {
         column: columnName,
-        direction: state?.sortBy?.[0]?.desc ? "desc" : "asc",
+        direction: state?.sortBy?.[0]?.desc ? 'desc' : 'asc',
       },
     ];
   }, [JSON.stringify(state)]);
 
   useEffect(() => {
     if (!sortOptions) {
-      setExposedVariable("sortApplied", []);
+      setExposedVariable('sortApplied', []);
     }
     if (mounted)
-      setExposedVariable("sortApplied", sortOptions).then(() =>
-        fireEvent("onSort")
+      setExposedVariable('sortApplied', sortOptions).then(() =>
+        fireEvent('onSort')
       );
   }, [sortOptions]);
 
   registerAction(
-    "setPage",
+    'setPage',
     async function (targetPageIndex) {
       setPaginationInternalPageIndex(targetPageIndex);
-      setExposedVariable("pageIndex", targetPageIndex);
+      setExposedVariable('pageIndex', targetPageIndex);
       if (!serverSidePagination && clientSidePagination)
         gotoPage(targetPageIndex - 1);
     },
     [serverSidePagination, clientSidePagination, setPaginationInternalPageIndex]
   );
   registerAction(
-    "selectRow",
+    'selectRow',
     async function (key, value) {
       const item = tableData.filter((item) => item[key] == value);
       const row = rows.find((item, index) => item.original[key] == value);
@@ -570,14 +574,14 @@ export function FourColumn({
         };
         mergeToTableDetails(selectedRowDetails);
         setExposedVariables(selectedRowDetails).then(() => {
-          fireEvent("onRowClicked");
+          fireEvent('onRowClicked');
         });
       }
     },
     [JSON.stringify(tableData), JSON.stringify(tableDetails.selectedRow)]
   );
   registerAction(
-    "deselectRow",
+    'deselectRow',
     async function () {
       if (!_.isEmpty(tableDetails.selectedRow)) {
         const selectedRowDetails = { selectedRow: {}, selectedRowId: {} };
@@ -589,7 +593,7 @@ export function FourColumn({
     [JSON.stringify(tableData), JSON.stringify(tableDetails.selectedRow)]
   );
   registerAction(
-    "discardChanges",
+    'discardChanges',
     async function () {
       if (Object.keys(tableDetails.changeSet || {}).length > 0) {
         setExposedVariables({
@@ -609,7 +613,7 @@ export function FourColumn({
     );
     onComponentOptionChanged(
       component,
-      "selectedRows",
+      'selectedRows',
       selectedRowsOriginalData
     );
   }, [selectedFlatRows.length]);
@@ -626,10 +630,10 @@ export function FourColumn({
   useEffect(() => {
     const pageData = page.map((row) => row.original);
     onComponentOptionsChanged(component, [
-      ["currentPageData", pageData],
-      ["currentData", data],
-      ["selectedRow", []],
-      ["selectedRowId", null],
+      ['currentPageData', pageData],
+      ['currentData', data],
+      ['selectedRow', []],
+      ['selectedRowId', null],
     ]);
   }, [tableData.length, tableDetails.changeSet, page, data]);
 
@@ -640,7 +644,7 @@ export function FourColumn({
     };
     if (!state.columnResizing.isResizingColumn && !_.isEmpty(newColumnSizes)) {
       changeCanDrag(true);
-      paramUpdated(id, "columnSizes", {
+      paramUpdated(id, 'columnSizes', {
         value: newColumnSizes,
       });
     } else {
@@ -659,7 +663,7 @@ export function FourColumn({
 
   useEffect(() => {
     if (
-      rowDetails?.hoveredRowId !== "" &&
+      rowDetails?.hoveredRowId !== '' &&
       hoverRef.current !== rowDetails?.hoveredRowId
     )
       rowHover();
@@ -667,7 +671,7 @@ export function FourColumn({
 
   useEffect(() => {
     setExposedVariable(
-      "filteredData",
+      'filteredData',
       globalFilteredRows.map((row) => row.original)
     );
   }, [JSON.stringify(globalFilteredRows.map((row) => row.original))]);
@@ -675,45 +679,45 @@ export function FourColumn({
   const rowHover = () => {
     mergeToTableDetails(rowDetails);
     setExposedVariables(rowDetails).then(() => {
-      fireEvent("onRowHovered");
+      fireEvent('onRowHovered');
     });
   };
   useEffect(() => {
     if (_.isEmpty(changeSet)) {
-      setExposedVariable("updatedData", tableData);
+      setExposedVariable('updatedData', tableData);
     }
   }, [JSON.stringify(changeSet)]);
 
   function downlaodPopover() {
     return (
       <Popover
-        id="popover-basic"
-        data-cy="popover-card"
+        id='popover-basic'
+        data-cy='popover-card'
         className={`${
-          darkMode && "popover-dark-themed theme-dark"
+          darkMode && 'popover-dark-themed theme-dark'
         } shadow table-widget-download-popup`}
-        placement="bottom"
+        placement='bottom'
       >
         <Popover.Content>
-          <div className="d-flex flex-column">
+          <div className='d-flex flex-column'>
             <span
               data-cy={`option-download-CSV`}
-              className="cursor-pointer"
-              onClick={() => exportData("csv", true)}
+              className='cursor-pointer'
+              onClick={() => exportData('csv', true)}
             >
               Download as CSV
             </span>
             <span
               data-cy={`option-download-execel`}
-              className="pt-2 cursor-pointer"
-              onClick={() => exportData("xlsx", true)}
+              className='pt-2 cursor-pointer'
+              onClick={() => exportData('xlsx', true)}
             >
               Download as Excel
             </span>
             <span
               data-cy={`option-download-pdf`}
-              className="pt-2 cursor-pointer"
-              onClick={() => exportData("pdf", true)}
+              className='pt-2 cursor-pointer'
+              onClick={() => exportData('pdf', true)}
             >
               Download as PDF
             </span>
@@ -726,12 +730,12 @@ export function FourColumn({
     <div
       data-cy={`draggable-widget-${String(component.name).toLowerCase()}`}
       data-disabled={parsedDisabledState}
-      className="card jet-table"
+      className='card jet-table'
       style={{
         width: `100%`,
         height: `${height}px`,
-        display: parsedWidgetVisibility ? "" : "none",
-        overflow: "hidden",
+        display: parsedWidgetVisibility ? '' : 'none',
+        overflow: 'hidden',
         borderRadius: Number.parseFloat(borderRadius),
       }}
       onClick={(event) => {
@@ -742,11 +746,11 @@ export function FourColumn({
     >
       {/* Show top bar unless search box is disabled and server pagination is enabled */}
 
-      <div className="table-responsive jet-data-table">
+      <div className='table-responsive jet-data-table'>
         <table
           {...getTableProps()}
           className={`table table-vcenter table-nowrap ${tableType} ${
-            darkMode && "table-dark"
+            darkMode && 'table-dark'
           }`}
           style={computedStyles}
         >
@@ -765,8 +769,8 @@ export function FourColumn({
                     dragUpdateObj.destination.index;
 
                   if (
-                    typeof sIndex === "number" &&
-                    typeof dIndex === "number"
+                    typeof sIndex === 'number' &&
+                    typeof dIndex === 'number'
                   ) {
                     colOrder.splice(sIndex, 1);
                     colOrder.splice(dIndex, 0, dragUpdateObj.draggableId);
@@ -774,14 +778,14 @@ export function FourColumn({
                   }
                 }}
               >
-                <Droppable droppableId="droppable" direction="horizontal">
+                <Droppable droppableId='droppable' direction='horizontal'>
                   {(droppableProvided, snapshot) => (
                     <tr
                       ref={droppableProvided.innerRef}
                       key={index}
                       {...headerGroup.getHeaderGroupProps()}
-                      tabIndex="0"
-                      className="tr"
+                      tabIndex='0'
+                      className='tr'
                     >
                       {headerGroup.headers.map((column, index) => (
                         <Draggable
@@ -798,9 +802,9 @@ export function FourColumn({
                                 className={
                                   column.isSorted
                                     ? column.isSortedDesc
-                                      ? "sort-desc th"
-                                      : "sort-asc th"
-                                    : "th"
+                                      ? 'sort-desc th'
+                                      : 'sort-asc th'
+                                    : 'th'
                                 }
                               >
                                 <div
@@ -808,7 +812,7 @@ export function FourColumn({
                                     column.exportValue
                                   )
                                     .toLowerCase()
-                                    .replace(/\s+/g, "-")}`}
+                                    .replace(/\s+/g, '-')}`}
                                   {...column.getSortByToggleProps()}
                                   {...provided.draggableProps}
                                   {...provided.dragHandleProps}
@@ -822,17 +826,17 @@ export function FourColumn({
                                     fontFamily: globalFontVariant,
                                   }}
                                 >
-                                  {column.render("Header")}
+                                  {column.render('Header')}
                                 </div>
                                 <div
                                   onClick={(e) => {
                                     e.preventDefault();
                                     e.stopPropagation();
                                   }}
-                                  draggable="true"
+                                  draggable='true'
                                   {...column.getResizerProps()}
                                   className={`resizer ${
-                                    column.isResizing ? "isResizing" : ""
+                                    column.isResizing ? 'isResizing' : ''
                                   }`}
                                 />
                               </th>
@@ -848,8 +852,8 @@ export function FourColumn({
           </thead>
 
           {!loadingState && page.length === 0 && (
-            <center className="w-100">
-              <div className="py-5"> no data </div>
+            <center className='w-100'>
+              <div className='py-5'> no data </div>
             </center>
           )}
 
@@ -866,8 +870,8 @@ export function FourColumn({
                     className={`table-row ${
                       highlightSelectedRow &&
                       row.id === tableDetails.selectedRowId
-                        ? "selected"
-                        : ""
+                        ? 'selected'
+                        : ''
                     }`}
                     {...row.getRowProps()}
                     onClick={(e) => {
@@ -878,7 +882,7 @@ export function FourColumn({
                       };
                       mergeToTableDetails(selectedRowDetails);
                       setExposedVariables(selectedRowDetails).then(() => {
-                        fireEvent("onRowClicked");
+                        fireEvent('onRowClicked');
                       });
                     }}
                     onMouseOver={(e) => {
@@ -893,7 +897,7 @@ export function FourColumn({
                     }}
                     onMouseLeave={(e) => {
                       hoverAdded &&
-                        setRowDetails({ hoveredRowId: "", hoveredRow: "" });
+                        setRowDetails({ hoveredRowId: '', hoveredRow: '' });
                     }}
                   >
                     {row.cells.map((cell, index) => {
@@ -911,11 +915,11 @@ export function FourColumn({
                             ) !== undefined
                           ) {
                             cellProps.style.backgroundColor = darkMode
-                              ? "#1c252f"
-                              : "#ffffde";
-                            cellProps.style["--tblr-table-accent-bg"] = darkMode
-                              ? "#1c252f"
-                              : "#ffffde";
+                              ? '#1c252f'
+                              : '#ffffde';
+                            cellProps.style['--tblr-table-accent-bg'] = darkMode
+                              ? '#1c252f'
+                              : '#ffffde';
                           }
                         }
                       }
@@ -930,7 +934,7 @@ export function FourColumn({
                       const cellBackgroundColor = resolveReferences(
                         cell.column?.cellBackgroundColor,
                         currentState,
-                        "",
+                        '',
                         {
                           cellValue,
                           rowData,
@@ -939,7 +943,7 @@ export function FourColumn({
                       const cellTextColor = resolveReferences(
                         cell.column?.textColor,
                         currentState,
-                        "",
+                        '',
                         {
                           cellValue,
                           rowData,
@@ -949,59 +953,59 @@ export function FourColumn({
                         // Does not require key as its already being passed by react-table via cellProps
                         // eslint-disable-next-line react/jsx-key
                         <td
-                          data-cy={`${cell.column.columnType ?? ""}${String(
-                            cell.column.id === "rightActions" ||
-                              cell.column.id === "leftActions"
+                          data-cy={`${cell.column.columnType ?? ''}${String(
+                            cell.column.id === 'rightActions' ||
+                              cell.column.id === 'leftActions'
                               ? cell.column.id
-                              : ""
+                              : ''
                           )}${String(
-                            cellValue ?? ""
+                            cellValue ?? ''
                           ).toLocaleLowerCase()}-cell-${index}`}
                           className={cx(
-                            `${wrapAction ? wrapAction : "wrap"}-wrapper`,
+                            `${wrapAction ? wrapAction : 'wrap'}-wrapper`,
                             {
-                              "has-actions":
-                                cell.column.id === "rightActions" ||
-                                cell.column.id === "leftActions",
-                              "has-text":
-                                cell.column.columnType === "text" ||
+                              'has-actions':
+                                cell.column.id === 'rightActions' ||
+                                cell.column.id === 'leftActions',
+                              'has-text':
+                                cell.column.columnType === 'text' ||
                                 cell.column.isEditable,
-                              "has-dropdown":
-                                cell.column.columnType === "dropdown",
-                              "has-multiselect":
-                                cell.column.columnType === "multiselect",
-                              "has-datepicker":
-                                cell.column.columnType === "datepicker",
-                              "align-items-center flex-column":
-                                cell.column.columnType === "selector",
+                              'has-dropdown':
+                                cell.column.columnType === 'dropdown',
+                              'has-multiselect':
+                                cell.column.columnType === 'multiselect',
+                              'has-datepicker':
+                                cell.column.columnType === 'datepicker',
+                              'align-items-center flex-column':
+                                cell.column.columnType === 'selector',
                               [cellSize]: true,
                             }
                           )}
                           {...cellProps}
                           style={{
                             ...cellProps.style,
-                            backgroundColor: cellBackgroundColor ?? "inherit",
+                            backgroundColor: cellBackgroundColor ?? 'inherit',
                           }}
                         >
                           <div
                             className={`td-container ${
-                              cell.column.columnType === "image" &&
-                              "jet-table-image-column"
+                              cell.column.columnType === 'image' &&
+                              'jet-table-image-column'
                             } ${
-                              cell.column.columnType !== "image" &&
-                              "w-100 h-100"
+                              cell.column.columnType !== 'image' &&
+                              'w-100 h-100'
                             }`}
                           >
                             <GenerateEachCellValue
                               cellValue={cellValue}
                               globalFilter={state.globalFilter}
-                              cellRender={cell.render("Cell")}
+                              cellRender={cell.render('Cell')}
                               rowChangeSet={rowChangeSet}
                               isEditable={cell.column.isEditable}
                               columnType={cell.column.columnType}
                               isColumnTypeAction={[
-                                "rightActions",
-                                "leftActions",
+                                'rightActions',
+                                'leftActions',
                               ].includes(cell.column.id)}
                               cellTextColor={cellTextColor}
                               cell={cell}
@@ -1019,9 +1023,9 @@ export function FourColumn({
           )}
         </table>
         {loadingState === true && (
-          <div style={{ width: "100%" }} className="p-2">
+          <div style={{ width: '100%' }} className='p-2'>
             <center>
-              <div className="spinner-border mt-5" role="status"></div>
+              <div className='spinner-border mt-5' role='status'></div>
             </center>
           </div>
         )}
@@ -1029,9 +1033,9 @@ export function FourColumn({
       {(clientSidePagination ||
         serverSidePagination ||
         Object.keys(tableDetails.changeSet || {}).length > 0) && (
-        <div className="card-footer d-flex align-items-center jet-table-footer justify-content-center">
-          <div className="table-footer row gx-0">
-            <div className="col">
+        <div className='card-footer d-flex align-items-center jet-table-footer justify-content-center'>
+          <div className='table-footer row gx-0'>
+            <div className='col'>
               {(clientSidePagination || serverSidePagination) && (
                 <Pagination
                   lastActivePageIndex={pageIndex}
@@ -1048,16 +1052,16 @@ export function FourColumn({
                 />
               )}
             </div>
-            <div className="col d-flex justify-content-end">
+            <div className='col d-flex justify-content-end'>
               {showBulkUpdateActions &&
               Object.keys(tableDetails.changeSet || {}).length > 0 ? (
                 <>
                   <button
                     className={`btn btn-primary btn-sm mx-2 ${
-                      tableDetails.isSavingChanges ? "btn-loading" : ""
+                      tableDetails.isSavingChanges ? 'btn-loading' : ''
                     }`}
                     onClick={() =>
-                      onEvent("onBulkUpdate", { component }).then(() => {
+                      onEvent('onBulkUpdate', { component }).then(() => {
                         handleChangesSaved();
                       })
                     }
@@ -1066,7 +1070,7 @@ export function FourColumn({
                     Save Changes
                   </button>
                   <button
-                    className="btn btn-light btn-sm"
+                    className='btn btn-light btn-sm'
                     onClick={() => handleChangesDiscarded()}
                     data-cy={`table-button-discard-changes`}
                   >

@@ -1,42 +1,42 @@
 /** @format */
 
-import React, { useEffect, useState, useMemo, useContext, useRef } from "react";
-import { Button } from "./Components/Button";
-import { Image } from "./Components/Image";
-import { Text } from "./Components/Text";
-import { Table } from "./Components/Table/Table";
-import { TwoColumn } from "./Components/TwoColumn/TwoColumn";
-import { ThreeColumn } from "./Components/ThreeColumn/ThreeColumn";
-import { FourColumn } from "./Components/FourColumn/FourColumn";
-import { FiveColumn } from "./Components/FiveColumn/FiveColumn";
+import React, { useEffect, useState, useMemo, useContext, useRef } from 'react';
+import { Button } from './Components/Button';
+import { Image } from './Components/Image';
+import { Text } from './Components/Text';
+import { Table } from './Components/Table/Table';
+import { TwoColumn } from './Components/TwoColumn/TwoColumn';
+import { ThreeColumn } from './Components/ThreeColumn/ThreeColumn';
+import { FourColumn } from './Components/FourColumn/FourColumn';
+import { FiveColumn } from './Components/FiveColumn/FiveColumn';
 
-import { TextInput } from "./Components/TextInput";
-import { NumberInput } from "./Components/NumberInput";
-import { DropDown } from "./Components/DropDown";
-import { Checkbox } from "./Components/Checkbox";
-import { Datepicker } from "./Components/Datepicker";
-import { RadioButton } from "./Components/RadioButton";
-import { Divider } from "./Components/Divider";
-import { renderTooltip, getComponentName } from "@/_helpers/appUtils";
-import { ReportResultTable } from "./Components/ReportResultTable/ReportResultTable";
-import { VerticalDivider } from "./Components/verticalDivider";
-import { TestList } from "./Components/TestList";
-import { DemographicField } from "./Components/DemographicField";
-import { MediaLogos } from "./Components/MediaLogos";
-import OverlayTrigger from "react-bootstrap/OverlayTrigger";
-import "@/_styles/custom.scss";
-import { validateProperties } from "./component-properties-validation";
-import { validateWidget } from "@/_helpers/utils";
-import { componentTypes } from "./WidgetManager/components";
+import { TextInput } from './Components/TextInput';
+import { NumberInput } from './Components/NumberInput';
+import { DropDown } from './Components/DropDown';
+import { Checkbox } from './Components/Checkbox';
+import { Datepicker } from './Components/Datepicker';
+import { RadioButton } from './Components/RadioButton';
+import { Divider } from './Components/Divider';
+import { renderTooltip, getComponentName } from '@/_helpers/appUtils';
+import { ReportResultTable } from './Components/ReportResultTable/ReportResultTable';
+import { VerticalDivider } from './Components/verticalDivider';
+import { TestList } from './Components/TestList';
+import { DemographicField } from './Components/DemographicField';
+import { MediaLogos } from './Components/MediaLogos';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import '@/_styles/custom.scss';
+import { validateProperties } from './component-properties-validation';
+import { validateWidget } from '@/_helpers/utils';
+import { componentTypes } from './WidgetManager/components';
 import {
   resolveProperties,
   resolveStyles,
   resolveGeneralProperties,
   resolveGeneralStyles,
-} from "./component-properties-resolution";
-import _ from "lodash";
-import { EditorContext } from "@/Editor/Context/EditorContextWrapper";
-import { useTranslation } from "react-i18next";
+} from './component-properties-resolution';
+import _ from 'lodash';
+import { EditorContext } from '@/Editor/Context/EditorContextWrapper';
+import { useTranslation } from 'react-i18next';
 
 const AllComponents = {
   Button,
@@ -96,13 +96,14 @@ export const Box = function Box({
   customMode,
   testResultData,
   patientData,
+  parameterDetails,
 }) {
   const { t } = useTranslation();
-  const backgroundColor = yellow ? "yellow" : "";
+  const backgroundColor = yellow ? 'yellow' : '';
 
   let styles = {
-    height: "100%",
-    padding: "1px",
+    height: '100%',
+    padding: '1px',
   };
 
   if (inCanvas) {
@@ -129,10 +130,11 @@ export const Box = function Box({
     customResolvables
   );
   const [validatedProperties, propertyErrors] =
-    mode === "edit" && component.validate
+    mode === 'edit' && component.validate
       ? validateProperties(resolvedProperties, componentMeta.properties)
       : [resolvedProperties, []];
 
+  console.log('validatedProperties', validatedProperties);
   const resolvedStyles = resolveStyles(
     component,
     currentState,
@@ -140,7 +142,7 @@ export const Box = function Box({
     customResolvables
   );
   const [validatedStyles, styleErrors] =
-    mode === "edit" && component.validate
+    mode === 'edit' && component.validate
       ? validateProperties(resolvedStyles, componentMeta.styles)
       : [resolvedStyles, []];
   validatedStyles.visibility =
@@ -153,7 +155,7 @@ export const Box = function Box({
     customResolvables
   );
   const [validatedGeneralProperties, generalPropertiesErrors] =
-    mode === "edit" && component.validate
+    mode === 'edit' && component.validate
       ? validateProperties(resolvedGeneralProperties, componentMeta.general)
       : [resolvedGeneralProperties, []];
 
@@ -166,7 +168,7 @@ export const Box = function Box({
   resolvedStyles.visibility =
     resolvedStyles.visibility !== false ? true : false;
   const [validatedGeneralStyles, generalStylesErrors] =
-    mode === "edit" && component.validate
+    mode === 'edit' && component.validate
       ? validateProperties(resolvedGeneralStyles, componentMeta.generalStyles)
       : [resolvedGeneralStyles, []];
 
@@ -189,9 +191,9 @@ export const Box = function Box({
         `${componentName} - ${error.property}`,
         {
           page: currentPage,
-          type: "component",
-          kind: "component",
-          strace: "page_level",
+          type: 'component',
+          kind: 'component',
+          strace: 'page_level',
           data: { message: `${error.message}`, status: true },
           resolvedProperties: resolvedProperties,
           effectiveProperties: validatedProperties,
@@ -219,7 +221,7 @@ export const Box = function Box({
   }, [JSON.stringify({ resolvedProperties, resolvedStyles })]);
 
   useEffect(() => {
-    if (customResolvables && !readOnly && mode === "edit") {
+    if (customResolvables && !readOnly && mode === 'edit') {
       const newCustomResolvable = {};
       newCustomResolvable[id] = { ...customResolvables };
       exposeToCodeHinter((prevState) => ({
@@ -237,7 +239,7 @@ export const Box = function Box({
   let exposedVariables = currentState?.components[component.name] ?? {};
 
   const fireEvent = (eventName, options) => {
-    if (mode === "edit" && eventName === "onClick") {
+    if (mode === 'edit' && eventName === 'onClick') {
       onComponentClick(id, component);
     }
     onEvent(eventName, {
@@ -252,19 +254,19 @@ export const Box = function Box({
       ...{ validationObject: component.definition.validation, currentState },
       customResolveObjects: customResolvables,
     });
-  if (component.component === "MediaLogos")
+  if (component.component === 'MediaLogos')
     console.log(
-      "inCanvasinCanvas",
+      'inCanvasinCanvas',
       component.definition.properties.source.value
     );
   return (
     <OverlayTrigger
-      placement={inCanvas ? "auto" : "top"}
+      placement={inCanvas ? 'auto' : 'top'}
       delay={{ show: 500, hide: 0 }}
       trigger={
         inCanvas && !validatedGeneralProperties.tooltip?.toString().trim()
           ? null
-          : ["hover", "focus"]
+          : ['hover', 'focus']
       }
       overlay={(props) =>
         renderTooltip({
@@ -284,7 +286,7 @@ export const Box = function Box({
           backgroundColor,
           boxShadow: validatedGeneralStyles?.boxShadow,
         }}
-        role={preview ? "BoxPreview" : "Box"}
+        role={preview ? 'BoxPreview' : 'Box'}
       >
         {inCanvas ? (
           !resetComponent ? (
@@ -307,9 +309,10 @@ export const Box = function Box({
               properties={validatedProperties}
               exposedVariables={exposedVariables}
               styles={validatedStyles}
-              setExposedVariable={(variable, value) =>
-                onComponentOptionChanged(component, variable, value, id)
-              }
+              setExposedVariable={(variable, value) => {
+                console.log('variable, value', variable, value);
+                onComponentOptionChanged(component, variable, value, id);
+              }}
               setExposedVariables={(variableSet) =>
                 onComponentOptionsChanged(
                   component,
@@ -377,42 +380,43 @@ export const Box = function Box({
               customMode={customMode}
               testResultData={testResultData}
               patientData={patientData}
+              parameterDetails={parameterDetails}
             ></ComponentToRender>
           ) : (
             <></>
           )
         ) : (
           <div
-            className="m-1"
+            className='m-1'
             style={{
-              height: "76px",
-              width: "76px",
-              marginLeft: "18px",
+              height: '76px',
+              width: '76px',
+              marginLeft: '18px',
             }}
           >
             <div
-              className="component-image-holder p-2 d-flex flex-column justify-content-center"
-              style={{ height: "100%" }}
+              className='component-image-holder p-2 d-flex flex-column justify-content-center'
+              style={{ height: '100%' }}
               data-cy={`widget-list-box-${component.displayName
                 .toLowerCase()
-                .replace(/\s+/g, "-")}`}
+                .replace(/\s+/g, '-')}`}
             >
               <center>
-                {component.component === "MediaLogos" ? (
+                {component.component === 'MediaLogos' ? (
                   <img src={component.definition.properties.source.value} />
                 ) : (
                   <div
                     style={{
-                      width: "20px",
-                      height: "20px",
-                      backgroundSize: "contain",
+                      width: '20px',
+                      height: '20px',
+                      backgroundSize: 'contain',
                       backgroundImage: `url(assets/images/icons/widgets/${component.name.toLowerCase()}.svg)`,
-                      backgroundRepeat: "no-repeat",
+                      backgroundRepeat: 'no-repeat',
                     }}
                   ></div>
                 )}
               </center>
-              <span className="component-title">
+              <span className='component-title'>
                 {t(`${component.name}`, component.displayName)}
               </span>
             </div>

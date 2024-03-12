@@ -1,18 +1,21 @@
 /** @format */
-@use "sass:math";
-@import "./tabler.scss";
-@import "./colors.scss";
-@import "./z-index.scss";
-@import "./mixins.scss";
-@import "./queryManager.scss";
-@import "./onboarding.scss";
-@import "./components.scss";
+@use 'sass:math';
+@import './tabler.scss';
+@import './colors.scss';
+@import './z-index.scss';
+@import './mixins.scss';
+@import './queryManager.scss';
+@import './onboarding.scss';
+@import './components.scss';
 
 // variables
 $border-radius: 4px;
 
 body {
-  font-family: "Roboto", sans-serif;
+  font-family: 'Roboto', sans-serif;
+}
+@page {
+  margin: 1cm; /* Adjust this value as needed */
 }
 
 input,
@@ -499,11 +502,13 @@ button {
     }
 
     .canvas-container {
+      margin: auto !important;
+      width: 100%;
+      max-width: 794px;
+      max-height: 1134px;
       height: 100%;
-      top: 50px;
-      position: fixed;
-      right: 340px;
-      left: 35px;
+      position: relative;
+      top: 40px;
       overflow-y: auto;
       overflow-x: scroll;
       -webkit-box-pack: center;
@@ -1266,7 +1271,7 @@ button {
 }
 
 .select-search__value::after {
-  content: "";
+  content: '';
   display: inline-block;
   position: absolute;
   top: calc(50% - 9px);
@@ -1342,7 +1347,7 @@ button {
   background: #fff;
   border: none;
   outline: none;
-  font-family: "Roboto", sans-serif;
+  font-family: 'Roboto', sans-serif;
   font-size: 14px;
   text-align: left;
   cursor: pointer;
@@ -1470,7 +1475,7 @@ button {
 }
 
 .select-search-dark__value::after {
-  content: "";
+  content: '';
   display: inline-block;
   position: absolute;
   top: calc(50% - 4px);
@@ -1540,7 +1545,7 @@ button {
   color: #fff !important;
   border: none;
   outline: none;
-  font-family: "Roboto", sans-serif;
+  font-family: 'Roboto', sans-serif;
   font-size: 14px;
   text-align: left;
   cursor: pointer;
@@ -1781,7 +1786,7 @@ button {
   }
 
   th:after {
-    content: " ";
+    content: ' ';
     position: relative;
     height: 0;
     width: 0;
@@ -2150,7 +2155,7 @@ body {
 .RichEditor-root {
   background: #fff;
   border: 1px solid #ddd;
-  font-family: "Georgia", serif;
+  font-family: 'Georgia', serif;
   font-size: 14px;
   padding: 15px;
   height: 100%;
@@ -2181,7 +2186,7 @@ body {
 .RichEditor-editor .RichEditor-blockquote {
   border-left: 5px solid #eee;
   color: #666;
-  font-family: "Hoefler Text", "Georgia", serif;
+  font-family: 'Hoefler Text', 'Georgia', serif;
   font-style: italic;
   margin: 16px 0;
   padding: 10px 20px;
@@ -2189,13 +2194,13 @@ body {
 
 .RichEditor-editor .public-DraftStyleDefault-pre {
   background-color: rgba(0, 0, 0, 0.05);
-  font-family: "Inconsolata", "Menlo", "Consolas", monospace;
+  font-family: 'Inconsolata', 'Menlo', 'Consolas', monospace;
   font-size: 16px;
   padding: 20px;
 }
 
 .RichEditor-controls {
-  font-family: "Helvetica", sans-serif;
+  font-family: 'Helvetica', sans-serif;
   font-size: 14px;
   margin-bottom: 5px;
   user-select: none;
@@ -2350,7 +2355,7 @@ body {
 
 .codehinter-query-editor-input {
   .CodeMirror {
-    font-family: "Roboto", sans-serif;
+    font-family: 'Roboto', sans-serif;
     color: #263136;
     overflow: hidden;
     height: 50px !important;
@@ -2384,7 +2389,7 @@ body {
 
   .form-control {
     .CodeMirror {
-      font-family: "Roboto", sans-serif;
+      font-family: 'Roboto', sans-serif;
       height: 50px !important;
       max-height: 300px;
     }
@@ -2405,7 +2410,7 @@ body {
 }
 
 .CodeMirror-hints {
-  font-family: "Roboto", sans-serif;
+  font-family: 'Roboto', sans-serif;
   font-size: 0.9rem;
   padding: 0px;
   z-index: $hints-z-index;
@@ -2453,7 +2458,7 @@ hr {
 }
 
 .codehinter-default-input {
-  font-family: "Roboto", sans-serif;
+  font-family: 'Roboto', sans-serif;
   padding: 0.0475rem 0rem !important;
   display: block;
   width: 100%;
@@ -2471,7 +2476,7 @@ hr {
   height: 30px;
 
   .CodeMirror {
-    font-family: "Roboto", sans-serif;
+    font-family: 'Roboto', sans-serif;
   }
 
   .CodeMirror-placeholder {
@@ -2482,7 +2487,7 @@ hr {
 }
 
 .codehinter-query-editor-input {
-  font-family: "Roboto", sans-serif;
+  font-family: 'Roboto', sans-serif;
   padding: 0.1775rem 0rem;
   display: block;
   width: 100%;
@@ -2540,7 +2545,7 @@ hr {
         width: 2px;
         background-color: rgba(255, 255, 255, 0.8);
         opacity: 0.5;
-        content: "";
+        content: '';
         vertical-align: middle;
       }
     }
@@ -2674,7 +2679,7 @@ hr {
   }
 
   .toggle-icon:after {
-    content: "";
+    content: '';
     display: inline-block;
     vertical-align: 0.306em;
     width: 0.46em;
@@ -2836,7 +2841,7 @@ input:focus-visible {
   border-bottom-left-radius: 3px;
   border-bottom-right-radius: 3px;
   box-sizing: border-box;
-  font-family: "Source Code Pro", monospace;
+  font-family: 'Source Code Pro', monospace;
 
   .heading {
     font-weight: 700;
@@ -3420,7 +3425,7 @@ input:focus-visible {
   border: 0 !important;
 }
 
-input[type="text"] {
+input[type='text'] {
   outline-color: #dadcde !important;
 }
 
@@ -4092,14 +4097,14 @@ input[type="text"] {
 }
 
 // close icon in inpector
-[data-rb-event-key="close-inpector"] {
+[data-rb-event-key='close-inpector'] {
   position: absolute;
   right: -80px;
   background-color: #232e3c !important;
   width: 10% !important;
 }
 
-[data-rb-event-key="close-inpector-light"] {
+[data-rb-event-key='close-inpector-light'] {
   position: absolute;
   right: -80px;
   background-color: #fff !important;
@@ -4547,7 +4552,7 @@ input[type="text"] {
   }
 
   .tooltiptext::after {
-    content: "";
+    content: '';
     position: absolute;
     bottom: 100%;
     left: 50%;
@@ -4712,7 +4717,7 @@ input[type="text"] {
   pointer-events: none;
 
   &:after {
-    content: "";
+    content: '';
     display: inline-block;
     vertical-align: text-bottom;
     border: 1.5px solid currentColor;
@@ -5114,7 +5119,7 @@ div#driver-page-overlay {
   .title-with-toggle {
     width: 100%;
 
-    input[type="checkbox"] {
+    input[type='checkbox'] {
       /* Double-sized Checkboxes */
       -ms-transform: scale(1.5);
       /* IE */
@@ -5369,7 +5374,7 @@ div#driver-page-overlay {
 }
 
 .widget-style-field-header {
-  font-family: "Inter";
+  font-family: 'Inter';
   font-style: normal;
   font-weight: 500;
   font-size: 12px;
@@ -5742,7 +5747,7 @@ div#driver-page-overlay {
 
 .gg-album::after,
 .gg-album::before {
-  content: "";
+  content: '';
   display: block;
   box-sizing: border-box;
   position: absolute;

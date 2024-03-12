@@ -112,13 +112,19 @@ export default function EditorHeader({
         display: "flex",
         gap: "10px",
         justifyContent: "space-between",
+        position:'fixed',
+        zIndex:'1000',
+        backgroundColor:"#369",
+        width:"100%",
+        padding:"7px 0px"
       }}
     >
       <div
         style={{
-          display: "flex",
+          display:'inline-flex',
           gap: "10px",
-          marginLeft: "60px",
+          marginLeft: "20px",
+          color:"#fff"
         }}
       >
         Template Name :

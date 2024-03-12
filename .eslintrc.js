@@ -34,7 +34,7 @@ module.exports = {
         semi: true,
         trailingComma: 'es5',
         printWidth: 120,
-        singleQuote: true,
+        singleQuote: auto,
         arrowParens: 'always',
         proseWrap: 'preserve',
       },

@@ -6,25 +6,25 @@ import React, {
   useEffect,
   useRef,
   useMemo,
-} from "react";
-import cx from "classnames";
-import { useDrop, useDragLayer } from "react-dnd";
-import { ItemTypes } from "./ItemTypes";
-import { DraggableBox } from "./DraggableBox";
-import update from "immutability-helper";
-import { componentTypes } from "./WidgetManager/components";
-import { resolveReferences } from "@/_helpers/utils";
-import useRouter from "@/_hooks/use-router";
-import Comments from "./Comments";
-import config from "config";
-import Spinner from "@/_ui/Spinner";
-import { useHotkeys } from "react-hotkeys-hook";
-const produce = require("immer").default;
-import { addComponents, addNewWidgetToTheEditor } from "@/_helpers/appUtils";
-import { useHistory } from "react-router-dom";
-import axios from "axios";
-import { toast } from "react-hot-toast";
-import { Form } from "@progress/kendo-react-all";
+} from 'react';
+import cx from 'classnames';
+import { useDrop, useDragLayer } from 'react-dnd';
+import { ItemTypes } from './ItemTypes';
+import { DraggableBox } from './DraggableBox';
+import update from 'immutability-helper';
+import { componentTypes } from './WidgetManager/components';
+import { resolveReferences } from '@/_helpers/utils';
+import useRouter from '@/_hooks/use-router';
+import Comments from './Comments';
+import config from 'config';
+import Spinner from '@/_ui/Spinner';
+import { useHotkeys } from 'react-hotkeys-hook';
+const produce = require('immer').default;
+import { addComponents, addNewWidgetToTheEditor } from '@/_helpers/appUtils';
+import { useHistory } from 'react-router-dom';
+import axios from 'axios';
+import { toast } from 'react-hot-toast';
+import { Form } from '@progress/kendo-react-all';
 
 export const Container = ({
   canvasWidth,
@@ -62,12 +62,13 @@ export const Container = ({
   testResultData2,
   patientData,
   handlePrint,
+  parameterDetails,
 }) => {
   const styles = {
-    width: currentLayout === "mobile" ? deviceWindowWidth : "100%",
+    width: currentLayout === 'mobile' ? deviceWindowWidth : '100%',
     maxWidth: `${canvasWidth}px`,
     height: `${canvasHeight}px`,
-    position: "absolute",
+    position: 'absolute',
     backgroundSize: `${canvasWidth / 43}px 10px`,
   };
 
@@ -89,20 +90,22 @@ export const Container = ({
     useState({});
 
   useEffect(() => {
-    document.addEventListener("keydown", function (event) {
-      if (event.ctrlKey && event.key === "p") {
+    document.addEventListener('keydown', function (event) {
+      if (event.ctrlKey && event.key === 'p') {
         handlePrint();
       }
     });
   }, []);
 
+  console.log('testIdtestResultData2', currentState);
+
   function onSubmitPatientRegistrationFormData() {
     console.log(
-      "onSubmitPatientRegistrationFormData",
+      'onSubmitPatientRegistrationFormData',
       PatientRegistrationFormData
     );
 
-    if (mode === "view") {
+    if (mode === 'view') {
       const payload = {
         patientId: history.location.state?.patientId
           ? history.location.state.patientId
@@ -110,52 +113,52 @@ export const Container = ({
         patientDescription: PatientRegistrationFormData,
       };
       if (history.location.state?.patientId) {
-        console.log("edit called", payload);
+        console.log('edit called', payload);
 
         axios
           .post(
-            "https://elabnextapi-dev.azurewebsites.net/api/PatientRegistration/UpdatePatientRegistration",
+            'https://elabnextapi-dev.azurewebsites.net/api/PatientRegistration/UpdatePatientRegistration',
             payload
           )
           .then(() => {
             setPatientRegistrationFormData({});
-            toast.success("Updated Successfully");
+            toast.success('Updated Successfully');
             history.push({
-              pathname: "/registration-page",
+              pathname: '/registration-page',
               state: {},
             });
             window.location.reload();
           })
           .catch((err) =>
-            console.log("error saveRegistrationPageFormData", err)
+            console.log('error saveRegistrationPageFormData', err)
           );
       } else {
-        console.log("create called", payload);
+        console.log('create called', payload);
         axios
           .post(
-            "https://elabnextapi-dev.azurewebsites.net/api/PatientRegistration/SavePatientRegistration",
+            'https://elabnextapi-dev.azurewebsites.net/api/PatientRegistration/SavePatientRegistration',
             payload
           )
           .then(() => {
             setPatientRegistrationFormData({});
-            toast.success("Created Successfully");
+            toast.success('Created Successfully');
             history.push({
-              pathname: "/registration-page",
+              pathname: '/registration-page',
               state: {},
             });
             window.location.reload();
           })
           .catch((err) =>
-            console.log("error saveRegistrationPageFormData", err)
+            console.log('error saveRegistrationPageFormData', err)
           );
       }
     }
   }
 
-  useHotkeys("⌘+z, control+z", () => handleUndo());
-  useHotkeys("⌘+shift+z, control+shift+z", () => handleRedo());
+  useHotkeys('⌘+z, control+z', () => handleUndo());
+  useHotkeys('⌘+shift+z, control+shift+z', () => handleRedo());
   useHotkeys(
-    "⌘+v, control+v",
+    '⌘+v, control+v',
     () => {
       if (isContainerFocused) {
         navigator.clipboard.readText().then((cliptext) => {
@@ -180,17 +183,19 @@ export const Container = ({
       setPatientRegistrationFormData(patientDetailsEditData);
   }, [patientDetailsEditData]);
 
+  console.log('firsttestResultData2', testResultData2);
+
   useEffect(() => {
     const handleClick = (e) => {
       if (
         canvasRef.current.contains(e.target) ||
-        document.getElementById("modal-container")?.contains(e.target)
+        document.getElementById('modal-container')?.contains(e.target)
       ) {
-        const elem = e.target.closest(".real-canvas").getAttribute("id");
-        if (elem === "real-canvas") {
+        const elem = e.target.closest('.real-canvas').getAttribute('id');
+        if (elem === 'real-canvas') {
           focusedParentIdRef.current = undefined;
         } else {
-          const parentId = elem.split("canvas-")[1];
+          const parentId = elem.split('canvas-')[1];
           focusedParentIdRef.current = parentId;
         }
         if (!isContainerFocused) {
@@ -200,8 +205,8 @@ export const Container = ({
         setContainerFocus(false);
       }
     };
-    document.addEventListener("click", handleClick);
-    return () => document.removeEventListener("click", handleClick);
+    document.addEventListener('click', handleClick);
+    return () => document.removeEventListener('click', handleClick);
   }, [isContainerFocused, canvasRef]);
 
   useEffect(() => {
@@ -270,14 +275,14 @@ export const Container = ({
     () => ({
       accept: [ItemTypes.BOX, ItemTypes.COMMENT],
       async drop(item, monitor) {
-        console.log("object", item);
+        console.log('object', item);
         if (item.parent) {
           return;
         }
 
-        if (item.name === "comment") {
+        if (item.name === 'comment') {
           const canvasBoundingRect = document
-            .getElementsByClassName("real-canvas")[0]
+            .getElementsByClassName('real-canvas')[0]
             .getBoundingClientRect();
           const offsetFromTopOfWindow = canvasBoundingRect.top;
           const offsetFromLeftOfWindow = canvasBoundingRect.left;
@@ -302,12 +307,12 @@ export const Container = ({
         }
 
         const canvasBoundingRect = document
-          .getElementsByClassName("real-canvas")[0]
+          .getElementsByClassName('real-canvas')[0]
           .getBoundingClientRect();
         const componentMeta = componentTypes.find(
           (component) => component.component === item.component.component
         );
-        console.log("adding new component");
+        console.log('adding new component');
 
         const newComponent = addNewWidgetToTheEditor(
           componentMeta,
@@ -343,7 +348,7 @@ export const Container = ({
 
     // Get the width of the canvas
     const canvasBounds = document
-      .getElementsByClassName("real-canvas")[0]
+      .getElementsByClassName('real-canvas')[0]
       .getBoundingClientRect();
     const canvasWidth = canvasBounds?.width;
     const nodeBounds = direction.node.getBoundingClientRect();
@@ -395,10 +400,10 @@ export const Container = ({
     };
 
     let { left, top, width, height } =
-      boxes[id]["layouts"][currentLayout] || defaultData;
+      boxes[id]['layouts'][currentLayout] || defaultData;
 
     const boundingRect = document
-      .getElementsByClassName("canvas-area")[0]
+      .getElementsByClassName('canvas-area')[0]
       .getBoundingClientRect();
     const canvasWidth = boundingRect?.width;
 
@@ -413,9 +418,9 @@ export const Container = ({
       [id]: {
         ...boxes[id],
         layouts: {
-          ...boxes[id]["layouts"],
+          ...boxes[id]['layouts'],
           [currentLayout]: {
-            ...boxes[id]["layouts"][currentLayout],
+            ...boxes[id]['layouts'][currentLayout],
             width,
             height,
             top,
@@ -503,7 +508,7 @@ export const Container = ({
     e.stopPropogation && e.stopPropogation();
 
     const canvasBoundingRect = document
-      .getElementsByClassName("real-canvas")[0]
+      .getElementsByClassName('real-canvas')[0]
       .getBoundingClientRect();
     const offsetFromTopOfWindow = canvasBoundingRect.top;
     const offsetFromLeftOfWindow = canvasBoundingRect.left;
@@ -534,8 +539,8 @@ export const Container = ({
     // Update the threads on all connected clients using websocket
     socket.send(
       JSON.stringify({
-        event: "events",
-        data: { message: "threads", appId: router.query.id },
+        event: 'events',
+        data: { message: 'threads', appId: router.query.id },
       })
     );
 
@@ -572,11 +577,11 @@ export const Container = ({
         drop(el);
       }}
       style={styles}
-      className={cx("real-canvas", {
-        "show-grid": isDragging || isResizing,
+      className={cx('real-canvas', {
+        'show-grid': isDragging || isResizing,
       })}
-      id="real-canvas"
-      data-cy="real-canvas"
+      id='real-canvas'
+      data-cy='real-canvas'
     >
       {config.COMMENT_FEATURE_ENABLE && showComments && (
         <>
@@ -594,14 +599,14 @@ export const Container = ({
                 transform: `translate(${
                   (previewComment.x * canvasWidth) / 100
                 }px, ${previewComment.y}px)`,
-                position: "absolute",
+                position: 'absolute',
                 zIndex: 2,
               }}
             >
-              <label className="form-selectgroup-item comment-preview-bubble">
+              <label className='form-selectgroup-item comment-preview-bubble'>
                 <span
                   className={cx(
-                    "comment comment-preview-bubble-border cursor-move avatar avatar-sm shadow-lg bg-white avatar-rounded"
+                    'comment comment-preview-bubble-border cursor-move avatar avatar-sm shadow-lg bg-white avatar-rounded'
                   )}
                 >
                   <Spinner />
@@ -616,7 +621,7 @@ export const Container = ({
         const box = boxes[key];
         const canShowInCurrentLayout =
           box.component.definition.others[
-            currentLayout === "mobile" ? "showOnMobile" : "showOnDesktop"
+            currentLayout === 'mobile' ? 'showOnMobile' : 'showOnDesktop'
           ].value;
         const addDefaultChildren = box.withDefaultChildren;
         if (
@@ -625,7 +630,7 @@ export const Container = ({
         ) {
           return (
             <DraggableBox
-              className={showComments && "pointer-events-none"}
+              className={showComments && 'pointer-events-none'}
               canvasWidth={canvasWidth}
               onComponentClick={
                 config.COMMENT_FEATURE_ENABLE && showComments
@@ -652,7 +657,7 @@ export const Container = ({
               currentLayout={currentLayout}
               deviceWindowWidth={deviceWindowWidth}
               isSelectedComponent={
-                mode === "edit"
+                mode === 'edit'
                   ? selectedComponents.find((component) => component.id === key)
                   : false
               }
@@ -700,6 +705,7 @@ export const Container = ({
               customMode={customMode}
               testResultData={testResultData2}
               patientData={patientData}
+              parameterDetails={parameterDetails}
             />
           );
         }
@@ -707,17 +713,17 @@ export const Container = ({
 
       {Object.keys(boxes).length === 0 && !appLoading && !isDragging && (
         <div
-          className="mx-auto w-50 p-5 bg-light no-components-box"
-          style={{ marginTop: "10%" }}
+          className='mx-auto w-50 p-5 bg-light no-components-box'
+          style={{ marginTop: '10%' }}
         >
-          {mode === "view" ? (
-            <div class="load">
-              <div class="one"></div>
-              <div class="two"></div>
-              <div class="three"></div>
+          {mode === 'view' ? (
+            <div class='load'>
+              <div class='one'></div>
+              <div class='two'></div>
+              <div class='three'></div>
             </div>
           ) : (
-            <center className="text-muted">
+            <center className='text-muted'>
               You haven&apos;t added any components yet. Drag components from
               the right sidebar and drop here.
             </center>

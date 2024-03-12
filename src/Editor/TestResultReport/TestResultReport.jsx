@@ -1,91 +1,140 @@
 /** @format */
 
-import React from "react";
-
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
-import { Container } from "../Container";
-
-import { ViewerNavigation } from "../Viewer/ViewerNavigation";
+import React, { useState, useEffect, useRef } from 'react';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
+import { Container } from '../Container';
+import { ViewerNavigation } from '../Viewer/ViewerNavigation';
 import {
-  onComponentOptionChanged,
-  onComponentOptionsChanged,
   onComponentClick,
   onEvent,
   computeComponentState,
-} from "@/_helpers/appUtils";
-import ViewerLogoIcon from "../Icons/viewer-logo.svg";
-import { resolveReferences, stripTrailingSlash } from "@/_helpers/utils";
-import { withTranslation } from "react-i18next";
-import _ from "lodash";
-import Spinner from "@/_ui/Spinner";
-import axios from "axios";
-import { Button } from "@progress/kendo-react-all";
+} from '@/_helpers/appUtils';
+import { resolveReferences, stripTrailingSlash } from '@/_helpers/utils';
+import { withTranslation } from 'react-i18next';
+import _ from 'lodash';
+import Spinner from '@/_ui/Spinner';
+import axios from 'axios';
+import { Button } from '@progress/kendo-react-all';
+import ViewerLogoIcon from '../Icons/viewer-logo.svg';
 
-class TestResultReportComponent extends React.Component {
-  constructor(props) {
-    console.log("props in TestResultReportComponent", props);
-    super(props);
-    const deviceWindowWidth = window.screen.width - 5;
-    const isMobileDevice = deviceWindowWidth < 600;
+const TestResultReportComponent = (props) => {
+  const refPDF = useRef();
+  const canvasRef = useRef(null);
+  console.log('propspropspropspropsprops', props);
+  const [appDefinition, setAppDefinition] = useState({ pages: {} });
+  const [components, setComponents] = useState({});
+  const [componentOptions, setComponentOptions] = useState({});
 
-    this.state = {
-      deviceWindowWidth,
-      currentLayout: isMobileDevice ? "mobile" : "desktop",
-      isLoading: true,
-      users: null,
-      appDefinition: { pages: {} },
-      currentState: {
-        queries: {},
-        components: {},
-        globals: {
-          currentUser: {},
-          theme: "light",
-          urlparams: {},
-          environment_variables: {},
-          page: {},
-        },
-        variables: {},
+  const [state, setState] = useState({
+    deviceWindowWidth: window.screen.width - 5,
+    currentLayout: window.screen.width < 600 ? 'mobile' : 'desktop',
+    isLoading: true,
+    users: null,
+    currentState: {
+      queries: {},
+      components: {},
+      globals: {
+        currentUser: {},
+        theme: 'light',
+        urlparams: {},
+        environment_variables: {},
+        page: {},
       },
-      queryConfirmationList: [],
-      isAppLoaded: false,
-      errorAppId: null,
-      errorVersionId: null,
-      errorDetails: null,
-      pages: {},
-      testResultData: {},
-      patientData: {},
-    };
-  }
+      variables: {},
+    },
+    queryConfirmationList: [],
+    isAppLoaded: false,
+    errorAppId: null,
+    errorVersionId: null,
+    errorDetails: null,
+    pages: {},
+    currentSidebarTab: 2,
+    canvasWidth: '100%',
+    currentPageId: '',
+  });
+  const [patientData, setPatientData] = useState({});
+  const [testResult, setTestResult] = useState({});
 
-  setStateForApp = (data) => {
+  useEffect(() => {
+    const loadApplicationByVersion = async () => {
+      const id = 238;
+      try {
+        const response = await axios.get(
+          `https://elabnextapi-dev.azurewebsites.net/api/ReportSetup/GetReportTemplate?ReportTemplateId=${id}`
+        );
+        const temp = {
+          definition: JSON.parse(response?.data?.resultData[0].reportValues),
+        };
+        setStateForApp(temp);
+        setStateForContainer(temp);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    const getPatientResultData = () => {
+      const patientId = props.location.state.patientId;
+      if (patientId) {
+        axios
+          .get(
+            `https://elabnextapi-dev.azurewebsites.net/api/Result/GetResult?PatientId=${patientId}`
+          )
+          .then((response) => {
+            const maxIdObject = response.data.resultData.resultList.reduce(
+              (maxObject, currentObject) => {
+                return currentObject.id > maxObject.id
+                  ? currentObject
+                  : maxObject;
+              },
+              response.data.resultData.resultList[0]
+            );
+
+            let temp = JSON.parse(maxIdObject.resultValues);
+            // setState({
+            //   ...state,
+            //   patientData: temp.patientDetails,
+            //   testResultData: temp.testResult,
+            // });
+            console.log('temptemp', temp);
+            setPatientData(temp.patientDetails);
+            setTestResult(temp.testResult);
+          })
+          .catch((error) => {
+            console.log('errror ->GetResult', error);
+          });
+      }
+    };
+
+    setState({ ...state, isLoading: false });
+    getPatientResultData();
+    loadApplicationByVersion();
+  }, []);
+
+  const setStateForApp = (data) => {
     const copyDefinition = _.cloneDeep(data.definition);
     const pagesObj = copyDefinition?.pages || {};
-
-    const newDefinition = {
-      ...copyDefinition,
-      pages: pagesObj,
-    };
-
-    this.setState({
+    const newDefinition = { ...copyDefinition, pages: pagesObj };
+    setState({
+      ...state,
       app: data,
       isLoading: false,
       isAppLoaded: true,
-      appDefinition: newDefinition || { components: {} },
     });
+    setAppDefinition(newDefinition || { components: {} });
   };
 
-  setStateForContainer = async (data) => {
+  const setStateForContainer = async (data) => {
     let userVars = {};
 
     let mobileLayoutHasWidgets = false;
 
-    if (this.state.currentLayout === "mobile") {
+    if (state.currentLayout === 'mobile') {
       const currentComponents =
         data.definition.pages[data.definition.homePageId].components;
       mobileLayoutHasWidgets =
         Object.keys(currentComponents).filter(
-          (componentId) => currentComponents[componentId]["layouts"]["mobile"]
+          (componentId) => currentComponents[componentId]['layouts']['mobile']
         ).length > 0;
     }
 
@@ -95,30 +144,30 @@ class TestResultReportComponent extends React.Component {
       ([pageId, page]) => ({ id: pageId, ...page })
     );
     const homePageId = data.definition.homePageId;
-    const startingPageHandle = "";
+    const startingPageHandle = '';
     const currentPageId =
       pages.filter((page) => page.handle === startingPageHandle)[0]?.id ??
       homePageId;
     const currentPage = pages.find((page) => page.id === currentPageId);
 
-    this.setState(
+    setState(
       {
         currentSidebarTab: 2,
-        currentLayout: mobileLayoutHasWidgets ? "mobile" : "desktop",
+        currentLayout: mobileLayoutHasWidgets ? 'mobile' : 'desktop',
         canvasWidth:
-          this.state.currentLayout === "desktop"
-            ? "100%"
+          state.currentLayout === 'desktop'
+            ? '100%'
             : mobileLayoutHasWidgets
-            ? `${this.state.deviceWindowWidth}px`
-            : "1292px",
+            ? `${state.deviceWindowWidth}px`
+            : '800px',
         selectedComponent: null,
         currentState: {
           queries: queryState,
           components: {},
           globals: {
             currentUser: userVars,
-            theme: "light",
-            urlparams: "",
+            theme: 'light',
+            urlparams: '',
           },
           variables: {},
           page: {
@@ -136,402 +185,140 @@ class TestResultReportComponent extends React.Component {
         computeComponentState(
           this,
           data?.definition?.pages[currentPage.id]?.components
-        ).then(async () => {
-          this.setState({ initialComputationOfStateDone: true });
+        )?.then(async () => {
+          setState({ initialComputationOfStateDone: true });
 
-          const { events } =
-            this.state.appDefinition?.pages[this.state.currentPageId];
+          const { events } = appDefinition?.pages[state.currentPageId];
           for (const event of events ?? []) {
-            await this.handleEvent(event.eventId, event);
+            await handleEvent(event.eventId, event);
           }
         });
       }
     );
   };
 
-  loadApplicationByVersion = async () => {
-    const id = 45;
-    await axios
-      .get(
-        `https://elabnextapi-dev.azurewebsites.net/api/ReportSetup/GetReportTemplate?ReportTemplateId=${id}`
-      )
-      .then((response) => {
-        const temp = {};
-        temp.definition = JSON.parse(
-          response?.data?.resultData[0].reportValues
-        );
-
-        this.setStateForApp(temp);
-        this.setStateForContainer(temp);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+  const switchPage = (id, queryParams = []) => {
+    if (state.currentPageId === id) return;
   };
 
-  switchOrganization = (orgId, appId, versionId) => {
-    const path = `/applications/${appId}${
-      versionId ? `/versions/${versionId}` : ""
-    }`;
-    const sub_path = window?.public_config?.SUB_PATH
-      ? stripTrailingSlash(window?.public_config?.SUB_PATH)
-      : "";
-  };
-
-  // handleError = (errorDetails, appId, versionId) => {
-  //   try {
-  //     if (errorDetails?.data) {
-  //       const statusCode = errorDetails.data?.statusCode;
-  //       if (statusCode === 403) {
-  //         const errorObj = safelyParseJSON(errorDetails.data?.message);
-  //         if (
-  //           errorObj?.organizationId &&
-  //           this.state.currentUser &&
-  //           this.state.currentUser.organization_id !== errorObj?.organizationId
-  //         ) {
-  //           this.switchOrganization(errorObj?.organizationId, appId, versionId);
-  //           return;
-  //         }
-  //         return <Redirect to={"/"} />;
-  //       } else if (statusCode === 401) {
-  //         return (
-  //           <Redirect
-  //             to={`/login?redirectTo=${this.props.location.pathname}`}
-  //           />
-  //         );
-  //       } else if (statusCode === 404) {
-  //         toast.error(errorDetails?.error ?? "App not found", {
-  //           position: "top-center",
-  //         });
-  //       }
-  //       return <Redirect to={"/"} />;
-  //     }
-  //   } catch (err) {
-  //     return <Redirect to={"/"} />;
-  //   }
-  // };
-  getPatientResultData() {
-    const patientId = this.props.location.state.patientId;
-    if (patientId) {
-      console.log("componentDidMount", patientId);
-      axios
-        .get(
-          `https://elabnextapi-dev.azurewebsites.net/api/Result/GetResult?PatientId=${patientId}`
-        )
-        .then((response) => {
-          const maxIdObject = response.data.resultData.resultList.reduce(
-            (maxObject, currentObject) => {
-              return currentObject.id > maxObject.id
-                ? currentObject
-                : maxObject;
-            },
-            response.data.resultData.resultList[0]
-          );
-
-          let temp = JSON.parse(maxIdObject.resultValues);
-
-          this.setState({
-            patientData: temp.patientDetails,
-            testResultData: temp.testResult,
-          });
-        })
-        .catch((error) => {
-          console.log("errror ->GetResult", error);
-        });
-    }
-  }
-  componentDidMount() {
-    this.setState({ isLoading: false });
-    this.getPatientResultData();
-    this.loadApplicationByVersion();
-  }
-
-  componentDidUpdate(prevProps) {}
-
-  handlePageSwitchingBasedOnURLparam() {
-    const handleOnURL = "";
-    const pageIdCorrespondingToHandleOnURL = handleOnURL
-      ? this.findPageIdFromHandle(handleOnURL)
-      : this.state.appDefinition.homePageId;
-    const currentPageId = this.state.currentPageId;
-
-    if (pageIdCorrespondingToHandleOnURL != this.state.currentPageId) {
-      const targetPage =
-        this.state.appDefinition.pages[pageIdCorrespondingToHandleOnURL];
-      this.setState(
-        {
-          pages: {
-            ...this.state.pages,
-            [currentPageId]: {
-              ...this.state.pages?.[currentPageId],
-              variables: {
-                ...this.state.currentState?.page?.variables,
-              },
-            },
-          },
-          currentPageId: pageIdCorrespondingToHandleOnURL,
-          handle: targetPage.handle,
-          name: targetPage.name,
-          currentState: {
-            ...this.state.currentState,
-            globals: {
-              ...this.state.currentState.globals,
-              urlparams: "",
-            },
-            page: {
-              ...this.state.currentState.page,
-              name: targetPage.name,
-              handle: targetPage.handle,
-              variables:
-                this.state.pages?.[pageIdCorrespondingToHandleOnURL]
-                  ?.variables ?? {},
-              id: pageIdCorrespondingToHandleOnURL,
-            },
-          },
-        },
-        async () => {
-          computeComponentState(
-            this,
-            this.state.appDefinition?.pages[this.state.currentPageId].components
-          ).then(async () => {
-            const { events } =
-              this.state.appDefinition?.pages[this.state.currentPageId];
-            for (const event of events ?? []) {
-              await this.handleEvent(event.eventId, event);
-            }
-          });
-        }
-      );
-    }
-  }
-
-  findPageIdFromHandle(handle) {
-    return (
-      Object.entries(this.state.appDefinition.pages).filter(
-        ([_id, page]) => page.handle === handle
-      )?.[0]?.[0] ?? this.state.appDefinition.homePageId
-    );
-  }
-
-  getCanvasWidth = () => {
-    const canvasBoundingRect = document
-      .getElementsByClassName("canvas-area")[0]
-      .getBoundingClientRect();
-    return canvasBoundingRect?.width;
-  };
-
-  setWindowTitle(name) {
-    document.title = name ?? "Untitled App";
-  }
-
-  computeCanvasBackgroundColor = () => {
-    const bgColor =
-      (this.state.appDefinition.globalSettings?.backgroundFxQuery ||
-        this.state.appDefinition.globalSettings?.canvasBackgroundColor) ??
-      "#edeff5";
-    const resolvedBackgroundColor = resolveReferences(
-      bgColor,
-      this.state.currentState
-    );
-
-    return resolvedBackgroundColor;
-  };
-
-  changeDarkMode = (newMode) => {
-    this.setState({
+  const changeDarkMode = (newMode) => {
+    setState({
+      ...state,
       currentState: {
-        ...this.state.currentState,
+        ...state?.currentState,
         globals: {
-          ...this.state.currentState.globals,
-          theme: { name: newMode ? "dark" : "light" },
+          ...state?.currentState?.globals,
+          theme: { name: newMode ? 'dark' : 'light' },
         },
       },
       showQuerySearchField: false,
     });
   };
 
-  switchPage = (id, queryParams = []) => {
-    if (this.state.currentPageId === id) return;
+  const computeCanvasBackgroundColor = () => {
+    const bgColor =
+      (appDefinition.globalSettings?.backgroundFxQuery ||
+        appDefinition.globalSettings?.canvasBackgroundColor) ??
+      '#edeff5';
+    const resolvedBackgroundColor = resolveReferences(
+      bgColor,
+      state?.currentState
+    );
+
+    return resolvedBackgroundColor;
   };
 
-  handleEvent = (eventName, options) =>
-    onEvent(this, eventName, options, "view");
+  const getCanvasWidth = () => {
+    const canvasElement = canvasRef.current;
+    if (canvasElement) {
+      return 794;
+    }
+    return 0;
+  };
+  console.log('testResult', testResult);
+  const onComponentOptionsChanged = (component, options) => {
+    const componentName = component.name;
+    let componentData = componentOptions[componentName] || {};
 
-  computeCanvasMaxWidth = () => {
-    const { appDefinition } = this.state;
-    let computedCanvasMaxWidth = 1292;
+    for (const option of options) {
+      componentData[option[0]] = option[1];
+    }
 
-    if (appDefinition.globalSettings?.canvasMaxWidthType === "px")
-      computedCanvasMaxWidth =
-        (+appDefinition.globalSettings?.canvasMaxWidth || 1292) -
-        (appDefinition?.showViewerNavigation ? 200 : 0);
-    else if (appDefinition.globalSettings?.canvasMaxWidthType === "%")
-      computedCanvasMaxWidth =
-        +appDefinition.globalSettings?.canvasMaxWidth + "%";
-
-    return computedCanvasMaxWidth;
+    setComponentOptions({
+      ...componentOptions,
+      [componentName]: componentData,
+    });
   };
 
-  handlePrint = () => {
-    let printContents = document.getElementById("real-canvas").innerHTML;
-    let originalContents = document.body.innerHTML;
+  const onComponentOptionChanged = (component, optionName, value) => {
+    const componentName = component.name;
+    let componentData = components[componentName] || {};
+    componentData[optionName] = value;
 
-    let bodyStyles = window.getComputedStyle(document.body);
-    let backgroundColor = bodyStyles.getPropertyValue("background-color");
-    let backgroundImage = bodyStyles.getPropertyValue("background-image");
-
-    document.body.innerHTML = printContents;
-    document.body.style.backgroundColor = backgroundColor;
-    document.body.style.backgroundImage = backgroundImage;
-
-    window.print();
-
-    document.body.innerHTML = originalContents;
-    location.reload(true);
+    setComponents({
+      ...components,
+      [componentName]: componentData,
+    });
   };
 
-  render() {
-    const {
-      appDefinition,
-      isLoading,
-      // isAppLoaded,
-      currentLayout,
-      defaultComponentStateComputed,
-      // queryConfirmationList,
-      canvasWidth,
-    } = this.state;
-
-    const currentCanvasWidth = canvasWidth;
-
-    const canvasMaxWidth = this.computeCanvasMaxWidth();
-
-    if (this.state.app?.isLoading) {
-      return (
-        <div className="tooljet-logo-loader">
-          <div>
-            <div className="loader-logo">
-              <ViewerLogoIcon />
-            </div>
-            <div className="loader-spinner">
-              <Spinner />
-            </div>
-          </div>
-        </div>
-      );
-    } else {
-      if (this.state.app?.is_maintenance_on) {
-        return (
-          <div className="maintenance_container">
-            <div className="card">
-              <div
-                className="card-body"
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                <h3>viewer</h3>
-              </div>
-            </div>
-          </div>
-        );
-      } else {
-        // if (errorDetails) {
-        //   this.handleError(errorDetails, errorAppId, errorVersionId);
-        // }
-
-        return (
-          <div className="viewer wrapper">
-            {/* <Confirm
-              // show={queryConfirmationList.length > 0}
-              message={'Do you want to run this query?'}
-              onConfirm={(queryConfirmationData) => onQueryConfirmOrCancel(this, queryConfirmationData, true, 'view')}
-              // onCancel={() => onQueryConfirmOrCancel(this, queryConfirmationList[0], false, 'view')}
-              // queryConfirmationData={queryConfirmationList[0]}
-              // key={queryConfirmationList[0]?.queryName}
-            /> */}
-            <div style={{ display: "flex", gap: "10px", margin: "5px" }}>
-              <Button
-                onClick={() => {
-                  this.props.history.push("/");
-                }}
-              >
-                <span class="k-icon k-i-arrow-chevron-left" />
-              </Button>
-              <Button
-                onClick={() => {
-                  this.props.history.push({
-                    pathname: "/custom-report",
-                    state: {},
-                  });
-                }}
-              >
-                Reports
-              </Button>
-              <Button onClick={this.handlePrint}>Print</Button>
-            </div>
-            <DndProvider backend={HTML5Backend}>
-              <ViewerNavigation.Header
-                // showHeader={!appDefinition.globalSettings?.hideHeader && isAppLoaded}
-                appName={this.state.app?.name ?? null}
-                changeDarkMode={this.changeDarkMode}
-                darkMode={false}
-                pages={Object.entries(this.state.appDefinition?.pages) ?? []}
-                currentPageId={
-                  this.state?.currentPageId ??
-                  this.state.appDefinition?.homePageId
-                }
-                switchPage={this.switchPage}
-                currentLayout={this.state.currentLayout}
-              />
-              <div className="sub-section">
-                <div className="main">
-                  <div
-                    className="canvas-container align-items-center"
-                    style={{
-                      backgroundColor: this.computeCanvasBackgroundColor(),
-                      width:
-                        this.props.location.state.mode === "preview"
-                          ? "95%"
-                          : "80%",
-
-                      marginLeft:
-                        this.props.location.state.mode === "preview"
-                          ? ""
-                          : "150px",
-                      marginTop:
-                        this.props.location.state.mode === "preview"
-                          ? ""
-                          : "15px",
-
-                      position: "fixed",
-                      top: "50px",
-                      left: "60px",
-                      height: "-webkit-fill-available",
-                    }}
-                  >
-                    <div className="areas d-flex flex-rows justify-content-center">
+  const renderPDF = () => {
+    return (
+      <div ref={refPDF} className='real-canvas-data'>
+        {testResult &&
+          Object.values(testResult)?.map((item, index) => {
+            const itemData = item;
+            console.log('itemData', itemData);
+            return (
+              <div className={index !== 0 ? 'page-break' : ''}>
+                <div className='viewer wrapper'>
+                  {false ? (
+                    <Loaders />
+                  ) : (
+                    <DndProvider backend={HTML5Backend}>
+                      <ViewerNavigation.Header
+                        appName={state.app?.name ?? null}
+                        changeDarkMode={changeDarkMode}
+                        darkMode={false}
+                        pages={appDefinition?.pages ?? []}
+                        currentPageId={
+                          state?.currentPageId ?? appDefinition?.homePageId
+                        }
+                        switchPage={switchPage}
+                        currentLayout={state.currentLayout}
+                      />
                       <div
-                        className="canvas-area"
+                        className='canvas-area-up'
+                        ref={state.cardRef}
                         style={{
-                          width: "100%",
-                          minHeight: "100%",
-                          maxWidth: "100%",
-                          maxHeight: "100%",
-                          backgroundColor: this.computeCanvasBackgroundColor(),
-                          margin: 0,
-                          padding: 0,
+                          marginRight: 'auto',
+                          marginLeft: 'auto',
+                          width: '100%',
                         }}
                       >
-                        {defaultComponentStateComputed && (
+                        <div
+                          id='canvas-area'
+                          ref={canvasRef}
+                          className='canvas-area canvas-container align-items-center'
+                          style={{
+                            width: '794px',
+                            position: 'relative',
+                            height: '1135px',
+                            backgroundColor: computeCanvasBackgroundColor(),
+                            margin: 0,
+                            marginRight: 'auto',
+                            marginLeft: 'auto',
+                            padding: 0,
+                            overflowY: 'auto',
+                            overflowX: 'auto',
+                          }}
+                        >
                           <>
-                            {isLoading ? (
-                              <div className="mx-auto mt-5 w-50 p-5">
+                            {state.isLoading ? (
+                              <div className='mx-auto mt-5 w-50 p-5'>
                                 <center>
                                   <div
-                                    className="spinner-border text-azure"
-                                    role="status"
+                                    className='spinner-border text-azure'
+                                    role='status'
                                   ></div>
                                 </center>
                               </div>
@@ -540,69 +327,167 @@ class TestResultReportComponent extends React.Component {
                                 appDefinition={appDefinition}
                                 appDefinitionChanged={() => false} // function not relevant in viewer
                                 snapToGrid={true}
-                                appLoading={isLoading}
-                                darkMode={this.props.darkMode}
+                                appLoading={state.isLoading}
+                                darkMode={props.darkMode}
                                 onEvent={(eventName, options) =>
-                                  onEvent(this, eventName, options, "view")
+                                  onEvent(this, eventName, options, 'view')
                                 }
-                                mode="view"
+                                mode='view'
                                 // deviceWindowWidth={deviceWindowWidth}
-                                currentLayout={currentLayout}
-                                currentState={this.state.currentState}
-                                selectedComponent={this.state.selectedComponent}
+                                currentLayout={state.currentLayout}
+                                currentState={state?.currentState}
+                                selectedComponent={state.selectedComponent}
                                 onComponentClick={(id, component) => {
-                                  this.setState({
-                                    selectedComponent: { id, component },
+                                  setState({
+                                    ...state,
+                                    selectedComponent: {
+                                      id,
+                                      component,
+                                    },
                                   });
-                                  onComponentClick(this, id, component, "view");
+                                  onComponentClick(this, id, component, 'view');
                                 }}
-                                onComponentOptionChanged={(
-                                  component,
-                                  optionName,
-                                  value
-                                ) => {
-                                  return onComponentOptionChanged(
-                                    this,
-                                    component,
-                                    optionName,
-                                    value
-                                  );
-                                }}
-                                onComponentOptionsChanged={(
-                                  component,
-                                  options
-                                ) =>
-                                  onComponentOptionsChanged(
-                                    this,
-                                    component,
-                                    options
-                                  )
+                                onComponentOptionChanged={
+                                  onComponentOptionChanged
                                 }
-                                canvasWidth={this.getCanvasWidth()}
+                                onComponentOptionsChanged={
+                                  onComponentOptionsChanged
+                                }
+                                canvasWidth={getCanvasWidth()}
                                 // dataQueries={dataQueries}
-                                currentPageId={this.state.currentPageId}
-                                reportTemplateDataMap={
-                                  this.props.location.state ////amarrrrr --->>> replace this with array we are receving from BE for test result
-                                }
-                                customMode={this.props.location.state.mode}
-                                testResultData2={this.state.testResultData}
-                                patientData={this.state.patientData}
-                                handlePrint={this.handlePrint}
+                                currentPageId={state.currentPageId}
+                                reportTemplateDataMap={itemData}
+                                customMode={props?.location?.state?.mode}
+                                parameterDetails={itemData.parameterDetails}
+                                testResultData2={itemData}
+                                patientData={patientData}
                               />
                             )}
                           </>
-                        )}
+                        </div>
                       </div>
-                    </div>
-                  </div>
+                    </DndProvider>
+                  )}
                 </div>
               </div>
-            </DndProvider>
-          </div>
-        );
-      }
-    }
-  }
-}
+            );
+          })}
+      </div>
+    );
+  };
+
+  return (
+    <div ref={refPDF} className='real-canvas-data'>
+      {testResult &&
+        Object.values(testResult)?.map((item, index) => {
+          const itemData = item;
+          console.log('itemData', itemData);
+          return (
+            <div className={index !== 0 ? 'page-break' : ''}>
+              <div className='viewer wrapper'>
+                {false ? (
+                  <Loaders />
+                ) : (
+                  <DndProvider backend={HTML5Backend}>
+                    <ViewerNavigation.Header
+                      appName={state.app?.name ?? null}
+                      changeDarkMode={changeDarkMode}
+                      darkMode={false}
+                      pages={appDefinition?.pages ?? []}
+                      currentPageId={
+                        state?.currentPageId ?? appDefinition?.homePageId
+                      }
+                      switchPage={switchPage}
+                      currentLayout={state.currentLayout}
+                    />
+                    <div
+                      className='canvas-area-up'
+                      ref={state.cardRef}
+                      style={{
+                        marginRight: 'auto',
+                        marginLeft: 'auto',
+                        width: '100%',
+                      }}
+                    >
+                      <div
+                        id='canvas-area'
+                        ref={canvasRef}
+                        className='canvas-area canvas-container align-items-center'
+                        style={{
+                          width: '794px',
+                          position: 'relative',
+                          height: '1135px',
+                          backgroundColor: computeCanvasBackgroundColor(),
+                          margin: 0,
+                          marginRight: 'auto',
+                          marginLeft: 'auto',
+                          padding: 0,
+                          overflowY: 'auto',
+                          overflowX: 'auto',
+                        }}
+                      >
+                        <>
+                          {state.isLoading ? (
+                            <div className='mx-auto mt-5 w-50 p-5'>
+                              <center>
+                                <div
+                                  className='spinner-border text-azure'
+                                  role='status'
+                                ></div>
+                              </center>
+                            </div>
+                          ) : (
+                            <Container
+                              appDefinition={appDefinition}
+                              appDefinitionChanged={() => false} // function not relevant in viewer
+                              snapToGrid={true}
+                              appLoading={state.isLoading}
+                              darkMode={props.darkMode}
+                              onEvent={(eventName, options) =>
+                                onEvent(this, eventName, options, 'view')
+                              }
+                              mode='view'
+                              // deviceWindowWidth={deviceWindowWidth}
+                              currentLayout={state.currentLayout}
+                              currentState={state.currentState}
+                              selectedComponent={state.selectedComponent}
+                              onComponentClick={(id, component) => {
+                                setState({
+                                  ...state,
+                                  selectedComponent: {
+                                    id,
+                                    component,
+                                  },
+                                });
+                                onComponentClick(this, id, component, 'view');
+                              }}
+                              onComponentOptionChanged={
+                                onComponentOptionChanged
+                              }
+                              onComponentOptionsChanged={
+                                onComponentOptionsChanged
+                              }
+                              canvasWidth={getCanvasWidth()}
+                              // dataQueries={dataQueries}
+                              currentPageId={state.currentPageId}
+                              reportTemplateDataMap={itemData}
+                              customMode={props?.location?.state?.mode}
+                              parameterDetails={itemData.parameterDetails}
+                              testResultData2={itemData}
+                              patientData={patientData}
+                            />
+                          )}
+                        </>
+                      </div>
+                    </div>
+                  </DndProvider>
+                )}
+              </div>
+            </div>
+          );
+        })}
+    </div>
+  );
+};
 
 export const TestResultReport = withTranslation()(TestResultReportComponent);

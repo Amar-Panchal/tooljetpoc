@@ -104,7 +104,7 @@ function ResultPage() {
     useState([]);
 
   const [unitData, setUnitData] = useState([]);
-  const [values, setValues] = useState({});
+  const [values, setValues] = useState([]);
   const [valuesAPI, setValuesAPI] = useState({});
   const [disabledTests, setDisabledTests] = useState([]);
   const [isLoading, setIsloading] = useState(false);
@@ -198,9 +198,16 @@ function ResultPage() {
 
         let temp = JSON.parse(maxIdObject.resultValues);
 
-        setValues({ ...values, [testId]: temp.testResult[testId] });
+        setValues((prevValues) => ({
+          ...prevValues,
+          [testId]: temp.testResult[testId],
+        }));
+        console.log("arrr2", values);
 
-        setValuesAPI({ ...values, [testId]: temp.testResult[testId] });
+        setValuesAPI((prevValues) => ({
+          ...prevValues,
+          [testId]: temp.testResult[testId],
+        }));
         setIsloading(false);
       })
       .catch((error) => {
@@ -208,6 +215,7 @@ function ResultPage() {
         console.log("errror ->GetResult", error);
       });
   };
+
   console.log("select", selectedTestsWithParameters);
   useEffect(() => {
     axios
@@ -738,6 +746,7 @@ function ResultPage() {
                             />
                             {test.testParameters.map(
                               (parameter, paramIndex) => {
+                                console.log("parameterName", parameter);
                                 return (
                                   <RenderParameterList
                                     parameterName={parameter}

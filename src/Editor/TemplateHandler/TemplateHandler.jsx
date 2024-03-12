@@ -1,31 +1,31 @@
 /** @format */
 
-import axios from "axios";
-import React, { useEffect, useState } from "react";
-import { toast } from "react-hot-toast";
-import { useHistory } from "react-router-dom";
-import Spinner from "@/_ui/Spinner";
-import CustomSpinningLoader from "../../_ui/Loader/Loader";
-import { Button } from "@progress/kendo-react-all";
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import { toast } from 'react-hot-toast';
+import { useHistory } from 'react-router-dom';
+import Spinner from '@/_ui/Spinner';
+import CustomSpinningLoader from '../../_ui/Loader/Loader';
+import { Button } from '@progress/kendo-react-all';
 
 const emptyJSON = {
   showViewerNavigation: true,
-  homePageId: "38b5f18a-1427-46f0-b218-316321712282",
+  homePageId: '38b5f18a-1427-46f0-b218-316321712282',
   pages: {
-    "38b5f18a-1427-46f0-b218-316321712282": {
+    '38b5f18a-1427-46f0-b218-316321712282': {
       components: {},
-      handle: "home",
-      name: "Home",
+      handle: 'home',
+      name: 'Home',
     },
   },
   globalSettings: {
     hideHeader: false,
     appInMaintenance: false,
-    canvasMaxWidth: "1320",
-    canvasMaxWidthType: "px",
-    canvasMaxHeight: 2400,
-    canvasBackgroundColor: "#ffffff",
-    backgroundFxQuery: "#ffffff",
+    canvasMaxWidth: 794,
+    canvasMaxWidthType: 'px',
+    canvasMaxHeight: 1135,
+    canvasBackgroundColor: '#ffffff',
+    backgroundFxQuery: '#ffffff',
   },
 };
 
@@ -33,7 +33,7 @@ function TemplateHandler(props) {
   const history = useHistory();
   const [templateList, setTemplateList] = useState([]);
   const [createTemplateData, setCreateTemplateData] = useState({
-    templateName: "",
+    templateName: '',
     templateType: 0,
   });
   const [loading, setLoading] = useState(false);
@@ -72,7 +72,7 @@ function TemplateHandler(props) {
     //   toast.error("template type cannot be blank");
     // else {
     const payload = {
-      reportTemplateName: "",
+      reportTemplateName: '',
       templateType: type,
       reportValues: emptyJSON,
       // templateId: 0,
@@ -84,24 +84,24 @@ function TemplateHandler(props) {
       )
       .then((response) => {
         history.push({
-          pathname: "/editor",
+          pathname: '/editor',
           state: response.data.resultData.reportMasterData,
         });
         getReportTemplate();
       })
-      .catch((error) => console.log("error handleCreateTemplate", error));
+      .catch((error) => console.log('error handleCreateTemplate', error));
     // }
   };
 
   return (
     <div
       style={{
-        display: "flex",
-        alignItems: "center",
-        alignItems: "center",
-        justifyContent: "center",
-        width: "100vw",
-        height: "100vh",
+        display: 'flex',
+        alignItems: 'center',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: '100vw',
+        height: '100vh',
       }}
     >
       {loading ? (
@@ -109,39 +109,39 @@ function TemplateHandler(props) {
       ) : (
         <>
           <div
-            style={{ display: "flex", flexDirection: "column", gap: "20px" }}
+            style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}
           >
             <Button
-              className="k-button k-button-md k-rounded-md k-button-solid k-button-solid-primary"
+              className='k-button k-button-md k-rounded-md k-button-solid k-button-solid-primary'
               onClick={() => handleCreateTemplate(1)}
-              style={{ backgroundColor: "#4D72FA", border: "none" }}
+              style={{ backgroundColor: '#4D72FA', border: 'none' }}
             >
               Create Report Template
             </Button>
             <Button
-              className="k-button k-button-md k-rounded-md k-button-solid k-button-solid-primary"
+              className='k-button k-button-md k-rounded-md k-button-solid k-button-solid-primary'
               onClick={() => handleCreateTemplate(2)}
-              style={{ backgroundColor: "#4D72FA", border: "none" }}
+              style={{ backgroundColor: '#4D72FA', border: 'none' }}
             >
               Create Registration Template
             </Button>
             <Button
-              title="Registration Page"
-              className="k-button k-button-md k-rounded-md k-button-solid k-button-solid-primary"
+              title='Registration Page'
+              className='k-button k-button-md k-rounded-md k-button-solid k-button-solid-primary'
               onClick={() => {
-                history.push("/registration-page");
+                history.push('/registration-page');
               }}
-              style={{ backgroundColor: "#4D72FA", border: "none" }}
+              style={{ backgroundColor: '#4D72FA', border: 'none' }}
             >
               Registration Page
             </Button>
             <Button
-              title="Custom Reports"
-              className="k-button k-button-md k-rounded-md k-button-solid k-button-solid-primary"
+              title='Custom Reports'
+              className='k-button k-button-md k-rounded-md k-button-solid k-button-solid-primary'
               onClick={() => {
-                history.push("/");
+                history.push('/');
               }}
-              style={{ backgroundColor: "#4D72FA", border: "none" }}
+              style={{ backgroundColor: '#4D72FA', border: 'none' }}
             >
               Patient List
             </Button>
@@ -149,20 +149,20 @@ function TemplateHandler(props) {
           <div>
             <h3>Report Template List</h3>
             <div
-              style={{ height: "500px", overflow: "scroll", width: "300px" }}
+              style={{ height: '500px', overflow: 'scroll', width: '300px' }}
             >
               {templateList.map((template) => {
                 return template.templateType === 1 ? (
                   <li
                     style={{
-                      border: "1px dotted gray",
-                      padding: "20px",
-                      margin: "10px",
-                      cursor: "pointer",
+                      border: '1px dotted gray',
+                      padding: '20px',
+                      margin: '10px',
+                      cursor: 'pointer',
                     }}
                     onClick={() =>
                       history.push({
-                        pathname: "/editor",
+                        pathname: '/editor',
                         state: template,
                       })
                     }
@@ -170,8 +170,8 @@ function TemplateHandler(props) {
                     name : {template.name}
                     <br /> id: {template.reportTemplateId}
                     <br /> templateType : {template.templateType}
-                    <br /> templateTypeName :{" "}
-                    {template.templateType == 1 ? "report" : "registration"}
+                    <br /> templateTypeName :{' '}
+                    {template.templateType == 1 ? 'report' : 'registration'}
                   </li>
                 ) : null;
               })}
@@ -180,21 +180,21 @@ function TemplateHandler(props) {
           <div>
             <h3>Registration Template List</h3>
             <div
-              style={{ height: "500px", overflow: "scroll", width: "300px" }}
+              style={{ height: '500px', overflow: 'scroll', width: '300px' }}
             >
-              {" "}
+              {' '}
               {templateList.map((template) => {
                 return template.templateType === 2 ? (
                   <li
                     style={{
-                      border: "1px dotted gray",
-                      padding: "20px",
-                      margin: "10px",
-                      cursor: "pointer",
+                      border: '1px dotted gray',
+                      padding: '20px',
+                      margin: '10px',
+                      cursor: 'pointer',
                     }}
                     onClick={() =>
                       history.push({
-                        pathname: "/editor",
+                        pathname: '/editor',
                         state: template,
                       })
                     }
@@ -202,8 +202,8 @@ function TemplateHandler(props) {
                     name : {template.name}
                     <br /> id: {template.reportTemplateId}
                     <br /> templateType : {template.templateType}
-                    <br /> templateTypeName :{" "}
-                    {template.templateType == 1 ? "report" : "registration"}
+                    <br /> templateTypeName :{' '}
+                    {template.templateType == 1 ? 'report' : 'registration'}
                   </li>
                 ) : null;
               })}
